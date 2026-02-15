@@ -4,14 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TDAH Care</title>
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-title" content="TDAH Care">
+<meta name="application-name" content="TDAH Care">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --primary: #1565C0; --primary-light: #1976D2; --primary-dark: #0D47A1;
-    --accent: #29B6F6; --bg: #F0F4F8; --white: #FFFFFF;
-    --text: #1A237E; --text-light: #546E7A;
-    --success: #2E7D32; --warning: #F57F17; --danger: #C62828;
-    --shadow: 0 2px 12px rgba(21,101,192,0.10); --radius: 16px;
+    --accent: #29B6F6; --bg: #F0F4F8; --text: #1A237E; --text-light: #546E7A;
+    --success: #2E7D32; --shadow: 0 2px 12px rgba(21,101,192,0.10); --radius: 16px;
   }
   body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; max-width: 430px; margin: 0 auto; }
 
@@ -29,7 +31,7 @@
   .page.active { display: block; }
 
   .card { background: white; border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
-  .card-title { font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+  .card-title { font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
 
   .greeting { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
   .greeting h2 { font-size: 1.2rem; margin-bottom: 4px; }
@@ -61,10 +63,9 @@
   .badge-inativo { background: #FFEBEE; color: #C62828; }
   .badge-encerrado { background: #FFF8E1; color: #F57F17; }
 
-  .remedio-progress-wrap { margin: 12px 0; }
-  .remedio-progress-bar { height: 14px; background: #E3EAF2; border-radius: 7px; overflow: hidden; position: relative; }
+  .remedio-progress-bar { height: 14px; background: #E3EAF2; border-radius: 7px; overflow: hidden; }
   .remedio-progress-fill { height: 100%; border-radius: 7px; transition: width 1s ease; position: relative; }
-  .remedio-progress-fill::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s infinite; }
+  .remedio-progress-fill::after { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent); animation: shimmer 2s infinite; }
   @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
 
   .remedio-info-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-light); margin-top: 6px; }
@@ -78,7 +79,6 @@
   .aviso-encerrado p { font-size: 0.82rem; color: #5D4037; line-height: 1.6; }
   .aviso-encerrado.show { display: block; }
 
-  /* TIME INPUT */
   .time-input-wrap { display: flex; gap: 10px; align-items: flex-end; }
   .time-input-wrap input[type="time"] { flex: 1; }
   .time-input-wrap button { padding: 12px 18px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
@@ -93,7 +93,6 @@
 
   .hours-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
   .hour-btn { padding: 10px; border: 2px solid #E3EAF2; border-radius: 10px; background: #F8FAFF; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; color: var(--text); }
-  .hour-btn:hover { border-color: var(--primary); background: #EEF4FF; }
   .hour-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
   .custom-hours { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
   .custom-hours input { flex: 1; }
@@ -102,7 +101,7 @@
   /* METAS */
   .meta-item { display: flex; align-items: center; gap: 12px; padding: 14px; background: #F8FAFF; border-radius: 12px; margin-bottom: 10px; border: 2px solid transparent; transition: all 0.2s; cursor: pointer; }
   .meta-item.done { background: #E8F5E9; border-color: #A5D6A7; }
-  .meta-check { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #B0BEC5; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; transition: all 0.2s; }
+  .meta-check { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #B0BEC5; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
   .meta-item.done .meta-check { background: var(--success); border-color: var(--success); color: white; }
   .meta-text { flex: 1; }
   .meta-title { font-size: 0.9rem; font-weight: 600; }
@@ -116,17 +115,14 @@
   .add-meta input { flex: 1; }
   .add-meta button { padding: 12px 16px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1.2rem; cursor: pointer; }
 
-  /* HISTORICO */
   .historico-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #EEF2F7; }
   .historico-item:last-child { border-bottom: none; }
   .historico-data { font-size: 0.8rem; color: var(--text-light); }
-  .historico-valor { font-weight: 700; color: var(--primary); }
   .badge { padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
   .badge-good { background: #E8F5E9; color: #2E7D32; }
   .badge-warn { background: #FFF8E1; color: #F57F17; }
   .badge-bad { background: #FFEBEE; color: #C62828; }
 
-  /* INFO */
   .info-tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
   .info-tab { padding: 8px 14px; border-radius: 20px; border: 2px solid #E3EAF2; background: white; font-size: 0.8rem; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
   .info-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
@@ -140,9 +136,11 @@
 
   .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: #1A237E; color: white; padding: 12px 24px; border-radius: 24px; font-size: 0.85rem; font-weight: 600; z-index: 999; opacity: 0; transition: opacity 0.3s; white-space: nowrap; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
   .toast.show { opacity: 1; }
-
-  .section-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .section-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 12px; }
   .divider { height: 1px; background: #EEF2F7; margin: 16px 0; }
+
+  /* RESET BTN */
+  .btn-danger { background: transparent; border: 2px solid #EF5350; color: #EF5350; border-radius: 12px; padding: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -163,96 +161,74 @@
   </div>
 
   <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-icon">😴</div>
-      <div class="stat-value" id="stat-sono">—</div>
-      <div class="stat-label">Sono</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">✅</div>
-      <div class="stat-value" id="stat-metas">0/0</div>
-      <div class="stat-label">Metas</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">💊</div>
-      <div class="stat-value" id="stat-remedio">—</div>
-      <div class="stat-label">Remédio</div>
-    </div>
+    <div class="stat-card"><div class="stat-icon">😴</div><div class="stat-value" id="stat-sono">—</div><div class="stat-label">Sono</div></div>
+    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="stat-metas">0/0</div><div class="stat-label">Metas</div></div>
+    <div class="stat-card"><div class="stat-icon">💊</div><div class="stat-value" id="stat-remedio">—</div><div class="stat-label">Remédio</div></div>
   </div>
 
-  <!-- REMÉDIO HOME -->
   <div class="remedio-card">
     <div class="remedio-header">
       <div>
         <div class="remedio-title">💊 Venvanse (Lisdexanfetamina)</div>
         <div style="font-size:0.75rem;color:var(--text-light);">Duração: 12 horas</div>
       </div>
-      <span class="remedio-badge badge-inativo" id="remedio-badge-home">Não registrado</span>
+      <span class="remedio-badge badge-inativo" id="remedio-badge">Não registrado</span>
     </div>
 
     <div id="remedio-sem-registro">
+      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Registre o horário que tomou o remédio:</p>
       <div class="time-input-wrap">
-        <input type="time" id="hora-remedio-home">
-        <button onclick="registrarRemedio('home')">💊 Tomei</button>
+        <input type="time" id="hora-remedio">
+        <button onclick="registrarRemedio()">💊 Tomei</button>
       </div>
     </div>
 
     <div id="remedio-com-registro" style="display:none;">
-      <div class="remedio-progress-wrap">
-        <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:6px;">
-          <span style="color:var(--text-light);">Tomado às <strong id="hora-tomada-display">—</strong></span>
-          <span style="color:var(--text-light);">Encerra às <strong id="hora-encerra-display">—</strong></span>
-        </div>
-        <div class="remedio-progress-bar">
-          <div class="remedio-progress-fill" id="remedio-fill" style="width:0%;background:linear-gradient(90deg,#1565C0,#29B6F6);"></div>
-        </div>
-        <div class="remedio-info-row">
-          <span id="tempo-ativo-label">0h no organismo</span>
-          <span id="tempo-restante-label">12h restantes</span>
-        </div>
+      <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:8px;">
+        <span style="color:var(--text-light);">Tomado às <strong id="hora-tomada-display">—</strong></span>
+        <span style="color:var(--text-light);">Encerra às <strong id="hora-encerra-display">—</strong></span>
       </div>
-
+      <div class="remedio-progress-bar">
+        <div class="remedio-progress-fill" id="remedio-fill" style="width:0%"></div>
+      </div>
+      <div class="remedio-info-row">
+        <span id="tempo-ativo-label">0h no organismo</span>
+        <span id="tempo-restante-label">12h restantes</span>
+      </div>
       <div class="remedio-stats">
-        <div class="remedio-stat">
-          <div class="val" id="tempo-ativo-val">0h 00min</div>
-          <div class="lbl">Tempo ativo</div>
-        </div>
-        <div class="remedio-stat">
-          <div class="val" id="tempo-restante-val">12h 00min</div>
-          <div class="lbl">Tempo restante</div>
-        </div>
+        <div class="remedio-stat"><div class="val" id="tempo-ativo-val">0h 00min</div><div class="lbl">Tempo ativo</div></div>
+        <div class="remedio-stat"><div class="val" id="tempo-restante-val">12h 00min</div><div class="lbl">Tempo restante</div></div>
       </div>
-
       <div class="aviso-encerrado" id="aviso-encerrado">
         <h4>⚠️ Efeito do remédio encerrado</h4>
         <p>O Venvanse completou suas 12h de ação. É normal sentir:<br><br>
-        • <strong>Cansaço ou rebote</strong> — o retorno dos sintomas do TDAH pode ser mais intenso por 1-2h.<br>
+        • <strong>Cansaço ou rebote</strong> — retorno dos sintomas por 1-2h.<br>
         • <strong>Irritabilidade leve</strong> — efeito comum ao fim da ação.<br>
-        • <strong>Fome</strong> — o apetite retorna após a supressão do remédio.<br><br>
-        💡 <strong>Dica:</strong> Evite tarefas que exijam muito foco agora. Descanse, alimente-se bem e mantenha sua rotina de sono.</p>
+        • <strong>Fome</strong> — o apetite retorna após a supressão.<br><br>
+        💡 <strong>Dica:</strong> Evite tarefas de alto foco agora. Descanse e alimente-se bem.</p>
       </div>
-
-      <button class="btn btn-outline" style="margin-top:12px;font-size:0.85rem;padding:10px;" onclick="resetarRemedio()">🔄 Registrar nova dose</button>
+      <button class="btn-danger" onclick="resetarRemedio()">🔄 Registrar nova dose</button>
     </div>
   </div>
 
-  <!-- PROGRESSO METAS -->
   <div class="card">
     <div class="card-title">📊 Progresso de hoje</div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
     <div class="progress-info">
       <span id="progress-text">0 de 0 metas concluídas</span>
       <span id="progress-pct">0%</span>
     </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 Último sono registrado</div>
+    <div id="ultimo-sono-home"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:8px;">Nenhum registro ainda</p></div>
   </div>
 </div>
 
 <!-- SONO -->
 <div class="page" id="page-sono">
   <div class="section-title">😴 Registrar Sono</div>
-
   <div class="card">
     <div class="sono-visual">
       <div class="sono-circle">
@@ -261,21 +237,17 @@
       </div>
       <div class="sono-info">
         <p>Recomendado: <strong>7-9 horas</strong></p>
-        <p style="font-size:0.8rem;color:var(--text-light);margin-top:6px;">Sono regular melhora foco, humor e resposta ao medicamento.</p>
+        <p style="font-size:0.8rem;color:var(--text-light);margin-top:6px;">Sono regular melhora foco e resposta ao medicamento.</p>
       </div>
     </div>
-
     <div class="form-group">
       <label>⏰ Quantas horas dormiu?</label>
-      <div class="hours-grid" id="hours-grid">
-        <!-- gerado pelo JS -->
-      </div>
+      <div class="hours-grid" id="hours-grid"></div>
       <div class="custom-hours">
         <input type="number" id="horas-custom" placeholder="Outro valor..." min="0" max="24" step="0.5" oninput="selecionarHoraCustom(this.value)">
         <span>horas</span>
       </div>
     </div>
-
     <div class="form-group">
       <label>😴 Qualidade do sono</label>
       <select id="sono-qualidade">
@@ -286,53 +258,40 @@
         <option value="pessima">😫 Péssima — Mal consegui dormir</option>
       </select>
     </div>
-
     <div class="form-group">
       <label>📝 Observações (opcional)</label>
-      <textarea id="sono-obs" placeholder="Ex: Acordei várias vezes, tive dificuldade para dormir..."></textarea>
+      <textarea id="sono-obs" placeholder="Ex: Acordei várias vezes..."></textarea>
     </div>
-
     <button class="btn btn-primary" onclick="salvarSono()">💾 Salvar Registro</button>
   </div>
-
   <div class="card">
     <div class="card-title">📅 Últimos registros</div>
-    <div id="historico-sono">
-      <p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p>
-    </div>
+    <div id="historico-sono"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p></div>
   </div>
 </div>
 
 <!-- METAS -->
 <div class="page" id="page-metas">
   <div class="section-title">🎯 Minhas Metas</div>
-
   <div class="card">
     <div class="card-title">➕ Nova meta</div>
     <div class="add-meta">
-      <input type="text" id="nova-meta-input" placeholder="Ex: Beber água, Meditar 10min...">
+      <input type="text" id="nova-meta-input" placeholder="Ex: Beber água, Meditar...">
       <button onclick="adicionarMeta()">+</button>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">📋 Metas de hoje</div>
-    <div class="progress-bar" style="margin-bottom:8px;">
-      <div class="progress-fill" id="meta-progress" style="width:0%"></div>
-    </div>
-    <div class="progress-info" style="margin-bottom:16px;">
-      <span id="meta-info">0 concluídas</span>
-      <span id="meta-pct">0%</span>
-    </div>
+    <div class="progress-bar" style="margin-bottom:8px;"><div class="progress-fill" id="meta-progress" style="width:0%"></div></div>
+    <div class="progress-info" style="margin-bottom:16px;"><span id="meta-info">0 concluídas</span><span id="meta-pct">0%</span></div>
     <div id="lista-metas"></div>
     <div class="divider"></div>
     <button class="btn btn-outline" onclick="limparConcluidas()" style="margin-top:8px;">🗑️ Limpar concluídas</button>
   </div>
-
   <div class="card">
     <div class="card-title">💡 Dica</div>
-    <div class="info-tip">
-      <strong>TDAH e metas:</strong> Divida tarefas grandes em passos pequenos. Cada ✅ libera dopamina e te motiva!
+    <div style="background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:12px 16px;font-size:0.83rem;color:#5D4037;line-height:1.5;">
+      <strong>TDAH e metas:</strong> Divida tarefas grandes em passos pequenos. Cada ✅ libera dopamina!
     </div>
   </div>
 </div>
@@ -346,34 +305,30 @@
     <button class="info-tab" onclick="switchInfo('remedio',this)">💊 Medicação</button>
     <button class="info-tab" onclick="switchInfo('estrategias',this)">🧠 Estratégias</button>
   </div>
-
   <div class="info-content active" id="info-sono">
-    <div class="info-card"><h3>🌙 Por que o sono é crucial no TDAH?</h3><p>Pessoas com TDAH frequentemente têm dificuldades com o sono. A privação agrava desatenção, impulsividade e regulação emocional.</p></div>
+    <div class="info-card"><h3>🌙 Por que o sono é crucial no TDAH?</h3><p>Privação de sono agrava desatenção, impulsividade e regulação emocional — já comprometidas no TDAH.</p></div>
     <div class="info-tip"><strong>✅ Recomendação:</strong> 7-9 horas com horários consistentes, mesmo nos fins de semana.</div>
-    <div class="info-card"><h3>📱 Higiene do sono</h3><p>Evite telas 1 hora antes de dormir. A luz azul inibe a melatonina. Crie uma rotina noturna: banho morno, leitura leve, ambiente fresco.</p></div>
-    <div class="info-tip"><strong>⚠️ Atenção:</strong> Estimulantes tomados tarde dificultam o sono. Converse com seu médico sobre horários ideais.</div>
+    <div class="info-card"><h3>📱 Higiene do sono</h3><p>Evite telas 1 hora antes de dormir. A luz azul inibe a melatonina. Crie rotina: banho morno, leitura leve, ambiente fresco.</p></div>
+    <div class="info-tip"><strong>⚠️ Atenção:</strong> Estimulantes tomados tarde dificultam o sono. Converse com seu médico.</div>
   </div>
-
   <div class="info-content" id="info-eletrolitos">
-    <div class="info-card"><h3>💧 Hidratação e TDAH</h3><p>Desidratação leve (1-2%) já impacta concentração, memória e humor — funções comprometidas no TDAH.</p></div>
-    <div class="info-tip"><strong>✅ Meta:</strong> 2-3 litros de água por dia. Configure lembretes!</div>
-    <div class="info-card"><h3>🧂 Eletrólitos importantes</h3><p><strong>Magnésio:</strong> Reduz hiperatividade, melhora sono. Castanhas, sementes, vegetais verdes.<br><br><strong>Zinco:</strong> Relacionado à dopamina. Carnes, frutos do mar, legumes.<br><br><strong>Ferro:</strong> Deficiência agrava TDAH. Avalie com seu médico.</p></div>
+    <div class="info-card"><h3>💧 Hidratação e TDAH</h3><p>Desidratação leve (1-2%) já impacta concentração e memória — funções comprometidas no TDAH.</p></div>
+    <div class="info-tip"><strong>✅ Meta:</strong> 2-3 litros de água por dia.</div>
+    <div class="info-card"><h3>🧂 Eletrólitos importantes</h3><p><strong>Magnésio:</strong> Reduz hiperatividade, melhora sono.<br><br><strong>Zinco:</strong> Relacionado à síntese de dopamina.<br><br><strong>Ferro:</strong> Deficiência agrava TDAH. Avalie com seu médico.</p></div>
     <div class="info-tip"><strong>⚠️ Importante:</strong> Não inicie suplementação sem orientação médica.</div>
   </div>
-
   <div class="info-content" id="info-remedio">
-    <div class="info-card"><h3>💊 Venvanse — Como funciona</h3><p>O dimesilato de lisdexanfetamina é um pró-fármaco ativado no organismo. Tem início de ação em 1-2h, pico entre 3-5h e duração total de até 12h.</p></div>
-    <div class="info-tip"><strong>✅ Horário ideal:</strong> Tome ao acordar ou logo após. Horários consistentes maximizam o efeito terapêutico.</div>
-    <div class="info-card"><h3>🍽️ Alimentação e medicação</h3><p>Estimulantes reduzem apetite. Tome café da manhã nutritivo ANTES da dose. Planeje refeições mesmo sem fome para manter energia e eletrólitos.</p></div>
-    <div class="info-tip"><strong>⚠️ Nunca:</strong> Ajuste doses ou interrompa sem consultar seu médico.</div>
-    <div class="info-card"><h3>🌙 Rebote ao fim do efeito</h3><p>Ao encerrar as 12h, é normal sentir retorno dos sintomas, irritabilidade leve e fome. Planeje atividades de menor demanda cognitiva para esse período.</p></div>
+    <div class="info-card"><h3>💊 Venvanse — Como funciona</h3><p>Pró-fármaco ativado no organismo. Início em 1-2h, pico entre 3-5h, duração total de até 12h.</p></div>
+    <div class="info-tip"><strong>✅ Horário ideal:</strong> Tome ao acordar. Consistência maximiza o efeito terapêutico.</div>
+    <div class="info-card"><h3>🍽️ Alimentação e medicação</h3><p>Estimulantes reduzem apetite. Tome café da manhã nutritivo ANTES da dose. Planeje refeições mesmo sem fome.</p></div>
+    <div class="info-tip"><strong>⚠️ Nunca</strong> ajuste doses sem consultar seu médico.</div>
+    <div class="info-card"><h3>🌙 Rebote ao fim do efeito</h3><p>Retorno dos sintomas, irritabilidade leve e fome são normais. Planeje atividades de menor demanda cognitiva para esse período.</p></div>
   </div>
-
   <div class="info-content" id="info-estrategias">
-    <div class="info-card"><h3>⏱️ Técnica Pomodoro adaptada</h3><p>25min de foco + 5min de pausa. Para TDAH, comece com 10-15min. O importante são pausas programadas antes de cansar.</p></div>
-    <div class="info-card"><h3>📝 Body doubling</h3><p>Estudar na presença de outra pessoa (mesmo virtual) aumenta foco no TDAH. Bibliotecas, cafés ou sessões online funcionam.</p></div>
-    <div class="info-tip"><strong>✅ Organização:</strong> Listas curtas (3-5 itens). Muitas tarefas visíveis sobrecarregam o cérebro com TDAH.</div>
-    <div class="info-card"><h3>🎵 Música e foco</h3><p>Lo-fi, instrumentais ou ruído branco melhoram concentração. Evite músicas com letra em tarefas de leitura e escrita.</p></div>
+    <div class="info-card"><h3>⏱️ Técnica Pomodoro adaptada</h3><p>25min de foco + 5min de pausa. Para TDAH, comece com 10-15min com pausas programadas.</p></div>
+    <div class="info-card"><h3>📝 Body doubling</h3><p>Estudar na presença de outra pessoa (mesmo virtual) aumenta foco no TDAH.</p></div>
+    <div class="info-tip"><strong>✅ Organização:</strong> Listas curtas de 3-5 itens. Muitas tarefas visíveis sobrecarregam.</div>
+    <div class="info-card"><h3>🎵 Música e foco</h3><p>Lo-fi, instrumentais ou ruído branco melhoram concentração. Evite letras em tarefas de leitura.</p></div>
   </div>
 </div>
 
@@ -387,190 +342,229 @@
 </div>
 
 <script>
-  const DURACAO_REMEDIO = 12 * 60; // 12h em minutos
+  const DURACAO = 12 * 60;
+  const METAS_DEFAULT = [
+    { id:1, texto:'Tomar medicação', done:false },
+    { id:2, texto:'Beber 2L de água', done:false },
+    { id:3, texto:'Fazer 30min de exercício', done:false },
+    { id:4, texto:'Dormir antes das 23h', done:false },
+  ];
 
+  // ===== STORAGE =====
+  function salvarStorage() {
+    try {
+      localStorage.setItem('tdah_remedio', JSON.stringify(state.remedio));
+      localStorage.setItem('tdah_sono', JSON.stringify(state.sono));
+      localStorage.setItem('tdah_metas', JSON.stringify(state.metas));
+    } catch(e) {}
+  }
+
+  function carregarStorage() {
+    try {
+      const r = localStorage.getItem('tdah_remedio');
+      const s = localStorage.getItem('tdah_sono');
+      const m = localStorage.getItem('tdah_metas');
+      if (r) {
+        const parsed = JSON.parse(r);
+        if (parsed && parsed.horaRegistro) {
+          parsed.horaRegistro = new Date(parsed.horaRegistro);
+          state.remedio = parsed;
+        }
+      }
+      if (s) state.sono = JSON.parse(s);
+      if (m) state.metas = JSON.parse(m);
+    } catch(e) {}
+  }
+
+  // ===== STATE =====
   let state = {
     sono: [],
-    horasSonoSelecionadas: null,
-    metas: [
-      { id:1, texto:'Tomar medicação', done:false },
-      { id:2, texto:'Beber 2L de água', done:false },
-      { id:3, texto:'Fazer 30min de exercício', done:false },
-      { id:4, texto:'Dormir antes das 23h', done:false },
-    ],
-    remedio: null, // { horaRegistro: Date }
-    remedioTimer: null
+    horasSono: null,
+    metas: [...METAS_DEFAULT],
+    remedio: null,
+    timer: null
   };
 
   // ===== INIT =====
   function init() {
+    carregarStorage();
     const now = new Date();
     document.getElementById('header-date').textContent = now.toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
     const h = now.getHours();
     document.getElementById('greeting-text').textContent = h < 12 ? 'Bom dia! 👋' : h < 18 ? 'Boa tarde! 👋' : 'Boa noite! 👋';
     buildHoursGrid();
     renderMetas();
+    renderHistoricoSono();
     updateStats();
+
+    // Restaurar remédio se existir
+    if (state.remedio) {
+      document.getElementById('remedio-sem-registro').style.display = 'none';
+      document.getElementById('remedio-com-registro').style.display = 'block';
+      atualizarBarra();
+      state.timer = setInterval(atualizarBarra, 30000);
+    }
   }
 
-  // ===== NAVIGATION =====
-  function navigate(page, btn) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('page-' + page).classList.add('active');
+  // ===== NAV =====
+  function navigate(p, btn) {
+    document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+    document.getElementById('page-' + p).classList.add('active');
     btn.classList.add('active');
   }
 
   // ===== REMÉDIO =====
-  function registrarRemedio(origem) {
-    const inputId = origem === 'home' ? 'hora-remedio-home' : 'hora-remedio-home';
-    const val = document.getElementById(inputId).value;
+  function registrarRemedio() {
+    const val = document.getElementById('hora-remedio').value;
     if (!val) { showToast('⚠️ Informe o horário que tomou!'); return; }
-
     const [hh, mm] = val.split(':').map(Number);
-    const agora = new Date();
-    const horaReg = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), hh, mm, 0);
-
-    state.remedio = { horaRegistro: horaReg };
+    const now = new Date();
+    const reg = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hh, mm, 0);
+    state.remedio = { horaRegistro: reg };
+    salvarStorage();
     document.getElementById('remedio-sem-registro').style.display = 'none';
     document.getElementById('remedio-com-registro').style.display = 'block';
-
-    atualizarBarraRemedio();
-    if (state.remedioTimer) clearInterval(state.remedioTimer);
-    state.remedioTimer = setInterval(atualizarBarraRemedio, 30000);
-    showToast('💊 Medicação registrada!');
+    atualizarBarra();
+    if (state.timer) clearInterval(state.timer);
+    state.timer = setInterval(atualizarBarra, 30000);
+    showToast('💊 Medicação registrada e salva!');
     updateStats();
   }
 
-  function atualizarBarraRemedio() {
+  function atualizarBarra() {
     if (!state.remedio) return;
     const agora = new Date();
-    const minPassados = Math.floor((agora - state.remedio.horaRegistro) / 60000);
-    const minRestantes = Math.max(0, DURACAO_REMEDIO - minPassados);
-    const pct = Math.min(100, (minPassados / DURACAO_REMEDIO) * 100);
+    const minPass = Math.floor((agora - state.remedio.horaRegistro) / 60000);
+    const minRest = Math.max(0, DURACAO - minPass);
+    const pct = Math.min(100, (minPass / DURACAO) * 100);
+    const horaEnc = new Date(state.remedio.horaRegistro.getTime() + DURACAO * 60000);
 
-    const horaEncerra = new Date(state.remedio.horaRegistro.getTime() + DURACAO_REMEDIO * 60000);
-
-    document.getElementById('hora-tomada-display').textContent = formatHora(state.remedio.horaRegistro);
-    document.getElementById('hora-encerra-display').textContent = formatHora(horaEncerra);
+    document.getElementById('hora-tomada-display').textContent = fmt(state.remedio.horaRegistro);
+    document.getElementById('hora-encerra-display').textContent = fmt(horaEnc);
     document.getElementById('remedio-fill').style.width = pct + '%';
 
-    // Cor da barra por fase
-    let cor;
-    if (pct < 40) cor = 'linear-gradient(90deg,#1565C0,#42A5F5)';
-    else if (pct < 75) cor = 'linear-gradient(90deg,#1976D2,#26C6DA)';
-    else if (pct < 100) cor = 'linear-gradient(90deg,#F57F17,#FFCA28)';
-    else cor = 'linear-gradient(90deg,#C62828,#EF5350)';
+    let cor = pct < 40 ? 'linear-gradient(90deg,#1565C0,#42A5F5)'
+            : pct < 75 ? 'linear-gradient(90deg,#1976D2,#26C6DA)'
+            : pct < 100 ? 'linear-gradient(90deg,#F57F17,#FFCA28)'
+            : 'linear-gradient(90deg,#C62828,#EF5350)';
     document.getElementById('remedio-fill').style.background = cor;
 
-    const hAtivo = Math.floor(minPassados / 60);
-    const mAtivo = minPassados % 60;
-    const hRest = Math.floor(minRestantes / 60);
-    const mRest = minRestantes % 60;
+    const hA = Math.floor(minPass/60), mA = minPass%60;
+    const hR = Math.floor(minRest/60), mR = minRest%60;
 
-    document.getElementById('tempo-ativo-val').textContent = `${hAtivo}h ${String(mAtivo).padStart(2,'0')}min`;
-    document.getElementById('tempo-restante-val').textContent = minRestantes > 0 ? `${hRest}h ${String(mRest).padStart(2,'0')}min` : 'Encerrado';
-    document.getElementById('tempo-ativo-label').textContent = `${hAtivo}h no organismo`;
-    document.getElementById('tempo-restante-label').textContent = minRestantes > 0 ? `${hRest}h restantes` : 'Efeito encerrado';
+    document.getElementById('tempo-ativo-val').textContent = `${hA}h ${pad(mA)}min`;
+    document.getElementById('tempo-restante-val').textContent = minRest > 0 ? `${hR}h ${pad(mR)}min` : 'Encerrado';
+    document.getElementById('tempo-ativo-label').textContent = `${hA}h no organismo`;
+    document.getElementById('tempo-restante-label').textContent = minRest > 0 ? `${hR}h restantes` : 'Efeito encerrado';
 
-    const badge = document.getElementById('remedio-badge-home');
+    const badge = document.getElementById('remedio-badge');
     const aviso = document.getElementById('aviso-encerrado');
 
-    if (minRestantes <= 0) {
-      badge.textContent = 'Encerrado';
-      badge.className = 'remedio-badge badge-encerrado';
+    if (minRest <= 0) {
+      badge.textContent = 'Encerrado'; badge.className = 'remedio-badge badge-encerrado';
       aviso.classList.add('show');
-      document.getElementById('stat-remedio').textContent = '✓ enc.';
+      document.getElementById('stat-remedio').textContent = 'Enc.';
     } else {
-      badge.textContent = 'Ativo';
-      badge.className = 'remedio-badge badge-ativo';
+      badge.textContent = 'Ativo'; badge.className = 'remedio-badge badge-ativo';
       aviso.classList.remove('show');
-      document.getElementById('stat-remedio').textContent = `${hAtivo}h`;
+      document.getElementById('stat-remedio').textContent = `${hA}h`;
     }
   }
 
   function resetarRemedio() {
     state.remedio = null;
-    if (state.remedioTimer) clearInterval(state.remedioTimer);
+    salvarStorage();
+    if (state.timer) clearInterval(state.timer);
     document.getElementById('remedio-sem-registro').style.display = 'block';
     document.getElementById('remedio-com-registro').style.display = 'none';
-    document.getElementById('remedio-badge-home').textContent = 'Não registrado';
-    document.getElementById('remedio-badge-home').className = 'remedio-badge badge-inativo';
+    document.getElementById('remedio-badge').textContent = 'Não registrado';
+    document.getElementById('remedio-badge').className = 'remedio-badge badge-inativo';
     document.getElementById('aviso-encerrado').classList.remove('show');
-    document.getElementById('hora-remedio-home').value = '';
+    document.getElementById('hora-remedio').value = '';
     document.getElementById('stat-remedio').textContent = '—';
     showToast('🔄 Pronto para nova dose');
   }
 
-  function formatHora(date) {
-    return date.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
-  }
+  function fmt(d) { return d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' }); }
+  function pad(n) { return String(n).padStart(2,'0'); }
 
   // ===== SONO =====
   function buildHoursGrid() {
-    const opts = [4, 5, 6, 7, 8, 9, 10, 11];
     const grid = document.getElementById('hours-grid');
-    grid.innerHTML = opts.map(h => `
-      <button class="hour-btn" onclick="selecionarHora(${h}, this)">${h}h</button>
-    `).join('');
+    grid.innerHTML = [4,5,6,7,8,9,10,11].map(h =>
+      `<button class="hour-btn" onclick="selecionarHora(${h},this)">${h}h</button>`
+    ).join('');
   }
 
   function selecionarHora(h, btn) {
     document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-    state.horasSonoSelecionadas = h;
+    state.horasSono = h;
     document.getElementById('sono-display').textContent = h + 'h';
     document.getElementById('horas-custom').value = '';
   }
 
   function selecionarHoraCustom(val) {
     document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
-    state.horasSonoSelecionadas = parseFloat(val) || null;
-    if (state.horasSonoSelecionadas) {
-      const h = Math.floor(state.horasSonoSelecionadas);
-      const m = (state.horasSonoSelecionadas % 1) * 60;
+    state.horasSono = parseFloat(val) || null;
+    if (state.horasSono) {
+      const h = Math.floor(state.horasSono), m = (state.horasSono % 1) * 60;
       document.getElementById('sono-display').textContent = m > 0 ? `${h}h${m}` : `${h}h`;
     }
   }
 
   function salvarSono() {
-    if (!state.horasSonoSelecionadas) { showToast('⚠️ Selecione quantas horas dormiu!'); return; }
-    const qualidade = document.getElementById('sono-qualidade').value;
-    const obs = document.getElementById('sono-obs').value;
-    state.sono.unshift({ data: new Date().toLocaleDateString('pt-BR'), horas: state.horasSonoSelecionadas, qualidade, obs });
-    if (state.sono.length > 7) state.sono = state.sono.slice(0, 7);
+    if (!state.horasSono) { showToast('⚠️ Selecione quantas horas dormiu!'); return; }
+    state.sono.unshift({
+      data: new Date().toLocaleDateString('pt-BR'),
+      horas: state.horasSono,
+      qualidade: document.getElementById('sono-qualidade').value,
+      obs: document.getElementById('sono-obs').value
+    });
+    if (state.sono.length > 7) state.sono = state.sono.slice(0,7);
+    salvarStorage();
     document.getElementById('sono-obs').value = '';
-    state.horasSonoSelecionadas = null;
+    state.horasSono = null;
     document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('sono-display').textContent = '—';
     document.getElementById('horas-custom').value = '';
     renderHistoricoSono();
     updateStats();
-    showToast('✅ Sono registrado!');
+    showToast('✅ Sono salvo!');
   }
 
   function renderHistoricoSono() {
     const c = document.getElementById('historico-sono');
-    if (!state.sono.length) { c.innerHTML = '<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p>'; return; }
+    const h = document.getElementById('ultimo-sono-home');
+    if (!state.sono.length) {
+      const msg = '<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p>';
+      c.innerHTML = msg; h.innerHTML = msg; return;
+    }
     const qMap = { otima:'😊 Ótima', boa:'🙂 Boa', regular:'😐 Regular', ruim:'😔 Ruim', pessima:'😫 Péssima' };
     const bMap = { otima:'badge-good', boa:'badge-good', regular:'badge-warn', ruim:'badge-bad', pessima:'badge-bad' };
-    c.innerHTML = state.sono.map(r => `
+    const html = state.sono.map(r => `
       <div class="historico-item">
         <div>
           <div style="font-weight:600;font-size:0.88rem;">${r.data}</div>
           <div class="historico-data">${qMap[r.qualidade]}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span class="historico-valor">${r.horas}h</span>
+          <span style="font-weight:700;color:var(--primary);">${r.horas}h</span>
           <span class="badge ${bMap[r.qualidade]}">${r.horas >= 7 ? 'OK' : 'Baixo'}</span>
         </div>
       </div>`).join('');
+    c.innerHTML = html;
+    h.innerHTML = html.split('</div>')[0] + '</div>' + html.split('</div>')[1] + '</div>' + html.split('</div>')[2] + '</div>';
   }
 
   // ===== METAS =====
   function renderMetas() {
     const c = document.getElementById('lista-metas');
-    if (!state.metas.length) { c.innerHTML = '<p style="color:var(--text-light);text-align:center;font-size:0.85rem;padding:16px;">Nenhuma meta. Adicione acima!</p>'; updateMetaProgress(); return; }
+    if (!state.metas.length) {
+      c.innerHTML = '<p style="color:var(--text-light);text-align:center;font-size:0.85rem;padding:16px;">Nenhuma meta. Adicione acima!</p>';
+      updateMetaProgress(); return;
+    }
     c.innerHTML = state.metas.map(m => `
       <div class="meta-item ${m.done?'done':''}" onclick="toggleMeta(${m.id})">
         <div class="meta-check">${m.done?'✓':''}</div>
@@ -585,7 +579,7 @@
 
   function toggleMeta(id) {
     const m = state.metas.find(m => m.id === id);
-    if (m) { m.done = !m.done; renderMetas(); updateStats(); if (m.done) showToast('🎉 Meta concluída!'); }
+    if (m) { m.done = !m.done; salvarStorage(); renderMetas(); updateStats(); if(m.done) showToast('🎉 Meta concluída!'); }
   }
 
   function adicionarMeta() {
@@ -594,43 +588,41 @@
     if (!txt) { showToast('⚠️ Digite uma meta!'); return; }
     state.metas.push({ id: Date.now(), texto: txt, done: false });
     inp.value = '';
-    renderMetas(); updateStats();
+    salvarStorage(); renderMetas(); updateStats();
     showToast('✅ Meta adicionada!');
   }
 
   function removerMeta(id) {
     state.metas = state.metas.filter(m => m.id !== id);
-    renderMetas(); updateStats();
+    salvarStorage(); renderMetas(); updateStats();
     showToast('🗑️ Meta removida');
   }
 
   function limparConcluidas() {
     state.metas = state.metas.filter(m => !m.done);
-    renderMetas(); updateStats();
+    salvarStorage(); renderMetas(); updateStats();
     showToast('🧹 Concluídas removidas!');
   }
 
   function updateMetaProgress() {
-    const total = state.metas.length, done = state.metas.filter(m => m.done).length;
+    const total = state.metas.length, done = state.metas.filter(m=>m.done).length;
     const pct = total > 0 ? Math.round((done/total)*100) : 0;
     document.getElementById('meta-progress').style.width = pct + '%';
     document.getElementById('meta-info').textContent = `${done} concluída${done!==1?'s':''}`;
     document.getElementById('meta-pct').textContent = pct + '%';
   }
 
-  // ===== STATS =====
   function updateStats() {
-    const total = state.metas.length, done = state.metas.filter(m => m.done).length;
+    const total = state.metas.length, done = state.metas.filter(m=>m.done).length;
     const pct = total > 0 ? Math.round((done/total)*100) : 0;
     const ult = state.sono[0];
-    document.getElementById('stat-sono').textContent = ult ? ult.horas + 'h' : '—';
+    document.getElementById('stat-sono').textContent = ult ? ult.horas+'h' : '—';
     document.getElementById('stat-metas').textContent = `${done}/${total}`;
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('progress-text').textContent = `${done} de ${total} metas concluídas`;
     document.getElementById('progress-pct').textContent = pct + '%';
   }
 
-  // ===== INFO TABS =====
   function switchInfo(tab, btn) {
     document.querySelectorAll('.info-content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.info-tab').forEach(b => b.classList.remove('active'));
@@ -638,7 +630,6 @@
     btn.classList.add('active');
   }
 
-  // ===== TOAST =====
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
