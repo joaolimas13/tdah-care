@@ -142,6 +142,26 @@
 
   /* RESET BTN */
   .btn-danger { background: transparent; border: 2px solid #EF5350; color: #EF5350; border-radius: 12px; padding: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
+
+  /* Modo Caverna */
+  .pomodoro-card { text-align: center; }
+  .pomodoro-timer { font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+  .pomodoro-status { font-size: 1rem; color: var(--text-light); margin-bottom: 20px; }
+  .pomodoro-controls button { margin: 0 5px; padding: 10px 20px; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; }
+  .pomodoro-controls .btn-start { background: var(--success); color: white; border: none; }
+  .pomodoro-controls .btn-pause { background: #FFB300; color: white; border: none; }
+  .pomodoro-controls .btn-reset { background: #EF5350; color: white; border: none; }
+  .pomodoro-total-focus { font-size: 0.85rem; color: var(--text-light); margin-top: 15px; }
+
+  /* Relatório */
+  .report-section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #EEF2F7; }
+  .report-section:last-child { border-bottom: none; }
+  .report-section h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 10px; }
+  .report-item { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 5px; }
+  .report-item span:first-child { color: var(--text-light); }
+  .report-item span:last-child { font-weight: 600; color: var(--text); }
+  .report-summary { font-size: 0.95rem; line-height: 1.5; }
+  .report-summary strong { color: var(--primary); }
 </style>
 </head>
 <body>
@@ -297,6 +317,71 @@
   </div>
 </div>
 
+<!-- MODO CAVERNA -->
+<div class="page" id="page-caverna">
+  <div class="section-title">⛰️ Modo Caverna (Pomodoro)</div>
+  <div class="card pomodoro-card">
+    <div class="pomodoro-timer" id="pomodoro-timer">20:00</div>
+    <div class="pomodoro-status" id="pomodoro-status">Foco</div>
+    <div class="pomodoro-controls">
+      <button class="btn-start" id="pomodoro-start-btn" onclick="startPomodoro()">▶️ Iniciar</button>
+      <button class="btn-pause" id="pomodoro-pause-btn" onclick="pausePomodoro()" style="display:none;">⏸️ Pausar</button>
+      <button class="btn-reset" id="pomodoro-reset-btn" onclick="resetPomodoro()">⏹️ Resetar</button>
+    </div>
+    <div class="pomodoro-total-focus">Foco total hoje: <strong id="total-focus-time">0h 00min</strong></div>
+  </div>
+  <div class="card">
+    <div class="card-title">💡 Dica</div>
+    <div style="background:#F0F7FF;border-left:4px solid var(--primary);border-radius:0 12px 12px 0;padding:12px 16px;font-size:0.83rem;color:var(--text-light);line-height:1.5;">
+      O <strong>Modo Caverna</strong> ajuda a manter o foco. Use fones de ouvido e elimine distrações!
+    </div>
+  </div>
+</div>
+
+<!-- RELATÓRIO -->
+<div class="page" id="page-relatorio">
+  <div class="section-title">📊 Relatório Diário</div>
+  <div class="card">
+    <div class="form-group">
+      <label for="celular-tempo">📱 Tempo de uso do celular hoje (horas)</label>
+      <input type="number" id="celular-tempo" placeholder="Ex: 3.5" min="0" step="0.1" onchange="salvarCelularTempo()">
+    </div>
+    <button class="btn btn-primary" onclick="gerarRelatorio()">Gerar Relatório do Dia</button>
+  </div>
+
+  <div class="card" id="relatorio-output" style="display:none; margin-top: 20px;">
+    <div class="card-title">Resumo do Dia <span id="relatorio-data"></span></div>
+
+    <div class="report-section">
+      <h3>💊 Medicação</h3>
+      <div id="relatorio-remedio"></div>
+    </div>
+
+    <div class="report-section">
+      <h3>😴 Sono</h3>
+      <div id="relatorio-sono"></div>
+    </div>
+
+    <div class="report-section">
+      <h3>🎯 Metas</h3>
+      <div id="relatorio-metas"></div>
+    </div>
+
+    <div class="report-section">
+      <h3>⛰️ Foco (Modo Caverna)</h3>
+      <div id="relatorio-foco"></div>
+    </div>
+
+    <div class="report-section">
+      <h3>📱 Uso de Celular</h3>
+      <div id="relatorio-celular"></div>
+    </div>
+
+    <div class="report-summary" id="relatorio-conclusao"></div>
+  </div>
+</div>
+
+
 <!-- INFO -->
 <div class="page" id="page-info">
   <div class="section-title">📚 Informações</div>
@@ -339,11 +424,13 @@
   <button class="nav-btn active" onclick="navigate('home',this)"><span class="icon">🏠</span><span>Início</span></button>
   <button class="nav-btn" onclick="navigate('sono',this)"><span class="icon">😴</span><span>Sono</span></button>
   <button class="nav-btn" onclick="navigate('metas',this)"><span class="icon">🎯</span><span>Metas</span></button>
+  <button class="nav-btn" onclick="navigate('caverna',this)"><span class="icon">⛰️</span><span>Caverna</span></button>
+  <button class="nav-btn" onclick="navigate('relatorio',this)"><span class="icon">📊</span><span>Relatório</span></button>
   <button class="nav-btn" onclick="navigate('info',this)"><span class="icon">📚</span><span>Info</span></button>
 </div>
 
 <script>
-  const DURACAO = 12 * 60;
+  const DURACAO = 12 * 60; // Duração do remédio em minutos
   const METAS_DEFAULT = [
     { id:1, texto:'Tomar medicação', done:false },
     { id:2, texto:'Beber 2L de água', done:false },
@@ -351,44 +438,61 @@
     { id:4, texto:'Dormir antes das 23h', done:false },
   ];
 
-  // ===== STORAGE =====
-  function salvarStorage() {
-    try {
-      localStorage.setItem('tdah_remedio', JSON.stringify(state.remedio));
-      localStorage.setItem('tdah_sono', JSON.stringify(state.sono));
-      localStorage.setItem('tdah_metas', JSON.stringify(state.metas));
-    } catch(e) {}
-  }
-
-  function carregarStorage() {
-    try {
-      const r = localStorage.getItem('tdah_remedio');
-      const s = localStorage.getItem('tdah_sono');
-      const m = localStorage.getItem('tdah_metas');
-      if (r) {
-        const parsed = JSON.parse(r);
-        if (parsed && parsed.horaRegistro) {
-          parsed.horaRegistro = new Date(parsed.horaRegistro);
-          state.remedio = parsed;
-        }
-      }
-      if (s) state.sono = JSON.parse(s);
-      if (m) state.metas = JSON.parse(m);
-    } catch(e) {}
-  }
-
   // ===== STATE =====
   let state = {
     sono: [],
     horasSono: null,
-    metas: [...METAS_DEFAULT],
+    metas: [], // Metas do dia atual
+    metasHistorico: {}, // Histórico de metas por data
     remedio: null,
-    timer: null
+    timer: null,
+    lastAccessedDate: null, // Para controle de reset diário
+    pomodoro: {
+      totalFocusToday: 0, // Tempo total de foco em segundos
+      timer: null,
+      minutes: 20,
+      seconds: 0,
+      isFocus: true,
+      isRunning: false,
+      currentCycle: 0, // 0: stopped, 1: focus, 2: break
+      intervalId: null
+    },
+    celularTempo: null // Tempo de uso do celular
   };
+
+  // ===== STORAGE =====
+  function salvarStorage() {
+    try {
+      localStorage.setItem('tdah_state', JSON.stringify(state));
+    } catch(e) {
+      console.error("Erro ao salvar no localStorage:", e);
+    }
+  }
+
+  function carregarStorage() {
+    try {
+      const storedState = localStorage.getItem('tdah_state');
+      if (storedState) {
+        const parsedState = JSON.parse(storedState);
+        // Restaurar objetos Date
+        if (parsedState.remedio && parsedState.remedio.horaRegistro) {
+          parsedState.remedio.horaRegistro = new Date(parsedState.remedio.horaRegistro);
+        }
+        if (parsedState.lastAccessedDate) {
+          parsedState.lastAccessedDate = new Date(parsedState.lastAccessedDate);
+        }
+        state = { ...state, ...parsedState };
+      }
+    } catch(e) {
+      console.error("Erro ao carregar do localStorage:", e);
+    }
+  }
 
   // ===== INIT =====
   function init() {
     carregarStorage();
+    checkDailyReset(); // Verifica e reseta metas se for um novo dia
+
     const now = new Date();
     document.getElementById('header-date').textContent = now.toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
     const h = now.getHours();
@@ -397,6 +501,9 @@
     renderMetas();
     renderHistoricoSono();
     updateStats();
+    updatePomodoroDisplay();
+    updateTotalFocusTime();
+    loadCelularTempo();
 
     // Restaurar remédio se existir
     if (state.remedio) {
@@ -407,12 +514,51 @@
     }
   }
 
+  // ===== DAILY RESET =====
+  function checkDailyReset() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Zera a hora para comparar apenas a data
+
+    let lastAccessed = state.lastAccessedDate;
+    if (lastAccessed) {
+      lastAccessed.setHours(0, 0, 0, 0);
+    }
+
+    // Se é um novo dia ou nunca foi acessado antes
+    if (!lastAccessed || today.getTime() > lastAccessed.getTime()) {
+      // Salva as metas do dia anterior no histórico antes de resetar
+      if (state.metas.length > 0) {
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const yesterdayKey = yesterday.toISOString().split('T')[0];
+        state.metasHistorico[yesterdayKey] = [...state.metas];
+      }
+
+      // Reseta as metas para o dia atual (mantém as metas, mas desmarca como done)
+      state.metas = state.metas.map(meta => ({ ...meta, done: false }));
+      if (state.metas.length === 0) { // Se não havia metas, adiciona as default
+        state.metas = [...METAS_DEFAULT];
+      }
+
+      // Reseta o tempo de foco do pomodoro
+      state.pomodoro.totalFocusToday = 0;
+      state.celularTempo = null; // Reseta o tempo de celular
+
+      showToast('🎉 Metas diárias resetadas!');
+    }
+    state.lastAccessedDate = new Date(); // Atualiza a data do último acesso
+    salvarStorage();
+  }
+
   // ===== NAV =====
   function navigate(p, btn) {
     document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
     document.getElementById('page-' + p).classList.add('active');
     btn.classList.add('active');
+    if (p === 'relatorio') {
+      document.getElementById('relatorio-output').style.display = 'none'; // Esconde o relatório ao navegar para a página
+    }
   }
 
   // ===== REMÉDIO =====
@@ -523,7 +669,7 @@
       qualidade: document.getElementById('sono-qualidade').value,
       obs: document.getElementById('sono-obs').value
     });
-    if (state.sono.length > 7) state.sono = state.sono.slice(0,7);
+    if (state.sono.length > 7) state.sono = state.sono.slice(0,7); // Mantém os últimos 7 registros
     salvarStorage();
     document.getElementById('sono-obs').value = '';
     state.horasSono = null;
@@ -556,7 +702,18 @@
         </div>
       </div>`).join('');
     c.innerHTML = html;
-    h.innerHTML = html.split('</div>')[0] + '</div>' + html.split('</div>')[1] + '</div>' + html.split('</div>')[2] + '</div>';
+    // Para a home, mostrar apenas o último registro
+    h.innerHTML = `
+      <div class="historico-item">
+        <div>
+          <div style="font-weight:600;font-size:0.88rem;">${state.sono[0].data}</div>
+          <div class="historico-data">${qMap[state.sono[0].qualidade]}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-weight:700;color:var(--primary);">${state.sono[0].horas}h</span>
+          <span class="badge ${bMap[state.sono[0].qualidade]}">${state.sono[0].horas >= 7 ? 'OK' : 'Baixo'}</span>
+        </div>
+      </div>`;
   }
 
   // ===== METAS =====
@@ -624,6 +781,231 @@
     document.getElementById('progress-pct').textContent = pct + '%';
   }
 
+  // ===== MODO CAVERNA (POMODORO) =====
+  function updatePomodoroDisplay() {
+    const minutes = state.pomodoro.minutes;
+    const seconds = state.pomodoro.seconds;
+    document.getElementById('pomodoro-timer').textContent = `${pad(minutes)}:${pad(seconds)}`;
+    document.getElementById('pomodoro-status').textContent = state.pomodoro.isFocus ? 'Foco' : 'Descanso';
+
+    const startBtn = document.getElementById('pomodoro-start-btn');
+    const pauseBtn = document.getElementById('pomodoro-pause-btn');
+
+    if (state.pomodoro.isRunning) {
+      startBtn.style.display = 'none';
+      pauseBtn.style.display = 'inline-block';
+    } else {
+      startBtn.style.display = 'inline-block';
+      pauseBtn.style.display = 'none';
+    }
+  }
+
+  function startPomodoro() {
+    if (state.pomodoro.isRunning) return;
+
+    state.pomodoro.isRunning = true;
+    if (state.pomodoro.currentCycle === 0) { // Inicia um novo ciclo
+      state.pomodoro.isFocus = true;
+      state.pomodoro.minutes = 20;
+      state.pomodoro.seconds = 0;
+      state.pomodoro.currentCycle = 1; // Foco
+    }
+
+    updatePomodoroDisplay();
+    state.pomodoro.intervalId = setInterval(pomodoroTick, 1000);
+    showToast(state.pomodoro.isFocus ? '▶️ Foco iniciado!' : '▶️ Descanso iniciado!');
+    salvarStorage();
+  }
+
+  function pausePomodoro() {
+    if (!state.pomodoro.isRunning) return;
+
+    state.pomodoro.isRunning = false;
+    clearInterval(state.pomodoro.intervalId);
+    showToast('⏸️ Pomodoro pausado.');
+    updatePomodoroDisplay();
+    salvarStorage();
+  }
+
+  function resetPomodoro() {
+    clearInterval(state.pomodoro.intervalId);
+    state.pomodoro.isRunning = false;
+    state.pomodoro.isFocus = true;
+    state.pomodoro.minutes = 20;
+    state.pomodoro.seconds = 0;
+    state.pomodoro.currentCycle = 0;
+    updatePomodoroDisplay();
+    showToast('⏹️ Pomodoro resetado.');
+    salvarStorage();
+  }
+
+  function pomodoroTick() {
+    if (!state.pomodoro.isRunning) return;
+
+    if (state.pomodoro.isFocus) {
+      state.pomodoro.totalFocusToday++; // Incrementa o foco total
+      updateTotalFocusTime();
+    }
+
+    if (state.pomodoro.seconds === 0) {
+      if (state.pomodoro.minutes === 0) {
+        // Tempo acabou
+        clearInterval(state.pomodoro.intervalId);
+        state.pomodoro.isRunning = false;
+
+        if (state.pomodoro.isFocus) {
+          showToast('🔔 Foco concluído! Hora do descanso.');
+          state.pomodoro.isFocus = false;
+          state.pomodoro.minutes = 5; // 5 minutos de descanso
+          state.pomodoro.seconds = 0;
+          state.pomodoro.currentCycle = 2; // Descanso
+        } else {
+          showToast('🔔 Descanso concluído! Hora de outro foco.');
+          state.pomodoro.isFocus = true;
+          state.pomodoro.minutes = 20; // 20 minutos de foco
+          state.pomodoro.seconds = 0;
+          state.pomodoro.currentCycle = 1; // Foco
+        }
+        updatePomodoroDisplay();
+        // Opcional: iniciar automaticamente o próximo ciclo
+        // startPomodoro();
+      } else {
+        state.pomodoro.minutes--;
+        state.pomodoro.seconds = 59;
+      }
+    } else {
+      state.pomodoro.seconds--;
+    }
+    updatePomodoroDisplay();
+    salvarStorage();
+  }
+
+  function updateTotalFocusTime() {
+    const totalSeconds = state.pomodoro.totalFocusToday;
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    document.getElementById('total-focus-time').textContent = `${hours}h ${pad(minutes)}min`;
+  }
+
+  // ===== CELULAR TEMPO =====
+  function salvarCelularTempo() {
+    const input = document.getElementById('celular-tempo');
+    const value = parseFloat(input.value);
+    if (!isNaN(value) && value >= 0) {
+      state.celularTempo = value;
+      salvarStorage();
+      showToast('📱 Tempo de celular salvo!');
+    } else if (input.value !== '') {
+      showToast('⚠️ Tempo de celular inválido!');
+      state.celularTempo = null;
+      salvarStorage();
+    } else {
+      state.celularTempo = null;
+      salvarStorage();
+    }
+  }
+
+  function loadCelularTempo() {
+    const input = document.getElementById('celular-tempo');
+    if (state.celularTempo !== null) {
+      input.value = state.celularTempo;
+    } else {
+      input.value = '';
+    }
+  }
+
+  // ===== RELATÓRIO =====
+  function gerarRelatorio() {
+    const relatorioOutput = document.getElementById('relatorio-output');
+    relatorioOutput.style.display = 'block';
+
+    const today = new Date();
+    document.getElementById('relatorio-data').textContent = today.toLocaleDateString('pt-BR', { day:'numeric', month:'long', year:'numeric' });
+
+    // 1. Medicação
+    const relatorioRemedio = document.getElementById('relatorio-remedio');
+    if (state.remedio && state.remedio.horaRegistro) {
+      const agora = new Date();
+      const minPass = Math.floor((agora - state.remedio.horaRegistro) / 60000);
+      const hA = Math.floor(minPass/60), mA = minPass%60;
+      const horaEnc = new Date(state.remedio.horaRegistro.getTime() + DURACAO * 60000);
+      const statusRemedio = minPass <= DURACAO ? 'Ativo' : 'Encerrado';
+
+      relatorioRemedio.innerHTML = `
+        <div class="report-item"><span>Tomado às:</span><span>${fmt(state.remedio.horaRegistro)}</span></div>
+        <div class="report-item"><span>Encerra às:</span><span>${fmt(horaEnc)}</span></div>
+        <div class="report-item"><span>Tempo ativo:</span><span>${hA}h ${pad(mA)}min</span></div>
+        <div class="report-item"><span>Status:</span><span>${statusRemedio}</span></div>
+      `;
+    } else {
+      relatorioRemedio.innerHTML = '<p class="report-summary">Nenhuma medicação registrada hoje.</p>';
+    }
+
+    // 2. Sono
+    const relatorioSono = document.getElementById('relatorio-sono');
+    const ultimoSono = state.sono[0];
+    if (ultimoSono && ultimoSono.data === today.toLocaleDateString('pt-BR')) {
+      const qMap = { otima:'Ótima', boa:'Boa', regular:'Regular', ruim:'Ruim', pessima:'Péssima' };
+      relatorioSono.innerHTML = `
+        <div class="report-item"><span>Horas dormidas:</span><span>${ultimoSono.horas}h</span></div>
+        <div class="report-item"><span>Qualidade:</span><span>${qMap[ultimoSono.qualidade]}</span></div>
+        ${ultimoSono.obs ? `<div class="report-item"><span>Observações:</span><span>${ultimoSono.obs}</span></div>` : ''}
+      `;
+    } else {
+      relatorioSono.innerHTML = '<p class="report-summary">Nenhum registro de sono para hoje.</p>';
+    }
+
+    // 3. Metas
+    const relatorioMetas = document.getElementById('relatorio-metas');
+    const totalMetas = state.metas.length;
+    const metasConcluidas = state.metas.filter(m => m.done).length;
+    if (totalMetas > 0) {
+      relatorioMetas.innerHTML = `
+        <div class="report-item"><span>Metas criadas:</span><span>${totalMetas}</span></div>
+        <div class="report-item"><span>Metas concluídas:</span><span>${metasConcluidas}</span></div>
+        <p class="report-summary" style="margin-top:10px;">Progresso: <strong>${metasConcluidas}/${totalMetas}</strong> (${totalMetas > 0 ? Math.round((metasConcluidas/totalMetas)*100) : 0}%)</p>
+      `;
+    } else {
+      relatorioMetas.innerHTML = '<p class="report-summary">Nenhuma meta definida para hoje.</p>';
+    }
+
+    // 4. Foco (Modo Caverna)
+    const relatorioFoco = document.getElementById('relatorio-foco');
+    const totalFocusSeconds = state.pomodoro.totalFocusToday;
+    const focusHours = Math.floor(totalFocusSeconds / 3600);
+    const focusMinutes = Math.floor((totalFocusSeconds % 3600) / 60);
+    relatorioFoco.innerHTML = `
+      <div class="report-item"><span>Tempo total de foco:</span><span>${focusHours}h ${pad(focusMinutes)}min</span></div>
+      <p class="report-summary" style="margin-top:10px;">Continue focado para aumentar sua produtividade!</p>
+    `;
+
+    // 5. Uso de Celular
+    const relatorioCelular = document.getElementById('relatorio-celular');
+    if (state.celularTempo !== null) {
+      relatorioCelular.innerHTML = `
+        <div class="report-item"><span>Horas de uso:</span><span>${state.celularTempo}h</span></div>
+      `;
+    } else {
+      relatorioCelular.innerHTML = '<p class="report-summary">Tempo de uso do celular não registrado.</p>';
+    }
+
+    // Conclusão geral
+    const relatorioConclusao = document.getElementById('relatorio-conclusao');
+    let conclusaoTexto = "Seu dia foi ";
+    if (metasConcluidas / totalMetas >= 0.75 && ultimoSono && ultimoSono.horas >= 7 && (state.remedio && minPass <= DURACAO)) {
+      conclusaoTexto += "<strong>muito produtivo e equilibrado!</strong> Continue assim. 🎉";
+    } else if (metasConcluidas / totalMetas >= 0.5 || (ultimoSono && ultimoSono.horas >= 6) || (state.remedio && minPass <= DURACAO)) {
+      conclusaoTexto += "<strong>bom!</strong> Há espaço para melhorar, mas você está no caminho certo. 👍";
+    } else {
+      conclusaoTexto += "<strong>desafiador.</strong> Lembre-se de que cada dia é uma nova chance para recomeçar. Não desanime! 💪";
+    }
+    relatorioConclusao.innerHTML = conclusaoTexto;
+
+    showToast('📊 Relatório gerado!');
+  }
+
+
+  // ===== INFO =====
   function switchInfo(tab, btn) {
     document.querySelectorAll('.info-content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.info-tab').forEach(b => b.classList.remove('active'));
@@ -641,6 +1023,3 @@
 </script>
 </body>
 </html>
-
-
-
