@@ -10,6 +10,7 @@
 <meta name="application-name" content="TDAH Care">
 <link rel="manifest" href="manifest.json">
 <style>
+  /* Seu CSS existente */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --primary: #1565C0; --primary-light: #1976D2; --primary-dark: #0D47A1;
@@ -162,6 +163,41 @@
   .report-item span:last-child { font-weight: 600; color: var(--text); }
   .report-summary { font-size: 0.95rem; line-height: 1.5; }
   .report-summary strong { color: var(--primary); }
+
+  /* Botão de remover sono */
+  .remove-sono-btn {
+    background: none;
+    border: none;
+    color: #EF5350; /* Cor vermelha para indicar exclusão */
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0 5px;
+    margin-left: 10px;
+    transition: transform 0.2s;
+  }
+  .remove-sono-btn:active {
+    transform: scale(0.9);
+  }
+
+  /* Calendário */
+  .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+  .calendar-header button { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer; font-size: 0.9rem; }
+  .calendar-header h3 { font-size: 1.1rem; color: var(--primary); }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+  .calendar-day-name { font-size: 0.75rem; color: var(--text-light); margin-bottom: 5px; }
+  .calendar-day { padding: 8px 0; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .calendar-day.current-month { background: #F8FAFF; color: var(--text); }
+  .calendar-day.other-month { color: var(--text-light); opacity: 0.6; cursor: default; }
+  .calendar-day.today { border: 2px solid var(--primary); }
+  .calendar-day.selected { background: var(--primary); color: white; }
+  .calendar-day.has-data { background: #E3F2FD; color: var(--primary-dark); }
+  .calendar-day.selected.has-data { background: var(--primary-dark); color: white; }
+
+  .daily-summary { margin-top: 20px; border-top: 1px solid #EEF2F7; padding-top: 20px; }
+  .daily-summary h3 { font-size: 1rem; color: var(--primary); margin-bottom: 10px; }
+  .daily-summary p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 5px; }
+  .daily-summary strong { color: var(--text); }
+  .daily-summary .no-data { text-align: center; color: var(--text-light); font-size: 0.85rem; padding: 10px; }
 </style>
 </head>
 <body>
@@ -258,7 +294,7 @@
       </div>
       <div class="sono-info">
         <p>Recomendado: <strong>7-9 horas</strong></p>
-        <p style="font-size:0.8rem;color:var(--text-light);margin-top:6px;">Sono regular melhora foco e resposta ao medicamento.</p>
+        <p style="font-size:0.85rem;color:var(--text-light);margin-top:6px;">Sono regular melhora foco e resposta ao medicamento.</p>
       </div>
     </div>
     <div class="form-group">
@@ -381,6 +417,34 @@
   </div>
 </div>
 
+<!-- CALENDÁRIO DE HISTÓRICO -->
+<div class="page" id="page-historico">
+  <div class="section-title">🗓️ Histórico Diário</div>
+  <div class="card">
+    <div class="calendar-header">
+      <button onclick="changeMonth(-1)">◀️</button>
+      <h3 id="current-month-year"></h3>
+      <button onclick="changeMonth(1)">▶️</button>
+    </div>
+    <div class="calendar-grid" id="calendar-grid">
+      <div class="calendar-day-name">Dom</div>
+      <div class="calendar-day-name">Seg</div>
+      <div class="calendar-day-name">Ter</div>
+      <div class="calendar-day-name">Qua</div>
+      <div class="calendar-day-name">Qui</div>
+      <div class="calendar-day-name">Sex</div>
+      <div class="calendar-day-name">Sáb</div>
+    </div>
+  </div>
+
+  <div class="card daily-summary" id="daily-summary-output" style="display:none;">
+    <div class="card-title">Resumo para <span id="summary-date"></span></div>
+    <div id="summary-content">
+      <!-- Conteúdo do resumo diário será carregado aqui -->
+    </div>
+  </div>
+</div>
+
 
 <!-- INFO -->
 <div class="page" id="page-info">
@@ -426,6 +490,7 @@
   <button class="nav-btn" onclick="navigate('metas',this)"><span class="icon">🎯</span><span>Metas</span></button>
   <button class="nav-btn" onclick="navigate('caverna',this)"><span class="icon">⛰️</span><span>Caverna</span></button>
   <button class="nav-btn" onclick="navigate('relatorio',this)"><span class="icon">📊</span><span>Relatório</span></button>
+  <button class="nav-btn" onclick="navigate('historico',this)"><span class="icon">🗓️</span><span>Histórico</span></button>
   <button class="nav-btn" onclick="navigate('info',this)"><span class="icon">📚</span><span>Info</span></button>
 </div>
 
@@ -440,15 +505,11 @@
 
   // ===== STATE =====
   let state = {
-    sono: [],
-    horasSono: null,
-    metas: [], // Metas do dia atual
-    metasHistorico: {}, // Histórico de metas por data
-    remedio: null,
-    timer: null,
-    lastAccessedDate: null, // Para controle de reset diário
+    dailyRecords: {}, // Armazena todos os registros diários por data (YYYY-MM-DD)
+    currentDateKey: null, // A chave da data atual (YYYY-MM-DD)
+    remedio: null, // Remédio é global, não diário
+    timer: null, // Timer do remédio
     pomodoro: {
-      totalFocusToday: 0, // Tempo total de foco em segundos
       timer: null,
       minutes: 20,
       seconds: 0,
@@ -457,13 +518,46 @@
       currentCycle: 0, // 0: stopped, 1: focus, 2: break
       intervalId: null
     },
-    celularTempo: null // Tempo de uso do celular
+    calendar: {
+      currentMonth: new Date().getMonth(),
+      currentYear: new Date().getFullYear(),
+      selectedDate: null // Data selecionada no calendário (Date object)
+    }
   };
+
+  // ===== UTILS =====
+  function getTodayKey() {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  }
+
+  function getDailyRecord(dateKey) {
+    if (!state.dailyRecords[dateKey]) {
+      state.dailyRecords[dateKey] = {
+        sono: [],
+        metas: [],
+        pomodoroFocus: 0, // Tempo total de foco em segundos para o dia
+        celularTempo: null
+      };
+    }
+    return state.dailyRecords[dateKey];
+  }
 
   // ===== STORAGE =====
   function salvarStorage() {
     try {
-      localStorage.setItem('tdah_state', JSON.stringify(state));
+      localStorage.setItem('tdah_state', JSON.stringify({
+        dailyRecords: state.dailyRecords,
+        remedio: state.remedio,
+        pomodoro: { // Salva apenas o estado relevante do pomodoro, não o intervalId
+          minutes: state.pomodoro.minutes,
+          seconds: state.pomodoro.seconds,
+          isFocus: state.pomodoro.isFocus,
+          isRunning: state.pomodoro.isRunning,
+          currentCycle: state.pomodoro.currentCycle
+        },
+        calendar: state.calendar
+      }));
     } catch(e) {
       console.error("Erro ao salvar no localStorage:", e);
     }
@@ -474,14 +568,24 @@
       const storedState = localStorage.getItem('tdah_state');
       if (storedState) {
         const parsedState = JSON.parse(storedState);
-        // Restaurar objetos Date
+
+        // Restaurar objetos Date para remedio
         if (parsedState.remedio && parsedState.remedio.horaRegistro) {
           parsedState.remedio.horaRegistro = new Date(parsedState.remedio.horaRegistro);
         }
-        if (parsedState.lastAccessedDate) {
-          parsedState.lastAccessedDate = new Date(parsedState.lastAccessedDate);
+
+        // Restaurar objetos Date para calendar.selectedDate
+        if (parsedState.calendar && parsedState.calendar.selectedDate) {
+          parsedState.calendar.selectedDate = new Date(parsedState.calendar.selectedDate);
         }
+
+        // Mesclar o estado carregado com o estado inicial para garantir que novas propriedades sejam adicionadas
         state = { ...state, ...parsedState };
+
+        // Garantir que dailyRecords seja um objeto
+        if (!state.dailyRecords) {
+          state.dailyRecords = {};
+        }
       }
     } catch(e) {
       console.error("Erro ao carregar do localStorage:", e);
@@ -491,6 +595,7 @@
   // ===== INIT =====
   function init() {
     carregarStorage();
+    state.currentDateKey = getTodayKey();
     checkDailyReset(); // Verifica e reseta metas se for um novo dia
 
     const now = new Date();
@@ -504,6 +609,7 @@
     updatePomodoroDisplay();
     updateTotalFocusTime();
     loadCelularTempo();
+    renderCalendar(); // Renderiza o calendário na inicialização
 
     // Restaurar remédio se existir
     if (state.remedio) {
@@ -512,39 +618,53 @@
       atualizarBarra();
       state.timer = setInterval(atualizarBarra, 30000);
     }
+
+    // Se o pomodoro estava rodando, reinicia o intervalo
+    if (state.pomodoro.isRunning) {
+      state.pomodoro.intervalId = setInterval(pomodoroTick, 1000);
+    }
   }
 
   // ===== DAILY RESET =====
   function checkDailyReset() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Zera a hora para comparar apenas a data
+    const todayKey = getTodayKey();
+    const lastAccessedDateKey = state.lastAccessedDate ? new Date(state.lastAccessedDate).toISOString().split('T')[0] : null;
 
-    let lastAccessed = state.lastAccessedDate;
-    if (lastAccessed) {
-      lastAccessed.setHours(0, 0, 0, 0);
-    }
+    // Se é um novo dia
+    if (todayKey !== lastAccessedDateKey) {
+      const yesterdayKey = lastAccessedDateKey;
 
-    // Se é um novo dia ou nunca foi acessado antes
-    if (!lastAccessed || today.getTime() > lastAccessed.getTime()) {
-      // Salva as metas do dia anterior no histórico antes de resetar
-      if (state.metas.length > 0) {
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        const yesterdayKey = yesterday.toISOString().split('T')[0];
-        state.metasHistorico[yesterdayKey] = [...state.metas];
+      // Se havia registros para o dia anterior, salva as metas no histórico
+      if (yesterdayKey && state.dailyRecords[yesterdayKey] && state.dailyRecords[yesterdayKey].metas.length > 0) {
+        // Não precisamos mais de metasHistorico separado, pois dailyRecords já armazena por data
+        // Apenas garantimos que as metas do dia anterior estão salvas em seu respectivo dailyRecord
       }
 
-      // Reseta as metas para o dia atual (mantém as metas, mas desmarca como done)
-      state.metas = state.metas.map(meta => ({ ...meta, done: false }));
-      if (state.metas.length === 0) { // Se não havia metas, adiciona as default
-        state.metas = [...METAS_DEFAULT];
+      // Cria ou atualiza o registro para o dia atual
+      const todayRecord = getDailyRecord(todayKey);
+
+      // Copia as metas do dia anterior (se existirem) e as desmarca
+      const previousDayMetas = yesterdayKey && state.dailyRecords[yesterdayKey] ? state.dailyRecords[yesterdayKey].metas : [];
+      if (previousDayMetas.length > 0) {
+        todayRecord.metas = previousDayMetas.map(meta => ({ ...meta, done: false }));
+      } else if (todayRecord.metas.length === 0) { // Se não havia metas e não copiou, adiciona as default
+        todayRecord.metas = [...METAS_DEFAULT];
       }
 
-      // Reseta o tempo de foco do pomodoro
-      state.pomodoro.totalFocusToday = 0;
-      state.celularTempo = null; // Reseta o tempo de celular
+      // Reseta o tempo de foco do pomodoro e o tempo de celular para o dia atual
+      todayRecord.pomodoroFocus = 0;
+      todayRecord.celularTempo = null;
 
-      showToast('🎉 Metas diárias resetadas!');
+      // Reseta o estado do pomodoro para o dia atual
+      state.pomodoro.totalFocusToday = 0; // Isso será atualizado a partir de todayRecord.pomodoroFocus
+      state.pomodoro.minutes = 20;
+      state.pomodoro.seconds = 0;
+      state.pomodoro.isFocus = true;
+      state.pomodoro.isRunning = false;
+      state.pomodoro.currentCycle = 0;
+      clearInterval(state.pomodoro.intervalId); // Para o timer se estiver rodando
+
+      showToast('🎉 Dados diários resetados!');
     }
     state.lastAccessedDate = new Date(); // Atualiza a data do último acesso
     salvarStorage();
@@ -558,6 +678,9 @@
     btn.classList.add('active');
     if (p === 'relatorio') {
       document.getElementById('relatorio-output').style.display = 'none'; // Esconde o relatório ao navegar para a página
+    } else if (p === 'historico') {
+      renderCalendar(); // Renderiza o calendário sempre que a página de histórico é acessada
+      document.getElementById('daily-summary-output').style.display = 'none'; // Esconde o resumo ao navegar para a página
     }
   }
 
@@ -647,50 +770,80 @@
   function selecionarHora(h, btn) {
     document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-    state.horasSono = h;
+    // Não salva diretamente no state.horasSono, mas sim no campo de input para ser pego por salvarSono
+    document.getElementById('horas-custom').value = h;
     document.getElementById('sono-display').textContent = h + 'h';
-    document.getElementById('horas-custom').value = '';
   }
 
   function selecionarHoraCustom(val) {
     document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
-    state.horasSono = parseFloat(val) || null;
-    if (state.horasSono) {
-      const h = Math.floor(state.horasSono), m = (state.horasSono % 1) * 60;
+    const horas = parseFloat(val) || null;
+    if (horas) {
+      const h = Math.floor(horas), m = (horas % 1) * 60;
       document.getElementById('sono-display').textContent = m > 0 ? `${h}h${m}` : `${h}h`;
+    } else {
+      document.getElementById('sono-display').textContent = '—';
     }
   }
 
   function salvarSono() {
-    if (!state.horasSono) { showToast('⚠️ Selecione quantas horas dormiu!'); return; }
-    state.sono.unshift({
+    const horasInput = document.getElementById('horas-custom').value;
+    const horas = parseFloat(horasInput);
+    if (isNaN(horas) || horas <= 0) { showToast('⚠️ Selecione quantas horas dormiu!'); return; }
+
+    const todayRecord = getDailyRecord(state.currentDateKey);
+
+    todayRecord.sono.unshift({
+      id: Date.now(), // ID único
       data: new Date().toLocaleDateString('pt-BR'),
-      horas: state.horasSono,
+      horas: horas,
       qualidade: document.getElementById('sono-qualidade').value,
       obs: document.getElementById('sono-obs').value
     });
-    if (state.sono.length > 7) state.sono = state.sono.slice(0,7); // Mantém os últimos 7 registros
+    // Mantém os últimos 7 registros de sono no histórico global, mas para o dia atual, pode ter mais
+    // Se quisermos limitar por dia, a lógica seria diferente. Por enquanto, limita o histórico exibido.
+
     salvarStorage();
     document.getElementById('sono-obs').value = '';
-    state.horasSono = null;
+    document.getElementById('horas-custom').value = '';
     document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('sono-display').textContent = '—';
-    document.getElementById('horas-custom').value = '';
     renderHistoricoSono();
     updateStats();
     showToast('✅ Sono salvo!');
   }
 
+  function removerSono(id) {
+    const todayRecord = getDailyRecord(state.currentDateKey);
+    todayRecord.sono = todayRecord.sono.filter(registro => registro.id !== id);
+    salvarStorage();
+    renderHistoricoSono();
+    updateStats();
+    showToast('🗑️ Registro de sono removido!');
+  }
+
   function renderHistoricoSono() {
     const c = document.getElementById('historico-sono');
     const h = document.getElementById('ultimo-sono-home');
-    if (!state.sono.length) {
+
+    // Pega todos os registros de sono de todos os dias para o histórico geral
+    let allSonoRecords = [];
+    for (const dateKey in state.dailyRecords) {
+      if (state.dailyRecords[dateKey].sono) {
+        allSonoRecords = allSonoRecords.concat(state.dailyRecords[dateKey].sono);
+      }
+    }
+    // Ordena por data (mais recente primeiro) e pega os últimos 7
+    allSonoRecords.sort((a, b) => new Date(b.data.split('/').reverse().join('-')) - new Date(a.data.split('/').reverse().join('-')));
+    allSonoRecords = allSonoRecords.slice(0, 7);
+
+    if (!allSonoRecords.length) {
       const msg = '<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p>';
       c.innerHTML = msg; h.innerHTML = msg; return;
     }
     const qMap = { otima:'😊 Ótima', boa:'🙂 Boa', regular:'😐 Regular', ruim:'😔 Ruim', pessima:'😫 Péssima' };
     const bMap = { otima:'badge-good', boa:'badge-good', regular:'badge-warn', ruim:'badge-bad', pessima:'badge-bad' };
-    const html = state.sono.map(r => `
+    const html = allSonoRecords.map(r => `
       <div class="historico-item">
         <div>
           <div style="font-weight:600;font-size:0.88rem;">${r.data}</div>
@@ -699,31 +852,34 @@
         <div style="display:flex;align-items:center;gap:8px;">
           <span style="font-weight:700;color:var(--primary);">${r.horas}h</span>
           <span class="badge ${bMap[r.qualidade]}">${r.horas >= 7 ? 'OK' : 'Baixo'}</span>
+          <button class="remove-sono-btn" onclick="removerSono(${r.id})">✕</button>
         </div>
       </div>`).join('');
     c.innerHTML = html;
-    // Para a home, mostrar apenas o último registro
+    // Para a home, mostrar apenas o último registro (sem o botão de remover para não poluir)
+    const ultimoRegistroHome = allSonoRecords[0];
     h.innerHTML = `
       <div class="historico-item">
         <div>
-          <div style="font-weight:600;font-size:0.88rem;">${state.sono[0].data}</div>
-          <div class="historico-data">${qMap[state.sono[0].qualidade]}</div>
+          <div style="font-weight:600;font-size:0.88rem;">${ultimoRegistroHome.data}</div>
+          <div class="historico-data">${qMap[ultimoRegistroHome.qualidade]}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-weight:700;color:var(--primary);">${state.sono[0].horas}h</span>
-          <span class="badge ${bMap[state.sono[0].qualidade]}">${state.sono[0].horas >= 7 ? 'OK' : 'Baixo'}</span>
+          <span style="font-weight:700;color:var(--primary);">${ultimoRegistroHome.horas}h</span>
+          <span class="badge ${bMap[ultimoRegistroHome.qualidade]}">${ultimoRegistroHome.horas >= 7 ? 'OK' : 'Baixo'}</span>
         </div>
       </div>`;
   }
 
   // ===== METAS =====
   function renderMetas() {
+    const todayRecord = getDailyRecord(state.currentDateKey);
     const c = document.getElementById('lista-metas');
-    if (!state.metas.length) {
+    if (!todayRecord.metas.length) {
       c.innerHTML = '<p style="color:var(--text-light);text-align:center;font-size:0.85rem;padding:16px;">Nenhuma meta. Adicione acima!</p>';
       updateMetaProgress(); return;
     }
-    c.innerHTML = state.metas.map(m => `
+    c.innerHTML = todayRecord.metas.map(m => `
       <div class="meta-item ${m.done?'done':''}" onclick="toggleMeta(${m.id})">
         <div class="meta-check">${m.done?'✓':''}</div>
         <div class="meta-text">
@@ -736,7 +892,8 @@
   }
 
   function toggleMeta(id) {
-    const m = state.metas.find(m => m.id === id);
+    const todayRecord = getDailyRecord(state.currentDateKey);
+    const m = todayRecord.metas.find(m => m.id === id);
     if (m) { m.done = !m.done; salvarStorage(); renderMetas(); updateStats(); if(m.done) showToast('🎉 Meta concluída!'); }
   }
 
@@ -744,26 +901,30 @@
     const inp = document.getElementById('nova-meta-input');
     const txt = inp.value.trim();
     if (!txt) { showToast('⚠️ Digite uma meta!'); return; }
-    state.metas.push({ id: Date.now(), texto: txt, done: false });
+    const todayRecord = getDailyRecord(state.currentDateKey);
+    todayRecord.metas.push({ id: Date.now(), texto: txt, done: false });
     inp.value = '';
     salvarStorage(); renderMetas(); updateStats();
     showToast('✅ Meta adicionada!');
   }
 
   function removerMeta(id) {
-    state.metas = state.metas.filter(m => m.id !== id);
+    const todayRecord = getDailyRecord(state.currentDateKey);
+    todayRecord.metas = todayRecord.metas.filter(m => m.id !== id);
     salvarStorage(); renderMetas(); updateStats();
     showToast('🗑️ Meta removida');
   }
 
   function limparConcluidas() {
-    state.metas = state.metas.filter(m => !m.done);
+    const todayRecord = getDailyRecord(state.currentDateKey);
+    todayRecord.metas = todayRecord.metas.filter(m => !m.done);
     salvarStorage(); renderMetas(); updateStats();
     showToast('🧹 Concluídas removidas!');
   }
 
   function updateMetaProgress() {
-    const total = state.metas.length, done = state.metas.filter(m=>m.done).length;
+    const todayRecord = getDailyRecord(state.currentDateKey);
+    const total = todayRecord.metas.length, done = todayRecord.metas.filter(m=>m.done).length;
     const pct = total > 0 ? Math.round((done/total)*100) : 0;
     document.getElementById('meta-progress').style.width = pct + '%';
     document.getElementById('meta-info').textContent = `${done} concluída${done!==1?'s':''}`;
@@ -771,10 +932,22 @@
   }
 
   function updateStats() {
-    const total = state.metas.length, done = state.metas.filter(m=>m.done).length;
+    const todayRecord = getDailyRecord(state.currentDateKey);
+    const total = todayRecord.metas.length, done = todayRecord.metas.filter(m=>m.done).length;
     const pct = total > 0 ? Math.round((done/total)*100) : 0;
-    const ult = state.sono[0];
-    document.getElementById('stat-sono').textContent = ult ? ult.horas+'h' : '—';
+
+    // Encontra o último registro de sono para a home
+    let lastSonoHome = null;
+    // Percorre os dailyRecords em ordem decrescente de data para encontrar o sono mais recente
+    const sortedDates = Object.keys(state.dailyRecords).sort().reverse();
+    for (const dateKey of sortedDates) {
+      if (state.dailyRecords[dateKey].sono && state.dailyRecords[dateKey].sono.length > 0) {
+        lastSonoHome = state.dailyRecords[dateKey].sono[0]; // Pega o mais recente daquele dia
+        break;
+      }
+    }
+
+    document.getElementById('stat-sono').textContent = lastSonoHome ? lastSonoHome.horas+'h' : '—';
     document.getElementById('stat-metas').textContent = `${done}/${total}`;
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('progress-text').textContent = `${done} de ${total} metas concluídas`;
@@ -842,8 +1015,10 @@
   function pomodoroTick() {
     if (!state.pomodoro.isRunning) return;
 
+    const todayRecord = getDailyRecord(state.currentDateKey);
+
     if (state.pomodoro.isFocus) {
-      state.pomodoro.totalFocusToday++; // Incrementa o foco total
+      todayRecord.pomodoroFocus++; // Incrementa o foco total para o dia atual
       updateTotalFocusTime();
     }
 
@@ -881,7 +1056,8 @@
   }
 
   function updateTotalFocusTime() {
-    const totalSeconds = state.pomodoro.totalFocusToday;
+    const todayRecord = getDailyRecord(state.currentDateKey);
+    const totalSeconds = todayRecord.pomodoroFocus;
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     document.getElementById('total-focus-time').textContent = `${hours}h ${pad(minutes)}min`;
@@ -891,24 +1067,27 @@
   function salvarCelularTempo() {
     const input = document.getElementById('celular-tempo');
     const value = parseFloat(input.value);
+    const todayRecord = getDailyRecord(state.currentDateKey);
+
     if (!isNaN(value) && value >= 0) {
-      state.celularTempo = value;
+      todayRecord.celularTempo = value;
       salvarStorage();
       showToast('📱 Tempo de celular salvo!');
     } else if (input.value !== '') {
       showToast('⚠️ Tempo de celular inválido!');
-      state.celularTempo = null;
+      todayRecord.celularTempo = null;
       salvarStorage();
     } else {
-      state.celularTempo = null;
+      todayRecord.celularTempo = null;
       salvarStorage();
     }
   }
 
   function loadCelularTempo() {
     const input = document.getElementById('celular-tempo');
-    if (state.celularTempo !== null) {
-      input.value = state.celularTempo;
+    const todayRecord = getDailyRecord(state.currentDateKey);
+    if (todayRecord.celularTempo !== null) {
+      input.value = todayRecord.celularTempo;
     } else {
       input.value = '';
     }
@@ -920,9 +1099,12 @@
     relatorioOutput.style.display = 'block';
 
     const today = new Date();
+    const todayKey = getTodayKey();
+    const todayRecord = getDailyRecord(todayKey);
+
     document.getElementById('relatorio-data').textContent = today.toLocaleDateString('pt-BR', { day:'numeric', month:'long', year:'numeric' });
 
-    // 1. Medicação
+    // 1. Medicação (global, não diária)
     const relatorioRemedio = document.getElementById('relatorio-remedio');
     if (state.remedio && state.remedio.horaRegistro) {
       const agora = new Date();
@@ -943,8 +1125,8 @@
 
     // 2. Sono
     const relatorioSono = document.getElementById('relatorio-sono');
-    const ultimoSono = state.sono[0];
-    if (ultimoSono && ultimoSono.data === today.toLocaleDateString('pt-BR')) {
+    const ultimoSono = todayRecord.sono[0]; // Pega o último sono registrado para o dia atual
+    if (ultimoSono) {
       const qMap = { otima:'Ótima', boa:'Boa', regular:'Regular', ruim:'Ruim', pessima:'Péssima' };
       relatorioSono.innerHTML = `
         <div class="report-item"><span>Horas dormidas:</span><span>${ultimoSono.horas}h</span></div>
@@ -957,8 +1139,8 @@
 
     // 3. Metas
     const relatorioMetas = document.getElementById('relatorio-metas');
-    const totalMetas = state.metas.length;
-    const metasConcluidas = state.metas.filter(m => m.done).length;
+    const totalMetas = todayRecord.metas.length;
+    const metasConcluidas = todayRecord.metas.filter(m => m.done).length;
     if (totalMetas > 0) {
       relatorioMetas.innerHTML = `
         <div class="report-item"><span>Metas criadas:</span><span>${totalMetas}</span></div>
@@ -971,7 +1153,7 @@
 
     // 4. Foco (Modo Caverna)
     const relatorioFoco = document.getElementById('relatorio-foco');
-    const totalFocusSeconds = state.pomodoro.totalFocusToday;
+    const totalFocusSeconds = todayRecord.pomodoroFocus;
     const focusHours = Math.floor(totalFocusSeconds / 3600);
     const focusMinutes = Math.floor((totalFocusSeconds % 3600) / 60);
     relatorioFoco.innerHTML = `
@@ -981,9 +1163,9 @@
 
     // 5. Uso de Celular
     const relatorioCelular = document.getElementById('relatorio-celular');
-    if (state.celularTempo !== null) {
+    if (todayRecord.celularTempo !== null) {
       relatorioCelular.innerHTML = `
-        <div class="report-item"><span>Horas de uso:</span><span>${state.celularTempo}h</span></div>
+        <div class="report-item"><span>Horas de uso:</span><span>${todayRecord.celularTempo}h</span></div>
       `;
     } else {
       relatorioCelular.innerHTML = '<p class="report-summary">Tempo de uso do celular não registrado.</p>';
@@ -992,9 +1174,13 @@
     // Conclusão geral
     const relatorioConclusao = document.getElementById('relatorio-conclusao');
     let conclusaoTexto = "Seu dia foi ";
-    if (metasConcluidas / totalMetas >= 0.75 && ultimoSono && ultimoSono.horas >= 7 && (state.remedio && minPass <= DURACAO)) {
+    // Calcula minPass apenas se o remédio foi registrado
+    const minPassRemedio = state.remedio && state.remedio.horaRegistro ? Math.floor((agora - state.remedio.horaRegistro) / 60000) : -1;
+    const remedioAtivoHoje = state.remedio && minPassRemedio > 0 && minPassRemedio <= DURACAO;
+
+    if (metasConcluidas / totalMetas >= 0.75 && ultimoSono && ultimoSono.horas >= 7 && remedioAtivoHoje) {
       conclusaoTexto += "<strong>muito produtivo e equilibrado!</strong> Continue assim. 🎉";
-    } else if (metasConcluidas / totalMetas >= 0.5 || (ultimoSono && ultimoSono.horas >= 6) || (state.remedio && minPass <= DURACAO)) {
+    } else if (metasConcluidas / totalMetas >= 0.5 || (ultimoSono && ultimoSono.horas >= 6) || remedioAtivoHoje) {
       conclusaoTexto += "<strong>bom!</strong> Há espaço para melhorar, mas você está no caminho certo. 👍";
     } else {
       conclusaoTexto += "<strong>desafiador.</strong> Lembre-se de que cada dia é uma nova chance para recomeçar. Não desanime! 💪";
@@ -1002,6 +1188,158 @@
     relatorioConclusao.innerHTML = conclusaoTexto;
 
     showToast('📊 Relatório gerado!');
+  }
+
+  // ===== CALENDÁRIO DE HISTÓRICO =====
+  function renderCalendar() {
+    const calendarGrid = document.getElementById('calendar-grid');
+    const currentMonthYear = document.getElementById('current-month-year');
+    calendarGrid.innerHTML = `
+      <div class="calendar-day-name">Dom</div>
+      <div class="calendar-day-name">Seg</div>
+      <div class="calendar-day-name">Ter</div>
+      <div class="calendar-day-name">Qua</div>
+      <div class="calendar-day-name">Qui</div>
+      <div class="calendar-day-name">Sex</div>
+      <div class="calendar-day-name">Sáb</div>
+    `; // Resetar o grid e adicionar nomes dos dias
+
+    const date = new Date(state.calendar.currentYear, state.calendar.currentMonth, 1);
+    currentMonthYear.textContent = date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+
+    const firstDayOfMonth = date.getDay(); // 0 for Sunday, 1 for Monday, etc.
+    const daysInMonth = new Date(state.calendar.currentYear, state.calendar.currentMonth + 1, 0).getDate();
+    const today = new Date();
+    const todayKey = getTodayKey();
+
+    // Preencher dias do mês anterior
+    const prevMonthLastDay = new Date(state.calendar.currentYear, state.calendar.currentMonth, 0).getDate();
+    for (let i = firstDayOfMonth; i > 0; i--) {
+      const day = prevMonthLastDay - i + 1;
+      calendarGrid.innerHTML += `<div class="calendar-day other-month">${day}</div>`;
+    }
+
+    // Preencher dias do mês atual
+    for (let day = 1; day <= daysInMonth; day++) {
+      const currentDate = new Date(state.calendar.currentYear, state.calendar.currentMonth, day);
+      const dateKey = currentDate.toISOString().split('T')[0];
+      const hasData = state.dailyRecords[dateKey] && (
+        state.dailyRecords[dateKey].sono.length > 0 ||
+        state.dailyRecords[dateKey].metas.length > 0 ||
+        state.dailyRecords[dateKey].pomodoroFocus > 0 ||
+        state.dailyRecords[dateKey].celularTempo !== null
+      );
+
+      let classes = 'calendar-day current-month';
+      if (currentDate.toDateString() === today.toDateString()) {
+        classes += ' today';
+      }
+      if (state.calendar.selectedDate && currentDate.toDateString() === state.calendar.selectedDate.toDateString()) {
+        classes += ' selected';
+      }
+      if (hasData) {
+        classes += ' has-data';
+      }
+
+      calendarGrid.innerHTML += `<div class="${classes}" onclick="selectDate(${state.calendar.currentYear}, ${state.calendar.currentMonth}, ${day})">${day}</div>`;
+    }
+
+    // Preencher dias do próximo mês
+    const totalCells = firstDayOfMonth + daysInMonth;
+    const remainingCells = 42 - totalCells; // 6 semanas * 7 dias = 42 células
+    for (let i = 1; i <= remainingCells; i++) {
+      calendarGrid.innerHTML += `<div class="calendar-day other-month">${i}</div>`;
+    }
+  }
+
+  function changeMonth(offset) {
+    state.calendar.currentMonth += offset;
+    if (state.calendar.currentMonth < 0) {
+      state.calendar.currentMonth = 11;
+      state.calendar.currentYear--;
+    } else if (state.calendar.currentMonth > 11) {
+      state.calendar.currentMonth = 0;
+      state.calendar.currentYear++;
+    }
+    state.calendar.selectedDate = null; // Limpa a seleção ao mudar o mês
+    document.getElementById('daily-summary-output').style.display = 'none';
+    renderCalendar();
+    salvarStorage();
+  }
+
+  function selectDate(year, month, day) {
+    state.calendar.selectedDate = new Date(year, month, day);
+    renderCalendar(); // Re-renderiza para aplicar a classe 'selected'
+    displayDailySummary(state.calendar.selectedDate);
+    salvarStorage();
+  }
+
+  function displayDailySummary(date) {
+    const summaryOutput = document.getElementById('daily-summary-output');
+    const summaryContent = document.getElementById('summary-content');
+    const summaryDate = document.getElementById('summary-date');
+
+    summaryOutput.style.display = 'block';
+    summaryDate.textContent = date.toLocaleDateString('pt-BR', { day:'numeric', month:'long', year:'numeric' });
+
+    const dateKey = date.toISOString().split('T')[0];
+    const record = state.dailyRecords[dateKey];
+
+    if (!record) {
+      summaryContent.innerHTML = '<p class="no-data">Nenhum dado registrado para este dia.</p>';
+      return;
+    }
+
+    let html = '';
+
+    // Sono
+    html += '<h3>😴 Sono</h3>';
+    if (record.sono && record.sono.length > 0) {
+      const lastSono = record.sono[0];
+      const qMap = { otima:'Ótima', boa:'Boa', regular:'Regular', ruim:'Ruim', pessima:'Péssima' };
+      html += `<p>Horas dormidas: <strong>${lastSono.horas}h</strong></p>`;
+      html += `<p>Qualidade: <strong>${qMap[lastSono.qualidade]}</strong></p>`;
+      if (lastSono.obs) html += `<p>Observações: <strong>${lastSono.obs}</strong></p>`;
+    } else {
+      html += '<p>Nenhum registro de sono.</p>';
+    }
+
+    // Metas
+    html += '<h3>🎯 Metas</h3>';
+    if (record.metas && record.metas.length > 0) {
+      const total = record.metas.length;
+      const done = record.metas.filter(m => m.done).length;
+      html += `<p>Concluídas: <strong>${done}/${total}</strong></p>`;
+      html += '<ul>';
+      record.metas.forEach(m => {
+        html += `<li style="font-size:0.85rem; color:var(--text-light); margin-left:20px; list-style-type: ${m.done ? 'disc' : 'circle'};">
+                   ${m.done ? '✅' : '⚪'} ${m.texto}
+                 </li>`;
+      });
+      html += '</ul>';
+    } else {
+      html += '<p>Nenhuma meta definida.</p>';
+    }
+
+    // Foco (Modo Caverna)
+    html += '<h3>⛰️ Foco (Modo Caverna)</h3>';
+    if (record.pomodoroFocus > 0) {
+      const hours = Math.floor(record.pomodoroFocus / 3600);
+      const minutes = Math.floor((record.pomodoroFocus % 3600) / 60);
+      html += `<p>Tempo total de foco: <strong>${hours}h ${pad(minutes)}min</strong></p>`;
+    } else {
+      html += '<p>Nenhum tempo de foco registrado.</p>';
+    }
+
+    // Uso de Celular
+    html += '<h3>📱 Uso de Celular</h3>';
+    if (record.celularTempo !== null) {
+      html += `<p>Horas de uso: <strong>${record.celularTempo}h</strong></p>`;
+    } else {
+      html += '<p>Tempo de uso do celular não registrado.</p>';
+    }
+
+    summaryContent.innerHTML = html;
   }
 
 
