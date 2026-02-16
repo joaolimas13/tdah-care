@@ -10,7 +10,7 @@
 <meta name="application-name" content="TDAH Care">
 <link rel="manifest" href="manifest.json">
 <style>
-  /* Seu CSS existente */
+  /* Seu CSS existente do tdahcare.html */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --primary: #1565C0; --primary-light: #1976D2; --primary-dark: #0D47A1;
@@ -198,6 +198,36 @@
   .daily-summary p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 5px; }
   .daily-summary strong { color: var(--text); }
   .daily-summary .no-data { text-align: center; color: var(--text-light); font-size: 0.85rem; padding: 10px; }
+
+  /* Relatório Mensal */
+  .monthly-report-output {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #EEF2F7;
+  }
+  .monthly-report-output h3 {
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+  .monthly-report-output p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 5px;
+  }
+  .monthly-report-output strong {
+    color: var(--text);
+  }
+  .monthly-report-output ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+  .monthly-report-output ul li {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 3px;
+  }
 </style>
 </head>
 <body>
@@ -294,7 +324,7 @@
       </div>
       <div class="sono-info">
         <p>Recomendado: <strong>7-9 horas</strong></p>
-        <p style="font-size:0.85rem;color:var(--text-light);margin-top:6px;">Sono regular melhora foco e resposta ao medicamento.</p>
+        <p style="font-size:0.8rem;color:var(--text-light);margin-top:6px;">Sono regular melhora foco e resposta ao medicamento.</p>
       </div>
     </div>
     <div class="form-group">
@@ -374,7 +404,7 @@
   </div>
 </div>
 
-<!-- RELATÓRIO -->
+<!-- RELATÓRIO DIÁRIO -->
 <div class="page" id="page-relatorio">
   <div class="section-title">📊 Relatório Diário</div>
   <div class="card">
@@ -445,7 +475,6 @@
   </div>
 </div>
 
-
 <!-- INFO -->
 <div class="page" id="page-info">
   <div class="section-title">📚 Informações</div>
@@ -454,6 +483,7 @@
     <button class="info-tab" onclick="switchInfo('eletrolitos',this)">💧 Eletrólitos</button>
     <button class="info-tab" onclick="switchInfo('remedio',this)">💊 Medicação</button>
     <button class="info-tab" onclick="switchInfo('estrategias',this)">🧠 Estratégias</button>
+    <button class="info-tab" onclick="switchInfo('relatorio-mensal',this)">📈 Mensal</button> <!-- Novo botão para relatório mensal -->
   </div>
   <div class="info-content active" id="info-sono">
     <div class="info-card"><h3>🌙 Por que o sono é crucial no TDAH?</h3><p>Privação de sono agrava desatenção, impulsividade e regulação emocional — já comprometidas no TDAH.</p></div>
@@ -479,6 +509,19 @@
     <div class="info-card"><h3>📝 Body doubling</h3><p>Estudar na presença de outra pessoa (mesmo virtual) aumenta foco no TDAH.</p></div>
     <div class="info-tip"><strong>✅ Organização:</strong> Listas curtas de 3-5 itens. Muitas tarefas visíveis sobrecarregam.</div>
     <div class="info-card"><h3>🎵 Música e foco</h3><p>Lo-fi, instrumentais ou ruído branco melhoram concentração. Evite letras em tarefas de leitura.</p></div>
+  </div>
+  <!-- Nova seção para Relatório Mensal -->
+  <div class="info-content" id="info-relatorio-mensal">
+    <div class="card">
+      <div class="card-title">📈 Relatório Mensal</div>
+      <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:15px;">
+        Este relatório analisa seus dados dos últimos 30 dias (ou menos, se disponível).
+      </p>
+      <button class="btn btn-primary" onclick="gerarRelatorioMensal()">Gerar Relatório Mensal</button>
+      <div class="monthly-report-output" id="monthly-report-output" style="display:none;">
+        <!-- Conteúdo do relatório mensal será carregado aqui -->
+      </div>
+    </div>
   </div>
 </div>
 
@@ -531,6 +574,10 @@
     return today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
   }
 
+  function getDateKey(date) {
+    return date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  }
+
   function getDailyRecord(dateKey) {
     if (!state.dailyRecords[dateKey]) {
       state.dailyRecords[dateKey] = {
@@ -556,7 +603,11 @@
           isRunning: state.pomodoro.isRunning,
           currentCycle: state.pomodoro.currentCycle
         },
-        calendar: state.calendar
+        calendar: { // Salva o estado do calendário
+          currentMonth: state.calendar.currentMonth,
+          currentYear: state.calendar.currentYear,
+          selectedDate: state.calendar.selectedDate ? state.calendar.selectedDate.toISOString() : null
+        }
       }));
     } catch(e) {
       console.error("Erro ao salvar no localStorage:", e);
@@ -628,17 +679,12 @@
   // ===== DAILY RESET =====
   function checkDailyReset() {
     const todayKey = getTodayKey();
-    const lastAccessedDateKey = state.lastAccessedDate ? new Date(state.lastAccessedDate).toISOString().split('T')[0] : null;
+    const lastAccessedDate = state.lastAccessedDate ? new Date(state.lastAccessedDate) : null;
+    const lastAccessedDateKey = lastAccessedDate ? getDateKey(lastAccessedDate) : null;
 
     // Se é um novo dia
     if (todayKey !== lastAccessedDateKey) {
       const yesterdayKey = lastAccessedDateKey;
-
-      // Se havia registros para o dia anterior, salva as metas no histórico
-      if (yesterdayKey && state.dailyRecords[yesterdayKey] && state.dailyRecords[yesterdayKey].metas.length > 0) {
-        // Não precisamos mais de metasHistorico separado, pois dailyRecords já armazena por data
-        // Apenas garantimos que as metas do dia anterior estão salvas em seu respectivo dailyRecord
-      }
 
       // Cria ou atualiza o registro para o dia atual
       const todayRecord = getDailyRecord(todayKey);
@@ -646,9 +692,9 @@
       // Copia as metas do dia anterior (se existirem) e as desmarca
       const previousDayMetas = yesterdayKey && state.dailyRecords[yesterdayKey] ? state.dailyRecords[yesterdayKey].metas : [];
       if (previousDayMetas.length > 0) {
-        todayRecord.metas = previousDayMetas.map(meta => ({ ...meta, done: false }));
+        todayRecord.metas = previousDayMetas.map(meta => ({ id: Date.now() + Math.random(), texto: meta.texto, done: false })); // Novo ID para cada meta
       } else if (todayRecord.metas.length === 0) { // Se não havia metas e não copiou, adiciona as default
-        todayRecord.metas = [...METAS_DEFAULT];
+        todayRecord.metas = METAS_DEFAULT.map(meta => ({ id: Date.now() + Math.random(), texto: meta.texto, done: false })); // Novo ID para cada meta
       }
 
       // Reseta o tempo de foco do pomodoro e o tempo de celular para o dia atual
@@ -656,7 +702,6 @@
       todayRecord.celularTempo = null;
 
       // Reseta o estado do pomodoro para o dia atual
-      state.pomodoro.totalFocusToday = 0; // Isso será atualizado a partir de todayRecord.pomodoroFocus
       state.pomodoro.minutes = 20;
       state.pomodoro.seconds = 0;
       state.pomodoro.isFocus = true;
@@ -681,6 +726,10 @@
     } else if (p === 'historico') {
       renderCalendar(); // Renderiza o calendário sempre que a página de histórico é acessada
       document.getElementById('daily-summary-output').style.display = 'none'; // Esconde o resumo ao navegar para a página
+    } else if (p === 'info') {
+      // Garante que a primeira aba de info esteja ativa por padrão
+      switchInfo('sono', document.querySelector('#page-info .info-tab.active') || document.querySelector('#page-info .info-tab'));
+      document.getElementById('monthly-report-output').style.display = 'none'; // Esconde o relatório mensal ao navegar para a página info
     }
   }
 
@@ -800,7 +849,7 @@
       qualidade: document.getElementById('sono-qualidade').value,
       obs: document.getElementById('sono-obs').value
     });
-    // Mantém os últimos 7 registros de sono no histórico global, mas para o dia atual, pode ter mais
+    // Mantém os últimos 7 registros de sono no histórico geral, mas para o dia atual, pode ter mais
     // Se quisermos limitar por dia, a lógica seria diferente. Por enquanto, limita o histórico exibido.
 
     salvarStorage();
@@ -814,12 +863,27 @@
   }
 
   function removerSono(id) {
-    const todayRecord = getDailyRecord(state.currentDateKey);
-    todayRecord.sono = todayRecord.sono.filter(registro => registro.id !== id);
-    salvarStorage();
-    renderHistoricoSono();
-    updateStats();
-    showToast('🗑️ Registro de sono removido!');
+    // Encontra o registro de sono em qualquer dailyRecord
+    let foundAndRemoved = false;
+    for (const dateKey in state.dailyRecords) {
+      if (state.dailyRecords[dateKey].sono) {
+        const initialLength = state.dailyRecords[dateKey].sono.length;
+        state.dailyRecords[dateKey].sono = state.dailyRecords[dateKey].sono.filter(registro => registro.id !== id);
+        if (state.dailyRecords[dateKey].sono.length < initialLength) {
+          foundAndRemoved = true;
+          break;
+        }
+      }
+    }
+
+    if (foundAndRemoved) {
+      salvarStorage();
+      renderHistoricoSono();
+      updateStats();
+      showToast('🗑️ Registro de sono removido!');
+    } else {
+      showToast('⚠️ Registro de sono não encontrado.');
+    }
   }
 
   function renderHistoricoSono() {
@@ -834,7 +898,14 @@
       }
     }
     // Ordena por data (mais recente primeiro) e pega os últimos 7
-    allSonoRecords.sort((a, b) => new Date(b.data.split('/').reverse().join('-')) - new Date(a.data.split('/').reverse().join('-')));
+    allSonoRecords.sort((a, b) => {
+      // Converte a string de data "DD/MM/YYYY" para um objeto Date para comparação
+      const [dayA, monthA, yearA] = a.data.split('/');
+      const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
+      const [dayB, monthB, yearB] = b.data.split('/');
+      const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
+      return dateB.getTime() - dateA.getTime(); // Mais recente primeiro
+    });
     allSonoRecords = allSonoRecords.slice(0, 7);
 
     if (!allSonoRecords.length) {
@@ -1093,7 +1164,7 @@
     }
   }
 
-  // ===== RELATÓRIO =====
+  // ===== RELATÓRIO DIÁRIO =====
   function gerarRelatorio() {
     const relatorioOutput = document.getElementById('relatorio-output');
     relatorioOutput.style.display = 'block';
@@ -1187,7 +1258,7 @@
     }
     relatorioConclusao.innerHTML = conclusaoTexto;
 
-    showToast('📊 Relatório gerado!');
+    showToast('📊 Relatório diário gerado!');
   }
 
   // ===== CALENDÁRIO DE HISTÓRICO =====
@@ -1222,7 +1293,7 @@
     // Preencher dias do mês atual
     for (let day = 1; day <= daysInMonth; day++) {
       const currentDate = new Date(state.calendar.currentYear, state.calendar.currentMonth, day);
-      const dateKey = currentDate.toISOString().split('T')[0];
+      const dateKey = getDateKey(currentDate);
       const hasData = state.dailyRecords[dateKey] && (
         state.dailyRecords[dateKey].sono.length > 0 ||
         state.dailyRecords[dateKey].metas.length > 0 ||
@@ -1246,7 +1317,7 @@
 
     // Preencher dias do próximo mês
     const totalCells = firstDayOfMonth + daysInMonth;
-    const remainingCells = 42 - totalCells; // 6 semanas * 7 dias = 42 células
+    const remainingCells = 42 - totalCells; // 6 semanas * 7 dias = 42 células (para garantir 6 linhas no calendário)
     for (let i = 1; i <= remainingCells; i++) {
       calendarGrid.innerHTML += `<div class="calendar-day other-month">${i}</div>`;
     }
@@ -1282,7 +1353,7 @@
     summaryOutput.style.display = 'block';
     summaryDate.textContent = date.toLocaleDateString('pt-BR', { day:'numeric', month:'long', year:'numeric' });
 
-    const dateKey = date.toISOString().split('T')[0];
+    const dateKey = getDateKey(date);
     const record = state.dailyRecords[dateKey];
 
     if (!record) {
@@ -1342,6 +1413,126 @@
     summaryContent.innerHTML = html;
   }
 
+  // ===== RELATÓRIO MENSAL =====
+  function gerarRelatorioMensal() {
+    const monthlyReportOutput = document.getElementById('monthly-report-output');
+    monthlyReportOutput.style.display = 'block';
+    let html = '';
+
+    const today = new Date();
+    const thirtyDaysAgo = new Date(today);
+    thirtyDaysAgo.setDate(today.getDate() - 29); // Últimos 30 dias, incluindo hoje
+
+    let totalDaysWithData = 0;
+    let totalHoursSono = 0;
+    let totalMetasCriadas = 0;
+    let totalMetasConcluidas = 0;
+    let totalFocusSeconds = 0;
+    let totalCelularHours = 0;
+    let daysWithRemedio = 0;
+    let daysWithGoodSono = 0; // Sono >= 7h
+    let daysWithHighMetasCompletion = 0; // Metas concluídas >= 75%
+    let daysWithFocus = 0; // Dias com algum foco registrado
+
+    const qMap = { otima: 5, boa: 4, regular: 3, ruim: 2, pessima: 1 }; // Para calcular média de qualidade
+
+    const sortedDateKeys = Object.keys(state.dailyRecords).sort(); // Ordena as chaves de data
+
+    for (const dateKey of sortedDateKeys) {
+      const recordDate = new Date(dateKey);
+      // Filtra pelos últimos 30 dias
+      if (recordDate >= thirtyDaysAgo && recordDate <= today) {
+        const record = state.dailyRecords[dateKey];
+        if (!record) continue;
+
+        totalDaysWithData++;
+
+        // Sono
+        if (record.sono && record.sono.length > 0) {
+          const lastSono = record.sono[0];
+          totalHoursSono += lastSono.horas;
+          if (lastSono.horas >= 7) {
+            daysWithGoodSono++;
+          }
+        }
+
+        // Metas
+        if (record.metas && record.metas.length > 0) {
+          totalMetasCriadas += record.metas.length;
+          const metasConcluidasDia = record.metas.filter(m => m.done).length;
+          totalMetasConcluidas += metasConcluidasDia;
+          if (record.metas.length > 0 && (metasConcluidasDia / record.metas.length) >= 0.75) {
+            daysWithHighMetasCompletion++;
+          }
+        }
+
+        // Foco (Modo Caverna)
+        if (record.pomodoroFocus > 0) {
+          totalFocusSeconds += record.pomodoroFocus;
+          daysWithFocus++;
+        }
+
+        // Uso de Celular
+        if (record.celularTempo !== null) {
+          totalCelularHours += record.celularTempo;
+        }
+      }
+    }
+
+    // Remédio (é global, então verificamos se foi registrado alguma vez)
+    if (state.remedio && state.remedio.horaRegistro) {
+      // Para o relatório mensal, podemos contar quantos dias o remédio esteve ativo dentro do período
+      // Isso é mais complexo, pois o remédio não é salvo por dia.
+      // Por simplicidade, vamos apenas indicar se foi registrado no período.
+      // Uma implementação mais precisa exigiria salvar o status do remédio por dia.
+      // Por enquanto, vamos considerar que se foi registrado, conta como "dias com remédio"
+      // para cada dia no período em que o registro de remédio estava ativo.
+      // Isso é uma simplificação.
+      const remedioRegistroDate = new Date(state.remedio.horaRegistro);
+      const remedioRegistroDateKey = getDateKey(remedioRegistroDate);
+
+      for (let i = 0; i < 30; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const dKey = getDateKey(d);
+        // Se o remédio foi tomado no dia ou em um dia anterior e ainda estaria ativo
+        // (Isso é uma suposição, o ideal seria ter um registro diário do remédio)
+        if (dKey === remedioRegistroDateKey || (d > remedioRegistroDate && (d.getTime() - remedioRegistroDate.getTime()) / (1000 * 60) < DURACAO)) {
+             daysWithRemedio++;
+        }
+      }
+      // Ajuste para não contar mais dias do que o total de dias com dados
+      daysWithRemedio = Math.min(daysWithRemedio, totalDaysWithData);
+    }
+
+
+    if (totalDaysWithData === 0) {
+      html = '<p class="no-data">Nenhum dado registrado nos últimos 30 dias.</p>';
+    } else {
+      const avgHoursSono = totalHoursSono / totalDaysWithData;
+      const avgMetasConcluidas = totalMetasCriadas > 0 ? (totalMetasConcluidas / totalMetasCriadas) * 100 : 0;
+      const avgFocusHours = totalFocusSeconds / totalDaysWithData / 3600;
+      const avgCelularHours = totalCelularHours / totalDaysWithData;
+
+      html += `<h3>Resumo dos Últimos ${totalDaysWithData} Dias</h3>`;
+      html += `<ul>`;
+      html += `<li>Média de horas de sono: <strong>${avgHoursSono.toFixed(1)}h</strong></li>`;
+      html += `<li>Dias com sono ≥ 7h: <strong>${daysWithGoodSono} de ${totalDaysWithData}</strong></li>`;
+      html += `<li>Média de metas concluídas: <strong>${avgMetasConcluidas.toFixed(0)}%</strong></li>`;
+      html += `<li>Dias com ≥ 75% de metas concluídas: <strong>${daysWithHighMetasCompletion} de ${totalDaysWithData}</strong></li>`;
+      html += `<li>Média de foco diário: <strong>${avgFocusHours.toFixed(1)}h</strong></li>`;
+      html += `<li>Dias com foco registrado: <strong>${daysWithFocus} de ${totalDaysWithData}</strong></li>`;
+      html += `<li>Média de uso de celular diário: <strong>${avgCelularHours.toFixed(1)}h</strong></li>`;
+      html += `<li>Dias com medicação registrada: <strong>${daysWithRemedio} de ${totalDaysWithData}</strong></li>`;
+      html += `</ul>`;
+
+      html += `<p style="margin-top:15px;">Este relatório oferece uma visão geral do seu progresso. Use-o para identificar padrões e ajustar suas estratégias!</p>`;
+    }
+
+    monthlyReportOutput.innerHTML = html;
+    showToast('📈 Relatório mensal gerado!');
+  }
+
 
   // ===== INFO =====
   function switchInfo(tab, btn) {
@@ -1349,6 +1540,11 @@
     document.querySelectorAll('.info-tab').forEach(b => b.classList.remove('active'));
     document.getElementById('info-' + tab).classList.add('active');
     btn.classList.add('active');
+
+    // Se for a aba de relatório mensal, esconde o output anterior
+    if (tab === 'relatorio-mensal') {
+      document.getElementById('monthly-report-output').style.display = 'none';
+    }
   }
 
   function showToast(msg) {
