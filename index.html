@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clean TDAH</title>
+<title>TDAH Care</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -435,7 +435,7 @@ textarea { resize: none; height: 80px; }
   <div class="caverna-controls">
     <button class="caverna-btn caverna-btn-reset" onclick="resetarPomodoro()" title="Reiniciar">🔄</button>
     <button class="caverna-btn caverna-btn-main" id="caverna-play-btn" onclick="togglePomodoro()">▶</button>
-    <button class="caverna-btn caverna-btn-skip" onclick="pularFase()" title="Pular fase">⏭</button>
+    <button class="caverna-btn caverna-btn-skip" onclick="pularFase()" title="Pular fase — conta +1 sessão se estiver em foco">⏭</button>
   </div>
   <div class="caverna-stats-grid">
     <div class="caverna-stat-box"><span class="v" id="cav-sessoes">0</span><span class="l">Sessões</span></div>
@@ -445,12 +445,12 @@ textarea { resize: none; height: 80px; }
   <div class="caverna-card-dark">
     <div class="caverna-card-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div>
     <div class="session-dot-row" id="session-dots"></div>
-    <!-- NOVO: adicionar ciclos manualmente -->
-    <div class="ciclos-manual-row">
-      <span style="color:#9CA3AF;font-size:0.82rem;">Celular desligou? Adicione ciclos:</span>
-      <input type="number" id="ciclos-manual-input" placeholder="0" min="0" max="20" style="width:60px;">
-      <button onclick="adicionarCiclosManuais()">+ Ciclos</button>
+    <div class="ciclos-manual-row" style="margin-top:14px;padding-top:12px;border-top:1px solid #2D2D4E;">
+      <span style="color:#9CA3AF;font-size:0.78rem;flex:1;">Celular desligou? Ajuste as sessões:</span>
+      <button onclick="removerSessaoManual()" title="Remover 1 sessão" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:8px 14px;font-size:1rem;font-weight:700;cursor:pointer;">⏮</button>
+      <button onclick="adicionarSessaoManual()" title="Adicionar 1 sessão" style="background:rgba(124,58,237,0.25);color:#A78BFA;border:1px solid #7C3AED;border-radius:10px;padding:8px 14px;font-size:1rem;font-weight:700;cursor:pointer;">⏭</button>
     </div>
+    <p style="font-size:0.68rem;color:#4B5563;margin-top:8px;">⏭ adiciona 1 sessão de 20min · ⏮ remove 1 sessão</p>
   </div>
   <div class="caverna-card-dark">
     <div class="caverna-card-title">📱 Tempo de celular hoje</div>
@@ -1111,29 +1111,59 @@ function pularFase() {
   if (state.currentDate !== hojeISO()) { showToast('⚠️ Modo Caverna só para hoje'); return; }
   clearInterval(state.pom.timer); state.pom.rodando=false;
   document.getElementById('caverna-play-btn').textContent='▶';
-  if (state.pom.fase==='foco') { state.pom.fase='pausa'; state.pom.seg=POM_PAUSA; }
-  else { state.pom.fase='foco'; state.pom.seg=POM_FOCO; }
+  if (state.pom.fase==='foco') {
+    // Pular foco = contar como sessão concluída
+    state.pom.sessoes++; state.pom.sessNoCiclo++; state.pom.minFoco+=20;
+    if (state.pom.sessNoCiclo>=SESS_CICLO) {
+      state.pom.ciclos++; state.pom.sessNoCiclo=0; showToast('🏆 Ciclo completo!');
+    } else {
+      showToast('✅ +1 sessão registrada! Hora de pausar.');
+    }
+    state.pom.fase='pausa'; state.pom.seg=POM_PAUSA;
+  } else {
+    // Pular pausa = só avança para foco, sem contar sessão
+    state.pom.fase='foco'; state.pom.seg=POM_FOCO;
+    showToast('🎯 Pausa pulada — hora de focar!');
+  }
   atualizarUIPom(); salvar();
 }
+
+// Adiciona 1 sessão manualmente (celular desligou etc.)
+function adicionarSessaoManual() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só para hoje'); return; }
+  state.pom.sessoes++;
+  state.pom.sessNoCiclo++;
+  state.pom.minFoco+=20;
+  if (state.pom.sessNoCiclo>=SESS_CICLO) {
+    state.pom.ciclos++; state.pom.sessNoCiclo=0; showToast('🏆 Ciclo completo! +1 sessão adicionada.');
+  } else {
+    showToast('✅ +1 sessão de 20min adicionada');
+  }
+  salvar(); renderPom();
+}
+
+// Remove 1 sessão (erro ao adicionar)
+function removerSessaoManual() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só para hoje'); return; }
+  if (state.pom.sessoes <= 0) { showToast('⚠️ Nenhuma sessão para remover'); return; }
+  state.pom.sessoes--;
+  state.pom.minFoco = Math.max(0, state.pom.minFoco - 20);
+  if (state.pom.sessNoCiclo > 0) {
+    state.pom.sessNoCiclo--;
+  } else if (state.pom.ciclos > 0) {
+    state.pom.ciclos--;
+    state.pom.sessNoCiclo = SESS_CICLO - 1;
+  }
+  salvar(); renderPom();
+  showToast('↩️ 1 sessão removida');
+}
+
 function resetarPomodoro() {
   if (state.currentDate !== hojeISO()) { showToast('⚠️ Modo Caverna só para hoje'); return; }
   clearInterval(state.pom.timer); state.pom.rodando=false;
   state.pom.fase='foco'; state.pom.seg=POM_FOCO;
   document.getElementById('caverna-play-btn').textContent='▶';
   atualizarUIPom(); showToast('🔄 Timer reiniciado'); salvar();
-}
-
-// NOVO: adicionar ciclos manualmente
-function adicionarCiclosManuais() {
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só para hoje'); return; }
-  const val = parseInt(document.getElementById('ciclos-manual-input').value)||0;
-  if (val <= 0) { showToast('⚠️ Informe quantos ciclos!'); return; }
-  state.pom.ciclos += val;
-  state.pom.sessoes += val * SESS_CICLO;
-  state.pom.minFoco += val * SESS_CICLO * 20;
-  document.getElementById('ciclos-manual-input').value='';
-  salvar(); renderPom();
-  showToast(`✅ +${val} ciclo${val>1?'s':''} adicionado${val>1?'s':''}!`);
 }
 
 function atualizarUIPom() {
@@ -1374,7 +1404,7 @@ function gerarRelatorioMensal() {
       <div class="rel-clinico-body">
         <p style="font-size:0.75rem;color:var(--text-light);margin-bottom:10px;font-style:italic;">Análise comportamental e de adesão terapêutica dos últimos 30 dias.</p>
         ${avgSono!==null?row('Média de sono diário', avgSono+'h', sonoStatus, avgSono>=7?'Normal':avgSono>=6?'Atenção':'Crítico'):''}
-        ${sonoN>0?row('Noites abaixo de 7h', sonoAbaixo+' de '+sonoN, sonoAbaixo>sonoN/2?'status-criti':'status-norm', sonoAbaixo>sonoN/2?'Frequente':'Raro'):''}
+        ${sonoN>0?row('Noites com sono adequado (≥7h)', (sonoN-sonoAbaixo)+' de '+sonoN, (sonoN-sonoAbaixo)/sonoN>=0.7?'status-norm':(sonoN-sonoAbaixo)/sonoN>=0.4?'status-atenc':'status-criti', (sonoN-sonoAbaixo)/sonoN>=0.7?'Regular':'Irregular'):''}
         ${pctMetas!==null?row('Taxa de conclusão de metas', pctMetas+'%', metasStatus, pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
         ${avgFoco!==null?row('Média de foco diário (Caverna)', avgFoco+'min', focoStatus, avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}
         ${avgCelular!==null?row('Média de tempo de tela', Math.floor(avgCelular/60)+'h '+avgCelular%60+'min', celStatus, avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
