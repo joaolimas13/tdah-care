@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TDAH Care</title>
 <style>
-/* Estilos existentes */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --primary: #1565C0; --primary-light: #1976D2; --primary-dark: #0D47A1;
@@ -17,8 +16,8 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
 .header h1 { font-size: 1.3rem; font-weight: 700; }
 .header span { font-size: 0.8rem; opacity: 0.85; display: block; }
 .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: white; display: flex; box-shadow: 0 -2px 12px rgba(21,101,192,0.12); z-index: 100; }
-.nav-btn { flex: 1; padding: 10px 2px; border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 0.6rem; color: var(--text-light); transition: all 0.2s; }
-.nav-btn .icon { font-size: 1.3rem; }
+.nav-btn { flex: 1; padding: 10px 2px; border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 0.58rem; color: var(--text-light); transition: all 0.2s; }
+.nav-btn .icon { font-size: 1.25rem; }
 .nav-btn.active { color: var(--primary); }
 .nav-btn.active .icon { transform: translateY(-2px); }
 .nav-btn.caverna-nav { background: linear-gradient(135deg, #1A1A2E, #16213E); color: #E0E0FF; }
@@ -43,6 +42,8 @@ textarea { resize: none; height: 80px; }
 .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
 .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; }
 .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+
+/* REMÉDIO */
 .remedio-card { background: linear-gradient(135deg, #E3F2FD, #F0F7FF); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; border: 2px solid #BBDEFB; }
 .remedio-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .remedio-title { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
@@ -59,6 +60,10 @@ textarea { resize: none; height: 80px; }
 .remedio-stat { background: white; border-radius: 10px; padding: 10px; text-align: center; }
 .remedio-stat .val { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
 .remedio-stat .lbl { font-size: 0.7rem; color: var(--text-light); }
+/* FASE DO REMÉDIO - novo */
+.remedio-fase-box { background: white; border-radius: 10px; padding: 12px 14px; margin-top: 12px; border-left: 4px solid var(--primary); }
+.remedio-fase-titulo { font-size: 0.72rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.remedio-fase-desc { font-size: 0.82rem; color: var(--text-light); line-height: 1.5; }
 .aviso-encerrado { background: #FFF8E1; border: 2px solid #FFE082; border-radius: 12px; padding: 16px; margin-top: 12px; display: none; }
 .aviso-encerrado h4 { color: #F57F17; font-size: 0.9rem; margin-bottom: 8px; }
 .aviso-encerrado p { font-size: 0.82rem; color: #5D4037; line-height: 1.6; }
@@ -66,6 +71,8 @@ textarea { resize: none; height: 80px; }
 .time-input-wrap { display: flex; gap: 10px; align-items: flex-end; }
 .time-input-wrap input[type="time"] { flex: 1; }
 .time-input-wrap button { padding: 12px 18px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+
+/* SONO */
 .sono-visual { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 16px 0; }
 .sono-circle { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-dark), var(--accent)); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 16px rgba(21,101,192,0.35); }
 .sono-circle .horas { font-size: 1.8rem; font-weight: 800; }
@@ -78,8 +85,15 @@ textarea { resize: none; height: 80px; }
 .custom-hours { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
 .custom-hours input { flex: 1; }
 .custom-hours span { font-size: 0.85rem; color: var(--text-light); white-space: nowrap; }
+
+/* METAS */
+.meta-secao-titulo { font-size: 0.82rem; font-weight: 700; color: var(--text); margin: 14px 0 8px; display: flex; align-items: center; gap: 6px; }
+.meta-secao-titulo .tag { font-size: 0.68rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
+.tag-fixa { background: #E8EAF6; color: #3949AB; }
+.tag-diaria { background: #E8F5E9; color: #2E7D32; }
 .meta-item { display: flex; align-items: center; gap: 12px; padding: 14px; background: #F8FAFF; border-radius: 12px; margin-bottom: 10px; border: 2px solid transparent; transition: all 0.2s; cursor: pointer; }
 .meta-item.done { background: #E8F5E9; border-color: #A5D6A7; }
+.meta-item.fixa { border-left: 3px solid #7986CB; }
 .meta-check { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #B0BEC5; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
 .meta-item.done .meta-check { background: var(--success); border-color: var(--success); color: white; }
 .meta-text { flex: 1; }
@@ -88,9 +102,10 @@ textarea { resize: none; height: 80px; }
 .progress-bar { height: 8px; background: #E3EAF2; border-radius: 4px; overflow: hidden; margin: 8px 0; }
 .progress-fill { height: 100%; background: linear-gradient(to right, var(--primary), var(--accent)); border-radius: 4px; transition: width 0.4s; }
 .progress-info { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-light); }
-.add-meta { display: flex; gap: 8px; margin-bottom: 16px; }
-.add-meta input { flex: 1; }
-.add-meta button { padding: 12px 16px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1.2rem; cursor: pointer; }
+.add-meta-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+.add-meta-row input { flex: 1; }
+.add-meta-row select { width: auto; padding: 12px 10px; font-size: 0.82rem; }
+.add-meta-row button { padding: 12px 16px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1.2rem; cursor: pointer; flex-shrink: 0; }
 .historico-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #EEF2F7; }
 .historico-item:last-child { border-bottom: none; }
 .historico-data { font-size: 0.8rem; color: var(--text-light); }
@@ -98,6 +113,14 @@ textarea { resize: none; height: 80px; }
 .badge-good { background: #E8F5E9; color: #2E7D32; }
 .badge-warn { background: #FFF8E1; color: #F57F17; }
 .badge-bad { background: #FFEBEE; color: #C62828; }
+.meta-hist-card { background: #F8FAFF; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #E3EAF2; }
+
+/* PÁGINAS LIDAS */
+.leitura-row { display: flex; gap: 8px; align-items: center; }
+.leitura-row input { flex: 1; }
+.leitura-row button { padding: 12px 16px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+
+/* INFO */
 .info-tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
 .info-tab { padding: 8px 14px; border-radius: 20px; border: 2px solid #E3EAF2; background: white; font-size: 0.8rem; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
 .info-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
@@ -112,7 +135,7 @@ textarea { resize: none; height: 80px; }
 .section-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 12px; }
 .divider { height: 1px; background: #EEF2F7; margin: 16px 0; }
 .btn-danger { background: transparent; border: 2px solid #EF5350; color: #EF5350; border-radius: 12px; padding: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
-.meta-hist-card { background: #F8FAFF; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #E3EAF2; }
+
 /* CAVERNA */
 #page-caverna { background: #0D0D1A; min-height: 100vh; padding: 20px; padding-bottom: 85px; color: #E0E0FF; }
 .caverna-header { text-align: center; margin-bottom: 24px; }
@@ -128,7 +151,7 @@ textarea { resize: none; height: 80px; }
 .caverna-ring-bg { fill: none; stroke: #1E1E3A; stroke-width: 12; }
 .caverna-ring-fill { fill: none; stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
 .caverna-center { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.caverna-time { font-size: 3.2rem; font-weight: 800; color: white; letter-spacing: -2px; line-height: 1; }
+.caverna-time { font-size: 3.2rem; font-weight: 800; color: white; letter-spacing: -2px; line-height: 1; font-variant-numeric: tabular-nums; }
 .caverna-phase { font-size: 0.75rem; color: #6B7280; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
 .caverna-controls { display: flex; gap: 16px; justify-content: center; margin-bottom: 28px; }
 .caverna-btn { width: 64px; height: 64px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.6rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
@@ -152,10 +175,17 @@ textarea { resize: none; height: 80px; }
 .celular-home-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
 .celular-home-row input { width: 70px; flex: none; }
 .celular-home-row button { padding: 12px 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+/* Ciclos manuais caverna */
+.ciclos-manual-row { display: flex; gap: 8px; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid #2D2D4E; }
+.ciclos-manual-row input { width: 70px; flex: none; background: rgba(30,30,58,0.8); border: 1px solid #3D3D6E; color: #E0E0FF; border-radius: 10px; padding: 10px 12px; font-size: 0.95rem; }
+.ciclos-manual-row span { color: #9CA3AF; font-size: 0.82rem; flex: 1; }
+.ciclos-manual-row button { background: rgba(124,58,237,0.4); color: #A78BFA; border: 1px solid #7C3AED; border-radius: 10px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+
+/* RELATÓRIO */
 .relatorio-btn { background: linear-gradient(135deg, #1565C0, #29B6F6); color: white; border: none; border-radius: 14px; padding: 16px; width: 100%; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(21,101,192,0.3); }
 .relatorio-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: flex-end; justify-content: center; }
 .relatorio-modal.show { display: flex; }
-.relatorio-content { background: white; border-radius: 24px 24px 0 0; padding: 24px; width: 100%; max-width: 430px; max-height: 88vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+.relatorio-content { background: white; border-radius: 24px 24px 0 0; padding: 24px; width: 100%; max-width: 430px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
 @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
 .relatorio-title { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
 .relatorio-date { font-size: 0.8rem; color: var(--text-light); margin-bottom: 20px; }
@@ -170,32 +200,43 @@ textarea { resize: none; height: 80px; }
 .rel-nota-label { font-size: 0.85rem; opacity: 0.9; }
 .rel-close-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 8px; }
 
-/* Novos estilos para o calendário */
+/* RELATÓRIO MENSAL CLÍNICO */
+.rel-clinico { background: white; border-radius: 14px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.rel-clinico-header { background: linear-gradient(135deg, #0D47A1, #1565C0); color: white; padding: 16px 20px; }
+.rel-clinico-header h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+.rel-clinico-header p { font-size: 0.75rem; opacity: 0.8; }
+.rel-clinico-body { padding: 16px 20px; }
+.rel-clinico-body .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #EEF2F7; font-size: 0.85rem; align-items: center; }
+.rel-clinico-body .row:last-child { border-bottom: none; }
+.rel-clinico-body .row .lbl { color: var(--text-light); flex: 1; }
+.rel-clinico-body .row .val { font-weight: 700; color: var(--text); }
+.rel-clinico-body .row .status { font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; margin-left: 8px; }
+.status-norm { background: #E8F5E9; color: #2E7D32; }
+.status-atenc { background: #FFF8E1; color: #F57F17; }
+.status-criti { background: #FFEBEE; color: #C62828; }
+.rel-parecer { background: #F0F7FF; border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; padding: 14px 16px; margin-top: 12px; font-size: 0.84rem; color: #37474F; line-height: 1.6; }
+.rel-parecer strong { color: var(--primary-dark); }
+
+/* CALENDÁRIO */
 .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .calendar-nav button { background: none; border: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; padding: 5px; }
-.calendar-nav h3 { font-size: 1.1rem; color: var(--text); }
+.calendar-nav h3 { font-size: 1rem; color: var(--text); text-transform: capitalize; }
 .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
-.calendar-day-header { font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; margin-bottom: 8px; }
-.calendar-day { padding: 8px 4px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: #F8FAFF; color: var(--text); }
-.calendar-day.inactive { color: #B0BEC5; cursor: default; background: #EEF2F7; }
-.calendar-day.today { border: 2px solid var(--primary); background: var(--primary-light); color: white; }
-.calendar-day.selected { background: var(--accent); color: white; }
-.calendar-day:not(.inactive):hover { background: var(--primary-light); color: white; }
-.calendar-day-metrics { font-size: 0.65rem; line-height: 1.2; margin-top: 2px; color: var(--text-light); }
-.calendar-day.today .calendar-day-metrics, .calendar-day.selected .calendar-day-metrics { color: rgba(255,255,255,0.8); }
+.calendar-day-header { font-size: 0.68rem; color: var(--text-light); text-transform: uppercase; padding-bottom: 8px; }
+.calendar-day { padding: 6px 2px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: #F8FAFF; color: var(--text); min-height: 44px; }
+.calendar-day.inactive { color: #B0BEC5; cursor: default; background: transparent; }
+.calendar-day.today { border: 2px solid var(--primary); background: #EEF2FF; }
+.calendar-day.selected { background: var(--primary); color: white; }
+.calendar-day:not(.inactive):not(.selected):hover { background: #DBEAFE; }
+.calendar-day-metrics { font-size: 0.6rem; line-height: 1.3; margin-top: 2px; }
 .calendar-day-metrics span { display: block; }
-.calendar-day-metrics .metric-good { color: #A5D6A7; }
-.calendar-day-metrics .metric-warn { color: #FFD54F; }
-.calendar-day-metrics .metric-bad { color: #EF9A9A; }
+.m-ok { color: #2E7D32; }
+.m-warn { color: #F57F17; }
+.m-bad { color: #C62828; }
+.calendar-day.selected .calendar-day-metrics span { color: rgba(255,255,255,0.85); }
 
-/* Estilos para o relatório mensal */
-.relatorio-mensal-card { background: white; border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
-.relatorio-mensal-card h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 12px; }
-.relatorio-mensal-card .summary-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #EEF2F7; }
-.relatorio-mensal-card .summary-item:last-child { border-bottom: none; }
-.relatorio-mensal-card .summary-label { font-size: 0.85rem; color: var(--text-light); }
-.relatorio-mensal-card .summary-value { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
-.relatorio-mensal-card .summary-tip { font-size: 0.8rem; color: var(--text-light); margin-top: 10px; line-height: 1.5; }
+/* SUMÁRIO DIA */
+.daily-sum-card { background: white; border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
 </style>
 </head>
 <body>
@@ -231,6 +272,11 @@ textarea { resize: none; height: 80px; }
       <div class="remedio-stats">
         <div class="remedio-stat"><div class="val" id="tempo-ativo-val">0h 00min</div><div class="lbl">Tempo ativo</div></div>
         <div class="remedio-stat"><div class="val" id="tempo-restante-val">12h 00min</div><div class="lbl">Tempo restante</div></div>
+      </div>
+      <!-- NOVO: caixa de fase do remédio -->
+      <div class="remedio-fase-box" id="remedio-fase-box">
+        <div class="remedio-fase-titulo" id="remedio-fase-titulo">📊 Fase atual</div>
+        <div class="remedio-fase-desc" id="remedio-fase-desc">Calculando...</div>
       </div>
       <div class="aviso-encerrado" id="aviso-encerrado">
         <h4>⚠️ Efeito do remédio encerrado</h4>
@@ -300,8 +346,17 @@ textarea { resize: none; height: 80px; }
 <!-- METAS -->
 <div class="page" id="page-metas">
   <div class="section-title">🎯 Minhas Metas</div>
-  <div class="card"><div class="card-title">➕ Nova meta</div>
-    <div class="add-meta"><input type="text" id="nova-meta-input" placeholder="Ex: Beber água, Meditar..."><button onclick="adicionarMeta()">+</button></div>
+  <div class="card">
+    <div class="card-title">➕ Nova meta</div>
+    <div class="add-meta-row">
+      <input type="text" id="nova-meta-input" placeholder="Ex: Estudar 1h, Meditar...">
+      <select id="nova-meta-tipo">
+        <option value="diaria">📅 Diária</option>
+        <option value="fixa">📌 Fixa</option>
+      </select>
+      <button onclick="adicionarMeta()">+</button>
+    </div>
+    <p style="font-size:0.75rem;color:var(--text-light);">📌 Metas fixas se repetem todo dia. 📅 Metas diárias somem à meia-noite.</p>
   </div>
   <div class="card">
     <div class="card-title">📋 Metas de hoje</div>
@@ -309,10 +364,22 @@ textarea { resize: none; height: 80px; }
     <div class="progress-info" style="margin-bottom:16px;"><span id="meta-info">0 concluídas</span><span id="meta-pct">0%</span></div>
     <div id="lista-metas"></div>
     <div class="divider"></div>
-    <button class="btn btn-outline" onclick="limparConcluidas()" style="margin-top:8px;">🗑️ Limpar concluídas</button>
+    <button class="btn btn-outline" onclick="limparConcluidas()" style="margin-top:8px;">🗑️ Limpar diárias concluídas</button>
+  </div>
+  <!-- NOVO: páginas lidas -->
+  <div class="card">
+    <div class="card-title">📚 Páginas lidas hoje</div>
+    <div id="leitura-form">
+      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Quantas páginas você leu hoje?</p>
+      <div class="leitura-row">
+        <input type="number" id="paginas-input" placeholder="Ex: 30" min="0">
+        <button onclick="salvarLeitura()">💾 Salvar</button>
+      </div>
+    </div>
+    <div id="leitura-registrada" style="display:none;"></div>
   </div>
   <div class="card">
-    <div class="card-title">📅 Histórico de metas (dias anteriores)</div>
+    <div class="card-title">📅 Histórico de metas</div>
     <div id="historico-metas-lista"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">O histórico aparecerá aqui a partir de amanhã.</p></div>
   </div>
   <div class="card"><div class="card-title">💡 Dica</div>
@@ -329,25 +396,15 @@ textarea { resize: none; height: 80px; }
       <h3 id="current-month-year"></h3>
       <button onclick="changeMonth(1)">▶</button>
     </div>
-    <div class="calendar-grid" id="calendar-grid-headers">
-      <div class="calendar-day-header">Dom</div>
-      <div class="calendar-day-header">Seg</div>
-      <div class="calendar-day-header">Ter</div>
-      <div class="calendar-day-header">Qua</div>
-      <div class="calendar-day-header">Qui</div>
-      <div class="calendar-day-header">Sex</div>
+    <div class="calendar-grid">
+      <div class="calendar-day-header">Dom</div><div class="calendar-day-header">Seg</div>
+      <div class="calendar-day-header">Ter</div><div class="calendar-day-header">Qua</div>
+      <div class="calendar-day-header">Qui</div><div class="calendar-day-header">Sex</div>
       <div class="calendar-day-header">Sáb</div>
     </div>
-    <div class="calendar-grid" id="calendar-grid-days">
-      <!-- Dias do calendário serão inseridos aqui -->
-    </div>
+    <div class="calendar-grid" id="calendar-grid-days"></div>
   </div>
-  <div class="card" id="daily-summary-card" style="display:none;">
-    <div class="card-title">Sumário do dia <span id="summary-date"></span></div>
-    <div id="daily-summary-content">
-      <!-- Conteúdo do sumário diário será inserido aqui -->
-    </div>
-  </div>
+  <div id="daily-summary-card" style="display:none;"></div>
 </div>
 
 <!-- CAVERNA -->
@@ -370,7 +427,16 @@ textarea { resize: none; height: 80px; }
     <div class="caverna-stat-box"><span class="v" id="cav-foco-total">0min</span><span class="l">Foco hoje</span></div>
     <div class="caverna-stat-box"><span class="v" id="cav-ciclos">0</span><span class="l">Ciclos</span></div>
   </div>
-  <div class="caverna-card-dark"><div class="caverna-card-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div><div class="session-dot-row" id="session-dots"></div></div>
+  <div class="caverna-card-dark">
+    <div class="caverna-card-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div>
+    <div class="session-dot-row" id="session-dots"></div>
+    <!-- NOVO: adicionar ciclos manualmente -->
+    <div class="ciclos-manual-row">
+      <span style="color:#9CA3AF;font-size:0.82rem;">Celular desligou? Adicione ciclos:</span>
+      <input type="number" id="ciclos-manual-input" placeholder="0" min="0" max="20" style="width:60px;">
+      <button onclick="adicionarCiclosManuais()">+ Ciclos</button>
+    </div>
+  </div>
   <div class="caverna-card-dark">
     <div class="caverna-card-title">📱 Tempo de celular hoje</div>
     <div id="cav-celular-form">
@@ -394,7 +460,7 @@ textarea { resize: none; height: 80px; }
     <button class="info-tab" onclick="switchInfo('eletrolitos',this)">💧 Eletrólitos</button>
     <button class="info-tab" onclick="switchInfo('remedio',this)">💊 Medicação</button>
     <button class="info-tab" onclick="switchInfo('estrategias',this)">🧠 Estratégias</button>
-    <button class="info-tab" onclick="switchInfo('mensal',this)">📈 Mensal</button> <!-- Nova aba -->
+    <button class="info-tab" onclick="switchInfo('mensal',this)">📈 Mensal</button>
   </div>
   <div class="info-content active" id="info-sono">
     <div class="info-card"><h3>🌙 Por que o sono é crucial no TDAH?</h3><p>Privação de sono agrava desatenção, impulsividade e regulação emocional — já comprometidas no TDAH.</p></div>
@@ -416,22 +482,13 @@ textarea { resize: none; height: 80px; }
     <div class="info-card"><h3>🌙 Rebote ao fim do efeito</h3><p>Retorno dos sintomas, irritabilidade leve e fome são normais. Planeje atividades de menor demanda cognitiva para esse período.</p></div>
   </div>
   <div class="info-content" id="info-estrategias">
-    <div class="info-card"><h3>⏱️ Modo Caverna — Pomodoro 20/5</h3><p>20min de foco + 5min de pausa. Para TDAH, sessões mais curtas são mais eficazes que longas. Após 4 sessões (1 ciclo), faça uma pausa maior de 15-20min.</p></div>
+    <div class="info-card"><h3>⏱️ Modo Caverna — Pomodoro 20/5</h3><p>20min de foco + 5min de pausa. Para TDAH, sessões mais curtas são mais eficazes. Após 4 sessões (1 ciclo), faça uma pausa maior de 15-20min.</p></div>
     <div class="info-card"><h3>📝 Body doubling</h3><p>Estudar na presença de outra pessoa (mesmo virtual) aumenta foco no TDAH.</p></div>
-    <div class="info-tip"><strong>✅ Organização:</strong> Listas curtas de 3-5 itens. Muitas tarefas visíveis sobrecarregam.</p></div>
+    <div class="info-tip"><strong>✅ Organização:</strong> Listas curtas de 3-5 itens. Muitas tarefas visíveis sobrecarregam.</div>
     <div class="info-card"><h3>🎵 Música e foco</h3><p>Lo-fi, instrumentais ou ruído branco melhoram concentração. Evite letras em tarefas de leitura.</p></div>
   </div>
-  <!-- Novo conteúdo para o relatório mensal -->
   <div class="info-content" id="info-mensal">
-    <div class="relatorio-mensal-card">
-      <h3>📈 Relatório Mensal (Últimos 30 dias)</h3>
-      <div id="relatorio-mensal-content">
-        <p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Gerando relatório...</p>
-      </div>
-      <div class="summary-tip">
-        Este relatório mostra suas médias e progressos nos últimos 30 dias. Use-o para identificar padrões e ajustar suas estratégias.
-      </div>
-    </div>
+    <div id="relatorio-mensal-wrap"></div>
   </div>
 </div>
 
@@ -451,310 +508,530 @@ textarea { resize: none; height: 80px; }
   <button class="nav-btn active" onclick="navigate('home',this)"><span class="icon">🏠</span><span>Início</span></button>
   <button class="nav-btn" onclick="navigate('sono',this)"><span class="icon">😴</span><span>Sono</span></button>
   <button class="nav-btn" onclick="navigate('metas',this)"><span class="icon">🎯</span><span>Metas</span></button>
-  <button class="nav-btn" onclick="navigate('calendario',this)"><span class="icon">🗓️</span><span>Histórico</span></button> <!-- Novo botão -->
+  <button class="nav-btn" onclick="navigate('calendario',this)"><span class="icon">🗓️</span><span>Histórico</span></button>
   <button class="nav-btn caverna-nav" onclick="navigate('caverna',this)"><span class="icon">🏔️</span><span>Caverna</span></button>
   <button class="nav-btn" onclick="navigate('info',this)"><span class="icon">📚</span><span>Info</span></button>
 </div>
 
 <script>
+// ========== CONSTANTES ==========
 const DUR_REM = 12*60, POM_FOCO = 20*60, POM_PAUSA = 5*60, SESS_CICLO = 4;
 const CIRC = 2*Math.PI*96;
-const METAS_DEF = [
-  {id:1,texto:'Tomar medicação',done:false},
-  {id:2,texto:'Beber 2L de água',done:false},
-  {id:3,texto:'Fazer 30min de exercício',done:false},
-  {id:4,texto:'Dormir antes das 23h',done:false},
+
+// Metas fixas padrão (sempre aparecem todo dia)
+const METAS_FIXAS_DEFAULT = [
+  {id:'f1', texto:'Tomar medicação', done:false, tipo:'fixa'},
+  {id:'f2', texto:'Beber 2L de água', done:false, tipo:'fixa'},
+  {id:'f3', texto:'Fazer 30min de exercício', done:false, tipo:'fixa'},
+  {id:'f4', texto:'Dormir antes das 23h', done:false, tipo:'fixa'},
 ];
 
+// Fases do remédio Venvanse com efeitos esperados
+const FASES_REMEDIO = [
+  { min: 0,  max: 60,  titulo:'🌅 Fase de absorção (0–1h)', cor:'#1565C0',
+    desc:'O remédio está sendo absorvido. Você pode não sentir efeito ainda. Evite refeições pesadas agora.' },
+  { min: 60, max: 180, titulo:'📈 Início da ação (1–3h)', cor:'#1976D2',
+    desc:'O fármaco começa a agir. Você pode sentir leve aumento de alerta, redução do apetite e melhora no foco. É normal sentir a boca seca.' },
+  { min: 180,max: 300, titulo:'🚀 Pico terapêutico (3–5h)', cor:'#00897B',
+    desc:'Este é o momento de maior eficácia. Aproveite para tarefas de alto foco. Concentração e controle de impulsos estão no máximo.' },
+  { min: 300,max: 480, titulo:'⚡ Ação plena (5–8h)', cor:'#2E7D32',
+    desc:'O remédio continua em plena ação. Foco sustentado ainda presente. Lembre-se de se alimentar mesmo sem fome.' },
+  { min: 480,max: 600, titulo:'📉 Declínio gradual (8–10h)', cor:'#F57F17',
+    desc:'O efeito começa a declinar suavemente. Você pode notar leve retorno da agitação ou dificuldade de foco. Normal nesta fase.' },
+  { min: 600,max: 720, titulo:'🌙 Fase de rebote (10–12h)', cor:'#E65100',
+    desc:'Aproximando-se do fim da ação. Pode sentir irritabilidade leve, fome e retorno dos sintomas. Evite decisões importantes agora.' },
+  { min: 720,max: Infinity, titulo:'⏹️ Efeito encerrado', cor:'#C62828',
+    desc:'O Venvanse completou sua duração. Descanse, alimente-se bem e prepare-se para a próxima dose amanhã.' },
+];
+
+// ========== STATE ==========
 let state = {
-  // dailyData armazenará todas as métricas por data ISO
-  dailyData: {}, // { 'YYYY-MM-DD': { sono: [], remedio: {}, metas: [], celular: {}, pom: {} } }
-  currentDate: hojeISO(), // Data atualmente selecionada/exibida
-  sono:[], horasSono:null, metas:[], metasHist:[],
-  remedio:null, remedioTimer:null, celular:null,
-  pom:{rodando:false,fase:'foco',seg:POM_FOCO,sessoes:0,ciclos:0,sessNoCiclo:0,minFoco:0,timer:null,data:null}
+  dailyData: {},
+  currentDate: hojeISO(),
+  sono: [], horasSono: null,
+  metas: [], metasFixas: [],
+  metasHist: [],
+  remedio: null, remedioTimer: null,
+  celular: null,
+  leitura: null,
+  pom: {rodando:false,fase:'foco',seg:POM_FOCO,sessoes:0,ciclos:0,sessNoCiclo:0,minFoco:0,timer:null,data:null}
 };
+let currentCalendarDate = new Date();
 
-// Variáveis para o calendário
-let currentCalendarDate = new Date(); // Para controlar o mês exibido no calendário
+// ========== UTILS ==========
+function hoje() { return new Date().toLocaleDateString('pt-BR'); }
+function hojeISO(date = new Date()) {
+  return date.getFullYear()+'-'+pad(date.getMonth()+1)+'-'+pad(date.getDate());
+}
+function pad(n) { return String(n).padStart(2,'0'); }
+function fmt(d) {
+  if (!(d instanceof Date) || isNaN(d)) return '--:--';
+  return d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+function showToast(m) {
+  const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
 
-function hoje(){ return new Date().toLocaleDateString('pt-BR'); }
-function hojeISO(date = new Date()){ return date.getFullYear()+'-'+pad(date.getMonth()+1)+'-'+pad(date.getDate()); }
-function pad(n){ return String(n).padStart(2,'0'); }
-function fmt(d){ return d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
-function showToast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
-
-// --- Funções de Persistência de Dados ---
+// ========== STORAGE ==========
 function salvar() {
-  // Salva o estado atual do dia na dailyData
+  // Salva estado do dia atual em dailyData
   state.dailyData[state.currentDate] = {
     sono: state.sono,
-    remedio: state.remedio ? { ...state.remedio, horaRegistro: state.remedio.horaRegistro.toISOString() } : null,
+    remedio: state.remedio ? {
+      ...state.remedio,
+      horaRegistro: state.remedio.horaRegistro instanceof Date
+        ? state.remedio.horaRegistro.toISOString()
+        : state.remedio.horaRegistro
+    } : null,
     metas: state.metas,
+    metasFixas: state.metasFixas,
     celular: state.celular,
+    leitura: state.leitura,
     pom: {
-      sessoes: state.pom.sessoes,
-      ciclos: state.pom.ciclos,
-      sessNoCiclo: state.pom.sessNoCiclo,
-      minFoco: state.pom.minFoco,
-      data: state.pom.data || hojeISO()
+      sessoes: state.pom.sessoes, ciclos: state.pom.ciclos,
+      sessNoCiclo: state.pom.sessNoCiclo, minFoco: state.pom.minFoco,
+      data: state.pom.data || state.currentDate
     }
   };
-  localStorage.setItem('tdah_daily_data', JSON.stringify(state.dailyData));
-  localStorage.setItem('tdah_mhist', JSON.stringify(state.metasHist)); // Histórico de metas é global
+  try {
+    localStorage.setItem('tdah_daily', JSON.stringify(state.dailyData));
+    localStorage.setItem('tdah_mhist', JSON.stringify(state.metasHist));
+    localStorage.setItem('tdah_fixas', JSON.stringify(state.metasFixas));
+    localStorage.setItem('tdah_last_date', hojeISO());
+  } catch(e) {}
 }
 
 function carregar() {
   try {
-    const storedDailyData = localStorage.getItem('tdah_daily_data');
-    if (storedDailyData) {
-      state.dailyData = JSON.parse(storedDailyData);
-      // Converte horaRegistro de volta para Date objects
-      for (const date in state.dailyData) {
-        if (state.dailyData[date].remedio && state.dailyData[date].remedio.horaRegistro) {
-          state.dailyData[date].remedio.horaRegistro = new Date(state.dailyData[date].remedio.horaRegistro);
+    const raw = localStorage.getItem('tdah_daily');
+    if (raw) {
+      state.dailyData = JSON.parse(raw);
+      // Converte datas de string para Date
+      for (const d in state.dailyData) {
+        const dd = state.dailyData[d];
+        if (dd.remedio && dd.remedio.horaRegistro) {
+          dd.remedio.horaRegistro = new Date(dd.remedio.horaRegistro);
         }
       }
     }
+    const mh = localStorage.getItem('tdah_mhist');
+    if (mh) state.metasHist = JSON.parse(mh);
 
-    const hraw = localStorage.getItem('tdah_mhist');
-    if (hraw) state.metasHist = JSON.parse(hraw);
+    // Carrega metas fixas globais (persistem entre dias)
+    const mf = localStorage.getItem('tdah_fixas');
+    if (mf) state.metasFixas = JSON.parse(mf);
+    else state.metasFixas = METAS_FIXAS_DEFAULT.map(m => ({...m}));
 
-    // Lógica para migrar metas do dia anterior para o histórico, se a data mudou
-    const lastSavedDate = localStorage.getItem('tdah_last_saved_date');
-    if (lastSavedDate && lastSavedDate !== hojeISO()) {
-      const prevDayData = state.dailyData[lastSavedDate];
-      if (prevDayData && prevDayData.metas && prevDayData.metas.length > 0) {
-        const histEntry = {
-          data: lastSavedDate,
-          total: prevDayData.metas.length,
-          concluidas: prevDayData.metas.filter(m => m.done).length,
-          lista: prevDayData.metas.map(m => ({ t: m.texto, d: m.done }))
+    // Verifica se mudou de dia — salva histórico do dia anterior
+    const lastDate = localStorage.getItem('tdah_last_date');
+    if (lastDate && lastDate !== hojeISO()) {
+      const prevData = state.dailyData[lastDate];
+      if (prevData && prevData.metas && prevData.metas.length > 0) {
+        const entry = {
+          data: lastDate,
+          total: prevData.metas.length,
+          concluidas: prevData.metas.filter(m=>m.done).length,
+          lista: prevData.metas.map(m=>({t:m.texto,d:m.done,tipo:m.tipo}))
         };
-        state.metasHist.unshift(histEntry);
-        if (state.metasHist.length > 30) state.metasHist.splice(30); // Manter os últimos 30 dias
+        if (!state.metasHist.find(h=>h.data===lastDate)) {
+          state.metasHist.unshift(entry);
+          if (state.metasHist.length > 60) state.metasHist.splice(60);
+        }
       }
+      // Reseta check das metas fixas para o novo dia
+      state.metasFixas = state.metasFixas.map(m=>({...m, done:false}));
+      localStorage.setItem('tdah_fixas', JSON.stringify(state.metasFixas));
     }
-    localStorage.setItem('tdah_last_saved_date', hojeISO()); // Atualiza a última data salva
-
-    // Carrega os dados do dia atual
-    loadDailyMetrics(hojeISO());
-
-  } catch (e) {
-    console.error("Erro ao carregar dados:", e);
-  }
+  } catch(e) { console.error(e); }
 }
 
-function loadDailyMetrics(dateISO) {
+function carregarDia(dateISO) {
   state.currentDate = dateISO;
   const data = state.dailyData[dateISO] || {};
-
   state.sono = data.sono || [];
   state.remedio = data.remedio || null;
-  state.metas = data.metas || [...METAS_DEF]; // Se não houver metas, usa as default
+  // Metas: se for hoje, carrega metas diárias salvas + metas fixas do estado global
+  // Se for outro dia, carrega do histórico
+  if (dateISO === hojeISO()) {
+    state.metas = data.metas || [];
+  } else {
+    state.metas = data.metas || [];
+  }
   state.celular = data.celular || null;
-  state.pom = data.pom || {rodando:false,fase:'foco',seg:POM_FOCO,sessoes:0,ciclos:0,sessNoCiclo:0,minFoco:0,timer:null,data:dateISO};
-  if (!state.pom.data) state.pom.data = dateISO; // Garante que a data do pomodoro está correta
-
-  // Reinicia o timer do remédio se estiver ativo e for o dia atual
+  state.leitura = data.leitura || null;
+  state.pom = {
+    rodando: false, fase: 'foco', seg: POM_FOCO, timer: null,
+    sessoes: data.pom ? data.pom.sessoes : 0,
+    ciclos: data.pom ? data.pom.ciclos : 0,
+    sessNoCiclo: data.pom ? data.pom.sessNoCiclo : 0,
+    minFoco: data.pom ? data.pom.minFoco : 0,
+    data: dateISO
+  };
   if (state.remedioTimer) clearInterval(state.remedioTimer);
   if (state.remedio && dateISO === hojeISO()) {
     state.remedioTimer = setInterval(atualizarBarra, 30000);
   }
-  // Reinicia o timer do pomodoro se estiver ativo e for o dia atual
-  if (state.pom.timer) clearInterval(state.pom.timer);
-  if (state.pom.rodando && dateISO === hojeISO()) {
-    state.pom.timer = setInterval(tickPom, 1000);
-  }
-
-  // Atualiza a UI com os dados carregados
-  updateUIForCurrentDay();
+  renderUI();
 }
 
-function updateUIForCurrentDay() {
-  // Atualiza elementos da página Home
+function renderUI() {
   const now = new Date();
-  document.getElementById('header-date').textContent = now.toLocaleDateString('pt-BR', {weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('header-date').textContent = now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
   const h = now.getHours();
-  document.getElementById('greeting-text').textContent = h < 12 ? 'Bom dia! 👋' : h < 18 ? 'Boa tarde! 👋' : 'Boa noite! 👋';
+  document.getElementById('greeting-text').textContent = h<12?'Bom dia! 👋':h<18?'Boa tarde! 👋':'Boa noite! 👋';
 
-  // Atualiza o estado do remédio
+  // Remédio
   if (state.remedio) {
-    document.getElementById('remedio-sem-registro').style.display = 'none';
-    document.getElementById('remedio-com-registro').style.display = 'block';
+    document.getElementById('remedio-sem-registro').style.display='none';
+    document.getElementById('remedio-com-registro').style.display='block';
     atualizarBarra();
   } else {
-    document.getElementById('remedio-sem-registro').style.display = 'block';
-    document.getElementById('remedio-com-registro').style.display = 'none';
-    document.getElementById('remedio-badge').textContent = 'Não registrado';
-    document.getElementById('remedio-badge').className = 'remedio-badge badge-inativo';
+    document.getElementById('remedio-sem-registro').style.display='block';
+    document.getElementById('remedio-com-registro').style.display='none';
+    document.getElementById('remedio-badge').textContent='Não registrado';
+    document.getElementById('remedio-badge').className='remedio-badge badge-inativo';
     document.getElementById('aviso-encerrado').classList.remove('show');
-    document.getElementById('hora-remedio').value = '';
+    document.getElementById('hora-remedio').value='';
   }
 
-  // Renderiza todas as seções
   renderMetas();
   renderHistSono();
   renderHistMetas();
   updateStats();
   renderCelular();
+  renderLeitura();
   renderPom();
 }
 
-// --- Funções existentes (adaptadas para usar state.currentDate e salvar()) ---
-
-function init(){
+// ========== INIT ==========
+function init() {
   carregar();
   buildHoursGrid();
-  updateUIForCurrentDay(); // Atualiza a UI com os dados do dia atual
-  renderCalendar(currentCalendarDate); // Renderiza o calendário inicial
+  carregarDia(hojeISO());
+  renderCalendar(currentCalendarDate);
 }
 
-function navigate(p,btn){
+// ========== NAV ==========
+function navigate(p,btn) {
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active'); btn.classList.add('active');
-
-  if (p === 'calendario') {
-    renderCalendar(currentCalendarDate);
-    document.getElementById('daily-summary-card').style.display = 'none'; // Esconde o sumário ao navegar
-  }
-  if (p === 'info') {
-    // Garante que a aba 'sono' esteja ativa por padrão ou a última ativa
-    const activeTab = document.querySelector('.info-tab.active');
-    if (!activeTab) {
-      switchInfo('sono', document.querySelector('.info-tab'));
-    }
-    // Força a atualização do relatório mensal ao abrir a aba INFO
-    if (activeTab && activeTab.dataset.tab === 'mensal') {
-      gerarRelatorioMensal();
-    }
-  }
+  document.getElementById('page-'+p).classList.add('active');
+  btn.classList.add('active');
+  if (p==='calendario') { renderCalendar(currentCalendarDate); document.getElementById('daily-summary-card').style.display='none'; }
+  if (p==='info') { /* relatório mensal é gerado ao clicar na aba */ }
 }
 
-function registrarRemedio(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível registrar o remédio para o dia atual!'); return; }
-  const val=document.getElementById('hora-remedio').value; if(!val){showToast('⚠️ Informe o horário!');return;}
-  const [hh,mm]=val.split(':').map(Number); const now=new Date();
-  const reg=new Date(now.getFullYear(),now.getMonth(),now.getDate(),hh,mm,0);
-  state.remedio={horaRegistro:reg}; salvar();
+// ========== REMÉDIO ==========
+function registrarRemedio() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só registra para o dia atual'); return; }
+  const val = document.getElementById('hora-remedio').value;
+  if (!val) { showToast('⚠️ Informe o horário!'); return; }
+  const [hh,mm] = val.split(':').map(Number);
+  const now = new Date();
+  const reg = new Date(now.getFullYear(),now.getMonth(),now.getDate(),hh,mm,0);
+  state.remedio = { horaRegistro: reg };
+  salvar();
   document.getElementById('remedio-sem-registro').style.display='none';
   document.getElementById('remedio-com-registro').style.display='block';
-  atualizarBarra(); if(state.remedioTimer)clearInterval(state.remedioTimer);
-  state.remedioTimer=setInterval(atualizarBarra,30000); showToast('💊 Medicação registrada!'); updateStats();
+  atualizarBarra();
+  if (state.remedioTimer) clearInterval(state.remedioTimer);
+  state.remedioTimer = setInterval(atualizarBarra, 30000);
+  showToast('💊 Medicação registrada!');
+  updateStats();
 }
 
-function atualizarBarra(){
-  if(!state.remedio)return;
-  const agora=new Date(), minPass=Math.floor((agora-state.remedio.horaRegistro)/60000);
-  const minRest=Math.max(0,DUR_REM-minPass), pct=Math.min(100,(minPass/DUR_REM)*100);
-  const horaEnc=new Date(state.remedio.horaRegistro.getTime()+DUR_REM*60000);
-  document.getElementById('hora-tomada-display').textContent=fmt(state.remedio.horaRegistro);
-  document.getElementById('hora-encerra-display').textContent=fmt(horaEnc);
-  document.getElementById('remedio-fill').style.width=pct+'%';
-  const cor=pct<40?'linear-gradient(90deg,#1565C0,#42A5F5)':pct<75?'linear-gradient(90deg,#1976D2,#26C6DA)':pct<100?'linear-gradient(90deg,#F57F17,#FFCA28)':'linear-gradient(90deg,#C62828,#EF5350)';
-  document.getElementById('remedio-fill').style.background=cor;
-  const hA=Math.floor(minPass/60),mA=minPass%60,hR=Math.floor(minRest/60),mR=minRest%60;
-  document.getElementById('tempo-ativo-val').textContent=hA+'h '+pad(mA)+'min';
-  document.getElementById('tempo-restante-val').textContent=minRest>0?hR+'h '+pad(mR)+'min':'Encerrado';
-  document.getElementById('tempo-ativo-label').textContent=hA+'h no organismo';
-  document.getElementById('tempo-restante-label').textContent=minRest>0?hR+'h restantes':'Efeito encerrado';
-  const badge=document.getElementById('remedio-badge');
-  if(minRest<=0){badge.textContent='Encerrado';badge.className='remedio-badge badge-encerrado';document.getElementById('aviso-encerrado').classList.add('show');document.getElementById('stat-remedio').textContent='Enc.';}
-  else{badge.textContent='Ativo';badge.className='remedio-badge badge-ativo';document.getElementById('aviso-encerrado').classList.remove('show');document.getElementById('stat-remedio').textContent=hA+'h';}
+function atualizarBarra() {
+  if (!state.remedio) return;
+  const hr = state.remedio.horaRegistro;
+  if (!(hr instanceof Date) || isNaN(hr)) return;
+  const agora = new Date();
+  const minPass = Math.floor((agora - hr) / 60000);
+  const minRest = Math.max(0, DUR_REM - minPass);
+  const pct = Math.min(100, (minPass / DUR_REM) * 100);
+  const horaEnc = new Date(hr.getTime() + DUR_REM*60000);
+
+  document.getElementById('hora-tomada-display').textContent = fmt(hr);
+  document.getElementById('hora-encerra-display').textContent = fmt(horaEnc);
+  document.getElementById('remedio-fill').style.width = pct+'%';
+
+  const cor = pct<40?'linear-gradient(90deg,#1565C0,#42A5F5)':
+              pct<75?'linear-gradient(90deg,#1976D2,#26C6DA)':
+              pct<100?'linear-gradient(90deg,#F57F17,#FFCA28)':
+              'linear-gradient(90deg,#C62828,#EF5350)';
+  document.getElementById('remedio-fill').style.background = cor;
+
+  const hA=Math.floor(minPass/60), mA=minPass%60, hR=Math.floor(minRest/60), mR=minRest%60;
+  document.getElementById('tempo-ativo-val').textContent = hA+'h '+pad(mA)+'min';
+  document.getElementById('tempo-restante-val').textContent = minRest>0?hR+'h '+pad(mR)+'min':'Encerrado';
+  document.getElementById('tempo-ativo-label').textContent = hA+'h no organismo';
+  document.getElementById('tempo-restante-label').textContent = minRest>0?hR+'h restantes':'Efeito encerrado';
+
+  const badge = document.getElementById('remedio-badge');
+  if (minRest<=0) {
+    badge.textContent='Encerrado'; badge.className='remedio-badge badge-encerrado';
+    document.getElementById('aviso-encerrado').classList.add('show');
+    document.getElementById('stat-remedio').textContent='Enc.';
+  } else {
+    badge.textContent='Ativo'; badge.className='remedio-badge badge-ativo';
+    document.getElementById('aviso-encerrado').classList.remove('show');
+    document.getElementById('stat-remedio').textContent=hA+'h';
+  }
+
+  // NOVO: atualiza fase do remédio
+  atualizarFaseRemedio(minPass);
 }
 
-function resetarRemedio(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível resetar o remédio para o dia atual!'); return; }
-  state.remedio=null;salvar();if(state.remedioTimer)clearInterval(state.remedioTimer);
+function atualizarFaseRemedio(minPass) {
+  const fase = FASES_REMEDIO.find(f => minPass >= f.min && minPass < f.max) || FASES_REMEDIO[FASES_REMEDIO.length-1];
+  const box = document.getElementById('remedio-fase-box');
+  const tit = document.getElementById('remedio-fase-titulo');
+  const desc = document.getElementById('remedio-fase-desc');
+  if (box && tit && desc) {
+    box.style.borderLeftColor = fase.cor;
+    tit.textContent = fase.titulo;
+    tit.style.color = fase.cor;
+    desc.textContent = fase.desc;
+  }
+}
+
+function resetarRemedio() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só reseta para o dia atual'); return; }
+  state.remedio = null; salvar();
+  if (state.remedioTimer) clearInterval(state.remedioTimer);
   document.getElementById('remedio-sem-registro').style.display='block';
   document.getElementById('remedio-com-registro').style.display='none';
   document.getElementById('remedio-badge').textContent='Não registrado';
   document.getElementById('remedio-badge').className='remedio-badge badge-inativo';
   document.getElementById('aviso-encerrado').classList.remove('show');
-  document.getElementById('hora-remedio').value='';document.getElementById('stat-remedio').textContent='—';showToast('🔄 Pronto para nova dose');
+  document.getElementById('hora-remedio').value='';
+  document.getElementById('stat-remedio').textContent='—';
+  showToast('🔄 Pronto para nova dose');
 }
 
-function buildHoursGrid(){
-  document.getElementById('hours-grid').innerHTML=[4,5,6,7,8,9,10,11].map(h=>`<button class="hour-btn" onclick="selecionarHora(${h},this)">${h}h</button>`).join('');
+// ========== SONO ==========
+function buildHoursGrid() {
+  document.getElementById('hours-grid').innerHTML = [4,5,6,7,8,9,10,11].map(h=>
+    `<button class="hour-btn" onclick="selecionarHora(${h},this)">${h}h</button>`
+  ).join('');
 }
-
-function selecionarHora(h,btn){
+function selecionarHora(h,btn) {
   document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected'); state.horasSono=h;
-  document.getElementById('sono-display').textContent=h+'h'; document.getElementById('horas-custom').value='';
+  document.getElementById('sono-display').textContent=h+'h';
+  document.getElementById('horas-custom').value='';
 }
-
-function selecionarHoraCustom(val){
+function selecionarHoraCustom(val) {
   document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));
-  state.horasSono=parseFloat(val)||null;
-  if(state.horasSono){const h=Math.floor(state.horasSono),m=(state.horasSono%1)*60;document.getElementById('sono-display').textContent=m>0?h+'h'+m:h+'h';}
+  state.horasSono = parseFloat(val)||null;
+  if (state.horasSono) {
+    const h=Math.floor(state.horasSono), m=(state.horasSono%1)*60;
+    document.getElementById('sono-display').textContent = m>0?h+'h'+m:h+'h';
+  }
 }
-
-function salvarSono(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível registrar o sono para o dia atual!'); return; }
-  if(!state.horasSono){showToast('⚠️ Selecione quantas horas dormiu!');return;}
+function salvarSono() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só registra sono para o dia atual'); return; }
+  if (!state.horasSono) { showToast('⚠️ Selecione quantas horas dormiu!'); return; }
   state.sono.unshift({data:hoje(),horas:state.horasSono,qualidade:document.getElementById('sono-qualidade').value,obs:document.getElementById('sono-obs').value});
-  if(state.sono.length>7)state.sono=state.sono.slice(0,7);
-  salvar(); document.getElementById('sono-obs').value=''; state.horasSono=null;
+  if (state.sono.length>7) state.sono=state.sono.slice(0,7);
+  salvar();
+  document.getElementById('sono-obs').value=''; state.horasSono=null;
   document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));
   document.getElementById('sono-display').textContent='—'; document.getElementById('horas-custom').value='';
   renderHistSono(); updateStats(); showToast('✅ Sono salvo!');
 }
-
-function renderHistSono(){
-  const c=document.getElementById('historico-sono'), h=document.getElementById('ultimo-sono-home');
+function renderHistSono() {
+  const c=document.getElementById('historico-sono'), hEl=document.getElementById('ultimo-sono-home');
   const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};
   const bM={otima:'badge-good',boa:'badge-good',regular:'badge-warn',ruim:'badge-bad',pessima:'badge-bad'};
-  if(!state.sono.length){const m='<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p>';c.innerHTML=m;h.innerHTML=m;return;}
-  const mk=r=>`<div class="historico-item"><div><div style="font-weight:600;font-size:0.88rem;">${r.data}</div><div class="historico-data">${qM[r.qualidade]}</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:700;color:var(--primary);"> ${r.horas}h</span><span class="badge ${bM[r.qualidade]}">${r.horas>=7?'OK':'Baixo'}</span></div></div>`;
-  c.innerHTML=state.sono.map(mk).join(''); h.innerHTML=mk(state.sono[0]);
+  if (!state.sono.length) {
+    const m='<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p>';
+    c.innerHTML=m; hEl.innerHTML=m; return;
+  }
+  const mk=r=>`<div class="historico-item"><div><div style="font-weight:600;font-size:0.88rem;">${r.data}</div><div class="historico-data">${qM[r.qualidade]}</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:700;color:var(--primary);">${r.horas}h</span><span class="badge ${bM[r.qualidade]}">${r.horas>=7?'OK':'Baixo'}</span></div></div>`;
+  c.innerHTML=state.sono.map(mk).join('');
+  hEl.innerHTML=mk(state.sono[0]);
 }
 
-function renderMetas(){
-  const c=document.getElementById('lista-metas');
-  if(!state.metas.length){c.innerHTML='<p style="color:var(--text-light);text-align:center;font-size:0.85rem;padding:16px;">Nenhuma meta. Adicione acima!</p>';updateMetaProg();return;}
-  c.innerHTML=state.metas.map(m=>`<div class="meta-item ${m.done?'done':''}" onclick="toggleMeta(${m.id})"><div class="meta-check">${m.done?'✓':''}</div><div class="meta-text"><div class="meta-title" style="${m.done?'text-decoration:line-through;color:var(--text-light)':''}">${m.texto}</div><div class="meta-sub">${m.done?'Concluída! 🎉':'Toque para concluir'}</div></div><div onclick="event.stopPropagation();removerMeta(${m.id})" style="font-size:1.1rem;color:#B0BEC5;padding:4px;">✕</div></div>`).join('');
+// ========== METAS (FIXAS + DIÁRIAS) ==========
+function renderMetas() {
+  const c = document.getElementById('lista-metas');
+  // Metas fixas: vêm do state.metasFixas (global)
+  // Metas diárias: vêm do state.metas (filtradas por tipo diaria ou sem tipo)
+  const fixas = state.metasFixas;
+  const diarias = state.metas.filter(m => m.tipo==='diaria' || !m.tipo);
+
+  let html = '';
+
+  if (fixas.length) {
+    html += `<div class="meta-secao-titulo">📌 Metas Fixas <span class="tag tag-fixa">se repetem todo dia</span></div>`;
+    html += fixas.map(m=>`
+      <div class="meta-item fixa ${m.done?'done':''}" onclick="toggleMetaFixa('${m.id}')">
+        <div class="meta-check">${m.done?'✓':''}</div>
+        <div class="meta-text">
+          <div class="meta-title" style="${m.done?'text-decoration:line-through;color:var(--text-light)':''}">${m.texto}</div>
+          <div class="meta-sub">${m.done?'Concluída! 🎉':'Toque para concluir'}</div>
+        </div>
+        <div onclick="event.stopPropagation();removerMetaFixa('${m.id}')" style="font-size:1.1rem;color:#B0BEC5;padding:4px;">✕</div>
+      </div>`).join('');
+  }
+
+  if (diarias.length) {
+    html += `<div class="meta-secao-titulo">📅 Metas Diárias <span class="tag tag-diaria">somem amanhã</span></div>`;
+    html += diarias.map(m=>`
+      <div class="meta-item ${m.done?'done':''}" onclick="toggleMeta(${m.id})">
+        <div class="meta-check">${m.done?'✓':''}</div>
+        <div class="meta-text">
+          <div class="meta-title" style="${m.done?'text-decoration:line-through;color:var(--text-light)':''}">${m.texto}</div>
+          <div class="meta-sub">${m.done?'Concluída! 🎉':'Toque para concluir'}</div>
+        </div>
+        <div onclick="event.stopPropagation();removerMeta(${m.id})" style="font-size:1.1rem;color:#B0BEC5;padding:4px;">✕</div>
+      </div>`).join('');
+  }
+
+  if (!fixas.length && !diarias.length) {
+    html = '<p style="color:var(--text-light);text-align:center;font-size:0.85rem;padding:16px;">Nenhuma meta. Adicione acima!</p>';
+  }
+
+  c.innerHTML = html;
   updateMetaProg();
 }
 
-function toggleMeta(id){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível alterar metas para o dia atual!'); return; }
-  const m=state.metas.find(m=>m.id===id);if(m){m.done=!m.done;salvar();renderMetas();updateStats();if(m.done)showToast('🎉 Meta concluída!');}
+function toggleMeta(id) {
+  const m = state.metas.find(m=>m.id===id);
+  if (m) { m.done=!m.done; salvar(); renderMetas(); updateStats(); if(m.done) showToast('🎉 Meta concluída!'); }
 }
-function adicionarMeta(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível adicionar metas para o dia atual!'); return; }
-  const inp=document.getElementById('nova-meta-input');const txt=inp.value.trim();if(!txt){showToast('⚠️ Digite uma meta!');return;}state.metas.push({id:Date.now(),texto:txt,done:false});inp.value='';salvar();renderMetas();updateStats();showToast('✅ Meta adicionada!');
+function toggleMetaFixa(id) {
+  const m = state.metasFixas.find(m=>m.id===id);
+  if (m) { m.done=!m.done; salvar(); renderMetas(); updateStats(); if(m.done) showToast('🎉 Meta concluída!'); }
 }
-function removerMeta(id){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível remover metas para o dia atual!'); return; }
-  state.metas=state.metas.filter(m=>m.id!==id);salvar();renderMetas();updateStats();showToast('🗑️ Meta removida');
+function adicionarMeta() {
+  const inp = document.getElementById('nova-meta-input');
+  const tipo = document.getElementById('nova-meta-tipo').value;
+  const txt = inp.value.trim();
+  if (!txt) { showToast('⚠️ Digite uma meta!'); return; }
+  if (tipo === 'fixa') {
+    state.metasFixas.push({id:'f'+Date.now(), texto:txt, done:false, tipo:'fixa'});
+  } else {
+    state.metas.push({id:Date.now(), texto:txt, done:false, tipo:'diaria'});
+  }
+  inp.value=''; salvar(); renderMetas(); updateStats();
+  showToast(tipo==='fixa'?'📌 Meta fixa adicionada!':'✅ Meta diária adicionada!');
 }
-function limparConcluidas(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível limpar metas para o dia atual!'); return; }
-  state.metas=state.metas.filter(m=>!m.done);salvar();renderMetas();updateStats();showToast('🧹 Concluídas removidas!');
+function removerMeta(id) {
+  state.metas=state.metas.filter(m=>m.id!==id); salvar(); renderMetas(); updateStats(); showToast('🗑️ Meta removida');
 }
-
-function updateMetaProg(){
-  const tot=state.metas.length,dn=state.metas.filter(m=>m.done).length,pct=tot>0?Math.round((dn/tot)*100):0;
+function removerMetaFixa(id) {
+  state.metasFixas=state.metasFixas.filter(m=>m.id!==id); salvar(); renderMetas(); updateStats(); showToast('🗑️ Meta fixa removida');
+}
+function limparConcluidas() {
+  state.metas=state.metas.filter(m=>!m.done); salvar(); renderMetas(); updateStats(); showToast('🧹 Diárias concluídas removidas!');
+}
+function updateMetaProg() {
+  const fixasDone = state.metasFixas.filter(m=>m.done).length;
+  const diariasDone = state.metas.filter(m=>m.done && (m.tipo==='diaria'||!m.tipo)).length;
+  const tot = state.metasFixas.length + state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).length;
+  const dn = fixasDone + diariasDone;
+  const pct = tot>0?Math.round((dn/tot)*100):0;
   document.getElementById('meta-progress').style.width=pct+'%';
   document.getElementById('meta-info').textContent=dn+' concluída'+(dn!==1?'s':'');
   document.getElementById('meta-pct').textContent=pct+'%';
 }
-
-function renderHistMetas(){
+function renderHistMetas() {
   const c=document.getElementById('historico-metas-lista');
-  if(!state.metasHist.length){c.innerHTML='<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">O histórico aparecerá aqui a partir de amanhã.</p>';return;}
+  if (!state.metasHist.length) {
+    c.innerHTML='<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">O histórico aparecerá aqui a partir de amanhã.</p>';
+    return;
+  }
   const fmtD=iso=>{const p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];};
   c.innerHTML=state.metasHist.slice(0,7).map(h=>{
     const pct=h.total>0?Math.round((h.concluidas/h.total)*100):0;
     const cls=pct>=80?'badge-good':pct>=50?'badge-warn':'badge-bad';
-    return`<div class="meta-hist-card"><div><div style="font-weight:600;font-size:0.88rem;">${fmtD(h.data)}</div><div style="font-size:0.8rem;color:var(--text-light);"> ${h.concluidas} de ${h.total} metas concluídas</div></div><span class="badge ${cls}">${pct}%</span></div>`;
+    return`<div class="meta-hist-card"><div><div style="font-weight:600;font-size:0.88rem;">${fmtD(h.data)}</div><div style="font-size:0.8rem;color:var(--text-light);">${h.concluidas} de ${h.total} metas concluídas</div></div><span class="badge ${cls}">${pct}%</span></div>`;
   }).join('');
 }
 
-function updateStats(){
-  const tot=state.metas.length,dn=state.metas.filter(m=>m.done).length,pct=tot>0?Math.round((dn/tot)*100):0;
+// ========== LEITURA (NOVO) ==========
+function salvarLeitura() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só registra leitura para hoje'); return; }
+  const val = parseInt(document.getElementById('paginas-input').value);
+  if (!val || val < 0) { showToast('⚠️ Informe um número válido de páginas!'); return; }
+  state.leitura = { paginas: val, data: hojeISO() };
+  salvar(); renderLeitura(); showToast('📚 Leitura registrada!');
+}
+function renderLeitura() {
+  const form = document.getElementById('leitura-form');
+  const reg = document.getElementById('leitura-registrada');
+  if (state.leitura) {
+    form.style.display='none'; reg.style.display='block';
+    const cls = state.leitura.paginas>=20?'badge-good':state.leitura.paginas>=5?'badge-warn':'badge-bad';
+    const msg = state.leitura.paginas>=20?'Excelente! 🏆':state.leitura.paginas>=5?'Bom progresso! 👍':'Leia mais amanhã! 💪';
+    reg.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+      <div><div style="font-weight:700;font-size:1.2rem;color:var(--primary);">📖 ${state.leitura.paginas} páginas</div><div style="font-size:0.78rem;color:var(--text-light);">${msg}</div></div>
+      <span class="badge ${cls}">${state.leitura.paginas>=20?'Ótimo':state.leitura.paginas>=5?'Ok':'Baixo'}</span>
+    </div><button onclick="resetarLeitura()" style="margin-top:10px;font-size:0.78rem;color:var(--text-light);background:none;border:none;cursor:pointer;text-decoration:underline;">Editar registro</button>`;
+  } else {
+    form.style.display='block'; reg.style.display='none';
+  }
+}
+function resetarLeitura() {
+  state.leitura=null; salvar();
+  document.getElementById('paginas-input').value='';
+  renderLeitura();
+}
+
+// ========== CELULAR ==========
+function avalCelular(h,m) {
+  const t=h*60+m;
+  if(t<=120) return{msg:'Excelente controle!',badge:'badge-good',label:'Ótimo'};
+  if(t<=240) return{msg:'Uso moderado',badge:'badge-warn',label:'OK'};
+  return{msg:'Uso elevado — tente reduzir',badge:'badge-bad',label:'Alto'};
+}
+function salvarCelular() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só registra para hoje'); return; }
+  const h=parseInt(document.getElementById('celular-horas').value)||0;
+  const m=parseInt(document.getElementById('celular-minutos').value)||0;
+  if(h===0&&m===0){showToast('⚠️ Informe o tempo de celular!');return;}
+  state.celular={horas:h,minutos:m}; salvar(); renderCelular(); showToast('📱 Tempo de celular salvo!');
+}
+function salvarCelularCaverna() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só registra para hoje'); return; }
+  const h=parseInt(document.getElementById('cav-cel-h').value)||0;
+  const m=parseInt(document.getElementById('cav-cel-m').value)||0;
+  if(h===0&&m===0){showToast('⚠️ Informe o tempo!');return;}
+  state.celular={horas:h,minutos:m}; salvar(); renderCelular(); showToast('📱 Tempo salvo!');
+}
+function renderCelular() {
+  const hD=document.getElementById('celular-home-display');
+  const hR=document.getElementById('celular-registrado-home');
+  const cF=document.getElementById('cav-celular-form');
+  const cR=document.getElementById('cav-celular-registrado');
+  if (state.celular) {
+    const txt=state.celular.horas+'h '+state.celular.minutos+'min';
+    const av=avalCelular(state.celular.horas,state.celular.minutos);
+    hD.style.display='none'; hR.style.display='block';
+    hR.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;"><div><div style="font-weight:700;font-size:1.1rem;color:var(--primary);">📱 ${txt}</div><div style="font-size:0.78rem;color:var(--text-light);">${av.msg}</div></div><span class="badge ${av.badge}">${av.label}</span></div><button onclick="resetarCelular()" style="margin-top:10px;font-size:0.78rem;color:var(--text-light);background:none;border:none;cursor:pointer;text-decoration:underline;">Editar registro</button>`;
+    cF.style.display='none'; cR.style.display='block';
+    cR.innerHTML=`<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);border-radius:10px;padding:12px;margin-top:10px;color:#A78BFA;font-size:0.85rem;">📱 <strong style="color:#E0E0FF;">${txt}</strong> — ${av.msg}</div><button onclick="resetarCelular()" style="margin-top:8px;font-size:0.75rem;color:#6B7280;background:none;border:none;cursor:pointer;text-decoration:underline;">Editar</button>`;
+  } else {
+    hD.style.display='block'; hR.style.display='none';
+    cF.style.display='block'; cR.style.display='none';
+  }
+}
+function resetarCelular() {
+  state.celular=null; salvar();
+  document.getElementById('celular-horas').value='';
+  document.getElementById('celular-minutos').value='';
+  renderCelular();
+}
+
+// ========== STATS ==========
+function updateStats() {
+  const fixasDone=state.metasFixas.filter(m=>m.done).length;
+  const diariasDone=state.metas.filter(m=>m.done&&(m.tipo==='diaria'||!m.tipo)).length;
+  const tot=state.metasFixas.length+state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).length;
+  const dn=fixasDone+diariasDone;
+  const pct=tot>0?Math.round((dn/tot)*100):0;
   const ult=state.sono[0];
   document.getElementById('stat-sono').textContent=ult?ult.horas+'h':'—';
   document.getElementById('stat-metas').textContent=dn+'/'+tot;
@@ -763,107 +1040,103 @@ function updateStats(){
   document.getElementById('progress-pct').textContent=pct+'%';
 }
 
-function avalCelular(h,m){const t=h*60+m;if(t<=120)return{msg:'Excelente controle!',badge:'badge-good',label:'Ótimo'};if(t<=240)return{msg:'Uso moderado',badge:'badge-warn',label:'OK'};return{msg:'Uso elevado — tente reduzir',badge:'badge-bad',label:'Alto'};}
-
-function salvarCelular(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível registrar o tempo de celular para o dia atual!'); return; }
-  const h=parseInt(document.getElementById('celular-horas').value)||0;
-  const m=parseInt(document.getElementById('celular-minutos').value)||0;
-  if(h===0&&m===0){showToast('⚠️ Informe o tempo de celular!');return;}
-  state.celular={horas:h,minutos:m,dataISO:hojeISO()};salvar();renderCelular();showToast('📱 Tempo de celular salvo!');
+// ========== POMODORO (BUG CORRIGIDO) ==========
+function togglePomodoro() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Modo Caverna só para hoje'); return; }
+  if (state.pom.rodando) pausarPom(); else iniciarPom();
 }
-
-function salvarCelularCaverna(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível registrar o tempo de celular para o dia atual!'); return; }
-  const h=parseInt(document.getElementById('cav-cel-h').value)||0;
-  const m=parseInt(document.getElementById('cav-cel-m').value)||0;
-  if(h===0&&m===0){showToast('⚠️ Informe o tempo!');return;}
-  state.celular={horas:h,minutos:m,dataISO:hojeISO()};salvar();renderCelular();showToast('📱 Tempo de celular salvo!');
+function iniciarPom() {
+  state.pom.rodando=true;
+  document.getElementById('caverna-play-btn').textContent='⏸';
+  // CORREÇÃO: garante que seg tem valor válido antes de iniciar
+  if (!state.pom.seg || isNaN(state.pom.seg) || state.pom.seg <= 0) {
+    state.pom.seg = state.pom.fase==='foco' ? POM_FOCO : POM_PAUSA;
+  }
+  atualizarUIPom(); // Atualiza display antes de iniciar o intervalo
+  state.pom.timer = setInterval(tickPom, 1000);
 }
-
-function renderCelular(){
-  const hD=document.getElementById('celular-home-display'),hR=document.getElementById('celular-registrado-home');
-  const cF=document.getElementById('cav-celular-form'),cR=document.getElementById('cav-celular-registrado');
-  if(state.celular){
-    const txt=state.celular.horas+'h '+state.celular.minutos+'min';
-    const av=avalCelular(state.celular.horas,state.celular.minutos);
-    hD.style.display='none';hR.style.display='block';
-    hR.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;"><div><div style="font-weight:700;font-size:1.1rem;color:var(--primary);">📱 ${txt}</div><div style="font-size:0.78rem;color:var(--text-light);">${av.msg}</div></div><span class="badge ${av.badge}">${av.label}</span></div><button onclick="resetarCelular()" style="margin-top:10px;font-size:0.78rem;color:var(--text-light);background:none;border:none;cursor:pointer;text-decoration:underline;">Editar registro</button>`;
-    cF.style.display='none';cR.style.display='block';
-    cR.innerHTML=`<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);border-radius:10px;padding:12px;margin-top:10px;color:#A78BFA;font-size:0.85rem;">📱 <strong style="color:#E0E0FF;">${txt}</strong> — ${av.msg}</div><button onclick="resetarCelular()" style="margin-top:8px;font-size:0.75rem;color:#6B7280;background:none;border:none;cursor:pointer;text-decoration:underline;">Editar</button>`;
-  } else {hD.style.display='block';hR.style.display='none';cF.style.display='block';cR.style.display='none';}
-}
-
-function resetarCelular(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só é possível resetar o tempo de celular para o dia atual!'); return; }
-  state.celular=null;salvar();document.getElementById('celular-horas').value='';document.getElementById('celular-minutos').value='';renderCelular();
-}
-
-/* POMODORO */
-function togglePomodoro(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ O Modo Caverna só pode ser usado para o dia atual!'); return; }
-  state.pom.rodando?pausarPom():iniciarPom();
-}
-
-function iniciarPom(){
-  state.pom.rodando=true; document.getElementById('caverna-play-btn').textContent='⏸';
-  state.pom.timer=setInterval(tickPom,1000); atualizarUIPom();
-}
-
-function pausarPom(){
-  state.pom.rodando=false; document.getElementById('caverna-play-btn').textContent='▶';
+function pausarPom() {
+  state.pom.rodando=false;
+  document.getElementById('caverna-play-btn').textContent='▶';
   clearInterval(state.pom.timer);
-  salvar(); // Salva o estado do pomodoro ao pausar
+  salvar();
 }
-
-function tickPom(){
+function tickPom() {
   state.pom.seg--;
-  if(state.pom.seg<=0)concluirFase();
+  if (state.pom.seg <= 0) concluirFase();
   else atualizarUIPom();
 }
-
-function concluirFase(){
+function concluirFase() {
   clearInterval(state.pom.timer); state.pom.rodando=false;
-  if(state.pom.fase==='foco'){
+  if (state.pom.fase==='foco') {
     state.pom.sessoes++; state.pom.sessNoCiclo++; state.pom.minFoco+=20;
-    if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo! Faça uma pausa maior.');}
-    else showToast('✅ Sessão de foco concluída! Hora de pausar!');
-    state.pom.fase='pausa'; state.pom.seg=POM_PAUSA; state.pom.data=hojeISO(); salvar();
-  } else {state.pom.fase='foco'; state.pom.seg=POM_FOCO; showToast('🎯 Hora de focar!');}
-  document.getElementById('caverna-play-btn').textContent='▶'; atualizarUIPom(); playBeep();
+    if (state.pom.sessNoCiclo>=SESS_CICLO) {
+      state.pom.ciclos++; state.pom.sessNoCiclo=0; showToast('🏆 Ciclo completo! Faça uma pausa maior.');
+    } else {
+      showToast('✅ Sessão concluída! Hora de pausar!');
+    }
+    state.pom.fase='pausa'; state.pom.seg=POM_PAUSA;
+  } else {
+    state.pom.fase='foco'; state.pom.seg=POM_FOCO; showToast('🎯 Hora de focar!');
+  }
+  state.pom.data=hojeISO(); salvar();
+  document.getElementById('caverna-play-btn').textContent='▶';
+  atualizarUIPom(); playBeep();
+}
+function pularFase() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Modo Caverna só para hoje'); return; }
+  clearInterval(state.pom.timer); state.pom.rodando=false;
+  document.getElementById('caverna-play-btn').textContent='▶';
+  if (state.pom.fase==='foco') { state.pom.fase='pausa'; state.pom.seg=POM_PAUSA; }
+  else { state.pom.fase='foco'; state.pom.seg=POM_FOCO; }
+  atualizarUIPom(); salvar();
+}
+function resetarPomodoro() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Modo Caverna só para hoje'); return; }
+  clearInterval(state.pom.timer); state.pom.rodando=false;
+  state.pom.fase='foco'; state.pom.seg=POM_FOCO;
+  document.getElementById('caverna-play-btn').textContent='▶';
+  atualizarUIPom(); showToast('🔄 Timer reiniciado'); salvar();
 }
 
-function pularFase(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ O Modo Caverna só pode ser usado para o dia atual!'); return; }
-  clearInterval(state.pom.timer); state.pom.rodando=false; document.getElementById('caverna-play-btn').textContent='▶';
-  if(state.pom.fase==='foco'){state.pom.fase='pausa';state.pom.seg=POM_PAUSA;}else{state.pom.fase='foco';state.pom.seg=POM_FOCO;}
-  atualizarUIPom(); salvar(); // Salva o estado após pular fase
+// NOVO: adicionar ciclos manualmente
+function adicionarCiclosManuais() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só para hoje'); return; }
+  const val = parseInt(document.getElementById('ciclos-manual-input').value)||0;
+  if (val <= 0) { showToast('⚠️ Informe quantos ciclos!'); return; }
+  state.pom.ciclos += val;
+  state.pom.sessoes += val * SESS_CICLO;
+  state.pom.minFoco += val * SESS_CICLO * 20;
+  document.getElementById('ciclos-manual-input').value='';
+  salvar(); renderPom();
+  showToast(`✅ +${val} ciclo${val>1?'s':''} adicionado${val>1?'s':''}!`);
 }
 
-function resetarPomodoro(){
-  if (state.currentDate !== hojeISO()) { showToast('⚠️ O Modo Caverna só pode ser usado para o dia atual!'); return; }
-  clearInterval(state.pom.timer); state.pom.rodando=false; state.pom.fase='foco'; state.pom.seg=POM_FOCO;
-  document.getElementById('caverna-play-btn').textContent='▶'; atualizarUIPom(); showToast('🔄 Timer reiniciado');
-  salvar(); // Salva o estado após resetar
-}
+function atualizarUIPom() {
+  const p = state.pom;
+  // CORREÇÃO: garante valores numéricos válidos
+  const seg = (typeof p.seg === 'number' && !isNaN(p.seg) && p.seg >= 0) ? p.seg : (p.fase==='foco'?POM_FOCO:POM_PAUSA);
+  const total = p.fase==='foco' ? POM_FOCO : POM_PAUSA;
+  const prog = (total - seg) / total;
 
-function atualizarUIPom(){
-  const p=state.pom;
-  const total=p.fase==='foco'?POM_FOCO:POM_PAUSA;
-  const prog=(total-p.seg)/total;
-  document.getElementById('caverna-ring-fill').style.strokeDashoffset=CIRC*(1-prog);
-  document.getElementById('caverna-ring-fill').style.stroke=p.fase==='foco'?'#A78BFA':'#60A5FA';
-  const mm=Math.floor(p.seg/60),ss=p.seg%60;
-  document.getElementById('caverna-time-display').textContent=pad(mm)+':'+pad(ss);
-  document.getElementById('caverna-phase-label').textContent=p.fase==='foco'?'FOCO':'PAUSA';
-  const badge=document.getElementById('caverna-status-badge');
-  if(!p.rodando&&p.seg===(p.fase==='foco'?POM_FOCO:POM_PAUSA)){badge.textContent='⏸ Aguardando início';badge.className='caverna-status-badge status-idle';}
-  else if(p.fase==='foco'){badge.textContent=p.rodando?'🎯 Em foco':'⏸ Foco pausado';badge.className='caverna-status-badge status-foco';}
-  else{badge.textContent=p.rodando?'☕ Pausa ativa':'⏸ Pausa pausada';badge.className='caverna-status-badge status-pausa';}
+  document.getElementById('caverna-ring-fill').style.strokeDashoffset = CIRC*(1-prog);
+  document.getElementById('caverna-ring-fill').style.stroke = p.fase==='foco'?'#A78BFA':'#60A5FA';
+
+  // CORREÇÃO: usa Math.floor e Math.floor explicitamente — corrige NaN:NaN
+  const mm = Math.floor(seg / 60);
+  const ss = Math.floor(seg % 60);
+  document.getElementById('caverna-time-display').textContent = pad(mm)+':'+pad(ss);
+  document.getElementById('caverna-phase-label').textContent = p.fase==='foco'?'FOCO':'PAUSA';
+
+  const badge = document.getElementById('caverna-status-badge');
+  const isFull = seg === (p.fase==='foco'?POM_FOCO:POM_PAUSA);
+  if (!p.rodando && isFull) { badge.textContent='⏸ Aguardando início'; badge.className='caverna-status-badge status-idle'; }
+  else if (p.fase==='foco') { badge.textContent=p.rodando?'🎯 Em foco':'⏸ Foco pausado'; badge.className='caverna-status-badge status-foco'; }
+  else { badge.textContent=p.rodando?'☕ Pausa ativa':'⏸ Pausa pausada'; badge.className='caverna-status-badge status-pausa'; }
+
   renderPom();
 }
-
-function renderPom(){
+function renderPom() {
   const p=state.pom;
   document.getElementById('cav-sessoes').textContent=p.sessoes;
   const min=p.minFoco;
@@ -871,18 +1144,18 @@ function renderPom(){
   document.getElementById('cav-ciclos').textContent=p.ciclos;
   let html='';
   for(let i=0;i<SESS_CICLO;i++){
-    if(i<p.sessNoCiclo)html+=`<div class="session-dot completo">✓</div>`;
-    else if(i===p.sessNoCiclo&&p.fase==='foco')html+=`<div class="session-dot atual">${i+1}</div>`;
+    if(i<p.sessNoCiclo) html+=`<div class="session-dot completo">✓</div>`;
+    else if(i===p.sessNoCiclo&&p.fase==='foco'&&p.rodando) html+=`<div class="session-dot atual">${i+1}</div>`;
     else html+=`<div class="session-dot">${i+1}</div>`;
   }
   document.getElementById('session-dots').innerHTML=html;
 }
-
-function playBeep(){
+function playBeep() {
   try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=440;g.gain.setValueAtTime(0.3,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.6);o.start(ctx.currentTime);o.stop(ctx.currentTime+0.6);}catch(e){}
 }
 
-function abrirRelatorio(){
+// ========== RELATÓRIO DIÁRIO ==========
+function abrirRelatorio() {
   const now=new Date();
   document.getElementById('relatorio-date').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   let pts=0,max=0;
@@ -890,299 +1163,195 @@ function abrirRelatorio(){
   let sonoH='';
   if(sh){max+=25;const p=sh.horas>=7?25:sh.horas>=5?15:5;pts+=p;const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};sonoH=`<div class="rel-section" style="border-color:#1565C0;"><h3>😴 Sono</h3><div class="rel-row"><span>Horas dormidas</span><span class="rv">${sh.horas}h</span></div><div class="rel-row"><span>Qualidade</span><span class="rv">${qM[sh.qualidade]}</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${sh.horas>=7?'✅ Adequado':sh.horas>=5?'⚠️ Abaixo do ideal':'❌ Insuficiente'}</span></div></div>`;}
   else sonoH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>😴 Sono</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;
-  const tot=state.metas.length,dn=state.metas.filter(m=>m.done).length,pctM=tot>0?Math.round((dn/tot)*100):0;
+  const fixasDone=state.metasFixas.filter(m=>m.done).length;
+  const tot=state.metasFixas.length+state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).length;
+  const dn=fixasDone+state.metas.filter(m=>m.done&&(m.tipo==='diaria'||!m.tipo)).length;
+  const pctM=tot>0?Math.round((dn/tot)*100):0;
   max+=30;pts+=Math.round((pctM/100)*30);
-  const metasH=`<div class="rel-section" style="border-color:#2E7D32;"><h3>🎯 Metas do Dia</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn} de ${tot}</span></div><div class="rel-row"><span>Taxa de conclusão</span><span class="rv">${pctM}%</span></div>${state.metas.map(m=>`<div class="rel-row"><span>${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;
+  const todasMetas=[...state.metasFixas,...state.metas.filter(m=>m.tipo==='diaria'||!m.tipo)];
+  const metasH=`<div class="rel-section" style="border-color:#2E7D32;"><h3>🎯 Metas do Dia</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn} de ${tot}</span></div><div class="rel-row"><span>Taxa de conclusão</span><span class="rv">${pctM}%</span></div>${todasMetas.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'📌 ':''} ${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;
   const p=state.pom; max+=25; pts+=Math.min(25,Math.round((p.minFoco/80)*25));
-  const pomH=`<div class="rel-section" style="border-color:#7C3AED;"><h3>🏔️ Modo Caverna</h3><div class="rel-row"><span>Sessões de foco</span><span class="rv">${p.sessoes}</span></div><div class="rel-row"><span>Ciclos completos</span><span class="rv">${p.ciclos}</span></div><div class="rel-row"><span>Tempo total de foco</span><span class="rv">${p.minFoco}min</span></div></div>`;
+  const pomH=`<div class="rel-section" style="border-color:#7C3AED;"><h3>🏔️ Modo Caverna</h3><div class="rel-row"><span>Sessões de foco</span><span class="rv">${p.sessoes}</span></div><div class="rel-row"><span>Ciclos completos</span><span class="rv">${p.ciclos}</span></div><div class="rel-row"><span>Tempo de foco</span><span class="rv">${p.minFoco}min</span></div></div>`;
   max+=20;
   let celH='';
-  if(state.celular){const tm=state.celular.horas*60+state.celular.minutos;const pc=tm<=120?20:tm<=240?10:0;pts+=pc;const av=avalCelular(state.celular.horas,state.celular.minutos);celH=`<div class="rel-section" style="border-color:#F57F17;"><h3>📱 Tempo de Tela</h3><div class="rel-row"><span>Tempo usado</span><span class="rv">${state.celular.horas}h ${state.celular.minutos}min</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${av.msg}</span></div></div>`;}
+  if(state.celular){const tm=state.celular.horas*60+state.celular.minutos;pts+=tm<=120?20:tm<=240?10:0;const av=avalCelular(state.celular.horas,state.celular.minutos);celH=`<div class="rel-section" style="border-color:#F57F17;"><h3>📱 Tempo de Tela</h3><div class="rel-row"><span>Tempo usado</span><span class="rv">${state.celular.horas}h ${state.celular.minutos}min</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${av.msg}</span></div></div>`;}
   else celH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>📱 Tempo de Tela</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;
   let remH='';
   if(state.remedio)remH=`<div class="rel-section" style="border-color:#29B6F6;"><h3>💊 Medicação</h3><div class="rel-row"><span>Tomado às</span><span class="rv">${fmt(state.remedio.horaRegistro)}</span></div><div class="rel-row"><span>Status</span><span class="rv">✅ Registrado</span></div></div>`;
   else remH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>💊 Medicação</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;
+  let leitH='';
+  if(state.leitura)leitH=`<div class="rel-section" style="border-color:#6A1B9A;"><h3>📚 Leitura</h3><div class="rel-row"><span>Páginas lidas</span><span class="rv">${state.leitura.paginas} páginas</span></div></div>`;
   const nota=max>0?Math.round((pts/max)*100):0;
   const em=nota>=80?'🏆':nota>=60?'⭐':nota>=40?'💪':'🌱';
   const msg=nota>=80?'Dia excelente!':nota>=60?'Bom progresso!':nota>=40?'Continue tentando!':'Amanhã será melhor!';
-  document.getElementById('relatorio-body').innerHTML=`<div class="rel-avaliacao"><div style="font-size:2rem;">${em}</div><div class="rel-nota">${nota}</div><div class="rel-nota-label">/100 — ${msg}</div></div>${sonoH}${metasH}${pomH}${celH}${remH}`;
+  document.getElementById('relatorio-body').innerHTML=`<div class="rel-avaliacao"><div style="font-size:2rem;">${em}</div><div class="rel-nota">${nota}</div><div class="rel-nota-label">/100 — ${msg}</div></div>${sonoH}${metasH}${pomH}${celH}${remH}${leitH}`;
   document.getElementById('relatorio-modal').classList.add('show');
 }
-
 function fecharRelatorio(e){if(e.target.id==='relatorio-modal')document.getElementById('relatorio-modal').classList.remove('show');}
+
+// ========== RELATÓRIO MENSAL CLÍNICO (NOVO) ==========
+function gerarRelatorioMensal() {
+  const wrap = document.getElementById('relatorio-mensal-wrap');
+  const today = new Date();
+  const daysN = 30;
+  let sonoTotal=0,sonoN=0,sonoAbaixo=0;
+  let metasConcl=0,metasTotal=0,diasMeta=0;
+  let focoTotal=0,focoN=0;
+  let celularTotal=0,celularN=0;
+  let remedioN=0,leituraTotal=0,leituraN=0;
+  let diasDados=0;
+
+  for (let i=0;i<daysN;i++) {
+    const d=new Date(today); d.setDate(today.getDate()-i);
+    const iso=hojeISO(d);
+    const dd=state.dailyData[iso];
+    // Metas fixas: usa check de hoje apenas (não histórico)
+    // Usa o histórico de metas para dias passados
+    const histDia=state.metasHist.find(h=>h.data===iso);
+    const metaDia=dd ? (dd.metas||[]) : [];
+    const fixaDia=dd ? (dd.metasFixas||[]) : [];
+
+    if (dd || histDia) diasDados++;
+
+    if (dd) {
+      if (dd.sono&&dd.sono.length>0) { sonoTotal+=dd.sono[0].horas; sonoN++; if(dd.sono[0].horas<7)sonoAbaixo++; }
+      const allMetas=[...metaDia,...fixaDia];
+      if (allMetas.length>0) { metasConcl+=allMetas.filter(m=>m.done).length; metasTotal+=allMetas.length; diasMeta++; }
+      if (dd.pom&&dd.pom.minFoco>0) { focoTotal+=dd.pom.minFoco; focoN++; }
+      if (dd.celular) { celularTotal+=dd.celular.horas*60+dd.celular.minutos; celularN++; }
+      if (dd.remedio) remedioN++;
+      if (dd.leitura) { leituraTotal+=dd.leitura.paginas; leituraN++; }
+    }
+  }
+
+  if (diasDados===0) {
+    wrap.innerHTML=`<div class="rel-clinico"><div class="rel-clinico-header"><h4>📋 Relatório Mensal — TDAH Care</h4><p>Dados insuficientes</p></div><div class="rel-clinico-body"><p style="color:var(--text-light);font-size:0.85rem;padding:8px;">Registre dados diariamente para gerar o relatório mensal.</p></div></div>`;
+    return;
+  }
+
+  const avgSono = sonoN>0 ? (sonoTotal/sonoN).toFixed(1) : null;
+  const pctMetas = metasTotal>0 ? Math.round((metasConcl/metasTotal)*100) : null;
+  const avgFoco = focoN>0 ? Math.round(focoTotal/focoN) : null;
+  const avgCelular = celularN>0 ? Math.round(celularTotal/celularN) : null;
+  const pctRemedio = Math.round((remedioN/diasDados)*100);
+  const avgLeitura = leituraN>0 ? Math.round(leituraTotal/leituraN) : null;
+  const dataRef = today.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+
+  // Parecer clínico automático
+  let pareceres=[];
+  if(avgSono!==null){
+    if(avgSono<6) pareceres.push('O padrão de sono apresenta-se <strong>abaixo do limiar terapêutico recomendado</strong> (7–9h), podendo comprometer a eficácia do tratamento farmacológico e agravar sintomas de desatenção.');
+    else if(avgSono<7) pareceres.push('O tempo médio de sono está <strong>limítrofe ao adequado</strong>. Recomenda-se buscar consistência nos horários para otimizar a resposta ao medicamento.');
+    else pareceres.push('O padrão de sono encontra-se <strong>dentro dos parâmetros recomendados</strong> para potencialização do tratamento do TDAH.');
+  }
+  if(pctMetas!==null){
+    if(pctMetas<50) pareceres.push('A taxa de conclusão de metas indica <strong>dificuldade persistente na execução de planejamento</strong>. Considere estratégias de divisão de tarefas ou ajuste de metas com o profissional de saúde.');
+    else if(pctMetas<80) pareceres.push('A taxa de conclusão de metas é <strong>moderada</strong>, com espaço para melhora. O reforço positivo e a técnica de body doubling podem ser benéficos.');
+    else pareceres.push('A taxa de conclusão de metas é <strong>satisfatória</strong>, indicando boa capacidade de planejamento e execução no período analisado.');
+  }
+  if(pctRemedio<70) pareceres.push('A <strong>adesão ao tratamento farmacológico está abaixo do recomendado</strong>. A regularidade na administração do medicamento é fundamental para resultados terapêuticos consistentes.');
+  else pareceres.push('A <strong>adesão farmacológica apresenta-se adequada</strong> no período, o que favorece a estabilidade do tratamento.');
+
+  const row=(lbl,val,status,statusTxt)=>`<div class="row"><span class="lbl">${lbl}</span><span class="val">${val}</span><span class="status ${status}">${statusTxt}</span></div>`;
+
+  const sonoStatus=avgSono===null?null:avgSono>=7?'status-norm':avgSono>=6?'status-atenc':'status-criti';
+  const metasStatus=pctMetas===null?null:pctMetas>=70?'status-norm':pctMetas>=50?'status-atenc':'status-criti';
+  const focoStatus=avgFoco===null?null:avgFoco>=40?'status-norm':avgFoco>=20?'status-atenc':'status-criti';
+  const celStatus=avgCelular===null?null:avgCelular<=180?'status-norm':avgCelular<=300?'status-atenc':'status-criti';
+  const remStatus=pctRemedio>=80?'status-norm':pctRemedio>=60?'status-atenc':'status-criti';
+
+  wrap.innerHTML=`
+    <div class="rel-clinico">
+      <div class="rel-clinico-header">
+        <h4>📋 Relatório Clínico — TDAH Care</h4>
+        <p>Período de referência: ${dataRef} · ${diasDados} dias com registros</p>
+      </div>
+      <div class="rel-clinico-body">
+        <p style="font-size:0.75rem;color:var(--text-light);margin-bottom:10px;font-style:italic;">Análise comportamental e de adesão terapêutica dos últimos 30 dias.</p>
+        ${avgSono!==null?row('Média de sono diário', avgSono+'h', sonoStatus, avgSono>=7?'Normal':avgSono>=6?'Atenção':'Crítico'):''}
+        ${sonoN>0?row('Noites abaixo de 7h', sonoAbaixo+' de '+sonoN, sonoAbaixo>sonoN/2?'status-criti':'status-norm', sonoAbaixo>sonoN/2?'Frequente':'Raro'):''}
+        ${pctMetas!==null?row('Taxa de conclusão de metas', pctMetas+'%', metasStatus, pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
+        ${avgFoco!==null?row('Média de foco diário (Caverna)', avgFoco+'min', focoStatus, avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}
+        ${avgCelular!==null?row('Média de tempo de tela', Math.floor(avgCelular/60)+'h '+avgCelular%60+'min', celStatus, avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
+        ${row('Adesão ao tratamento farmacológico', pctRemedio+'%', remStatus, pctRemedio>=80?'Adequada':pctRemedio>=60?'Irregular':'Baixa')}
+        ${avgLeitura!==null?row('Média de leitura diária', avgLeitura+' páginas', avgLeitura>=10?'status-norm':'status-atenc', avgLeitura>=10?'Regular':'Abaixo da meta'):''}
+      </div>
+    </div>
+    <div class="rel-parecer">
+      <strong>📝 Parecer clínico-comportamental:</strong><br><br>
+      ${pareceres.join('<br><br>')}
+      <br><br>
+      <em style="font-size:0.78rem;color:#90A4AE;">⚠️ Este relatório é gerado automaticamente com base nos dados registrados e tem caráter informativo. Não substitui avaliação profissional.</em>
+    </div>
+  `;
+}
+
+// ========== CALENDÁRIO ==========
+function renderCalendar(date) {
+  const yr=date.getFullYear(), mo=date.getMonth();
+  document.getElementById('current-month-year').textContent=date.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+  const firstDay=new Date(yr,mo,1).getDay();
+  const daysInMonth=new Date(yr,mo+1,0).getDate();
+  const prevLast=new Date(yr,mo,0).getDate();
+  let html='';
+  for(let i=firstDay-1;i>=0;i--) html+=`<div class="calendar-day inactive">${prevLast-i}</div>`;
+  for(let i=1;i<=daysInMonth;i++){
+    const d=new Date(yr,mo,i);
+    const iso=hojeISO(d);
+    const isToday=iso===hojeISO();
+    const isSel=iso===state.currentDate&&state.currentDate!==hojeISO();
+    const dd=state.dailyData[iso];
+    let met='';
+    if(dd){
+      const s=dd.sono&&dd.sono.length>0?dd.sono[0].horas:null;
+      const mTot=(dd.metas||[]).length+(dd.metasFixas||[]).length;
+      const mDone=(dd.metas||[]).filter(m=>m.done).length+(dd.metasFixas||[]).filter(m=>m.done).length;
+      const pf=dd.pom?dd.pom.minFoco:0;
+      if(s) met+=`<span class="${s>=7?'m-ok':s>=5?'m-warn':'m-bad'}">😴${s}h</span>`;
+      if(mTot>0) met+=`<span class="${mDone/mTot>=0.8?'m-ok':mDone/mTot>=0.5?'m-warn':'m-bad'}">✅${mDone}/${mTot}</span>`;
+      if(pf>0) met+=`<span class="${pf>=40?'m-ok':'m-warn'}">🏔️${pf}m</span>`;
+    }
+    html+=`<div class="calendar-day${isToday?' today':''}${isSel?' selected':''}" onclick="selectDay('${iso}',this)">${i}${met?`<div class="calendar-day-metrics">${met}</div>`:''}</div>`;
+  }
+  const rem=42-(firstDay+daysInMonth);
+  for(let i=1;i<=rem;i++) html+=`<div class="calendar-day inactive">${i}</div>`;
+  document.getElementById('calendar-grid-days').innerHTML=html;
+}
+function changeMonth(d){
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth()+d);
+  renderCalendar(currentCalendarDate);
+}
+function selectDay(iso,el){
+  document.querySelectorAll('.calendar-day').forEach(d=>d.classList.remove('selected'));
+  el.classList.add('selected');
+  carregarDia(iso);
+  mostrarSumarioDia(iso);
+}
+function mostrarSumarioDia(iso){
+  const card=document.getElementById('daily-summary-card');
+  const dd=state.dailyData[iso];
+  const dataFmt=new Date(iso+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  if(!dd){card.innerHTML=`<div class="daily-sum-card"><div class="card-title">Sumário — ${dataFmt}</div><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum dado registrado para este dia.</p></div>`;card.style.display='block';return;}
+  const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};
+  let html=`<div class="daily-sum-card"><div class="card-title">Sumário — ${dataFmt}</div>`;
+  const s=dd.sono&&dd.sono.length>0?dd.sono[0]:null;
+  if(s) html+=`<div class="rel-section" style="border-color:#1565C0"><h3>😴 Sono</h3><div class="rel-row"><span>Horas</span><span class="rv">${s.horas}h</span></div><div class="rel-row"><span>Qualidade</span><span class="rv">${qM[s.qualidade]}</span></div></div>`;
+  const mAll=[...(dd.metasFixas||[]),...(dd.metas||[])];
+  if(mAll.length>0){const dn=mAll.filter(m=>m.done).length;html+=`<div class="rel-section" style="border-color:#2E7D32"><h3>🎯 Metas</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn}/${mAll.length}</span></div>${mAll.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'📌 ':''}${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;}
+  if(dd.pom&&(dd.pom.sessoes>0||dd.pom.ciclos>0))html+=`<div class="rel-section" style="border-color:#7C3AED"><h3>🏔️ Caverna</h3><div class="rel-row"><span>Sessões</span><span class="rv">${dd.pom.sessoes}</span></div><div class="rel-row"><span>Ciclos</span><span class="rv">${dd.pom.ciclos}</span></div><div class="rel-row"><span>Foco total</span><span class="rv">${dd.pom.minFoco}min</span></div></div>`;
+  if(dd.celular)html+=`<div class="rel-section" style="border-color:#F57F17"><h3>📱 Tela</h3><div class="rel-row"><span>Tempo</span><span class="rv">${dd.celular.horas}h ${dd.celular.minutos}min</span></div></div>`;
+  if(dd.leitura)html+=`<div class="rel-section" style="border-color:#6A1B9A"><h3>📚 Leitura</h3><div class="rel-row"><span>Páginas</span><span class="rv">${dd.leitura.paginas}</span></div></div>`;
+  html+='</div>';
+  card.innerHTML=html; card.style.display='block';
+}
+
 function switchInfo(tab,btn){
   document.querySelectorAll('.info-content').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('.info-tab').forEach(b=>b.classList.remove('active'));
   document.getElementById('info-'+tab).classList.add('active');
   btn.classList.add('active');
-  btn.dataset.tab = tab; // Adiciona data-tab para identificar a aba ativa
-
-  if (tab === 'mensal') {
-    gerarRelatorioMensal();
-  }
+  if(tab==='mensal') gerarRelatorioMensal();
 }
-
-// --- Novas Funções para o Calendário ---
-
-function renderCalendar(date) {
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  document.getElementById('current-month-year').textContent = date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-
-  const firstDayOfMonth = new Date(year, month, 1);
-  const lastDayOfMonth = new Date(year, month + 1, 0);
-  const daysInMonth = lastDayOfMonth.getDate();
-  const startDayOfWeek = firstDayOfMonth.getDay(); // 0 = Sunday, 6 = Saturday
-
-  let calendarHtml = '';
-
-  // Dias do mês anterior
-  const prevMonthLastDay = new Date(year, month, 0).getDate();
-  for (let i = startDayOfWeek - 1; i >= 0; i--) {
-    calendarHtml += `<div class="calendar-day inactive">${prevMonthLastDay - i}</div>`;
-  }
-
-  // Dias do mês atual
-  for (let i = 1; i <= daysInMonth; i++) {
-    const currentDay = new Date(year, month, i);
-    const dayISO = hojeISO(currentDay);
-    const isToday = dayISO === hojeISO();
-    const isSelected = dayISO === state.currentDate; // Verifica se é o dia atualmente carregado
-    const dayData = state.dailyData[dayISO];
-
-    let metricsHtml = '';
-    if (dayData) {
-      const sono = dayData.sono && dayData.sono.length > 0 ? dayData.sono[0].horas : null;
-      const metasDone = dayData.metas ? dayData.metas.filter(m => m.done).length : 0;
-      const metasTotal = dayData.metas ? dayData.metas.length : 0;
-      const pomFoco = dayData.pom ? dayData.pom.minFoco : 0;
-
-      let sonoClass = '';
-      if (sono) {
-        if (sono >= 7) sonoClass = 'metric-good';
-        else if (sono >= 5) sonoClass = 'metric-warn';
-        else sonoClass = 'metric-bad';
-      }
-      let metasClass = '';
-      if (metasTotal > 0) {
-        const pct = (metasDone / metasTotal) * 100;
-        if (pct >= 80) metasClass = 'metric-good';
-        else if (pct >= 50) metasClass = 'metric-warn';
-        else metasClass = 'metric-bad';
-      }
-      let pomClass = '';
-      if (pomFoco > 0) {
-        if (pomFoco >= 60) pomClass = 'metric-good'; // 1h de foco
-        else if (pomFoco >= 20) pomClass = 'metric-warn'; // 1 sessão
-        else pomClass = 'metric-bad';
-      }
-
-      metricsHtml = `
-        <div class="calendar-day-metrics">
-          ${sono ? `<span class="${sonoClass}">😴 ${sono}h</span>` : ''}
-          ${metasTotal > 0 ? `<span class="${metasClass}">✅ ${metasDone}/${metasTotal}</span>` : ''}
-          ${pomFoco > 0 ? `<span class="${pomClass}">🏔️ ${pomFoco}m</span>` : ''}
-        </div>
-      `;
-    }
-
-    calendarHtml += `
-      <div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" 
-           onclick="selectCalendarDay('${dayISO}', this)">
-        ${i}
-        ${metricsHtml}
-      </div>
-    `;
-  }
-
-  // Dias do próximo mês (para preencher a última semana)
-  const totalDaysDisplayed = startDayOfWeek + daysInMonth;
-  const remainingCells = 42 - totalDaysDisplayed; // 6 semanas * 7 dias
-  for (let i = 1; i <= remainingCells; i++) {
-    calendarHtml += `<div class="calendar-day inactive">${i}</div>`;
-  }
-
-  document.getElementById('calendar-grid-days').innerHTML = calendarHtml;
-}
-
-function changeMonth(delta) {
-  currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
-  renderCalendar(currentCalendarDate);
-}
-
-function selectCalendarDay(dayISO, element) {
-  // Remove a seleção de todos os dias
-  document.querySelectorAll('.calendar-day').forEach(day => day.classList.remove('selected'));
-  // Adiciona a seleção ao dia clicado
-  element.classList.add('selected');
-
-  // Carrega e exibe os dados do dia selecionado
-  loadDailyMetrics(dayISO);
-  displayDailySummary(dayISO);
-}
-
-function displayDailySummary(dayISO) {
-  const data = state.dailyData[dayISO];
-  const summaryCard = document.getElementById('daily-summary-card');
-  const summaryContent = document.getElementById('daily-summary-content');
-  const summaryDate = document.getElementById('summary-date');
-
-  summaryDate.textContent = new Date(dayISO + 'T12:00:00').toLocaleDateString('pt-BR', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-  if (!data) {
-    summaryContent.innerHTML = '<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum dado registrado para este dia.</p>';
-    summaryCard.style.display = 'block';
-    return;
-  }
-
-  let html = '';
-
-  // Sono
-  const sono = data.sono && data.sono.length > 0 ? data.sono[0] : null;
-  if (sono) {
-    const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};
-    html += `<div class="rel-section" style="border-color:#1565C0;"><h3>😴 Sono</h3>
-      <div class="rel-row"><span>Horas dormidas</span><span class="rv">${sono.horas}h</span></div>
-      <div class="rel-row"><span>Qualidade</span><span class="rv">${qM[sono.qualidade]}</span></div>
-      <div class="rel-row"><span>Observações</span><span class="rv">${sono.obs || 'N/A'}</span></div>
-    </div>`;
-  }
-
-  // Metas
-  const metas = data.metas || [];
-  const metasDone = metas.filter(m => m.done).length;
-  const metasTotal = metas.length;
-  const pctMetas = metasTotal > 0 ? Math.round((metasDone / metasTotal) * 100) : 0;
-  html += `<div class="rel-section" style="border-color:#2E7D32;"><h3>🎯 Metas</h3>
-    <div class="rel-row"><span>Concluídas</span><span class="rv">${metasDone} de ${metasTotal}</span></div>
-    <div class="rel-row"><span>Taxa de conclusão</span><span class="rv">${pctMetas}%</span></div>
-    ${metas.map(m => `<div class="rel-row"><span>${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}
-  </div>`;
-
-  // Pomodoro
-  const pom = data.pom || {};
-  html += `<div class="rel-section" style="border-color:#7C3AED;"><h3>🏔️ Modo Caverna</h3>
-    <div class="rel-row"><span>Sessões de foco</span><span class="rv">${pom.sessoes || 0}</span></div>
-    <div class="rel-row"><span>Ciclos completos</span><span class="rv">${pom.ciclos || 0}</span></div>
-    <div class="rel-row"><span>Tempo total de foco</span><span class="rv">${pom.minFoco || 0}min</span></div>
-  </div>`;
-
-  // Celular
-  const celular = data.celular;
-  if (celular) {
-    const av = avalCelular(celular.horas, celular.minutos);
-    html += `<div class="rel-section" style="border-color:#F57F17;"><h3>📱 Tempo de Tela</h3>
-      <div class="rel-row"><span>Tempo usado</span><span class="rv">${celular.horas}h ${celular.minutos}min</span></div>
-      <div class="rel-row"><span>Avaliação</span><span class="rv">${av.msg}</span></div>
-    </div>`;
-  }
-
-  // Remédio
-  const remedio = data.remedio;
-  if (remedio) {
-    html += `<div class="rel-section" style="border-color:#29B6F6;"><h3>💊 Medicação</h3>
-      <div class="rel-row"><span>Tomado às</span><span class="rv">${fmt(remedio.horaRegistro)}</span></div>
-      <div class="rel-row"><span>Status</span><span class="rv">✅ Registrado</span></div>
-    </div>`;
-  }
-
-  summaryContent.innerHTML = html;
-  summaryCard.style.display = 'block';
-}
-
-// --- Nova Função para o Relatório Mensal ---
-
-function gerarRelatorioMensal() {
-  const relatorioContent = document.getElementById('relatorio-mensal-content');
-  const today = new Date();
-  const daysToAnalyze = 30;
-  let totalSonoHoras = 0;
-  let sonoCount = 0;
-  let totalMetasConcluidas = 0;
-  let totalMetasCriadas = 0;
-  let totalFocoMinutos = 0;
-  let focoCount = 0;
-  let totalCelularMinutos = 0;
-  let celularCount = 0;
-  let remedioRegistradoCount = 0;
-  let diasComDados = 0;
-
-  for (let i = 0; i < daysToAnalyze; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDate() - i);
-    const dayISO = hojeISO(date);
-    const data = state.dailyData[dayISO];
-
-    if (data) {
-      diasComDados++;
-      // Sono
-      if (data.sono && data.sono.length > 0) {
-        totalSonoHoras += data.sono[0].horas;
-        sonoCount++;
-      }
-      // Metas
-      if (data.metas && data.metas.length > 0) {
-        totalMetasConcluidas += data.metas.filter(m => m.done).length;
-        totalMetasCriadas += data.metas.length;
-      }
-      // Pomodoro
-      if (data.pom && data.pom.minFoco) {
-        totalFocoMinutos += data.pom.minFoco;
-        focoCount++;
-      }
-      // Celular
-      if (data.celular) {
-        totalCelularMinutos += (data.celular.horas * 60) + data.celular.minutos;
-        celularCount++;
-      }
-      // Remédio
-      if (data.remedio) {
-        remedioRegistradoCount++;
-      }
-    }
-  }
-
-  if (diasComDados === 0) {
-    relatorioContent.innerHTML = '<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum dado disponível para gerar o relatório mensal.</p>';
-    return;
-  }
-
-  const avgSono = sonoCount > 0 ? (totalSonoHoras / sonoCount).toFixed(1) : 'N/A';
-  const pctMetas = totalMetasCriadas > 0 ? ((totalMetasConcluidas / totalMetasCriadas) * 100).toFixed(0) : 'N/A';
-  const avgFoco = focoCount > 0 ? (totalFocoMinutos / focoCount).toFixed(0) : 'N/A';
-  const avgCelular = celularCount > 0 ? (totalCelularMinutos / celularCount).toFixed(0) : 'N/A';
-  const pctRemedio = ((remedioRegistradoCount / diasComDados) * 100).toFixed(0);
-
-  let html = `
-    <div class="summary-item">
-      <span class="summary-label">Dias com dados</span>
-      <span class="summary-value">${diasComDados} de ${daysToAnalyze}</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-label">Média de Sono</span>
-      <span class="summary-value">${avgSono}h ${avgSono !== 'N/A' ? (avgSono >= 7 ? '✅' : '⚠️') : ''}</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-label">Metas Concluídas</span>
-      <span class="summary-value">${pctMetas}% ${pctMetas !== 'N/A' ? (pctMetas >= 70 ? '✅' : '⚠️') : ''}</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-label">Média de Foco (Caverna)</span>
-      <span class="summary-value">${avgFoco}min ${avgFoco !== 'N/A' ? (avgFoco >= 60 ? '✅' : '⚠️') : ''}</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-label">Média de Tempo de Tela</span>
-      <span class="summary-value">${Math.floor(avgCelular / 60)}h ${avgCelular % 60}min ${avgCelular !== 'N/A' ? (avgCelular <= 180 ? '✅' : '⚠️') : ''}</span>
-    </div>
-    <div class="summary-item">
-      <span class="summary-label">Frequência Medicação</span>
-      <span class="summary-value">${pctRemedio}% ${pctRemedio >= 80 ? '✅' : '⚠️'}</span>
-    </div>
-  `;
-
-  relatorioContent.innerHTML = html;
-}
-
 
 init();
 </script>
