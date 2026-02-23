@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TDAH Care</title>
+<title>Clean TDAH</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -94,6 +94,13 @@ textarea { resize: none; height: 80px; }
 .meta-item { display: flex; align-items: center; gap: 12px; padding: 14px; background: #F8FAFF; border-radius: 12px; margin-bottom: 10px; border: 2px solid transparent; transition: all 0.2s; cursor: pointer; }
 .meta-item.done { background: #E8F5E9; border-color: #A5D6A7; }
 .meta-item.fixa { border-left: 3px solid #7986CB; }
+.prio-tag { font-size: 0.65rem; padding: 2px 7px; border-radius: 8px; font-weight: 700; margin-left: 4px; flex-shrink: 0; }
+.prio-alta { background: #FFEBEE; color: #C62828; }
+.prio-media { background: #FFF8E1; color: #F57F17; }
+.prio-baixa { background: #E8F5E9; color: #2E7D32; }
+.meta-item.prio-alta-item { border-top: 2px solid #EF9A9A; }
+.meta-item.prio-media-item { border-top: 2px solid #FFE082; }
+.meta-item.prio-baixa-item { border-top: 2px solid #A5D6A7; }
 .meta-check { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #B0BEC5; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
 .meta-item.done .meta-check { background: var(--success); border-color: var(--success); color: white; }
 .meta-text { flex: 1; }
@@ -356,7 +363,15 @@ textarea { resize: none; height: 80px; }
       </select>
       <button onclick="adicionarMeta()">+</button>
     </div>
-    <p style="font-size:0.75rem;color:var(--text-light);">📌 Metas fixas se repetem todo dia. 📅 Metas diárias somem à meia-noite.</p>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+      <label style="font-size:0.78rem;margin-bottom:0;font-weight:500;color:var(--text-light);white-space:nowrap;">Prioridade:</label>
+      <select id="nova-meta-prio" style="padding:6px 10px;font-size:0.78rem;border-radius:8px;border:2px solid #E3EAF2;background:#F8FAFF;flex:1;">
+        <option value="alta">🔴 Alta</option>
+        <option value="media" selected>🟡 Média</option>
+        <option value="baixa">🟢 Baixa</option>
+      </select>
+    </div>
+    <p style="font-size:0.75rem;color:var(--text-light);">📌 Fixas se repetem todo dia. 📅 Diárias somem à meia-noite. Ordenadas por prioridade.</p>
   </div>
   <div class="card">
     <div class="card-title">📋 Metas de hoje</div>
@@ -856,43 +871,50 @@ function renderHistSono() {
 // ========== METAS (FIXAS + DIÁRIAS) ==========
 function renderMetas() {
   const c = document.getElementById('lista-metas');
-  // Metas fixas: vêm do state.metasFixas (global)
-  // Metas diárias: vêm do state.metas (filtradas por tipo diaria ou sem tipo)
-  const fixas = state.metasFixas;
-  const diarias = state.metas.filter(m => m.tipo==='diaria' || !m.tipo);
+  const prioOrder = {alta:0, media:1, baixa:2};
+  const prioLabel = {alta:'🔴 Alta', media:'🟡 Média', baixa:'🟢 Baixa'};
+  const prioClass = {alta:'prio-alta', media:'prio-media', baixa:'prio-baixa'};
+  const prioItemClass = {alta:'prio-alta-item', media:'prio-media-item', baixa:'prio-baixa-item'};
+
+  // Ordena por: pendentes primeiro, depois por prioridade
+  const sortFn = (a,b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    return (prioOrder[a.prioridade||'media']||1) - (prioOrder[b.prioridade||'media']||1);
+  };
+
+  const fixas = [...state.metasFixas].sort(sortFn);
+  const diarias = state.metas.filter(m => m.tipo==='diaria' || !m.tipo).sort(sortFn);
+
+  const mkMeta = (m, isFixa) => {
+    const prio = m.prioridade || 'media';
+    const toggleFn = isFixa ? `toggleMetaFixa('${m.id}')` : `toggleMeta(${m.id})`;
+    const removeFn = isFixa ? `removerMetaFixa('${m.id}')` : `removerMeta(${m.id})`;
+    return `
+      <div class="meta-item ${isFixa?'fixa':''} ${prioItemClass[prio]} ${m.done?'done':''}" onclick="${toggleFn}">
+        <div class="meta-check">${m.done?'✓':''}</div>
+        <div class="meta-text">
+          <div class="meta-title" style="${m.done?'text-decoration:line-through;color:var(--text-light)':''}">
+            ${m.texto}
+            <span class="prio-tag ${prioClass[prio]}">${prioLabel[prio]}</span>
+          </div>
+          <div class="meta-sub">${m.done?'Concluída! 🎉':'Toque para concluir'}</div>
+        </div>
+        <div onclick="event.stopPropagation();${removeFn}" style="font-size:1.1rem;color:#B0BEC5;padding:4px;">✕</div>
+      </div>`;
+  };
 
   let html = '';
-
   if (fixas.length) {
     html += `<div class="meta-secao-titulo">📌 Metas Fixas <span class="tag tag-fixa">se repetem todo dia</span></div>`;
-    html += fixas.map(m=>`
-      <div class="meta-item fixa ${m.done?'done':''}" onclick="toggleMetaFixa('${m.id}')">
-        <div class="meta-check">${m.done?'✓':''}</div>
-        <div class="meta-text">
-          <div class="meta-title" style="${m.done?'text-decoration:line-through;color:var(--text-light)':''}">${m.texto}</div>
-          <div class="meta-sub">${m.done?'Concluída! 🎉':'Toque para concluir'}</div>
-        </div>
-        <div onclick="event.stopPropagation();removerMetaFixa('${m.id}')" style="font-size:1.1rem;color:#B0BEC5;padding:4px;">✕</div>
-      </div>`).join('');
+    html += fixas.map(m => mkMeta(m, true)).join('');
   }
-
   if (diarias.length) {
     html += `<div class="meta-secao-titulo">📅 Metas Diárias <span class="tag tag-diaria">somem amanhã</span></div>`;
-    html += diarias.map(m=>`
-      <div class="meta-item ${m.done?'done':''}" onclick="toggleMeta(${m.id})">
-        <div class="meta-check">${m.done?'✓':''}</div>
-        <div class="meta-text">
-          <div class="meta-title" style="${m.done?'text-decoration:line-through;color:var(--text-light)':''}">${m.texto}</div>
-          <div class="meta-sub">${m.done?'Concluída! 🎉':'Toque para concluir'}</div>
-        </div>
-        <div onclick="event.stopPropagation();removerMeta(${m.id})" style="font-size:1.1rem;color:#B0BEC5;padding:4px;">✕</div>
-      </div>`).join('');
+    html += diarias.map(m => mkMeta(m, false)).join('');
   }
-
   if (!fixas.length && !diarias.length) {
     html = '<p style="color:var(--text-light);text-align:center;font-size:0.85rem;padding:16px;">Nenhuma meta. Adicione acima!</p>';
   }
-
   c.innerHTML = html;
   updateMetaProg();
 }
@@ -908,15 +930,17 @@ function toggleMetaFixa(id) {
 function adicionarMeta() {
   const inp = document.getElementById('nova-meta-input');
   const tipo = document.getElementById('nova-meta-tipo').value;
+  const prio = document.getElementById('nova-meta-prio').value;
   const txt = inp.value.trim();
   if (!txt) { showToast('⚠️ Digite uma meta!'); return; }
   if (tipo === 'fixa') {
-    state.metasFixas.push({id:'f'+Date.now(), texto:txt, done:false, tipo:'fixa'});
+    state.metasFixas.push({id:'f'+Date.now(), texto:txt, done:false, tipo:'fixa', prioridade:prio});
   } else {
-    state.metas.push({id:Date.now(), texto:txt, done:false, tipo:'diaria'});
+    state.metas.push({id:Date.now(), texto:txt, done:false, tipo:'diaria', prioridade:prio});
   }
   inp.value=''; salvar(); renderMetas(); updateStats();
-  showToast(tipo==='fixa'?'📌 Meta fixa adicionada!':'✅ Meta diária adicionada!');
+  const prioEmoji = prio==='alta'?'🔴':prio==='media'?'🟡':'🟢';
+  showToast(tipo==='fixa'?`📌 Meta fixa ${prioEmoji} adicionada!`:`✅ Meta diária ${prioEmoji} adicionada!`);
 }
 function removerMeta(id) {
   state.metas=state.metas.filter(m=>m.id!==id); salvar(); renderMetas(); updateStats(); showToast('🗑️ Meta removida');
@@ -1158,33 +1182,114 @@ function playBeep() {
 function abrirRelatorio() {
   const now=new Date();
   document.getElementById('relatorio-date').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  let pts=0,max=0;
+
+  // Sistema de pontos com detalhamento
+  let pts=0, max=0;
+  const pontosDetalhe = [];
+  const dicas = [];
+
+  // SONO (0-25pts)
   const sh=state.sono.find(s=>s.data===hoje());
   let sonoH='';
-  if(sh){max+=25;const p=sh.horas>=7?25:sh.horas>=5?15:5;pts+=p;const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};sonoH=`<div class="rel-section" style="border-color:#1565C0;"><h3>😴 Sono</h3><div class="rel-row"><span>Horas dormidas</span><span class="rv">${sh.horas}h</span></div><div class="rel-row"><span>Qualidade</span><span class="rv">${qM[sh.qualidade]}</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${sh.horas>=7?'✅ Adequado':sh.horas>=5?'⚠️ Abaixo do ideal':'❌ Insuficiente'}</span></div></div>`;}
-  else sonoH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>😴 Sono</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;
+  max+=25;
+  if(sh){
+    const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};
+    const p=sh.horas>=7?25:sh.horas>=5?15:5; pts+=p;
+    pontosDetalhe.push({label:'😴 Sono', pts:p, max:25, ok:sh.horas>=7});
+    if(sh.horas<7) dicas.push(`Tente dormir ${7-sh.horas<=1?'mais 1 hora':'pelo menos 7h'} — sono adequado potencializa o foco e o efeito do tratamento.`);
+    sonoH=`<div class="rel-section" style="border-color:#1565C0;"><h3>😴 Sono</h3><div class="rel-row"><span>Horas dormidas</span><span class="rv">${sh.horas}h</span></div><div class="rel-row"><span>Qualidade</span><span class="rv">${qM[sh.qualidade]}</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${sh.horas>=7?'✅ Adequado':sh.horas>=5?'⚠️ Abaixo do ideal':'❌ Insuficiente'}</span></div></div>`;
+  } else {
+    pontosDetalhe.push({label:'😴 Sono', pts:0, max:25, ok:false});
+    dicas.push('Registre seu sono diariamente — é um dos dados mais importantes para acompanhar o TDAH.');
+    sonoH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>😴 Sono</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;
+  }
+
+  // METAS (0-30pts)
   const fixasDone=state.metasFixas.filter(m=>m.done).length;
   const tot=state.metasFixas.length+state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).length;
   const dn=fixasDone+state.metas.filter(m=>m.done&&(m.tipo==='diaria'||!m.tipo)).length;
   const pctM=tot>0?Math.round((dn/tot)*100):0;
-  max+=30;pts+=Math.round((pctM/100)*30);
+  max+=30; const ptsMetas=Math.round((pctM/100)*30); pts+=ptsMetas;
+  pontosDetalhe.push({label:'🎯 Metas', pts:ptsMetas, max:30, ok:pctM>=70});
+  if(pctM<70 && tot>0) {
+    const pendentes=tot-dn;
+    dicas.push(`Ficaram ${pendentes} meta${pendentes>1?'s':''} pendente${pendentes>1?'s':''}. Tente começar pelas de 🔴 alta prioridade — dividir em etapas menores pode ajudar.`);
+  }
   const todasMetas=[...state.metasFixas,...state.metas.filter(m=>m.tipo==='diaria'||!m.tipo)];
-  const metasH=`<div class="rel-section" style="border-color:#2E7D32;"><h3>🎯 Metas do Dia</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn} de ${tot}</span></div><div class="rel-row"><span>Taxa de conclusão</span><span class="rv">${pctM}%</span></div>${todasMetas.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'📌 ':''} ${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;
-  const p=state.pom; max+=25; pts+=Math.min(25,Math.round((p.minFoco/80)*25));
+  const metasH=`<div class="rel-section" style="border-color:#2E7D32;"><h3>🎯 Metas do Dia</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn} de ${tot}</span></div><div class="rel-row"><span>Taxa de conclusão</span><span class="rv">${pctM}%</span></div>${todasMetas.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'📌 ':''}<span style="font-size:0.7rem;margin-right:3px;">${m.prioridade==='alta'?'🔴':m.prioridade==='baixa'?'🟢':'🟡'}</span>${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;
+
+  // MODO CAVERNA (0-25pts)
+  const p=state.pom; max+=25;
+  const ptsPom=Math.min(25,Math.round((p.minFoco/80)*25)); pts+=ptsPom;
+  pontosDetalhe.push({label:'🏔️ Caverna', pts:ptsPom, max:25, ok:p.minFoco>=40});
+  if(p.minFoco<40) dicas.push('Tente completar ao menos 2 sessões de Modo Caverna amanhã (40min de foco). Pequenas sessões já fazem diferença no TDAH.');
   const pomH=`<div class="rel-section" style="border-color:#7C3AED;"><h3>🏔️ Modo Caverna</h3><div class="rel-row"><span>Sessões de foco</span><span class="rv">${p.sessoes}</span></div><div class="rel-row"><span>Ciclos completos</span><span class="rv">${p.ciclos}</span></div><div class="rel-row"><span>Tempo de foco</span><span class="rv">${p.minFoco}min</span></div></div>`;
+
+  // CELULAR (0-20pts)
   max+=20;
   let celH='';
-  if(state.celular){const tm=state.celular.horas*60+state.celular.minutos;pts+=tm<=120?20:tm<=240?10:0;const av=avalCelular(state.celular.horas,state.celular.minutos);celH=`<div class="rel-section" style="border-color:#F57F17;"><h3>📱 Tempo de Tela</h3><div class="rel-row"><span>Tempo usado</span><span class="rv">${state.celular.horas}h ${state.celular.minutos}min</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${av.msg}</span></div></div>`;}
-  else celH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>📱 Tempo de Tela</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;
+  if(state.celular){
+    const tm=state.celular.horas*60+state.celular.minutos;
+    const ptsCel=tm<=120?20:tm<=240?10:0; pts+=ptsCel;
+    pontosDetalhe.push({label:'📱 Tela', pts:ptsCel, max:20, ok:ptsCel>=15});
+    if(ptsCel<15) dicas.push('O tempo de tela foi elevado. Tente reduzir em 30min amanhã — use o Modo Caverna para criar blocos sem celular.');
+    const av=avalCelular(state.celular.horas,state.celular.minutos);
+    celH=`<div class="rel-section" style="border-color:#F57F17;"><h3>📱 Tempo de Tela</h3><div class="rel-row"><span>Tempo usado</span><span class="rv">${state.celular.horas}h ${state.celular.minutos}min</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${av.msg}</span></div></div>`;
+  } else {
+    pontosDetalhe.push({label:'📱 Tela', pts:0, max:20, ok:false});
+    dicas.push('Registre o tempo de tela amanhã para obter uma visão completa do seu dia.');
+    celH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>📱 Tempo de Tela</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;
+  }
+
+  // REMÉDIO (informativo, sem pontuação obrigatória)
   let remH='';
-  if(state.remedio)remH=`<div class="rel-section" style="border-color:#29B6F6;"><h3>💊 Medicação</h3><div class="rel-row"><span>Tomado às</span><span class="rv">${fmt(state.remedio.horaRegistro)}</span></div><div class="rel-row"><span>Status</span><span class="rv">✅ Registrado</span></div></div>`;
-  else remH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>💊 Medicação</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;
+  if(state.remedio){
+    remH=`<div class="rel-section" style="border-color:#29B6F6;"><h3>💊 Medicação</h3><div class="rel-row"><span>Tomado às</span><span class="rv">${fmt(state.remedio.horaRegistro)}</span></div><div class="rel-row"><span>Status</span><span class="rv">✅ Registrado hoje</span></div></div>`;
+  } else {
+    remH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>💊 Medicação</h3><p style="font-size:0.83rem;color:var(--text-light);">Não tomada hoje — tudo bem, registre quando necessário.</p></div>`;
+  }
+
+  // LEITURA (informativa)
   let leitH='';
-  if(state.leitura)leitH=`<div class="rel-section" style="border-color:#6A1B9A;"><h3>📚 Leitura</h3><div class="rel-row"><span>Páginas lidas</span><span class="rv">${state.leitura.paginas} páginas</span></div></div>`;
+  if(state.leitura) leitH=`<div class="rel-section" style="border-color:#6A1B9A;"><h3>📚 Leitura</h3><div class="rel-row"><span>Páginas lidas</span><span class="rv">${state.leitura.paginas} páginas</span></div></div>`;
+
+  // Pontuação final
   const nota=max>0?Math.round((pts/max)*100):0;
   const em=nota>=80?'🏆':nota>=60?'⭐':nota>=40?'💪':'🌱';
   const msg=nota>=80?'Dia excelente!':nota>=60?'Bom progresso!':nota>=40?'Continue tentando!':'Amanhã será melhor!';
-  document.getElementById('relatorio-body').innerHTML=`<div class="rel-avaliacao"><div style="font-size:2rem;">${em}</div><div class="rel-nota">${nota}</div><div class="rel-nota-label">/100 — ${msg}</div></div>${sonoH}${metasH}${pomH}${celH}${remH}${leitH}`;
+
+  // Card de pontos detalhado
+  const pontosBar = pontosDetalhe.map(pd=>`
+    <div style="margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;">
+        <span>${pd.label}</span>
+        <span style="font-weight:700;color:${pd.ok?'#2E7D32':'#F57F17'};">${pd.pts}/${pd.max}pts</span>
+      </div>
+      <div style="height:6px;background:#E3EAF2;border-radius:3px;overflow:hidden;">
+        <div style="height:100%;width:${Math.round((pd.pts/pd.max)*100)}%;background:${pd.ok?'linear-gradient(to right,#2E7D32,#66BB6A)':'linear-gradient(to right,#F57F17,#FFA726)'};border-radius:3px;transition:width 0.5s;"></div>
+      </div>
+    </div>`).join('');
+
+  // Seção de dicas
+  const dicasH = dicas.length>0 ? `
+    <div class="rel-section" style="border-color:#FFB300;background:#FFFDE7;">
+      <h3 style="color:#F57F17;">💡 O que melhorar amanhã</h3>
+      ${dicas.map((d,i)=>`<div style="padding:8px 0;border-bottom:${i<dicas.length-1?'1px solid #FFF8E1':'none'};font-size:0.84rem;color:#5D4037;line-height:1.5;">• ${d}</div>`).join('')}
+    </div>` : `<div class="rel-section" style="border-color:#2E7D32;background:#F1F8E9;"><h3 style="color:#2E7D32;">🏆 Parabéns!</h3><p style="font-size:0.84rem;color:#33691E;">Você teve um dia excelente em todas as categorias. Continue assim!</p></div>`;
+
+  document.getElementById('relatorio-body').innerHTML=`
+    <div class="rel-avaliacao">
+      <div style="font-size:2rem;">${em}</div>
+      <div class="rel-nota">${pts}<span style="font-size:1.2rem;opacity:0.7;">/${max}</span></div>
+      <div class="rel-nota-label">${nota}/100 pontos — ${msg}</div>
+    </div>
+    <div class="rel-section" style="border-color:#1565C0;">
+      <h3>📊 Pontos por categoria</h3>
+      ${pontosBar}
+    </div>
+    ${dicasH}
+    ${sonoH}${metasH}${pomH}${celH}${remH}${leitH}
+  `;
   document.getElementById('relatorio-modal').classList.add('show');
 }
 function fecharRelatorio(e){if(e.target.id==='relatorio-modal')document.getElementById('relatorio-modal').classList.remove('show');}
@@ -1249,8 +1354,8 @@ function gerarRelatorioMensal() {
     else if(pctMetas<80) pareceres.push('A taxa de conclusão de metas é <strong>moderada</strong>, com espaço para melhora. O reforço positivo e a técnica de body doubling podem ser benéficos.');
     else pareceres.push('A taxa de conclusão de metas é <strong>satisfatória</strong>, indicando boa capacidade de planejamento e execução no período analisado.');
   }
-  if(pctRemedio<70) pareceres.push('A <strong>adesão ao tratamento farmacológico está abaixo do recomendado</strong>. A regularidade na administração do medicamento é fundamental para resultados terapêuticos consistentes.');
-  else pareceres.push('A <strong>adesão farmacológica apresenta-se adequada</strong> no período, o que favorece a estabilidade do tratamento.');
+  if(pctRemedio<70) pareceres.push('O <strong>registro de uso de medicação foi baixo</strong> no período. Caso o tratamento farmacológico faça parte do plano terapêutico, registrar os dias de uso auxilia o acompanhamento clínico. Se o medicamento não é de uso diário, desconsidere este item.');
+  else pareceres.push('O <strong>registro de uso de medicação foi frequente</strong> no período, o que facilita o acompanhamento da adesão ao plano terapêutico individual.');
 
   const row=(lbl,val,status,statusTxt)=>`<div class="row"><span class="lbl">${lbl}</span><span class="val">${val}</span><span class="status ${status}">${statusTxt}</span></div>`;
 
@@ -1273,7 +1378,7 @@ function gerarRelatorioMensal() {
         ${pctMetas!==null?row('Taxa de conclusão de metas', pctMetas+'%', metasStatus, pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
         ${avgFoco!==null?row('Média de foco diário (Caverna)', avgFoco+'min', focoStatus, avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}
         ${avgCelular!==null?row('Média de tempo de tela', Math.floor(avgCelular/60)+'h '+avgCelular%60+'min', celStatus, avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
-        ${row('Adesão ao tratamento farmacológico', pctRemedio+'%', remStatus, pctRemedio>=80?'Adequada':pctRemedio>=60?'Irregular':'Baixa')}
+        ${row('Dias com registro de medicação', remedioN+' de '+diasDados, remStatus, pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo')}
         ${avgLeitura!==null?row('Média de leitura diária', avgLeitura+' páginas', avgLeitura>=10?'status-norm':'status-atenc', avgLeitura>=10?'Regular':'Abaixo da meta'):''}
       </div>
     </div>
