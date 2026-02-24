@@ -1,0 +1,282 @@
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  View, Text, TouchableOpacity, ScrollView, TextInput,
+  StyleSheet, SafeAreaView, Alert
+} from 'react-native';
+import { useApp } from '../context/AppContext';
+import { Colors, POM_FOCO, POM_PAUSA, SESS_CICLO } from '../constants/theme';
+import { hojeISO, pad } from '../utils/storage';
+
+export default function CavernaScreen() {
+  const { state, setState, salvar } = useApp();
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [celH, setCelH] = useState('');
+  const [celM, setCelM] = useState('');
+
+  const pom = state.pom;
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, []);
+
+  function iniciar() {
+    if (state.currentDate !== hojeISO()) {
+      Alert.alert('Atenção', 'Modo Caverna só funciona para o dia atual.');
+      return;
+    }
+    setState(s => ({ ...s, pom: { ...s.pom, rodando: true } }));
+    timerRef.current = setInterval(() => {
+      setState(s => {
+        const novaSeg = s.pom.seg - 1;
+        if (novaSeg <= 0) {
+          // Fase completa
+          clearInterval(timerRef.current!);
+          let novaSessoes = s.pom.sessoes, novaCiclos = s.pom.ciclos, novaSessNoCiclo = s.pom.sessNoCiclo, novoMinFoco = s.pom.minFoco;
+          let novaFase: 'foco' | 'pausa' = s.pom.fase === 'foco' ? 'pausa' : 'foco';
+          if (s.pom.fase === 'foco') {
+            novaSessoes++; novaSessNoCiclo++; novoMinFoco += 20;
+            if (novaSessNoCiclo >= SESS_CICLO) { novaCiclos++; novaSessNoCiclo = 0; }
+          }
+          const novoState = { ...s.pom, rodando: false, fase: novaFase, seg: novaFase === 'foco' ? POM_FOCO : POM_PAUSA, sessoes: novaSessoes, ciclos: novaCiclos, sessNoCiclo: novaSessNoCiclo, minFoco: novoMinFoco };
+          salvar({ pom: novoState });
+          return { ...s, pom: novoState };
+        }
+        return { ...s, pom: { ...s.pom, seg: novaSeg } };
+      });
+    }, 1000);
+  }
+
+  function pausar() {
+    if (timerRef.current) clearInterval(timerRef.current);
+    setState(s => ({ ...s, pom: { ...s.pom, rodando: false } }));
+    salvar({ pom: { ...pom, rodando: false } });
+  }
+
+  function resetar() {
+    if (timerRef.current) clearInterval(timerRef.current);
+    setState(s => ({ ...s, pom: { ...s.pom, rodando: false, fase: 'foco', seg: POM_FOCO } }));
+  }
+
+  function pularFase() {
+    if (timerRef.current) clearInterval(timerRef.current);
+    setState(s => {
+      let { sessoes, ciclos, sessNoCiclo, minFoco, fase } = s.pom;
+      let novaFase: 'foco' | 'pausa';
+      if (fase === 'foco') {
+        sessoes++; sessNoCiclo++; minFoco += 20;
+        if (sessNoCiclo >= SESS_CICLO) { ciclos++; sessNoCiclo = 0; }
+        novaFase = 'pausa';
+      } else {
+        novaFase = 'foco';
+      }
+      const novoState = { ...s.pom, rodando: false, fase: novaFase, seg: novaFase === 'foco' ? POM_FOCO : POM_PAUSA, sessoes, ciclos, sessNoCiclo, minFoco };
+      salvar({ pom: novoState });
+      return { ...s, pom: novoState };
+    });
+  }
+
+  function adicionarSessaoManual() {
+    setState(s => {
+      let { sessoes, ciclos, sessNoCiclo, minFoco } = s.pom;
+      sessoes++; sessNoCiclo++; minFoco += 20;
+      if (sessNoCiclo >= SESS_CICLO) { ciclos++; sessNoCiclo = 0; }
+      const novoState = { ...s.pom, sessoes, ciclos, sessNoCiclo, minFoco };
+      salvar({ pom: novoState });
+      return { ...s, pom: novoState };
+    });
+  }
+
+  function removerSessaoManual() {
+    if (pom.sessoes <= 0) return;
+    setState(s => {
+      let { sessoes, ciclos, sessNoCiclo, minFoco } = s.pom;
+      sessoes--; minFoco = Math.max(0, minFoco - 20);
+      if (sessNoCiclo > 0) sessNoCiclo--;
+      else if (ciclos > 0) { ciclos--; sessNoCiclo = SESS_CICLO - 1; }
+      const novoState = { ...s.pom, sessoes, ciclos, sessNoCiclo, minFoco };
+      salvar({ pom: novoState });
+      return { ...s, pom: novoState };
+    });
+  }
+
+  function salvarCelular() {
+    const h = parseInt(celH) || 0, m = parseInt(celM) || 0;
+    if (h === 0 && m === 0) { Alert.alert('Atenção', 'Informe o tempo!'); return; }
+    const cel = { horas: h, minutos: m };
+    setState(s => ({ ...s, celular: cel }));
+    salvar({ celular: cel });
+    Alert.alert('📱', 'Tempo de celular salvo!');
+  }
+
+  const seg = pom.seg;
+  const total = pom.fase === 'foco' ? POM_FOCO : POM_PAUSA;
+  const prog = (total - seg) / total;
+  const mm = Math.floor(seg / 60);
+  const ss = seg % 60;
+  const minFoco = pom.minFoco;
+  const focoDisplay = minFoco >= 60 ? `${Math.floor(minFoco / 60)}h${minFoco % 60 > 0 ? minFoco % 60 + 'm' : ''}` : `${minFoco}min`;
+
+  const statusLabel = !pom.rodando && seg === total
+    ? '⏸ Aguardando início'
+    : pom.fase === 'foco'
+      ? pom.rodando ? '🎯 Em foco' : '⏸ Foco pausado'
+      : pom.rodando ? '☕ Pausa ativa' : '⏸ Pausa pausada';
+
+  // Ring SVG-like using View
+  const RING_SIZE = 220;
+  const strokeWidth = 12;
+  const radius = (RING_SIZE - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const dashOffset = circumference * (1 - prog);
+
+  return (
+    <SafeAreaView style={styles.safe}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>🏔️ Modo Caverna</Text>
+          <Text style={styles.headerSub}>Pomodoro 20min foco / 5min pausa</Text>
+        </View>
+
+        <View style={{ alignItems: 'center', marginTop: 20 }}>
+          {/* Status Badge */}
+          <View style={[styles.statusBadge, pom.fase === 'foco' ? styles.statusFoco : styles.statusPausa]}>
+            <Text style={{ fontSize: 13, fontWeight: '700', color: pom.fase === 'foco' ? '#A78BFA' : '#60A5FA' }}>
+              {statusLabel}
+            </Text>
+          </View>
+
+          {/* Timer Circle */}
+          <View style={styles.timerWrap}>
+            <View style={styles.timerInner}>
+              <Text style={styles.timerTime}>{pad(mm)}:{pad(ss)}</Text>
+              <Text style={styles.timerPhase}>{pom.fase === 'foco' ? 'FOCO' : 'PAUSA'}</Text>
+            </View>
+            {/* Progress ring using border trick */}
+            <View style={[styles.ringOuter, { borderColor: '#1E1E3A' }]} />
+            <View style={[
+              styles.ringProgress,
+              {
+                borderColor: pom.fase === 'foco' ? '#A78BFA' : '#60A5FA',
+                transform: [{ rotate: `${-90 + prog * 360}deg` }],
+                opacity: prog > 0 ? 1 : 0,
+              }
+            ]} />
+          </View>
+
+          {/* Controls */}
+          <View style={styles.controls}>
+            <TouchableOpacity style={styles.ctrlBtnSmall} onPress={resetar}>
+              <Text style={{ fontSize: 24 }}>🔄</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.ctrlBtnMain} onPress={pom.rodando ? pausar : iniciar}>
+              <Text style={{ fontSize: 32, color: '#fff' }}>{pom.rodando ? '⏸' : '▶'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.ctrlBtnSmall} onPress={pularFase}>
+              <Text style={{ fontSize: 24 }}>⏭</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Stats */}
+        <View style={styles.statsGrid}>
+          {[
+            { v: String(pom.sessoes), l: 'Sessões' },
+            { v: focoDisplay, l: 'Foco hoje' },
+            { v: String(pom.ciclos), l: 'Ciclos' },
+          ].map((s, i) => (
+            <View key={i} style={styles.statBox}>
+              <Text style={styles.statVal}>{s.v}</Text>
+              <Text style={styles.statLbl}>{s.l}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Sessões do ciclo */}
+        <View style={styles.darkCard}>
+          <Text style={styles.darkCardTitle}>🔵 Sessões do ciclo atual (4 = 1 ciclo)</Text>
+          <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
+            {Array.from({ length: SESS_CICLO }).map((_, i) => (
+              <View key={i} style={[
+                styles.dot,
+                i < pom.sessNoCiclo && styles.dotCompleto,
+                i === pom.sessNoCiclo && pom.fase === 'foco' && pom.rodando && styles.dotAtual,
+              ]}>
+                <Text style={{ fontSize: 12, fontWeight: '700', color: i < pom.sessNoCiclo ? '#A78BFA' : '#4B5563' }}>
+                  {i < pom.sessNoCiclo ? '✓' : i + 1}
+                </Text>
+              </View>
+            ))}
+          </View>
+          {/* Ajuste manual */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#2D2D4E' }}>
+            <Text style={{ color: '#9CA3AF', fontSize: 13, flex: 1 }}>Celular desligou? Ajuste:</Text>
+            <TouchableOpacity style={styles.manualBtnRed} onPress={removerSessaoManual}>
+              <Text style={{ color: '#F87171', fontWeight: '700' }}>⏮</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.manualBtnPurple} onPress={adicionarSessaoManual}>
+              <Text style={{ color: '#A78BFA', fontWeight: '700' }}>⏭</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Celular */}
+        <View style={styles.darkCard}>
+          <Text style={styles.darkCardTitle}>📱 Tempo de celular hoje</Text>
+          {state.celular ? (
+            <View>
+              <Text style={{ color: '#A78BFA', fontSize: 14 }}>
+                📱 <Text style={{ color: '#E0E0FF', fontWeight: '700' }}>{state.celular.horas}h {state.celular.minutos}min</Text>
+              </Text>
+              <TouchableOpacity onPress={() => { setState(s => ({ ...s, celular: null })); salvar({ celular: null }); setCelH(''); setCelM(''); }}>
+                <Text style={{ color: '#6B7280', fontSize: 12, marginTop: 6, textDecorationLine: 'underline' }}>Editar</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
+              <TextInput style={styles.darkInput} placeholder="Horas" placeholderTextColor="#4B5563" keyboardType="numeric" value={celH} onChangeText={setCelH} />
+              <Text style={{ color: '#6B7280' }}>h</Text>
+              <TextInput style={styles.darkInput} placeholder="Min" placeholderTextColor="#4B5563" keyboardType="numeric" value={celM} onChangeText={setCelM} />
+              <Text style={{ color: '#6B7280' }}>min</Text>
+              <TouchableOpacity style={styles.darkBtn} onPress={salvarCelular}>
+                <Text style={{ color: '#fff', fontWeight: '700' }}>💾</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: '#0D0D1A' },
+  header: { alignItems: 'center', padding: 24 },
+  headerTitle: { fontSize: 24, fontWeight: '800', color: '#A78BFA' },
+  headerSub: { fontSize: 13, color: '#6B7280', marginTop: 4 },
+  statusBadge: { paddingHorizontal: 16, paddingVertical: 6, borderRadius: 20, marginBottom: 24, borderWidth: 1 },
+  statusFoco: { backgroundColor: 'rgba(167,139,250,0.15)', borderColor: 'rgba(167,139,250,0.3)' },
+  statusPausa: { backgroundColor: 'rgba(96,165,250,0.15)', borderColor: 'rgba(96,165,250,0.3)' },
+  timerWrap: { width: 220, height: 220, justifyContent: 'center', alignItems: 'center', marginBottom: 32 },
+  ringOuter: { position: 'absolute', width: 196, height: 196, borderRadius: 98, borderWidth: 12 },
+  ringProgress: { position: 'absolute', width: 196, height: 196, borderRadius: 98, borderWidth: 12, borderLeftColor: 'transparent', borderBottomColor: 'transparent' },
+  timerInner: { alignItems: 'center', zIndex: 1 },
+  timerTime: { fontSize: 52, fontWeight: '800', color: '#fff', letterSpacing: -2 },
+  timerPhase: { fontSize: 12, color: '#6B7280', letterSpacing: 2, marginTop: 4 },
+  controls: { flexDirection: 'row', gap: 16, alignItems: 'center', marginBottom: 28 },
+  ctrlBtnMain: { width: 80, height: 80, borderRadius: 40, backgroundColor: '#7C3AED', alignItems: 'center', justifyContent: 'center' },
+  ctrlBtnSmall: { width: 60, height: 60, borderRadius: 30, backgroundColor: 'rgba(30,30,58,0.8)', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#2D2D4E' },
+  statsGrid: { flexDirection: 'row', gap: 10, paddingHorizontal: 16, marginBottom: 16 },
+  statBox: { flex: 1, backgroundColor: 'rgba(30,30,58,0.6)', borderWidth: 1, borderColor: '#2D2D4E', borderRadius: 14, padding: 14, alignItems: 'center' },
+  statVal: { fontSize: 22, fontWeight: '800', color: '#A78BFA' },
+  statLbl: { fontSize: 10, color: '#6B7280', textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 2 },
+  darkCard: { backgroundColor: 'rgba(20,20,40,0.8)', borderWidth: 1, borderColor: '#2D2D4E', borderRadius: 14, padding: 16, marginHorizontal: 16, marginBottom: 16 },
+  darkCardTitle: { fontSize: 12, color: '#6B7280', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 },
+  dot: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#2D2D4E' },
+  dotCompleto: { backgroundColor: 'rgba(124,58,237,0.2)', borderColor: '#7C3AED' },
+  dotAtual: { backgroundColor: 'rgba(124,58,237,0.4)', borderColor: '#A78BFA' },
+  manualBtnRed: { backgroundColor: 'rgba(239,68,68,0.15)', borderWidth: 1, borderColor: 'rgba(239,68,68,0.3)', borderRadius: 10, padding: 10 },
+  manualBtnPurple: { backgroundColor: 'rgba(124,58,237,0.25)', borderWidth: 1, borderColor: '#7C3AED', borderRadius: 10, padding: 10 },
+  darkInput: { flex: 1, backgroundColor: 'rgba(30,30,58,0.8)', borderWidth: 1, borderColor: '#3D3D6E', color: '#E0E0FF', borderRadius: 10, padding: 10, fontSize: 15 },
+  darkBtn: { backgroundColor: 'linear-gradient(135deg, #7C3AED, #4F46E5)', backgroundColor: '#7C3AED', borderRadius: 10, padding: 10 },
+});
