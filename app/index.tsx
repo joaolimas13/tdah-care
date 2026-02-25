@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  Modal, SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { Alert, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'; // Alterado
 import { useApp } from '../context/AppContext';
 
 const FASES_REMEDIO = [
@@ -32,6 +24,7 @@ export default function HomeScreen() {
   const [horaInput, setHoraInput] = useState('');
   const [relatorioVisible, setRelatorioVisible] = useState(false);
   const [now, setNow] = useState(new Date());
+  const insets = useSafeAreaInsets(); // Adicionado
 
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 30000);
@@ -90,7 +83,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={[styles.container, { paddingTop: insets.top }]}> {/* Alterado */}
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>🧠 TDAH Care</Text>
@@ -99,7 +92,7 @@ export default function HomeScreen() {
         <Text style={{ fontSize: 32 }}>👤</Text>
       </View>
 
-      <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 20 }}>
+      <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 100 }}>
         <View style={styles.greeting}>
           <Text style={styles.greetingTitle}>{greeting}</Text>
           <Text style={styles.greetingSub}>Acompanhe seu dia com TDAH</Text>
@@ -258,7 +251,7 @@ export default function HomeScreen() {
                   <Text style={{ fontWeight: '700', color: '#1A237E' }}>{dn}/{tot} ({pctMetas}%)</Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#EEF2F7' }}>
-                  <Text style={{ color: '#546E7A' }}>🏔️ Foco</Text>
+                  <Text style style={{ color: '#546E7A' }}>🏔️ Foco</Text>
                   <Text style={{ fontWeight: '700', color: '#1A237E' }}>{state.pom?.minFoco || 0}min</Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8 }}>
@@ -273,12 +266,12 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </TouchableOpacity>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#F0F4F8' },
+  container: { flex: 1, backgroundColor: '#F0F4F8' }, // Alterado
   header: { backgroundColor: '#0D47A1', padding: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   headerTitle: { color: '#fff', fontSize: 20, fontWeight: '700' },
   headerDate: { color: 'rgba(255,255,255,0.85)', fontSize: 12, marginTop: 2 },

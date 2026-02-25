@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 export interface Meta {
   id: string | number;
   texto: string;
@@ -219,7 +219,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AppContext.Provider value={{ state, setState, salvar, carregarDia }}>
-      {children}
+      <SafeAreaProvider>
+        {children}
+      </SafeAreaProvider>
     </AppContext.Provider>
   );
 }

@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import {
-    Alert,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'; // Alterado
 import { Colors } from '../constants/theme';
 import { useApp } from '../context/AppContext';
 import { hojeISO } from '../utils/storage';
@@ -29,6 +21,7 @@ export default function SonoScreen() {
   const [qualidade, setQualidade] = useState('boa');
   const [obs, setObs] = useState('');
   const [qualMenuOpen, setQualMenuOpen] = useState(false);
+  const insets = useSafeAreaInsets(); // Adicionado
 
   function salvarSono() {
     if (state.currentDate !== hojeISO()) {
@@ -57,11 +50,11 @@ export default function SonoScreen() {
   const badgeTextColor = (q: string) => ['otima', 'boa'].includes(q) ? Colors.success : ['regular'].includes(q) ? Colors.warning : Colors.danger;
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={[styles.container, { paddingTop: insets.top }]}> {/* Alterado */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>😴 Sono</Text>
       </View>
-      <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 20 }}>
+      <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 100 }}>
         {/* Registro */}
         <View style={styles.card}>
           <View style={styles.sonoVisual}>
@@ -163,12 +156,12 @@ export default function SonoScreen() {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Colors.bg },
+  container: { flex: 1, backgroundColor: Colors.bg }, // Alterado
   header: { backgroundColor: Colors.primaryDark, padding: 20 },
   headerTitle: { color: '#fff', fontSize: 20, fontWeight: '700' },
   scroll: { flex: 1, padding: 16 },

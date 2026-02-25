@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View, Text, TouchableOpacity, ScrollView, TextInput,
-  StyleSheet, SafeAreaView, Alert
+  StyleSheet, Alert
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'; // Alterado
 import { useApp } from '../context/AppContext';
 import { Colors, POM_FOCO, POM_PAUSA, SESS_CICLO } from '../constants/theme';
 import { hojeISO, pad } from '../utils/storage';
@@ -12,6 +13,7 @@ export default function CavernaScreen() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [celH, setCelH] = useState('');
   const [celM, setCelM] = useState('');
+  const insets = useSafeAreaInsets(); // Adicionado
 
   const pom = state.pom;
 
@@ -130,8 +132,8 @@ export default function CavernaScreen() {
   const dashOffset = circumference * (1 - prog);
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+    <View style={[styles.container, { paddingTop: insets.top }]}> {/* Alterado */}
+      <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>🏔️ Modo Caverna</Text>
@@ -245,12 +247,12 @@ export default function CavernaScreen() {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#0D0D1A' },
+  container: { flex: 1, backgroundColor: '#0D0D1A' }, // Alterado
   header: { alignItems: 'center', padding: 24 },
   headerTitle: { fontSize: 24, fontWeight: '800', color: '#A78BFA' },
   headerSub: { fontSize: 13, color: '#6B7280', marginTop: 4 },

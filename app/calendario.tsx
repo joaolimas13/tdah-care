@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'; // Alterado
 import { useApp } from '../context/AppContext';
 
 function hojeISO(date = new Date()) {
@@ -16,6 +17,7 @@ export default function CalendarioScreen() {
   const { state } = useApp();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const insets = useSafeAreaInsets(); // Adicionado
 
   function changeMonth(delta: number) {
     setCurrentDate(d => {
@@ -46,11 +48,11 @@ export default function CalendarioScreen() {
   for (let i = 1; i <= rem; i++) cells.push({ day: i, type: 'next' });
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={[styles.container, { paddingTop: insets.top }]}> {/* Alterado */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>🗓️ Histórico Diário</Text>
       </View>
-      <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 20 }}>
+      <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 100 }}>
         <View style={styles.card}>
           <View style={styles.calNav}>
             <TouchableOpacity onPress={() => changeMonth(-1)} style={{ padding: 8 }}>
@@ -128,7 +130,7 @@ export default function CalendarioScreen() {
           </View>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -142,7 +144,7 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#F0F4F8' },
+  container: { flex: 1, backgroundColor: '#F0F4F8' }, // Alterado
   header: { backgroundColor: '#0D47A1', padding: 20 },
   headerTitle: { color: '#fff', fontSize: 20, fontWeight: '700' },
   scroll: { flex: 1, padding: 16 },

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'; // Alterado
 import { useApp } from '../context/AppContext';
 
 function hojeISO(date = new Date()) {
@@ -20,9 +21,10 @@ const TABS = [
 export default function InfoScreen() {
   const [activeTab, setActiveTab] = useState('sono');
   const { state } = useApp();
+  const insets = useSafeAreaInsets(); // Adicionado
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={[styles.container, { paddingTop: insets.top }]}> {/* Alterado */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>📚 Informações</Text>
       </View>
@@ -39,14 +41,14 @@ export default function InfoScreen() {
           ))}
         </ScrollView>
       </View>
-      <ScrollView style={{ flex: 1, paddingHorizontal: 16 }} contentContainerStyle={{ paddingBottom: 20 }}>
+      <ScrollView style={{ flex: 1, paddingHorizontal: 16 }} contentContainerStyle={{ paddingBottom: 100 }}>
         {activeTab === 'sono' && <SonoInfo />}
         {activeTab === 'eletrolitos' && <EletroInfo />}
         {activeTab === 'remedio' && <RemedioInfo />}
         {activeTab === 'estrategias' && <EstrategiaInfo />}
         {activeTab === 'mensal' && <MensalInfo state={state} />}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -182,7 +184,7 @@ function MRow({ label, value, ok }: { label: string; value: string; ok: boolean 
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#F0F4F8' },
+  container: { flex: 1, backgroundColor: '#F0F4F8' }, // Alterado
   header: { backgroundColor: '#0D47A1', padding: 20 },
   headerTitle: { color: '#fff', fontSize: 20, fontWeight: '700' },
   tab: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, borderWidth: 2, borderColor: '#E3EAF2', backgroundColor: '#fff', marginRight: 8 },
