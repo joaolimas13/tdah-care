@@ -1253,20 +1253,21 @@ function updateStats(){
   document.getElementById('progress-fill').style.width=pct+'%';document.getElementById('progress-text').textContent=dn+' de '+tot+' metas concluídas';document.getElementById('progress-pct').textContent=pct+'%';
 }
 function togglePomodoro(){if(state.currentDate!==hojeISO()){showToast('⚠️ Modo Caverna só para hoje');return;}if(state.pom.rodando)pausarPom();else iniciarPom();}
-function iniciarPom(){state.pom.rodando=true;document.getElementById('caverna-play-btn').textContent='⏸';if(!state.pom.seg||isNaN(state.pom.seg)||state.pom.seg<=0)state.pom.seg=state.pom.fase==='foco'?POM_FOCO:POM_PAUSA;atualizarUIPom();state.pom.timer=setInterval(tickPom,1000);}
+function iniciarPom(){state.pom.rodando=true;document.getElementById('caverna-play-btn').textContent='⏸';if(!state.pom.seg||isNaN(state.pom.seg)||state.pom.seg<=0)state.pom.seg=state.pom.fase==='foco'?getPomFoco():getPomPausa();atualizarUIPom();state.pom.timer=setInterval(tickPom,1000);}
 function pausarPom(){state.pom.rodando=false;document.getElementById('caverna-play-btn').textContent='▶';clearInterval(state.pom.timer);salvar();}
 function tickPom(){state.pom.seg--;if(state.pom.seg<=0)concluirFase();else atualizarUIPom();}
 function concluirFase(){
   clearInterval(state.pom.timer);state.pom.rodando=false;
-  if(state.pom.fase==='foco'){state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=20;if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo! Faça uma pausa maior.');}else showToast('✅ Sessão concluída! Hora de pausar!');state.pom.fase='pausa';state.pom.seg=POM_PAUSA;}
-  else{state.pom.fase='foco';state.pom.seg=POM_FOCO;showToast('🎯 Hora de focar!');}
+  const focoMin=getPomFoco()/60;
+  if(state.pom.fase==='foco'){state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=focoMin;if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo! Faça uma pausa maior.');}else showToast('✅ Sessão concluída! Hora de pausar!');state.pom.fase='pausa';state.pom.seg=getPomPausa();}
+  else{state.pom.fase='foco';state.pom.seg=getPomFoco();showToast('🎯 Hora de focar!');}
   state.pom.data=hojeISO();salvar();document.getElementById('caverna-play-btn').textContent='▶';atualizarUIPom();playBeep();
 }
 function pularFase(){
   if(state.currentDate!==hojeISO()){showToast('⚠️ Modo Caverna só para hoje');return;}
   clearInterval(state.pom.timer);state.pom.rodando=false;document.getElementById('caverna-play-btn').textContent='▶';
-  if(state.pom.fase==='foco'){state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=20;if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo!');}else showToast('✅ +1 sessão registrada! Hora de pausar.');state.pom.fase='pausa';state.pom.seg=POM_PAUSA;}
-  else{state.pom.fase='foco';state.pom.seg=POM_FOCO;showToast('🎯 Pausa pulada — hora de focar!');}
+  if(state.pom.fase==='foco'){state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=getPomFoco()/60;if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo!');}else showToast('✅ +1 sessão registrada! Hora de pausar.');state.pom.fase='pausa';state.pom.seg=getPomPausa();}
+  else{state.pom.fase='foco';state.pom.seg=getPomFoco();showToast('🎯 Pausa pulada — hora de focar!');}
   atualizarUIPom();salvar();
 }
 function adicionarSessaoManual(){
@@ -1284,18 +1285,19 @@ function removerSessaoManual(){
 }
 function resetarPomodoro(){
   if(state.currentDate!==hojeISO()){showToast('⚠️ Modo Caverna só para hoje');return;}
-  clearInterval(state.pom.timer);state.pom.rodando=false;state.pom.fase='foco';state.pom.seg=POM_FOCO;
+  clearInterval(state.pom.timer);state.pom.rodando=false;state.pom.fase='foco';state.pom.seg=getPomFoco();
   document.getElementById('caverna-play-btn').textContent='▶';atualizarUIPom();showToast('🔄 Timer reiniciado');salvar();
 }
 function atualizarUIPom(){
-  const p=state.pom;const seg=(typeof p.seg==='number'&&!isNaN(p.seg)&&p.seg>=0)?p.seg:(p.fase==='foco'?POM_FOCO:POM_PAUSA);
-  const total=p.fase==='foco'?POM_FOCO:POM_PAUSA;const prog=(total-seg)/total;
+  const p=state.pom;const focoSeg=getPomFoco();const pausaSeg=getPomPausa();
+  const seg=(typeof p.seg==='number'&&!isNaN(p.seg)&&p.seg>=0)?p.seg:(p.fase==='foco'?focoSeg:pausaSeg);
+  const total=p.fase==='foco'?focoSeg:pausaSeg;const prog=(total-seg)/total;
   document.getElementById('caverna-ring-fill').style.strokeDashoffset=CIRC*(1-prog);
   document.getElementById('caverna-ring-fill').style.stroke=p.fase==='foco'?'#A78BFA':'#60A5FA';
   const mm=Math.floor(seg/60),ss=Math.floor(seg%60);
   document.getElementById('caverna-time-display').textContent=pad(mm)+':'+pad(ss);
   document.getElementById('caverna-phase-label').textContent=p.fase==='foco'?'FOCO':'PAUSA';
-  const badge=document.getElementById('caverna-status-badge');const isFull=seg===(p.fase==='foco'?POM_FOCO:POM_PAUSA);
+  const badge=document.getElementById('caverna-status-badge');const isFull=seg===(p.fase==='foco'?focoSeg:pausaSeg);
   if(!p.rodando&&isFull){badge.textContent='⏸ Aguardando início';badge.className='caverna-status-badge status-idle';}
   else if(p.fase==='foco'){badge.textContent=p.rodando?'🎯 Em foco':'⏸ Foco pausado';badge.className='caverna-status-badge status-foco';}
   else{badge.textContent=p.rodando?'☕ Pausa ativa':'⏸ Pausa pausada';badge.className='caverna-status-badge status-pausa';}
@@ -1342,6 +1344,10 @@ function gerarRelatorioMensal(){
   let pareceres=[];if(avgSono!==null){if(avgSono<6)pareceres.push('Padrão de sono <strong>abaixo do limiar terapêutico</strong> (7–9h).');else if(avgSono<7)pareceres.push('Tempo médio de sono <strong>limítrofe ao adequado</strong>.');else pareceres.push('Padrão de sono <strong>dentro dos parâmetros recomendados</strong>.');}if(pctMetas!==null){if(pctMetas<50)pareceres.push('<strong>Dificuldade persistente na execução de planejamento</strong>. Considere estratégias de divisão de tarefas.');else if(pctMetas<80)pareceres.push('Taxa de conclusão de metas <strong>moderada</strong>.');else pareceres.push('Taxa de conclusão de metas <strong>satisfatória</strong>.');}
   const row=(lbl,val,status,statusTxt)=>`<div class="row"><span class="lbl">${lbl}</span><span class="val">${val}</span><span class="status ${status}">${statusTxt}</span></div>`;
   wrap.innerHTML=`<div class="rel-clinico"><div class="rel-clinico-header"><h4>📋 Relatório Clínico — TDAH Care</h4><p>Período: ${dataRef} · ${diasDados} dias</p></div><div class="rel-clinico-body"><p style="font-size:0.75rem;color:var(--text-light);margin-bottom:10px;font-style:italic;">Análise comportamental dos últimos 30 dias.</p>${avgSono!==null?row('Média de sono',avgSono+'h',avgSono>=7?'status-norm':avgSono>=6?'status-atenc':'status-criti',avgSono>=7?'Normal':avgSono>=6?'Atenção':'Crítico'):''}${pctMetas!==null?row('Taxa de conclusão de metas',pctMetas+'%',pctMetas>=70?'status-norm':pctMetas>=50?'status-atenc':'status-criti',pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}${avgFoco!==null?row('Média de foco diário',avgFoco+'min',avgFoco>=40?'status-norm':avgFoco>=20?'status-atenc':'status-criti',avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}${avgCelular!==null?row('Média de tempo de tela',Math.floor(avgCelular/60)+'h '+avgCelular%60+'min',avgCelular<=180?'status-norm':avgCelular<=300?'status-atenc':'status-criti',avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}${row('Dias com medicação registrada',remedioN+' de '+diasDados,pctRemedio>=80?'status-norm':pctRemedio>=60?'status-atenc':'status-criti',pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo')}</div></div><div class="rel-parecer"><strong>📝 Parecer:</strong><br><br>${pareceres.join('<br><br>')}<br><br><em style="font-size:0.78rem;color:#90A4AE;">⚠️ Relatório automático — não substitui avaliação profissional.</em></div>`;
+  // Reativar Foco stats
+  let totalReativar=0; const diasReativar={};
+  for(let i=0;i<daysN;i++){const d=new Date(today);d.setDate(today.getDate()-i);const iso=hojeISO(d);const dd=state.dailyData[iso];if(dd&&dd.reativarFoco&&dd.reativarFoco.length>0){totalReativar+=dd.reativarFoco.length;diasReativar[iso]=dd.reativarFoco.length;}}
+  if(totalReativar>0){const extra='<div class="rel-clinico" style="margin-top:12px;"><div class="rel-clinico-header" style="background:linear-gradient(135deg,#4A1500,#E65100);"><h4>⚡ Protocolo Reativar Foco</h4><p>Ativações nos últimos 30 dias</p></div><div class="rel-clinico-body">'+row('Total de ativações',totalReativar+'x',totalReativar<=5?'status-norm':totalReativar<=15?'status-atenc':'status-criti',totalReativar<=5?'Baixo':totalReativar<=15?'Moderado':'Frequente')+row('Dias com ativação',Object.keys(diasReativar).length+' dias','status-norm','—')+row('Média por dia ativo',(totalReativar/Math.max(1,Object.keys(diasReativar).length)).toFixed(1)+'x/dia','status-norm','—')+'</div></div>';wrap.innerHTML+=extra;}
 }
 function renderCalendar(date){
   const yr=date.getFullYear(),mo=date.getMonth();document.getElementById('current-month-year').textContent=date.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
@@ -1999,83 +2005,6 @@ function finalizarProtocolo() {
 }
 
 // ========== FIM REATIVAR FOCO ==========
-
-// ========== PATCH POMODORO DINÂMICO ==========
-const _origIniciarPom = iniciarPom;
-iniciarPom = function() {
-  state.pom.rodando=true;
-  document.getElementById('caverna-play-btn').textContent='⏸';
-  const focoSeg=getPomFoco(), pausaSeg=getPomPausa();
-  if(!state.pom.seg||isNaN(state.pom.seg)||state.pom.seg<=0)
-    state.pom.seg=state.pom.fase==='foco'?focoSeg:pausaSeg;
-  atualizarUIPom(); state.pom.timer=setInterval(tickPom,1000);
-};
-const _origConcluirFase = concluirFase;
-concluirFase = function() {
-  clearInterval(state.pom.timer); state.pom.rodando=false;
-  const focoMin=getPomFoco()/60;
-  if(state.pom.fase==='foco'){
-    state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=focoMin;
-    if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo!');}
-    else showToast('✅ Sessão concluída! Hora de pausar!');
-    state.pom.fase='pausa';state.pom.seg=getPomPausa();
-  } else { state.pom.fase='foco';state.pom.seg=getPomFoco();showToast('🎯 Hora de focar!'); }
-  state.pom.data=hojeISO();salvar();
-  document.getElementById('caverna-play-btn').textContent='▶';
-  atualizarUIPom();playBeep();
-};
-const _origAtualizarUIPom = atualizarUIPom;
-atualizarUIPom = function() {
-  const p=state.pom;const focoSeg=getPomFoco();const pausaSeg=getPomPausa();
-  const seg=(typeof p.seg==='number'&&!isNaN(p.seg)&&p.seg>=0)?p.seg:(p.fase==='foco'?focoSeg:pausaSeg);
-  const total=p.fase==='foco'?focoSeg:pausaSeg;const prog=(total-seg)/total;
-  document.getElementById('caverna-ring-fill').style.strokeDashoffset=CIRC*(1-prog);
-  document.getElementById('caverna-ring-fill').style.stroke=p.fase==='foco'?'#A78BFA':'#60A5FA';
-  const mm=Math.floor(seg/60),ss=Math.floor(seg%60);
-  document.getElementById('caverna-time-display').textContent=pad(mm)+':'+pad(ss);
-  document.getElementById('caverna-phase-label').textContent=p.fase==='foco'?'FOCO':'PAUSA';
-  const badge=document.getElementById('caverna-status-badge');const isFull=seg===(p.fase==='foco'?focoSeg:pausaSeg);
-  if(!p.rodando&&isFull){badge.textContent='⏸ Aguardando início';badge.className='caverna-status-badge status-idle';}
-  else if(p.fase==='foco'){badge.textContent=p.rodando?'🎯 Em foco':'⏸ Foco pausado';badge.className='caverna-status-badge status-foco';}
-  else{badge.textContent=p.rodando?'☕ Pausa ativa':'⏸ Pausa pausada';badge.className='caverna-status-badge status-pausa';}
-  renderPom();
-};
-const _origResetarPomodoro = resetarPomodoro;
-resetarPomodoro = function() {
-  if(state.currentDate!==hojeISO()){showToast('⚠️ Modo Caverna só para hoje');return;}
-  clearInterval(state.pom.timer);state.pom.rodando=false;state.pom.fase='foco';state.pom.seg=getPomFoco();
-  document.getElementById('caverna-play-btn').textContent='▶';atualizarUIPom();showToast('🔄 Timer reiniciado');salvar();
-};
-
-// Patch relatório mensal para incluir reativar foco
-const _origGerarRelatorioMensal = gerarRelatorioMensal;
-gerarRelatorioMensal = function() {
-  _origGerarRelatorioMensal();
-  // Conta usos do reativar foco nos últimos 30 dias
-  const today=new Date(); let totalReativar=0; const diasReativar={};
-  for(let i=0;i<30;i++){
-    const d=new Date(today);d.setDate(today.getDate()-i);
-    const iso=hojeISO(d);const dd=state.dailyData[iso];
-    if(dd&&dd.reativarFoco&&dd.reativarFoco.length>0){
-      totalReativar+=dd.reativarFoco.length;
-      diasReativar[iso]=dd.reativarFoco.length;
-    }
-  }
-  if(totalReativar===0)return;
-  const wrap=document.getElementById('relatorio-mensal-wrap');
-  const extra=`<div class="rel-clinico" style="margin-top:12px;">
-    <div class="rel-clinico-header" style="background:linear-gradient(135deg,#4A1500,#E65100);">
-      <h4>⚡ Protocolo Reativar Foco</h4>
-      <p>Ativações nos últimos 30 dias</p>
-    </div>
-    <div class="rel-clinico-body">
-      <div class="row"><span class="lbl">Total de ativações</span><span class="val">${totalReativar}x</span><span class="status ${totalReativar<=5?'status-norm':totalReativar<=15?'status-atenc':'status-criti'}">${totalReativar<=5?'Baixo':totalReativar<=15?'Moderado':'Frequente'}</span></div>
-      <div class="row"><span class="lbl">Dias com ativação</span><span class="val">${Object.keys(diasReativar).length} dias</span></div>
-      <div class="row"><span class="lbl">Média por dia ativo</span><span class="val">${(totalReativar/Math.max(1,Object.keys(diasReativar).length)).toFixed(1)}x/dia</span></div>
-    </div>
-  </div>`;
-  wrap.innerHTML += extra;
-};
 
 init();
 carregarConfigPom();
