@@ -282,6 +282,160 @@ textarea { resize: none; height: 80px; }
 .toggle-switch.on { background: #1565C0; }
 .toggle-switch::after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
 .toggle-switch.on::after { left: 23px; }
+
+/* ========== COMPARTILHAR PROGRESSO ========== */
+.compartilhar-modal { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.85); z-index:300; align-items:flex-end; justify-content:center; }
+.compartilhar-modal.show { display:flex; }
+.compartilhar-content { background:white; border-radius:24px 24px 0 0; width:100%; max-width:430px; max-height:95vh; overflow-y:auto; animation:slideUp 0.3s ease; }
+.compartilhar-header { background:linear-gradient(135deg,#1B5E20,#2E7D32); color:white; padding:20px 24px 16px; border-radius:24px 24px 0 0; position:sticky; top:0; z-index:1; }
+.compartilhar-header h2 { font-size:1.15rem; font-weight:800; margin-bottom:2px; }
+.compartilhar-header p { font-size:0.78rem; opacity:0.85; }
+.comp-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.2); border:none; color:white; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; }
+.compartilhar-body { padding:20px; }
+
+/* Tabs de formato */
+.comp-tabs { display:flex; gap:8px; margin-bottom:20px; }
+.comp-tab { flex:1; padding:10px 6px; border:2px solid #E3EAF2; border-radius:12px; background:white; font-size:0.75rem; font-weight:700; cursor:pointer; text-align:center; transition:all 0.2s; color:#546E7A; }
+.comp-tab.active { background:#1B5E20; color:white; border-color:#1B5E20; }
+
+/* Cartão visual wrapped */
+.wrapped-card {
+  background:linear-gradient(135deg,#0D1B0A,#1A3A14,#0A2010);
+  border-radius:20px; padding:24px; margin-bottom:16px;
+  border:1px solid rgba(67,160,71,0.3); position:relative; overflow:hidden;
+}
+.wrapped-card::before {
+  content:''; position:absolute; top:-40px; right:-40px;
+  width:160px; height:160px; border-radius:50%;
+  background:radial-gradient(circle,rgba(67,160,71,0.2),transparent 70%);
+}
+.wrapped-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+.wrapped-titulo { font-size:0.72rem; color:#81C784; text-transform:uppercase; letter-spacing:1px; font-weight:700; }
+.wrapped-periodo { font-size:0.68rem; color:#4CAF50; text-align:right; }
+.wrapped-score { text-align:center; margin-bottom:20px; }
+.wrapped-score-num { font-size:3.5rem; font-weight:900; background:linear-gradient(135deg,#69F0AE,#00E676); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; }
+.wrapped-score-label { font-size:0.72rem; color:#81C784; margin-top:4px; letter-spacing:1px; text-transform:uppercase; }
+.wrapped-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.wrapped-item { background:rgba(255,255,255,0.06); border-radius:12px; padding:12px; border:1px solid rgba(67,160,71,0.2); }
+.wrapped-item .wi-val { font-size:1.3rem; font-weight:800; color:#E8F5E9; }
+.wrapped-item .wi-label { font-size:0.65rem; color:#81C784; margin-top:2px; }
+.wrapped-item .wi-bar { height:4px; background:rgba(255,255,255,0.1); border-radius:2px; margin-top:6px; overflow:hidden; }
+.wrapped-item .wi-bar-fill { height:100%; background:linear-gradient(to right,#43A047,#69F0AE); border-radius:2px; }
+.wrapped-destaque { background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.2); border-radius:12px; padding:12px 14px; margin-bottom:16px; }
+.wrapped-destaque .wd-label { font-size:0.68rem; color:#FFD54F; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+.wrapped-destaque .wd-val { font-size:0.88rem; color:#FFF9C4; font-weight:700; }
+.wrapped-footer { text-align:center; font-size:0.65rem; color:#388E3C; letter-spacing:0.5px; }
+
+/* Texto formatado */
+.texto-formatado { background:#F8FAFF; border:2px solid #E3EAF2; border-radius:14px; padding:16px; font-size:0.82rem; color:#37474F; line-height:1.8; font-family:monospace; margin-bottom:16px; white-space:pre-wrap; }
+
+/* Botões de ação */
+.comp-acoes { display:flex; flex-direction:column; gap:10px; }
+.comp-acao-btn { width:100%; padding:14px; border:none; border-radius:12px; font-size:0.9rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s; }
+.comp-acao-btn:active { transform:scale(0.98); }
+.btn-whatsapp { background:linear-gradient(135deg,#128C7E,#25D366); color:white; }
+.btn-copiar { background:#EEF2FF; color:#1A237E; border:1px solid #C5CAE9; }
+.btn-pdf { background:linear-gradient(135deg,#C62828,#EF5350); color:white; }
+</style>
+.reativar-btn {
+  width: 100%; padding: 16px; border: none; border-radius: 16px;
+  background: linear-gradient(135deg, #E65100, #FF6D00);
+  color: white; font-size: 1rem; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-bottom: 16px; box-shadow: 0 4px 20px rgba(230,81,0,0.35);
+  transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden;
+}
+.reativar-btn::before {
+  content: ''; position: absolute; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+@keyframes pulse-glow { 0%,100%{opacity:0.4;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.1)} }
+.reativar-btn:active { transform: scale(0.98); }
+
+.reativar-modal { display: none; position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.85); z-index: 300; align-items: flex-end; justify-content: center; }
+.reativar-modal.show { display: flex; }
+.reativar-content { background: #0D0D1A; border-radius: 24px 24px 0 0; width: 100%; max-width: 430px; max-height: 95vh; overflow-y: auto; animation: slideUp 0.3s ease; border-top: 2px solid rgba(255,109,0,0.4); }
+.reativar-top { background: linear-gradient(135deg, #1A0A00, #2D1200); padding: 20px 24px 16px; border-radius: 24px 24px 0 0; position: sticky; top: 0; z-index: 1; }
+.reativar-top h2 { font-size: 1.2rem; font-weight: 800; color: #FF6D00; margin-bottom: 2px; }
+.reativar-top p { font-size: 0.78rem; color: #9CA3AF; }
+.reativar-close { position: absolute; top: 16px; right: 16px; background: rgba(255,109,0,0.2); border: 1px solid rgba(255,109,0,0.3); color: #FF6D00; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+.reativar-body { padding: 20px; }
+
+/* Seleção de nível */
+.nivel-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.nivel-card { background: rgba(30,30,50,0.8); border: 2px solid #2D2D4E; border-radius: 14px; padding: 16px 10px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.nivel-card:hover { border-color: #FF6D00; background: rgba(255,109,0,0.1); }
+.nivel-card.selected { border-color: #FF6D00; background: rgba(255,109,0,0.15); }
+.nivel-card .nivel-emoji { font-size: 1.8rem; margin-bottom: 6px; display: block; }
+.nivel-card .nivel-nome { font-size: 0.72rem; font-weight: 700; color: #E0E0FF; }
+.nivel-card .nivel-desc { font-size: 0.62rem; color: #6B7280; margin-top: 3px; line-height: 1.3; }
+
+/* Protocolo passo a passo */
+.protocolo-wrap { display: none; }
+.protocolo-wrap.show { display: block; }
+.passo-card {
+  background: rgba(20,20,40,0.9); border: 1px solid #2D2D4E;
+  border-radius: 18px; padding: 24px; text-align: center; margin-bottom: 16px;
+}
+.passo-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
+.passo-titulo { font-size: 1.1rem; font-weight: 800; color: #E0E0FF; margin-bottom: 8px; }
+.passo-desc { font-size: 0.85rem; color: #9CA3AF; line-height: 1.6; margin-bottom: 20px; }
+
+/* Timer do passo */
+.passo-timer-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+.passo-ring { position: relative; width: 120px; height: 120px; }
+.passo-ring svg { position: absolute; top:0;left:0;width:120px;height:120px;transform:rotate(-90deg); }
+.passo-ring-bg { fill: none; stroke: #1E1E3A; stroke-width: 8; }
+.passo-ring-fill { fill: none; stroke: #FF6D00; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+.passo-center { position: absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center; }
+.passo-time { font-size: 1.8rem; font-weight: 800; color: white; letter-spacing: -1px; }
+.passo-time-label { font-size: 0.6rem; color: #6B7280; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Animação respiração */
+.breath-circle {
+  width: 100px; height: 100px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,109,0,0.6), rgba(255,109,0,0.1));
+  border: 2px solid rgba(255,109,0,0.5);
+  margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; color: #FF6D00; font-weight: 700; text-align: center;
+  transition: transform 0.1s;
+}
+.breath-circle.inhale { animation: breath-in 4s ease-in-out forwards; }
+.breath-circle.hold { animation: none; transform: scale(1.4); }
+.breath-circle.exhale { animation: breath-out 8s ease-in-out forwards; }
+@keyframes breath-in { from{transform:scale(1)} to{transform:scale(1.4)} }
+@keyframes breath-out { from{transform:scale(1.4)} to{transform:scale(1)} }
+
+/* Botões do protocolo */
+.passo-btn-row { display: flex; gap: 10px; }
+.passo-btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.passo-btn-next { background: linear-gradient(135deg, #E65100, #FF6D00); color: white; }
+.passo-btn-skip { background: rgba(30,30,50,0.8); color: #6B7280; border: 1px solid #2D2D4E; font-size: 0.8rem; }
+.passo-progresso { display: flex; gap: 6px; justify-content: center; margin-bottom: 20px; }
+.passo-dot { width: 8px; height: 8px; border-radius: 50%; background: #2D2D4E; transition: all 0.3s; }
+.passo-dot.done { background: #FF6D00; }
+.passo-dot.atual { background: #FF6D00; box-shadow: 0 0 8px rgba(255,109,0,0.6); transform: scale(1.3); }
+
+/* Conclusão */
+.protocolo-fim { text-align: center; padding: 20px 0; display: none; }
+.protocolo-fim.show { display: block; }
+.protocolo-fim .fim-emoji { font-size: 3.5rem; margin-bottom: 12px; display: block; animation: bounce-in 0.5s ease; }
+@keyframes bounce-in { 0%{transform:scale(0)} 60%{transform:scale(1.2)} 100%{transform:scale(1)} }
+.protocolo-fim h3 { font-size: 1.2rem; font-weight: 800; color: #E0E0FF; margin-bottom: 8px; }
+.protocolo-fim p { font-size: 0.85rem; color: #9CA3AF; margin-bottom: 20px; line-height: 1.6; }
+.fim-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #E65100, #FF6D00); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+
+/* ========== POMODORO EDITÁVEL ========== */
+.pom-config-card { background: rgba(30,30,58,0.6); border: 1px solid #2D2D4E; border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+.pom-config-title { font-size: 0.78rem; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+.pom-config-row { display: flex; gap: 10px; align-items: center; }
+.pom-config-item { flex: 1; text-align: center; }
+.pom-config-item label { font-size: 0.7rem; color: #9CA3AF; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.pom-config-item input { background: rgba(20,20,40,0.8); border: 1px solid #3D3D6E; color: #E0E0FF; border-radius: 10px; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; width: 100%; }
+.pom-config-sep { color: #4B5563; font-size: 1.2rem; font-weight: 700; margin-top: 16px; }
+.pom-config-btn { padding: 10px 16px; background: rgba(124,58,237,0.3); color: #A78BFA; border: 1px solid #7C3AED; border-radius: 10px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap; margin-top: 14px; }
 </style>
 </head>
 <body>
@@ -334,6 +488,16 @@ textarea { resize: none; height: 80px; }
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
     <div class="progress-info"><span id="progress-text">0 de 0 metas concluídas</span><span id="progress-pct">0%</span></div>
   </div>
+
+  <!-- LEMBRETE SEXTA -->
+  <div id="lembrete-sexta" style="display:none;background:linear-gradient(135deg,#1B5E20,#2E7D32);border-radius:16px;padding:16px;margin-bottom:16px;color:white;">
+    <div style="font-size:0.9rem;font-weight:800;margin-bottom:4px;">📅 É sexta-feira!</div>
+    <div style="font-size:0.78rem;opacity:0.9;margin-bottom:12px;">Hora de enviar seu progresso semanal para sua psicóloga 🧠</div>
+    <button onclick="abrirCompartilhar()" style="width:100%;padding:10px;background:white;color:#1B5E20;border:none;border-radius:10px;font-size:0.85rem;font-weight:800;cursor:pointer;">📤 Gerar e Compartilhar Progresso</button>
+  </div>
+
+  <button class="reativar-btn" onclick="abrirReativar()">⚡ Reativar Foco</button>
+
   <div class="card">
     <div class="card-title">📱 Tempo de tela hoje</div>
     <div id="celular-home-display">
@@ -352,6 +516,7 @@ textarea { resize: none; height: 80px; }
     <div class="card-title">📅 Último sono registrado</div>
     <div id="ultimo-sono-home"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:8px;">Nenhum registro ainda</p></div>
   </div>
+  <button class="relatorio-btn" onclick="abrirCompartilhar()" style="background:linear-gradient(135deg,#1B5E20,#43A047);">📤 Enviar Progresso para Psicóloga</button>
   <button class="relatorio-btn" onclick="abrirRelatorio()">📊 Gerar Relatório do Dia</button>
 </div>
 
@@ -460,8 +625,25 @@ textarea { resize: none; height: 80px; }
 
 <!-- CAVERNA -->
 <div class="page" id="page-caverna">
-  <div class="caverna-header"><h2>🏔️ Modo Caverna</h2><p>Pomodoro 20min foco / 5min pausa</p></div>
+  <div class="caverna-header"><h2>🏔️ Modo Caverna</h2><p id="caverna-subtitle">Pomodoro 20min foco / 5min pausa</p></div>
   <div style="text-align:center;"><span class="caverna-status-badge status-idle" id="caverna-status-badge">⏸ Aguardando início</span></div>
+
+  <!-- Config editável do Pomodoro -->
+  <div class="pom-config-card">
+    <div class="pom-config-title">⚙️ Configurar tempo</div>
+    <div class="pom-config-row">
+      <div class="pom-config-item">
+        <label>🎯 Foco (min)</label>
+        <input type="number" id="pom-foco-input" value="20" min="1" max="90" onchange="aplicarConfigPom()">
+      </div>
+      <div class="pom-config-sep">/</div>
+      <div class="pom-config-item">
+        <label>☕ Pausa (min)</label>
+        <input type="number" id="pom-pausa-input" value="5" min="1" max="30" onchange="aplicarConfigPom()">
+      </div>
+      <button class="pom-config-btn" onclick="aplicarConfigPom()">✓ Aplicar</button>
+    </div>
+  </div>
   <div class="caverna-timer-wrap">
     <div class="caverna-ring">
       <svg viewBox="0 0 220 220"><circle class="caverna-ring-bg" cx="110" cy="110" r="96"/><circle class="caverna-ring-fill" id="caverna-ring-fill" cx="110" cy="110" r="96" stroke="#A78BFA" stroke-dasharray="603.19" stroke-dashoffset="0"/></svg>
@@ -552,6 +734,178 @@ textarea { resize: none; height: 80px; }
     <button class="rel-close-btn" onclick="document.getElementById('relatorio-modal').classList.remove('show')">✕ Fechar</button>
   </div>
 </div>
+
+<!-- ===== COMPARTILHAR PROGRESSO MODAL ===== -->
+<div class="compartilhar-modal" id="compartilhar-modal" onclick="fecharCompartilharModal(event)">
+  <div class="compartilhar-content">
+    <div class="compartilhar-header" style="position:relative;">
+      <h2>📤 Progresso Semanal</h2>
+      <p>Compartilhe sua evolução com sua psicóloga</p>
+      <button class="comp-close" onclick="document.getElementById('compartilhar-modal').classList.remove('show')">✕</button>
+    </div>
+    <div class="compartilhar-body">
+
+      <div class="comp-tabs">
+        <button class="comp-tab active" onclick="switchCompTab('visual',this)">🎨 Visual</button>
+        <button class="comp-tab" onclick="switchCompTab('texto',this)">💬 Texto</button>
+        <button class="comp-tab" onclick="switchCompTab('pdf',this)">📄 PDF</button>
+      </div>
+
+      <!-- ABA VISUAL -->
+      <div id="comp-visual" class="comp-tab-content">
+        <div class="wrapped-card" id="wrapped-card">
+          <div class="wrapped-header">
+            <div>
+              <div class="wrapped-titulo">📊 Progresso Semanal</div>
+              <div style="font-size:1rem;font-weight:800;color:#E8F5E9;margin-top:2px;" id="wc-nome">TDAH Care</div>
+            </div>
+            <div class="wrapped-periodo" id="wc-periodo"></div>
+          </div>
+          <div class="wrapped-score">
+            <div class="wrapped-score-num" id="wc-score">—</div>
+            <div class="wrapped-score-label">score da semana</div>
+          </div>
+          <div class="wrapped-grid">
+            <div class="wrapped-item">
+              <div class="wi-val" id="wc-sono">—</div>
+              <div class="wi-label">😴 Média de sono</div>
+              <div class="wi-bar"><div class="wi-bar-fill" id="wc-sono-bar" style="width:0%"></div></div>
+            </div>
+            <div class="wrapped-item">
+              <div class="wi-val" id="wc-metas">—</div>
+              <div class="wi-label">✅ Metas concluídas</div>
+              <div class="wi-bar"><div class="wi-bar-fill" id="wc-metas-bar" style="width:0%"></div></div>
+            </div>
+            <div class="wrapped-item">
+              <div class="wi-val" id="wc-foco">—</div>
+              <div class="wi-label">🏔️ Tempo de foco</div>
+              <div class="wi-bar"><div class="wi-bar-fill" id="wc-foco-bar" style="width:0%"></div></div>
+            </div>
+            <div class="wrapped-item">
+              <div class="wi-val" id="wc-tela">—</div>
+              <div class="wi-label">📱 Média de tela</div>
+              <div class="wi-bar"><div class="wi-bar-fill" id="wc-tela-bar" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div class="wrapped-destaque" id="wc-destaque-wrap">
+            <div class="wd-label">⭐ Destaque da semana</div>
+            <div class="wd-val" id="wc-destaque">—</div>
+          </div>
+          <div class="wrapped-footer">gerado pelo TDAH Care • semana de acompanhamento</div>
+        </div>
+        <div class="comp-acoes">
+          <button class="comp-acao-btn btn-whatsapp" onclick="compartilharWhatsApp()">📱 Enviar pelo WhatsApp</button>
+          <button class="comp-acao-btn btn-copiar" onclick="tirarPrintCard()">📸 Salvar como imagem</button>
+        </div>
+      </div>
+
+      <!-- ABA TEXTO -->
+      <div id="comp-texto" class="comp-tab-content" style="display:none;">
+        <div class="texto-formatado" id="texto-progresso"></div>
+        <div class="comp-acoes">
+          <button class="comp-acao-btn btn-whatsapp" onclick="enviarTextoWhatsApp()">📱 Abrir no WhatsApp</button>
+          <button class="comp-acao-btn btn-copiar" onclick="copiarTexto()">📋 Copiar texto</button>
+        </div>
+      </div>
+
+      <!-- ABA PDF -->
+      <div id="comp-pdf" class="comp-tab-content" style="display:none;">
+        <div style="background:#F8FAFF;border-radius:14px;padding:20px;margin-bottom:16px;text-align:center;">
+          <div style="font-size:2.5rem;margin-bottom:12px;">📄</div>
+          <div style="font-weight:700;color:#1A237E;margin-bottom:8px;">Relatório Clínico Semanal</div>
+          <div style="font-size:0.82rem;color:#546E7A;line-height:1.6;margin-bottom:16px;">Gera um PDF formatado profissionalmente com todos os dados da semana — pronto para apresentar na consulta.</div>
+          <div id="pdf-preview-info" style="background:#EEF2FF;border-radius:10px;padding:12px;font-size:0.8rem;color:#1A237E;text-align:left;margin-bottom:16px;"></div>
+        </div>
+        <div class="comp-acoes">
+          <button class="comp-acao-btn btn-pdf" onclick="gerarPDFSemanal()">📄 Gerar e Baixar PDF</button>
+          <button class="comp-acao-btn btn-copiar" onclick="imprimirRelatorio()">🖨️ Imprimir / Salvar PDF</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ===== FIM COMPARTILHAR ===== -->
+
+<!-- ===== REATIVAR FOCO MODAL ===== -->
+<div class="reativar-modal" id="reativar-modal" onclick="fecharReativarModal(event)">
+  <div class="reativar-content">
+    <div class="reativar-top" style="position:relative;">
+      <h2>⚡ Reativar Foco</h2>
+      <p>Selecione como você está agora</p>
+      <button class="reativar-close" onclick="document.getElementById('reativar-modal').classList.remove('show')">✕</button>
+    </div>
+    <div class="reativar-body">
+
+      <!-- Seleção de nível -->
+      <div id="reativar-nivel-select">
+        <div class="nivel-grid">
+          <div class="nivel-card" onclick="selecionarNivel(1,this)">
+            <span class="nivel-emoji">😐</span>
+            <div class="nivel-nome">Travado</div>
+            <div class="nivel-desc">Difícil focar mas consigo</div>
+          </div>
+          <div class="nivel-card" onclick="selecionarNivel(2,this)">
+            <span class="nivel-emoji">😶‍🌫️</span>
+            <div class="nivel-nome">Cabeça Pesada</div>
+            <div class="nivel-desc">Tentei e não consigo</div>
+          </div>
+          <div class="nivel-card" onclick="selecionarNivel(3,this)">
+            <span class="nivel-emoji">🧱</span>
+            <div class="nivel-nome">Tela em Branco</div>
+            <div class="nivel-desc">Nem sei por onde começar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Protocolo -->
+      <div class="protocolo-wrap" id="protocolo-wrap">
+        <div class="passo-progresso" id="passo-progresso"></div>
+        <div class="passo-card" id="passo-card">
+          <span class="passo-icon" id="passo-icon">💧</span>
+          <div class="passo-titulo" id="passo-titulo">Beba água agora</div>
+          <div class="passo-desc" id="passo-desc">Desidratação piora a concentração. Levante, pegue um copo d'água e beba agora.</div>
+          <div class="passo-timer-wrap" id="passo-timer-wrap">
+            <div class="passo-ring">
+              <svg viewBox="0 0 120 120">
+                <circle class="passo-ring-bg" cx="60" cy="60" r="52"/>
+                <circle class="passo-ring-fill" id="passo-ring-fill" cx="60" cy="60" r="52" stroke-dasharray="326.73" stroke-dashoffset="0"/>
+              </svg>
+              <div class="passo-center">
+                <div class="passo-time" id="passo-time-display">—</div>
+                <div class="passo-time-label" id="passo-time-label">segundos</div>
+              </div>
+            </div>
+          </div>
+          <div id="breath-container" style="display:none;">
+            <div class="breath-circle" id="breath-circle">Prepare-se</div>
+            <div style="font-size:0.78rem;color:#6B7280;text-align:center;margin-bottom:16px;" id="breath-instruction">Respire fundo</div>
+          </div>
+          <div id="sentidos-container" style="display:none;">
+            <div style="background:rgba(255,109,0,0.1);border:1px solid rgba(255,109,0,0.3);border-radius:12px;padding:14px;margin-bottom:16px;">
+              <div style="font-size:0.78rem;color:#FF6D00;font-weight:700;margin-bottom:8px;" id="sentido-atual-label">👀 Nome 5 coisas que você VÊ</div>
+              <div style="font-size:0.72rem;color:#9CA3AF;line-height:1.6;" id="sentido-exemplos"></div>
+            </div>
+          </div>
+        </div>
+        <div class="passo-btn-row">
+          <button class="passo-btn passo-btn-skip" onclick="pularPasso()">Pular</button>
+          <button class="passo-btn passo-btn-next" id="passo-next-btn" onclick="proximoPasso()">Feito ✓</button>
+        </div>
+      </div>
+
+      <!-- Conclusão -->
+      <div class="protocolo-fim" id="protocolo-fim">
+        <span class="fim-emoji">🧠✨</span>
+        <h3>Protocolo concluído!</h3>
+        <p>Você fez o necessário para reativar seu sistema. Agora comece com uma tarefa pequena — apenas 10 minutos de foco.</p>
+        <button class="fim-btn" onclick="finalizarProtocolo()">🏔️ Iniciar Modo Caverna</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ===== FIM REATIVAR FOCO ===== -->
 
 <!-- ===== BACKUP FAB & MODAL ===== -->
 <button class="backup-fab" id="backup-fab-btn" onclick="abrirBackup()" title="Backup & Sincronização" style="position:relative;">
@@ -1094,8 +1448,639 @@ function confirmarImport(){
 }
 // ========== FIM BACKUP ==========
 
+
+// ========== POMODORO EDITÁVEL ==========
+function aplicarConfigPom() {
+  if (state.pom.rodando) { showToast('⚠️ Pare o timer antes de alterar!'); return; }
+  const f = parseInt(document.getElementById('pom-foco-input').value) || 20;
+  const p = parseInt(document.getElementById('pom-pausa-input').value) || 5;
+  const focoMin = Math.min(90, Math.max(1, f));
+  const pausaMin = Math.min(30, Math.max(1, p));
+  document.getElementById('pom-foco-input').value = focoMin;
+  document.getElementById('pom-pausa-input').value = pausaMin;
+  // Atualiza as constantes dinâmicas
+  state.pomConfig = { foco: focoMin * 60, pausa: pausaMin * 60 };
+  state.pom.seg = state.pom.fase === 'foco' ? state.pomConfig.foco : state.pomConfig.pausa;
+  document.getElementById('caverna-subtitle').textContent = `Pomodoro ${focoMin}min foco / ${pausaMin}min pausa`;
+  atualizarUIPom();
+  showToast(`✅ ${focoMin}min foco / ${pausaMin}min pausa aplicado!`);
+  // Salva config
+  try { localStorage.setItem('tdah_pom_config', JSON.stringify({foco: focoMin, pausa: pausaMin})); } catch(e) {}
+}
+
+function carregarConfigPom() {
+  try {
+    const c = localStorage.getItem('tdah_pom_config');
+    if (c) {
+      const cfg = JSON.parse(c);
+      document.getElementById('pom-foco-input').value = cfg.foco || 20;
+      document.getElementById('pom-pausa-input').value = cfg.pausa || 5;
+      state.pomConfig = { foco: (cfg.foco||20)*60, pausa: (cfg.pausa||5)*60 };
+      document.getElementById('caverna-subtitle').textContent = `Pomodoro ${cfg.foco||20}min foco / ${cfg.pausa||5}min pausa`;
+    } else {
+      state.pomConfig = { foco: POM_FOCO, pausa: POM_PAUSA };
+    }
+  } catch(e) { state.pomConfig = { foco: POM_FOCO, pausa: POM_PAUSA }; }
+}
+
+// Override das funções que usam POM_FOCO/POM_PAUSA para usar pomConfig
+function getPomFoco() { return state.pomConfig ? state.pomConfig.foco : POM_FOCO; }
+function getPomPausa() { return state.pomConfig ? state.pomConfig.pausa : POM_PAUSA; }
+
+// ========== COMPARTILHAR PROGRESSO ==========
+
+function verificarLembreteSexta() {
+  const hoje = new Date();
+  const diaSemana = hoje.getDay(); // 5 = sexta
+  const banner = document.getElementById('lembrete-sexta');
+  if (banner) banner.style.display = diaSemana === 5 ? 'block' : 'none';
+}
+
+function fecharCompartilharModal(e) {
+  if (e.target.id === 'compartilhar-modal') document.getElementById('compartilhar-modal').classList.remove('show');
+}
+
+function switchCompTab(tab, btn) {
+  document.querySelectorAll('.comp-tab-content').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('.comp-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('comp-' + tab).style.display = 'block';
+  btn.classList.add('active');
+}
+
+function calcularDadosSemana() {
+  const hoje = new Date();
+  let sonoTotal=0,sonoN=0,metasConcl=0,metasTotal=0,focoTotal=0,celTotal=0,celN=0,remedioN=0,diasDados=0,reativarN=0;
+  const dataInicio = new Date(hoje); dataInicio.setDate(hoje.getDate()-6);
+
+  for (let i=0; i<7; i++) {
+    const d = new Date(hoje); d.setDate(hoje.getDate()-i);
+    const iso = hojeISO(d); const dd = state.dailyData[iso];
+    if (!dd) continue; diasDados++;
+    if (dd.sono&&dd.sono.length>0) { sonoTotal+=dd.sono[0].horas; sonoN++; }
+    const allM=[...(dd.metas||[]),...(dd.metasFixas||[])];
+    if (allM.length>0) { metasConcl+=allM.filter(m=>m.done).length; metasTotal+=allM.length; }
+    if (dd.pom&&dd.pom.minFoco>0) focoTotal+=dd.pom.minFoco;
+    if (dd.celular) { celTotal+=dd.celular.horas*60+dd.celular.minutos; celN++; }
+    if (dd.remedio) remedioN++;
+    if (dd.reativarFoco) reativarN+=dd.reativarFoco.length;
+  }
+
+  const fmtData = d => d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+  return {
+    diasDados, sonoMedia: sonoN>0?(sonoTotal/sonoN).toFixed(1):null,
+    metasPct: metasTotal>0?Math.round((metasConcl/metasTotal)*100):null,
+    metasConcl, metasTotal,
+    focoTotal, focoH: Math.floor(focoTotal/60), focoM: focoTotal%60,
+    celMedia: celN>0?Math.round(celTotal/celN):null,
+    remedioN, reativarN,
+    periodo: fmtData(dataInicio)+' a '+fmtData(hoje),
+    scoreGeral: calcularScoreSemana({sonoMedia:sonoN>0?(sonoTotal/sonoN):null, metasPct:metasTotal>0?Math.round((metasConcl/metasTotal)*100):null, focoTotal, celMedia:celN>0?Math.round(celTotal/celN):null})
+  };
+}
+
+function calcularScoreSemana(d) {
+  let pts=0, max=0;
+  if (d.sonoMedia!==null) { max+=25; pts+=d.sonoMedia>=7?25:d.sonoMedia>=6?15:5; }
+  if (d.metasPct!==null) { max+=30; pts+=Math.round((d.metasPct/100)*30); }
+  if (d.focoTotal>0) { max+=25; pts+=Math.min(25,Math.round((d.focoTotal/280)*25)); }
+  if (d.celMedia!==null) { max+=20; pts+=d.celMedia<=120?20:d.celMedia<=240?10:0; }
+  return max>0?Math.round((pts/max)*100):0;
+}
+
+function abrirCompartilhar() {
+  const dados = calcularDadosSemana();
+  preencherWrappedCard(dados);
+  preencherTexto(dados);
+  preencherPDFInfo(dados);
+  document.getElementById('compartilhar-modal').classList.add('show');
+  switchCompTab('visual', document.querySelector('.comp-tab'));
+}
+
+function preencherWrappedCard(d) {
+  const score = d.scoreGeral;
+  const emoji = score>=80?'🏆':score>=60?'⭐':score>=40?'💪':'🌱';
+  document.getElementById('wc-periodo').textContent = d.periodo;
+  document.getElementById('wc-score').textContent = emoji+' '+score;
+
+  if (d.sonoMedia) {
+    document.getElementById('wc-sono').textContent = d.sonoMedia+'h';
+    document.getElementById('wc-sono-bar').style.width = Math.min(100,(d.sonoMedia/9)*100)+'%';
+  } else { document.getElementById('wc-sono').textContent = '—'; }
+
+  if (d.metasPct!==null) {
+    document.getElementById('wc-metas').textContent = d.metasPct+'%';
+    document.getElementById('wc-metas-bar').style.width = d.metasPct+'%';
+  } else { document.getElementById('wc-metas').textContent = '—'; }
+
+  if (d.focoTotal>0) {
+    document.getElementById('wc-foco').textContent = d.focoH>0?d.focoH+'h'+d.focoM+'m':d.focoTotal+'min';
+    document.getElementById('wc-foco-bar').style.width = Math.min(100,(d.focoTotal/300)*100)+'%';
+  } else { document.getElementById('wc-foco').textContent = '—'; }
+
+  if (d.celMedia!==null) {
+    const ch=Math.floor(d.celMedia/60),cm=d.celMedia%60;
+    document.getElementById('wc-tela').textContent = ch+'h'+(cm>0?cm+'m':'');
+    document.getElementById('wc-tela-bar').style.width = Math.max(0,100-Math.min(100,(d.celMedia/360)*100))+'%';
+  } else { document.getElementById('wc-tela').textContent = '—'; }
+
+  // Destaque
+  let destaque = '';
+  if (d.sonoMedia>=7.5) destaque = '😴 Sono excelente — média de '+d.sonoMedia+'h!';
+  else if (d.metasPct>=80) destaque = '✅ '+d.metasPct+'% das metas concluídas!';
+  else if (d.focoTotal>=120) destaque = '🏔️ '+d.focoH+'h'+d.focoM+'min de foco esta semana!';
+  else if (d.remedioN>=5) destaque = '💊 Medicação tomada '+d.remedioN+' de 7 dias!';
+  else if (d.reativarN>0) destaque = '⚡ Reativei o foco '+d.reativarN+'x e segui em frente!';
+  else destaque = '📈 '+d.diasDados+' dias de dados registrados esta semana!';
+  document.getElementById('wc-destaque').textContent = destaque;
+}
+
+function preencherTexto(d) {
+  const score = d.scoreGeral;
+  const emoji = score>=80?'🏆':score>=60?'⭐':score>=40?'💪':'🌱';
+  const hoje = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  let txt = `📊 Progresso Semanal — TDAH Care
+${d.periodo}
+━━━━━━━━━━━━━━━━━━━━
+
+${emoji} Score da semana: ${score}/100
+
+`;
+  if (d.sonoMedia) txt += `😴 Sono médio: ${d.sonoMedia}h ${d.sonoMedia>=7?'✅':'⚠️'}\n`;
+  if (d.metasPct!==null) txt += `✅ Metas: ${d.metasConcl}/${d.metasTotal} (${d.metasPct}%) ${d.metasPct>=70?'✅':'⚠️'}\n`;
+  if (d.focoTotal>0) txt += `🏔️ Foco total: ${d.focoH>0?d.focoH+'h ':''  }${d.focoM>0?d.focoM+'min':''}\n`;
+  if (d.celMedia!==null) { const ch=Math.floor(d.celMedia/60),cm=d.celMedia%60; txt += `📱 Tela média: ${ch}h${cm>0?cm+'min':''}/dia ${d.celMedia<=180?'✅':'⚠️'}\n`; }
+  if (d.remedioN>0) txt += `💊 Medicação: ${d.remedioN}/7 dias\n`;
+  if (d.reativarN>0) txt += `⚡ Reativei o foco: ${d.reativarN}x\n`;
+  txt += `\n━━━━━━━━━━━━━━━━━━━━\n📱 Gerado pelo TDAH Care`;
+  document.getElementById('texto-progresso').textContent = txt;
+}
+
+function preencherPDFInfo(d) {
+  const el = document.getElementById('pdf-preview-info');
+  const score = d.scoreGeral;
+  el.innerHTML = `
+    <div style="font-weight:700;margin-bottom:8px;">📋 O PDF incluirá:</div>
+    <div>• Score geral da semana: <strong>${score}/100</strong></div>
+    ${d.sonoMedia?`<div>• Média de sono: <strong>${d.sonoMedia}h</strong></div>`:''}
+    ${d.metasPct!==null?`<div>• Taxa de metas: <strong>${d.metasPct}%</strong></div>`:''}
+    ${d.focoTotal>0?`<div>• Tempo de foco: <strong>${d.focoH>0?d.focoH+'h':''} ${d.focoM>0?d.focoM+'min':''}</strong></div>`:''}
+    ${d.reativarN>0?`<div>• Ativações de foco: <strong>${d.reativarN}x</strong></div>`:''}
+    <div style="margin-top:8px;font-size:0.75rem;color:#546E7A;">Período: ${d.periodo}</div>
+  `;
+}
+
+async function compartilharWhatsApp() {
+  const dados = calcularDadosSemana();
+  const score = dados.scoreGeral;
+  const emoji = score>=80?'🏆':score>=60?'⭐':score>=40?'💪':'🌱';
+  let txt = `📊 *Progresso Semanal — TDAH Care*\n_${dados.periodo}_\n\n${emoji} *Score: ${score}/100*\n\n`;
+  if (dados.sonoMedia) txt += `😴 Sono médio: *${dados.sonoMedia}h*\n`;
+  if (dados.metasPct!==null) txt += `✅ Metas: *${dados.metasPct}%* (${dados.metasConcl}/${dados.metasTotal})\n`;
+  if (dados.focoTotal>0) txt += `🏔️ Foco: *${dados.focoH>0?dados.focoH+'h ':'' }${dados.focoM>0?dados.focoM+'min':''}*\n`;
+  if (dados.celMedia!==null) { const ch=Math.floor(dados.celMedia/60),cm=dados.celMedia%60; txt += `📱 Tela: *${ch}h${cm>0?cm+'min':''}/dia*\n`; }
+  if (dados.reativarN>0) txt += `⚡ Reativei o foco: *${dados.reativarN}x*\n`;
+  txt += `\n_Gerado pelo TDAH Care_ 📱`;
+  const url = 'https://wa.me/?text='+encodeURIComponent(txt);
+  window.open(url, '_blank');
+}
+
+async function enviarTextoWhatsApp() {
+  const txt = document.getElementById('texto-progresso').textContent;
+  const url = 'https://wa.me/?text='+encodeURIComponent(txt);
+  window.open(url, '_blank');
+}
+
+async function copiarTexto() {
+  const txt = document.getElementById('texto-progresso').textContent;
+  try { await navigator.clipboard.writeText(txt); showToast('📋 Texto copiado!'); }
+  catch(e) { const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('📋 Copiado!'); }
+}
+
+function tirarPrintCard() {
+  showToast('📸 Tire um print desta tela para salvar o cartão!');
+}
+
+function gerarPDFSemanal() {
+  const dados = calcularDadosSemana();
+  const score = dados.scoreGeral;
+  const emoji = score>=80?'🏆':score>=60?'⭐':score>=40?'💪':'🌱';
+  const hoje = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  const conteudo = `
+    <html><head><meta charset="UTF-8">
+    <style>
+      body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px;color:#1A237E;}
+      .header{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:white;padding:24px;border-radius:12px;margin-bottom:24px;}
+      .header h1{font-size:1.3rem;margin:0 0 4px;}
+      .header p{font-size:0.85rem;opacity:0.9;margin:0;}
+      .score-box{text-align:center;background:#F1F8E9;border:2px solid #A5D6A7;border-radius:12px;padding:20px;margin-bottom:20px;}
+      .score-num{font-size:3rem;font-weight:900;color:#1B5E20;}
+      .score-label{font-size:0.85rem;color:#388E3C;}
+      .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+      .item{background:#F8FAFF;border:1px solid #E3EAF2;border-radius:10px;padding:14px;}
+      .item .val{font-size:1.3rem;font-weight:800;color:#1565C0;}
+      .item .lbl{font-size:0.75rem;color:#546E7A;margin-top:2px;}
+      .parecer{background:#F0F7FF;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:14px;font-size:0.85rem;color:#37474F;line-height:1.6;}
+      .footer{text-align:center;font-size:0.72rem;color:#90A4AE;margin-top:24px;padding-top:16px;border-top:1px solid #EEF2F7;}
+    </style></head><body>
+    <div class="header">
+      <h1>📊 Relatório Semanal — TDAH Care</h1>
+      <p>Período: ${dados.periodo} · Gerado em: ${hoje}</p>
+    </div>
+    <div class="score-box">
+      <div class="score-num">${emoji} ${score}</div>
+      <div class="score-label">Score geral da semana / 100</div>
+    </div>
+    <div class="grid">
+      ${dados.sonoMedia?`<div class="item"><div class="val">${dados.sonoMedia}h</div><div class="lbl">😴 Média de sono</div></div>`:''}
+      ${dados.metasPct!==null?`<div class="item"><div class="val">${dados.metasPct}%</div><div class="lbl">✅ Taxa de metas (${dados.metasConcl}/${dados.metasTotal})</div></div>`:''}
+      ${dados.focoTotal>0?`<div class="item"><div class="val">${dados.focoH>0?dados.focoH+'h ':''  }${dados.focoM>0?dados.focoM+'min':''}</div><div class="lbl">🏔️ Tempo total de foco</div></div>`:''}
+      ${dados.celMedia!==null?`<div class="item"><div class="val">${Math.floor(dados.celMedia/60)}h${dados.celMedia%60>0?dados.celMedia%60+'min':''}</div><div class="lbl">📱 Média de tela/dia</div></div>`:''}
+      ${dados.remedioN>0?`<div class="item"><div class="val">${dados.remedioN}/7</div><div class="lbl">💊 Dias com medicação</div></div>`:''}
+      ${dados.reativarN>0?`<div class="item"><div class="val">${dados.reativarN}x</div><div class="lbl">⚡ Reativações de foco</div></div>`:''}
+    </div>
+    <div class="parecer">
+      <strong>📝 Observações automáticas:</strong><br><br>
+      ${dados.sonoMedia>=7?'✅ Sono dentro dos parâmetros recomendados (7-9h).':dados.sonoMedia?'⚠️ Sono abaixo do ideal — pode impactar foco e resposta ao tratamento.':''}
+      ${dados.metasPct>=70?' ✅ Taxa de conclusão de metas satisfatória.':dados.metasPct!==null?' ⚠️ Taxa de conclusão abaixo de 70% — considerar estratégias de planejamento.':''}
+      ${dados.reativarN>0?` ⚡ Protocolo de reativação foi necessário ${dados.reativarN}x — sinal de oscilações de foco ao longo da semana.`:''}
+      <br><br><em style="font-size:0.78rem;color:#90A4AE;">⚠️ Este relatório é gerado automaticamente e não substitui avaliação clínica profissional.</em>
+    </div>
+    <div class="footer">TDAH Care · Relatório gerado automaticamente · ${hoje}</div>
+    </body></html>
+  `;
+
+  const blob = new Blob([conteudo], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const data = new Date().toISOString().split('T')[0];
+  a.href = url; a.download = `tdah-care-relatorio-semanal-${data}.html`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('📄 Relatório baixado! Abra no navegador e imprima como PDF.');
+}
+
+function imprimirRelatorio() {
+  gerarPDFSemanal();
+}
+
+// ========== FIM COMPARTILHAR ==========
+
+const PROTOCOLOS = {
+  1: [ // Travado — 5 min
+    { icon:'💧', titulo:'Beba água agora', desc:'Desidratação piora a concentração. Levante, pegue um copo d\'água e beba devagar.', tipo:'timer', duracao:30, label:'segundos' },
+    { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz contando 4, segure 7, expire pela boca contando 8. Vamos fazer 1 ciclo.', tipo:'breath', ciclos:1 },
+    { icon:'📵', titulo:'Feche tudo agora', desc:'Feche todas as abas, apps e notificações. Coloque o celular virado para baixo por 10 minutos.', tipo:'timer', duracao:20, label:'segundos' },
+    { icon:'🏔️', titulo:'Hora de focar', desc:'Seu cérebro está pronto. Comece com uma sessão curta de foco — você consegue!', tipo:'final' },
+  ],
+  2: [ // Cabeça Pesada — 15 min
+    { icon:'💧', titulo:'Beba água agora', desc:'Desidratação piora muito a concentração. Beba um copo cheio agora.', tipo:'timer', duracao:30, label:'segundos' },
+    { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz contando 4, segure 7, expire pela boca contando 8. Vamos fazer 2 ciclos.', tipo:'breath', ciclos:2 },
+    { icon:'🧊', titulo:'Gelo nas mãos', desc:'Segure gelo ou ponha os pulsos em água fria por 30 segundos. O choque térmico ativa o sistema nervoso.', tipo:'timer', duracao:30, label:'segundos' },
+    { icon:'🌑', titulo:'Ambiente escuro', desc:'Apague as luzes ou feche as persianas. Fique em silêncio total por 5 minutos. Sem celular.', tipo:'timer', duracao:300, label:'minutos' },
+    { icon:'🏔️', titulo:'Hora de focar', desc:'Você fez o necessário. Comece com uma tarefa pequena agora.', tipo:'final' },
+  ],
+  3: [ // Tela em Branco — 30 min
+    { icon:'💧', titulo:'Beba água agora', desc:'Primeiro: levante e beba água. Não pule isso — é o reset mais simples que existe.', tipo:'timer', duracao:30, label:'segundos' },
+    { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz contando 4, segure 7, expire pela boca contando 8. Vamos fazer 3 ciclos completos.', tipo:'breath', ciclos:3 },
+    { icon:'🧊', titulo:'Gelo nas mãos', desc:'Segure gelo por 1 minuto inteiro. O desconforto físico interrompe o loop mental e ativa a dopamina.', tipo:'timer', duracao:60, label:'segundos' },
+    { icon:'🌑', titulo:'Ambiente escuro e silencioso', desc:'Apague tudo. Dobre sobre você mesmo ou deite. 10 minutos sem nenhum estímulo. Isso reseta o sistema.', tipo:'timer', duracao:600, label:'minutos' },
+    { icon:'🚿', titulo:'Banho frio (se possível)', desc:'Se puder, tome 2 minutos de água fria agora. É o protocolo mais eficaz para reset dopaminérgico.', tipo:'timer', duracao:120, label:'segundos' },
+    { icon:'👁️', titulo:'Técnica 5-4-3-2-1', desc:'Vamos engajar seus sentidos para ancorar no presente.', tipo:'sentidos' },
+    { icon:'🏔️', titulo:'Você está pronto', desc:'Seu sistema foi resetado. Comece com a tarefa mais simples que você tem. Apenas 10 minutos.', tipo:'final' },
+  ]
+};
+
+const SENTIDOS = [
+  { label:'👀 5 coisas que você VÊ', exemplo:'ex: a janela, a mesa, uma caneta...' },
+  { label:'✋ 4 coisas que você TOCA', exemplo:'ex: a cadeira, a roupa, o chão...' },
+  { label:'👂 3 coisas que você OUVE', exemplo:'ex: ventilador, carro na rua, silêncio...' },
+  { label:'👃 2 coisas que você CHEIRA', exemplo:'ex: o ambiente, sua roupa...' },
+  { label:'👅 1 coisa que você SABOREIA', exemplo:'ex: o gosto da água, do café...' },
+];
+
+let _reativarState = {
+  nivel: null, passos: [], passoAtual: 0,
+  timerSeg: 0, timerTotal: 0, timerInterval: null,
+  breathCiclo: 0, breathTotal: 0, breathFase: null, breathInterval: null,
+  sentidoAtual: 0,
+};
+
+function abrirReativar() {
+  // Reset estado
+  _reativarState = { nivel:null, passos:[], passoAtual:0, timerSeg:0, timerTotal:0, timerInterval:null, breathCiclo:0, breathTotal:0, breathFase:null, breathInterval:null, sentidoAtual:0 };
+  document.getElementById('reativar-nivel-select').style.display = 'block';
+  document.getElementById('protocolo-wrap').classList.remove('show');
+  document.getElementById('protocolo-fim').classList.remove('show');
+  document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('reativar-modal').classList.add('show');
+}
+
+function fecharReativarModal(e) {
+  if (e.target.id === 'reativar-modal') pararTimersReativar();
+}
+
+function pararTimersReativar() {
+  if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
+  if (_reativarState.breathInterval) clearInterval(_reativarState.breathInterval);
+  document.getElementById('reativar-modal').classList.remove('show');
+}
+
+function selecionarNivel(n, el) {
+  document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  _reativarState.nivel = n;
+  _reativarState.passos = PROTOCOLOS[n];
+  _reativarState.passoAtual = 0;
+
+  // Registra uso no estado diário
+  if (!state.dailyData[hojeISO()]) state.dailyData[hojeISO()] = {};
+  if (!state.dailyData[hojeISO()].reativarFoco) state.dailyData[hojeISO()].reativarFoco = [];
+  state.dailyData[hojeISO()].reativarFoco.push({ ts: new Date().toISOString(), nivel: n });
+  salvar();
+
+  setTimeout(() => {
+    document.getElementById('reativar-nivel-select').style.display = 'none';
+    document.getElementById('protocolo-wrap').classList.add('show');
+    renderPasso();
+  }, 300);
+}
+
+function renderPasso() {
+  const passos = _reativarState.passos;
+  const idx = _reativarState.passoAtual;
+  const passo = passos[idx];
+  if (!passo) return;
+
+  // Limpa timers anteriores
+  if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
+  if (_reativarState.breathInterval) clearInterval(_reativarState.breathInterval);
+
+  // Progresso
+  const dots = passos.map((_, i) => `<div class="passo-dot ${i<idx?'done':i===idx?'atual':''}"></div>`).join('');
+  document.getElementById('passo-progresso').innerHTML = dots;
+
+  // Conteúdo
+  document.getElementById('passo-icon').textContent = passo.icon;
+  document.getElementById('passo-titulo').textContent = passo.titulo;
+  document.getElementById('passo-desc').textContent = passo.desc;
+
+  // Esconde tudo especial
+  document.getElementById('passo-timer-wrap').style.display = 'none';
+  document.getElementById('breath-container').style.display = 'none';
+  document.getElementById('sentidos-container').style.display = 'none';
+  document.getElementById('passo-next-btn').textContent = 'Feito ✓';
+  document.getElementById('passo-next-btn').disabled = false;
+
+  if (passo.tipo === 'timer') {
+    document.getElementById('passo-timer-wrap').style.display = 'flex';
+    iniciarTimerPasso(passo.duracao, passo.label);
+  } else if (passo.tipo === 'breath') {
+    document.getElementById('breath-container').style.display = 'block';
+    document.getElementById('passo-next-btn').disabled = true;
+    document.getElementById('passo-next-btn').textContent = 'Aguarde...';
+    iniciarRespiracao(passo.ciclos);
+  } else if (passo.tipo === 'sentidos') {
+    document.getElementById('sentidos-container').style.display = 'block';
+    _reativarState.sentidoAtual = 0;
+    renderSentido();
+  } else if (passo.tipo === 'final') {
+    document.getElementById('passo-next-btn').textContent = 'Concluir protocolo 🎉';
+  }
+}
+
+function iniciarTimerPasso(duracao, label) {
+  _reativarState.timerSeg = duracao;
+  _reativarState.timerTotal = duracao;
+  const CIRC_PASSO = 2 * Math.PI * 52;
+  document.getElementById('passo-next-btn').disabled = true;
+  document.getElementById('passo-next-btn').textContent = 'Aguarde...';
+
+  function atualizar() {
+    const seg = _reativarState.timerSeg;
+    const prog = 1 - (seg / _reativarState.timerTotal);
+    document.getElementById('passo-ring-fill').style.strokeDashoffset = CIRC_PASSO * (1 - prog);
+    if (label === 'minutos') {
+      const m = Math.floor(seg/60), s = seg%60;
+      document.getElementById('passo-time-display').textContent = pad(m)+':'+pad(s);
+      document.getElementById('passo-time-label').textContent = 'restante';
+    } else {
+      document.getElementById('passo-time-display').textContent = seg;
+      document.getElementById('passo-time-label').textContent = 'segundos';
+    }
+  }
+
+  atualizar();
+  _reativarState.timerInterval = setInterval(() => {
+    _reativarState.timerSeg--;
+    atualizar();
+    if (_reativarState.timerSeg <= 0) {
+      clearInterval(_reativarState.timerInterval);
+      document.getElementById('passo-next-btn').disabled = false;
+      document.getElementById('passo-next-btn').textContent = 'Feito ✓';
+      playBeep();
+    }
+  }, 1000);
+}
+
+function iniciarRespiracao(totalCiclos) {
+  _reativarState.breathCiclo = 0;
+  _reativarState.breathTotal = totalCiclos;
+  executarFaseBreath('prepare', totalCiclos);
+}
+
+function executarFaseBreath(fase, totalCiclos) {
+  const circle = document.getElementById('breath-circle');
+  const instr = document.getElementById('breath-instruction');
+  _reativarState.breathFase = fase;
+
+  if (fase === 'prepare') {
+    circle.className = 'breath-circle';
+    circle.textContent = 'Prepare-se';
+    instr.textContent = `Ciclo 1 de ${totalCiclos} — Inspire pelo nariz`;
+    _reativarState.breathInterval = setTimeout(() => executarFaseBreath('inhale', totalCiclos), 1500);
+  } else if (fase === 'inhale') {
+    circle.className = 'breath-circle inhale';
+    circle.textContent = 'Inspire... 4s';
+    instr.textContent = '🌬️ Inspire lentamente pelo nariz';
+    _reativarState.breathInterval = setTimeout(() => executarFaseBreath('hold', totalCiclos), 4000);
+  } else if (fase === 'hold') {
+    circle.className = 'breath-circle hold';
+    circle.textContent = 'Segure... 7s';
+    instr.textContent = '⏸ Segure o ar';
+    _reativarState.breathInterval = setTimeout(() => executarFaseBreath('exhale', totalCiclos), 7000);
+  } else if (fase === 'exhale') {
+    circle.className = 'breath-circle exhale';
+    circle.textContent = 'Expire... 8s';
+    instr.textContent = '💨 Expire lentamente pela boca';
+    _reativarState.breathInterval = setTimeout(() => {
+      _reativarState.breathCiclo++;
+      if (_reativarState.breathCiclo < totalCiclos) {
+        circle.className = 'breath-circle';
+        circle.textContent = `Ciclo ${_reativarState.breathCiclo+1}`;
+        instr.textContent = `Ciclo ${_reativarState.breathCiclo+1} de ${totalCiclos}`;
+        _reativarState.breathInterval = setTimeout(() => executarFaseBreath('inhale', totalCiclos), 1000);
+      } else {
+        circle.className = 'breath-circle';
+        circle.textContent = '✓ Concluído';
+        instr.textContent = '✅ Respiração concluída!';
+        document.getElementById('passo-next-btn').disabled = false;
+        document.getElementById('passo-next-btn').textContent = 'Feito ✓';
+        playBeep();
+      }
+    }, 8000);
+  }
+}
+
+function renderSentido() {
+  const s = SENTIDOS[_reativarState.sentidoAtual];
+  document.getElementById('sentido-atual-label').textContent = s.label;
+  document.getElementById('sentido-exemplos').textContent = s.exemplo;
+  const restantes = SENTIDOS.length - _reativarState.sentidoAtual;
+  document.getElementById('passo-next-btn').textContent = restantes > 1 ? `Próximo sentido (${restantes-1} restante${restantes-1>1?'s':''})` : 'Concluir ✓';
+}
+
+function proximoPasso() {
+  const passo = _reativarState.passos[_reativarState.passoAtual];
+
+  // Se é passo de sentidos, avança sentido por sentido
+  if (passo && passo.tipo === 'sentidos') {
+    if (_reativarState.sentidoAtual < SENTIDOS.length - 1) {
+      _reativarState.sentidoAtual++;
+      renderSentido();
+      return;
+    }
+  }
+
+  // Se é o passo final
+  if (passo && passo.tipo === 'final') {
+    finalizarProtocolo();
+    return;
+  }
+
+  if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
+  if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
+
+  _reativarState.passoAtual++;
+  if (_reativarState.passoAtual >= _reativarState.passos.length) {
+    mostrarFimProtocolo();
+  } else {
+    renderPasso();
+  }
+}
+
+function pularPasso() {
+  if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
+  if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
+  _reativarState.passoAtual++;
+  if (_reativarState.passoAtual >= _reativarState.passos.length) {
+    mostrarFimProtocolo();
+  } else {
+    renderPasso();
+  }
+}
+
+function mostrarFimProtocolo() {
+  document.getElementById('protocolo-wrap').classList.remove('show');
+  document.getElementById('protocolo-fim').classList.add('show');
+}
+
+function finalizarProtocolo() {
+  pararTimersReativar();
+  // Vai para o modo caverna
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-caverna').classList.add('active');
+  document.querySelectorAll('.nav-btn')[4].classList.add('active');
+  showToast('🏔️ Modo Caverna ativado! Foco de 10 min!');
+  // Aplica pomodoro de 10 min pra reativação
+  if (!state.pom.rodando) {
+    document.getElementById('pom-foco-input').value = 10;
+    document.getElementById('pom-pausa-input').value = 5;
+    aplicarConfigPom();
+  }
+}
+
+// ========== FIM REATIVAR FOCO ==========
+
+// ========== PATCH POMODORO DINÂMICO ==========
+const _origIniciarPom = iniciarPom;
+iniciarPom = function() {
+  state.pom.rodando=true;
+  document.getElementById('caverna-play-btn').textContent='⏸';
+  const focoSeg=getPomFoco(), pausaSeg=getPomPausa();
+  if(!state.pom.seg||isNaN(state.pom.seg)||state.pom.seg<=0)
+    state.pom.seg=state.pom.fase==='foco'?focoSeg:pausaSeg;
+  atualizarUIPom(); state.pom.timer=setInterval(tickPom,1000);
+};
+const _origConcluirFase = concluirFase;
+concluirFase = function() {
+  clearInterval(state.pom.timer); state.pom.rodando=false;
+  const focoMin=getPomFoco()/60;
+  if(state.pom.fase==='foco'){
+    state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=focoMin;
+    if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo!');}
+    else showToast('✅ Sessão concluída! Hora de pausar!');
+    state.pom.fase='pausa';state.pom.seg=getPomPausa();
+  } else { state.pom.fase='foco';state.pom.seg=getPomFoco();showToast('🎯 Hora de focar!'); }
+  state.pom.data=hojeISO();salvar();
+  document.getElementById('caverna-play-btn').textContent='▶';
+  atualizarUIPom();playBeep();
+};
+const _origAtualizarUIPom = atualizarUIPom;
+atualizarUIPom = function() {
+  const p=state.pom;const focoSeg=getPomFoco();const pausaSeg=getPomPausa();
+  const seg=(typeof p.seg==='number'&&!isNaN(p.seg)&&p.seg>=0)?p.seg:(p.fase==='foco'?focoSeg:pausaSeg);
+  const total=p.fase==='foco'?focoSeg:pausaSeg;const prog=(total-seg)/total;
+  document.getElementById('caverna-ring-fill').style.strokeDashoffset=CIRC*(1-prog);
+  document.getElementById('caverna-ring-fill').style.stroke=p.fase==='foco'?'#A78BFA':'#60A5FA';
+  const mm=Math.floor(seg/60),ss=Math.floor(seg%60);
+  document.getElementById('caverna-time-display').textContent=pad(mm)+':'+pad(ss);
+  document.getElementById('caverna-phase-label').textContent=p.fase==='foco'?'FOCO':'PAUSA';
+  const badge=document.getElementById('caverna-status-badge');const isFull=seg===(p.fase==='foco'?focoSeg:pausaSeg);
+  if(!p.rodando&&isFull){badge.textContent='⏸ Aguardando início';badge.className='caverna-status-badge status-idle';}
+  else if(p.fase==='foco'){badge.textContent=p.rodando?'🎯 Em foco':'⏸ Foco pausado';badge.className='caverna-status-badge status-foco';}
+  else{badge.textContent=p.rodando?'☕ Pausa ativa':'⏸ Pausa pausada';badge.className='caverna-status-badge status-pausa';}
+  renderPom();
+};
+const _origResetarPomodoro = resetarPomodoro;
+resetarPomodoro = function() {
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Modo Caverna só para hoje');return;}
+  clearInterval(state.pom.timer);state.pom.rodando=false;state.pom.fase='foco';state.pom.seg=getPomFoco();
+  document.getElementById('caverna-play-btn').textContent='▶';atualizarUIPom();showToast('🔄 Timer reiniciado');salvar();
+};
+
+// Patch relatório mensal para incluir reativar foco
+const _origGerarRelatorioMensal = gerarRelatorioMensal;
+gerarRelatorioMensal = function() {
+  _origGerarRelatorioMensal();
+  // Conta usos do reativar foco nos últimos 30 dias
+  const today=new Date(); let totalReativar=0; const diasReativar={};
+  for(let i=0;i<30;i++){
+    const d=new Date(today);d.setDate(today.getDate()-i);
+    const iso=hojeISO(d);const dd=state.dailyData[iso];
+    if(dd&&dd.reativarFoco&&dd.reativarFoco.length>0){
+      totalReativar+=dd.reativarFoco.length;
+      diasReativar[iso]=dd.reativarFoco.length;
+    }
+  }
+  if(totalReativar===0)return;
+  const wrap=document.getElementById('relatorio-mensal-wrap');
+  const extra=`<div class="rel-clinico" style="margin-top:12px;">
+    <div class="rel-clinico-header" style="background:linear-gradient(135deg,#4A1500,#E65100);">
+      <h4>⚡ Protocolo Reativar Foco</h4>
+      <p>Ativações nos últimos 30 dias</p>
+    </div>
+    <div class="rel-clinico-body">
+      <div class="row"><span class="lbl">Total de ativações</span><span class="val">${totalReativar}x</span><span class="status ${totalReativar<=5?'status-norm':totalReativar<=15?'status-atenc':'status-criti'}">${totalReativar<=5?'Baixo':totalReativar<=15?'Moderado':'Frequente'}</span></div>
+      <div class="row"><span class="lbl">Dias com ativação</span><span class="val">${Object.keys(diasReativar).length} dias</span></div>
+      <div class="row"><span class="lbl">Média por dia ativo</span><span class="val">${(totalReativar/Math.max(1,Object.keys(diasReativar).length)).toFixed(1)}x/dia</span></div>
+    </div>
+  </div>`;
+  wrap.innerHTML += extra;
+};
+
 init();
+carregarConfigPom();
+verificarLembreteSexta();
 setTimeout(verificarLembreteBackup, 2000);
-</script>
-</body>
-</html>
+
