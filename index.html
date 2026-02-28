@@ -1666,49 +1666,47 @@ function gerarPDFSemanal() {
   const emoji = score>=80?'🏆':score>=60?'⭐':score>=40?'💪':'🌱';
   const hoje = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
-  const conteudo = `
-    <html><head><meta charset="UTF-8">
-    <style>
-      body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px;color:#1A237E;}
-      .header{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:white;padding:24px;border-radius:12px;margin-bottom:24px;}
-      .header h1{font-size:1.3rem;margin:0 0 4px;}
-      .header p{font-size:0.85rem;opacity:0.9;margin:0;}
-      .score-box{text-align:center;background:#F1F8E9;border:2px solid #A5D6A7;border-radius:12px;padding:20px;margin-bottom:20px;}
-      .score-num{font-size:3rem;font-weight:900;color:#1B5E20;}
-      .score-label{font-size:0.85rem;color:#388E3C;}
-      .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
-      .item{background:#F8FAFF;border:1px solid #E3EAF2;border-radius:10px;padding:14px;}
-      .item .val{font-size:1.3rem;font-weight:800;color:#1565C0;}
-      .item .lbl{font-size:0.75rem;color:#546E7A;margin-top:2px;}
-      .parecer{background:#F0F7FF;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:14px;font-size:0.85rem;color:#37474F;line-height:1.6;}
-      .footer{text-align:center;font-size:0.72rem;color:#90A4AE;margin-top:24px;padding-top:16px;border-top:1px solid #EEF2F7;}
-    </style></head><body>
-    <div class="header">
-      <h1>📊 Relatório Semanal — TDAH Care</h1>
-      <p>Período: ${dados.periodo} · Gerado em: ${hoje}</p>
-    </div>
-    <div class="score-box">
-      <div class="score-num">${emoji} ${score}</div>
-      <div class="score-label">Score geral da semana / 100</div>
-    </div>
-    <div class="grid">
-      ${dados.sonoMedia?`<div class="item"><div class="val">${dados.sonoMedia}h</div><div class="lbl">😴 Média de sono</div></div>`:''}
-      ${dados.metasPct!==null?`<div class="item"><div class="val">${dados.metasPct}%</div><div class="lbl">✅ Taxa de metas (${dados.metasConcl}/${dados.metasTotal})</div></div>`:''}
-      ${dados.focoTotal>0?`<div class="item"><div class="val">${dados.focoH>0?dados.focoH+'h ':''  }${dados.focoM>0?dados.focoM+'min':''}</div><div class="lbl">🏔️ Tempo total de foco</div></div>`:''}
-      ${dados.celMedia!==null?`<div class="item"><div class="val">${Math.floor(dados.celMedia/60)}h${dados.celMedia%60>0?dados.celMedia%60+'min':''}</div><div class="lbl">📱 Média de tela/dia</div></div>`:''}
-      ${dados.remedioN>0?`<div class="item"><div class="val">${dados.remedioN}/7</div><div class="lbl">💊 Dias com medicação</div></div>`:''}
-      ${dados.reativarN>0?`<div class="item"><div class="val">${dados.reativarN}x</div><div class="lbl">⚡ Reativações de foco</div></div>`:''}
-    </div>
-    <div class="parecer">
-      <strong>📝 Observações automáticas:</strong><br><br>
-      ${dados.sonoMedia>=7?'✅ Sono dentro dos parâmetros recomendados (7-9h).':dados.sonoMedia?'⚠️ Sono abaixo do ideal — pode impactar foco e resposta ao tratamento.':''}
-      ${dados.metasPct>=70?' ✅ Taxa de conclusão de metas satisfatória.':dados.metasPct!==null?' ⚠️ Taxa de conclusão abaixo de 70% — considerar estratégias de planejamento.':''}
-      ${dados.reativarN>0?` ⚡ Protocolo de reativação foi necessário ${dados.reativarN}x — sinal de oscilações de foco ao longo da semana.`:''}
-      <br><br><em style="font-size:0.78rem;color:#90A4AE;">⚠️ Este relatório é gerado automaticamente e não substitui avaliação clínica profissional.</em>
-    </div>
-    <div class="footer">TDAH Care · Relatório gerado automaticamente · ${hoje}</div>
-    </body></html>
-  `;
+  const style_open = '<st'+'yle>';
+  const style_close = '</st'+'yle>';
+  const head_close = '</he'+'ad>';
+  const body_open = '<bo'+'dy>';
+  const body_close = '</bo'+'dy>';
+  const html_close = '</ht'+'ml>';
+
+  const itens = [
+    dados.sonoMedia ? `<div class="item"><div class="val">${dados.sonoMedia}h</div><div class="lbl">😴 Média de sono</div></div>` : '',
+    dados.metasPct!==null ? `<div class="item"><div class="val">${dados.metasPct}%</div><div class="lbl">✅ Metas (${dados.metasConcl}/${dados.metasTotal})</div></div>` : '',
+    dados.focoTotal>0 ? `<div class="item"><div class="val">${dados.focoH>0?dados.focoH+'h ':'' }${dados.focoM>0?dados.focoM+'min':''}</div><div class="lbl">🏔️ Tempo de foco</div></div>` : '',
+    dados.celMedia!==null ? `<div class="item"><div class="val">${Math.floor(dados.celMedia/60)}h${dados.celMedia%60>0?dados.celMedia%60+'min':''}</div><div class="lbl">📱 Tela/dia</div></div>` : '',
+    dados.remedioN>0 ? `<div class="item"><div class="val">${dados.remedioN}/7</div><div class="lbl">💊 Medicação</div></div>` : '',
+    dados.reativarN>0 ? `<div class="item"><div class="val">${dados.reativarN}x</div><div class="lbl">⚡ Reativações</div></div>` : '',
+  ].join('');
+
+  const obs = [
+    dados.sonoMedia>=7 ? '✅ Sono dentro dos parâmetros recomendados (7-9h).' : dados.sonoMedia ? '⚠️ Sono abaixo do ideal — pode impactar foco e resposta ao tratamento.' : '',
+    dados.metasPct>=70 ? ' ✅ Taxa de conclusão de metas satisfatória.' : dados.metasPct!==null ? ' ⚠️ Taxa de conclusão abaixo de 70% — considerar estratégias de planejamento.' : '',
+    dados.reativarN>0 ? ` ⚡ Protocolo de reativação necessário ${dados.reativarN}x — sinal de oscilações de foco.` : '',
+  ].join('');
+
+  const conteudo = '<html><head><meta charset="UTF-8">'
+    + style_open
+    + 'body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px;color:#1A237E;}'
+    + '.header{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:white;padding:24px;border-radius:12px;margin-bottom:24px;}'
+    + '.header h1{font-size:1.3rem;margin:0 0 4px;} .header p{font-size:0.85rem;opacity:0.9;margin:0;}'
+    + '.score-box{text-align:center;background:#F1F8E9;border:2px solid #A5D6A7;border-radius:12px;padding:20px;margin-bottom:20px;}'
+    + '.score-num{font-size:3rem;font-weight:900;color:#1B5E20;} .score-label{font-size:0.85rem;color:#388E3C;}'
+    + '.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}'
+    + '.item{background:#F8FAFF;border:1px solid #E3EAF2;border-radius:10px;padding:14px;}'
+    + '.item .val{font-size:1.3rem;font-weight:800;color:#1565C0;} .item .lbl{font-size:0.75rem;color:#546E7A;margin-top:2px;}'
+    + '.parecer{background:#F0F7FF;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:14px;font-size:0.85rem;color:#37474F;line-height:1.6;}'
+    + '.footer{text-align:center;font-size:0.72rem;color:#90A4AE;margin-top:24px;padding-top:16px;border-top:1px solid #EEF2F7;}'
+    + style_close + head_close + body_open
+    + '<div class="header"><h1>📊 Relatório Semanal — TDAH Care</h1><p>Período: '+dados.periodo+' · Gerado em: '+hoje+'</p></div>'
+    + '<div class="score-box"><div class="score-num">'+emoji+' '+score+'</div><div class="score-label">Score geral da semana / 100</div></div>'
+    + '<div class="grid">'+itens+'</div>'
+    + '<div class="parecer"><strong>📝 Observações automáticas:</strong><br><br>'+obs+'<br><br><em style="font-size:0.78rem;color:#90A4AE;">⚠️ Relatório automático — não substitui avaliação clínica profissional.</em></div>'
+    + '<div class="footer">TDAH Care · Relatório gerado automaticamente · '+hoje+'</div>'
+    + body_close + html_close;
 
   const blob = new Blob([conteudo], {type:'text/html'});
   const url = URL.createObjectURL(blob);
@@ -2084,3 +2082,7 @@ carregarConfigPom();
 verificarLembreteSexta();
 setTimeout(verificarLembreteBackup, 2000);
 
+
+</script>
+</body>
+</html>
