@@ -2,8 +2,19 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="Acompanhamento diário para TDAH">
+<meta name="theme-color" content="#1565C0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TDAH Care">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TDAH Care</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231565C0'/%3E%3Ctext y='.9em' font-size='80' text-anchor='middle' x='50'%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231565C0'/%3E%3Ctext y='.9em' font-size='80' text-anchor='middle' x='50'%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TDAH Care">
+<meta name="theme-color" content="#1565C0">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -477,6 +488,43 @@ textarea { resize: none; height: 80px; }
 .celular-home-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
 .celular-home-row input { width: 70px; flex: none; }
 .celular-home-row button { padding: 12px 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+/* ===== HIDRATACAO ===== */
+.hidrat-card{background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border-radius:16px;padding:14px 16px;margin-bottom:14px;}
+.hidrat-title{font-size:0.82rem;font-weight:700;color:#1565C0;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.hidrat-row{display:flex;align-items:center;gap:12px;}
+.hidrat-btn{background:#1565C0;color:white;border:none;border-radius:50%;width:42px;height:42px;font-size:1.3rem;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(21,101,192,0.3);}
+.hidrat-count{font-size:2rem;font-weight:800;color:#1565C0;min-width:32px;text-align:center;}
+.hidrat-meta{font-size:0.75rem;color:#1565C0;opacity:0.8;}
+.hidrat-copos{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
+.hidrat-copo{font-size:1.1rem;opacity:0.3;transition:opacity 0.2s;}
+.hidrat-copo.cheio{opacity:1;}
+/* ===== STREAK ===== */
+.streak-banner{background:linear-gradient(135deg,#FF6F00,#FFB300);border-radius:14px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;color:white;}
+.streak-flame{font-size:2rem;}
+.streak-info{flex:1;}
+.streak-num{font-size:1.5rem;font-weight:900;line-height:1;}
+.streak-label{font-size:0.72rem;opacity:0.9;}
+/* ===== WIDGET RESUMO ===== */
+.widget-resumo{background:white;border-radius:16px;padding:14px 16px;margin-bottom:14px;border:2px solid #E3F2FD;}
+.widget-title{font-size:0.78rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
+.widget-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.widget-item{text-align:center;}
+.widget-icon{font-size:1.2rem;}
+.widget-val{font-size:0.85rem;font-weight:700;color:var(--text);}
+.widget-lbl{font-size:0.62rem;color:var(--text-light);}
+.widget-score{text-align:center;margin-top:10px;padding-top:10px;border-top:1px solid #E3F2FD;}
+.widget-score-num{font-size:1.6rem;font-weight:900;color:#1565C0;}
+.widget-score-lbl{font-size:0.7rem;color:var(--text-light);}
+/* ===== GRAFICO SEMANAL ===== */
+.chart-container{background:white;border-radius:16px;padding:16px;margin-bottom:14px;}
+.chart-title{font-size:0.82rem;font-weight:700;color:var(--text);margin-bottom:14px;}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:80px;}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;}
+.chart-bar{width:100%;border-radius:6px 6px 0 0;min-height:4px;transition:height 0.4s ease;background:#BBDEFB;}
+.chart-bar-val{font-size:0.62rem;font-weight:700;color:var(--text-light);}
+.chart-bar-day{font-size:0.65rem;color:var(--text-light);}
+.chart-bar-today .chart-bar{background:linear-gradient(180deg,#1565C0,#29B6F6);}
+.chart-bar-today .chart-bar-day{color:#1565C0;font-weight:700;}
 </style>
 </head>
 <body>
@@ -488,10 +536,25 @@ textarea { resize: none; height: 80px; }
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="greeting"><h2 id="greeting-text">Olá! 👋</h2><p>Acompanhe seu dia com TDAH</p></div>
-  <div class="stats-row">
-    <div class="stat-card"><div class="stat-icon">😴</div><div class="stat-value" id="stat-sono">—</div><div class="stat-label">Sono</div></div>
-    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="stat-metas">0/0</div><div class="stat-label">Metas</div></div>
-    <div class="stat-card"><div class="stat-icon">💊</div><div class="stat-value" id="stat-remedio">—</div><div class="stat-label">Remédio</div></div>
+  <!-- WIDGET RESUMO DO DIA -->
+  <div class="widget-resumo">
+    <div class="widget-title">Resumo do dia</div>
+    <div class="widget-grid">
+      <div class="widget-item"><div class="widget-icon">😴</div><div class="widget-val" id="wr-sono">—</div><div class="widget-lbl">Sono</div></div>
+      <div class="widget-item"><div class="widget-icon">🎯</div><div class="widget-val" id="wr-metas">0/0</div><div class="widget-lbl">Metas</div></div>
+      <div class="widget-item"><div class="widget-icon">💧</div><div class="widget-val" id="wr-hidrat">0</div><div class="widget-lbl">Água</div></div>
+      <div class="widget-item"><div class="widget-icon">🏔️</div><div class="widget-val" id="wr-pom">0</div><div class="widget-lbl">Sessões</div></div>
+    </div>
+    <div class="widget-score"><div class="widget-score-num" id="wr-score">0<span style="font-size:1rem;color:#90CAF9;">/100</span></div><div class="widget-score-lbl">score parcial de hoje</div></div>
+  </div>
+
+  <span id="stat-sono" style="display:none;"></span>
+  <span id="stat-metas" style="display:none;"></span>
+  <span id="stat-remedio" style="display:none;"></span>
+  <!-- STREAK -->
+  <div class="streak-banner" id="streak-banner" style="display:none;">
+    <div class="streak-flame">🔥</div>
+    <div class="streak-info"><div class="streak-num" id="streak-num">0</div><div class="streak-label">dias consecutivos com metas</div></div>
   </div>
   <div class="remedio-card">
     <div class="remedio-header">
@@ -539,6 +602,43 @@ textarea { resize: none; height: 80px; }
 
   <button class="reativar-btn" onclick="abrirReativar()">⚡ Reativar Foco</button>
 
+  <!-- HIDRATACAO -->
+  <div class="hidrat-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div class="hidrat-title" style="margin-bottom:0;">💧 Hidratação</div>
+      <button onclick="toggleHidratConfig()" style="background:none;border:none;font-size:0.72rem;color:#1565C0;cursor:pointer;opacity:0.8;">⚙️ configurar</button>
+    </div>
+    <!-- Config (oculta por padrão) -->
+    <div id="hidrat-config" style="display:none;background:rgba(255,255,255,0.6);border-radius:10px;padding:10px;margin-bottom:10px;font-size:0.8rem;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <label style="color:#1565C0;font-weight:600;min-width:80px;">Meu copo:</label>
+        <input type="number" id="hidrat-ml-copo" min="100" max="1000" step="50" placeholder="250"
+          style="width:70px;border:1.5px solid #90CAF9;border-radius:8px;padding:4px 8px;font-size:0.85rem;text-align:center;"
+          oninput="salvarConfigHidrat()">
+        <span style="color:#1565C0;">ml</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <label style="color:#1565C0;font-weight:600;min-width:80px;">Meta diária:</label>
+        <input type="number" id="hidrat-meta-litros" min="0.5" max="5" step="0.5" placeholder="2.0"
+          style="width:70px;border:1.5px solid #90CAF9;border-radius:8px;padding:4px 8px;font-size:0.85rem;text-align:center;"
+          oninput="salvarConfigHidrat()">
+        <span style="color:#1565C0;">litros</span>
+      </div>
+    </div>
+    <!-- Contadores -->
+    <div class="hidrat-row">
+      <button class="hidrat-btn" onclick="remCopo()" style="background:#90CAF9;font-size:1.2rem;">−</button>
+      <div style="flex:1;text-align:center;">
+        <div class="hidrat-count"><span id="hidrat-ml-total">0</span><span style="font-size:0.85rem;color:#1565C0;opacity:0.7;" id="hidrat-ml-meta"> / 2000ml</span></div>
+        <div class="hidrat-meta" id="hidrat-copos-label">0 copos de 250ml</div>
+      </div>
+      <button class="hidrat-btn" onclick="addCopo()">+</button>
+    </div>
+    <div class="hidrat-copos" id="hidrat-copos"></div>
+    <div id="hidrat-progresso" style="margin-top:8px;height:6px;background:rgba(255,255,255,0.5);border-radius:3px;overflow:hidden;">
+      <div id="hidrat-prog-fill" style="height:100%;background:#1565C0;border-radius:3px;width:0%;transition:width 0.3s;"></div>
+    </div>
+  </div>
   <div class="card">
     <div class="card-title">📱 Tempo de tela hoje</div>
     <div id="celular-home-display">
@@ -664,6 +764,15 @@ textarea { resize: none; height: 80px; }
     <div class="calendar-grid" id="calendar-grid-days"></div>
   </div>
   <div id="daily-summary-card" style="display:none;"></div>
+  <!-- GRAFICO SEMANAL -->
+  <div class="chart-container">
+    <div class="chart-title">📊 Progresso dos últimos 7 dias</div>
+    <div class="chart-bars" id="chart-semanal"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;">
+      <span style="font-size:0.65rem;color:var(--text-light);">0</span>
+      <span style="font-size:0.65rem;color:var(--text-light);">Score/100</span>
+    </div>
+  </div>
   <div class="page-footer">produced by Jp</div>
 </div>
 
@@ -1077,7 +1186,7 @@ let state = {
   metas: [], metasFixas: [],
   metasHist: [],
   remedio: null, remedioTimer: null,
-  celular: null, leitura: null,
+  celular: null, leitura: null, copos: 0,
   pom: {rodando:false,fase:'foco',seg:POM_FOCO,sessoes:0,ciclos:0,sessNoCiclo:0,minFoco:0,timer:null,data:null}
 };
 let currentCalendarDate = new Date();
@@ -1089,7 +1198,7 @@ function showToast(m) { const t=document.getElementById('toast'); t.textContent=
 function salvar() {
   state.dailyData[state.currentDate] = {
     sono: state.sono, remedio: state.remedio ? {...state.remedio, horaRegistro: state.remedio.horaRegistro instanceof Date ? state.remedio.horaRegistro.toISOString() : state.remedio.horaRegistro} : null,
-    metas: state.metas, metasFixas: state.metasFixas, celular: state.celular, leitura: state.leitura,
+    metas: state.metas, metasFixas: state.metasFixas, celular: state.celular, leitura: state.leitura, copos: state.copos||0,
     pom: {sessoes:state.pom.sessoes,ciclos:state.pom.ciclos,sessNoCiclo:state.pom.sessNoCiclo,minFoco:state.pom.minFoco,data:state.pom.data||state.currentDate}
   };
   try {
@@ -1118,6 +1227,7 @@ function carregarDia(dateISO) {
   state.sono=data.sono||[]; state.remedio=data.remedio||null;
   state.metas=data.metas||[]; state.celular=data.celular||null; state.leitura=data.leitura||null;
   state.pom={rodando:false,fase:'foco',seg:POM_FOCO,timer:null,sessoes:data.pom?data.pom.sessoes:0,ciclos:data.pom?data.pom.ciclos:0,sessNoCiclo:data.pom?data.pom.sessNoCiclo:0,minFoco:data.pom?data.pom.minFoco:0,data:dateISO};
+  state.copos=data.copos||0;
   if(state.remedioTimer) clearInterval(state.remedioTimer);
   if(state.remedio&&dateISO===hojeISO()) state.remedioTimer=setInterval(atualizarBarra,30000);
   renderUI();
@@ -1128,14 +1238,14 @@ function renderUI() {
   const h=now.getHours(); document.getElementById('greeting-text').textContent=h<12?'Bom dia! 👋':h<18?'Boa tarde! 👋':'Boa noite! 👋';
   if(state.remedio){document.getElementById('remedio-sem-registro').style.display='none';document.getElementById('remedio-com-registro').style.display='block';atualizarBarra();}
   else{document.getElementById('remedio-sem-registro').style.display='block';document.getElementById('remedio-com-registro').style.display='none';document.getElementById('remedio-badge').textContent='Não registrado';document.getElementById('remedio-badge').className='remedio-badge badge-inativo';document.getElementById('aviso-encerrado').classList.remove('show');document.getElementById('hora-remedio').value='';}
-  renderMetas(); renderHistSono(); renderHistMetas(); updateStats(); renderCelular(); renderLeitura(); renderPom();
+  renderMetas(); renderHistSono(); renderHistMetas(); updateStats(); renderCelular(); renderLeitura(); renderPom(); renderHidrat(); renderStreak(); updateWidget();
 }
 function init() { carregar(); buildHoursGrid(); carregarDia(hojeISO()); renderCalendar(currentCalendarDate); }
 function navigate(p,btn) {
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active'); btn.classList.add('active');
-  if(p==='calendario'){renderCalendar(currentCalendarDate);document.getElementById('daily-summary-card').style.display='none';}
+  if(p==='calendario'){renderCalendar(currentCalendarDate);document.getElementById('daily-summary-card').style.display='none';renderChartSemanal();}
 }
 function registrarRemedio() {
   if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra para o dia atual');return;}
@@ -1811,7 +1921,13 @@ function gerarPDFSemanal() {
     dados.metasPct>=70 ? ' ✅ Taxa de conclusão de metas satisfatória.' : dados.metasPct!==null ? ' ⚠️ Taxa de conclusão abaixo de 70%.' : '',
     dados.reativarN>0 ? ` ⚡ Protocolo de reativação necessário ${dados.reativarN}x.` : '',
   ].join('');
-  const conteudo = `<html><head><meta charset="UTF-8"><style>body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px;color:#1A237E;}.header{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:white;padding:24px;border-radius:12px;margin-bottom:24px;}.header h1{font-size:1.3rem;margin:0 0 4px;}.header p{font-size:0.85rem;opacity:0.9;margin:0;}.score-box{text-align:center;background:#F1F8E9;border:2px solid #A5D6A7;border-radius:12px;padding:20px;margin-bottom:20px;}.score-num{font-size:3rem;font-weight:900;color:#1B5E20;}.score-label{font-size:0.85rem;color:#388E3C;}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}.item{background:#F8FAFF;border:1px solid #E3EAF2;border-radius:10px;padding:14px;}.item .val{font-size:1.3rem;font-weight:800;color:#1565C0;}.item .lbl{font-size:0.75rem;color:#546E7A;margin-top:2px;}.parecer{background:#F0F7FF;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:14px;font-size:0.85rem;color:#37474F;line-height:1.6;}.footer{text-align:center;font-size:0.72rem;color:#90A4AE;margin-top:24px;padding-top:16px;border-top:1px solid #EEF2F7;}</style></head><body><div class="header"><h1>📊 Relatório Semanal — TDAH Care</h1><p>Período: ${dados.periodo} · Gerado em: ${hoje}</p></div><div class="score-box"><div class="score-num">${emoji} ${score}</div><div class="score-label">Score geral da semana / 100</div></div><div class="grid">${itens}</div><div class="parecer"><strong>📝 Observações automáticas:</strong><br><br>${obs}<br><br><em style="font-size:0.78rem;color:#90A4AE;">⚠️ Relatório automático — não substitui avaliação clínica profissional.</em></div><div class="footer">TDAH Care · produced by Jp · ${hoje}</div></body></html>`;
+  const conteudo = `<html><head><meta charset="UTF-8">
+<meta name="description" content="Acompanhamento diário para TDAH">
+<meta name="theme-color" content="#1565C0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TDAH Care">
+<meta name="mobile-web-app-capable" content="yes"><style>body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px;color:#1A237E;}.header{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:white;padding:24px;border-radius:12px;margin-bottom:24px;}.header h1{font-size:1.3rem;margin:0 0 4px;}.header p{font-size:0.85rem;opacity:0.9;margin:0;}.score-box{text-align:center;background:#F1F8E9;border:2px solid #A5D6A7;border-radius:12px;padding:20px;margin-bottom:20px;}.score-num{font-size:3rem;font-weight:900;color:#1B5E20;}.score-label{font-size:0.85rem;color:#388E3C;}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}.item{background:#F8FAFF;border:1px solid #E3EAF2;border-radius:10px;padding:14px;}.item .val{font-size:1.3rem;font-weight:800;color:#1565C0;}.item .lbl{font-size:0.75rem;color:#546E7A;margin-top:2px;}.parecer{background:#F0F7FF;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:14px;font-size:0.85rem;color:#37474F;line-height:1.6;}.footer{text-align:center;font-size:0.72rem;color:#90A4AE;margin-top:24px;padding-top:16px;border-top:1px solid #EEF2F7;}</style></head><body><div class="header"><h1>📊 Relatório Semanal — TDAH Care</h1><p>Período: ${dados.periodo} · Gerado em: ${hoje}</p></div><div class="score-box"><div class="score-num">${emoji} ${score}</div><div class="score-label">Score geral da semana / 100</div></div><div class="grid">${itens}</div><div class="parecer"><strong>📝 Observações automáticas:</strong><br><br>${obs}<br><br><em style="font-size:0.78rem;color:#90A4AE;">⚠️ Relatório automático — não substitui avaliação clínica profissional.</em></div><div class="footer">TDAH Care · produced by Jp · ${hoje}</div></body></html>`;
   const blob = new Blob([conteudo], {type:'text/html'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -2075,6 +2191,202 @@ function finalizarProtocolo() {
     document.getElementById('pom-pausa-input').value = 5;
     aplicarConfigPom();
   }
+}
+
+
+// ========== HIDRATACAO ==========
+function getHidratConfig() {
+  const ml = parseInt(localStorage.getItem('hidrat_ml_copo')) || 250;
+  const litros = parseFloat(localStorage.getItem('hidrat_meta_litros')) || 2.0;
+  return { ml, metaMl: Math.round(litros * 1000) };
+}
+function salvarConfigHidrat() {
+  const ml = parseInt(document.getElementById('hidrat-ml-copo').value) || 250;
+  const litros = parseFloat(document.getElementById('hidrat-meta-litros').value) || 2.0;
+  localStorage.setItem('hidrat_ml_copo', ml);
+  localStorage.setItem('hidrat_meta_litros', litros);
+  renderHidrat();
+}
+function toggleHidratConfig() {
+  const el = document.getElementById('hidrat-config');
+  const cfg = getHidratConfig();
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    document.getElementById('hidrat-ml-copo').value = cfg.ml;
+    document.getElementById('hidrat-meta-litros').value = (cfg.metaMl / 1000).toFixed(1);
+  } else {
+    el.style.display = 'none';
+  }
+}
+function addCopo() {
+  const d = state.currentDate;
+  if (!state.dailyData[d]) state.dailyData[d] = {};
+  const hoje_data = state.dailyData[d];
+  const cfg = getHidratConfig();
+  const maxCopos = Math.ceil(cfg.metaMl / cfg.ml) + 2;
+  hoje_data.copos = Math.min(maxCopos, (hoje_data.copos || 0) + 1);
+  if (d === hojeISO()) state.copos = hoje_data.copos;
+  salvar(); renderHidrat(); updateWidget();
+  const totalMl = hoje_data.copos * cfg.ml;
+  showToast("💧 " + totalMl + "ml de " + cfg.metaMl + "ml hoje!");
+}
+function remCopo() {
+  const d = state.currentDate;
+  if (!state.dailyData[d]) return;
+  const hoje_data = state.dailyData[d];
+  hoje_data.copos = Math.max(0, (hoje_data.copos || 0) - 1);
+  if (d === hojeISO()) state.copos = hoje_data.copos;
+  salvar(); renderHidrat(); updateWidget();
+}
+function renderHidrat() {
+  const d = state.currentDate;
+  const copos = (state.dailyData[d] && state.dailyData[d].copos) || state.copos || 0;
+  const cfg = getHidratConfig();
+  const totalMl = copos * cfg.ml;
+  const metaMl = cfg.metaMl;
+  const maxCopos = Math.ceil(metaMl / cfg.ml);
+  const pct = Math.min(100, Math.round((totalMl / metaMl) * 100));
+  const elTotal = document.getElementById("hidrat-ml-total");
+  const elMeta = document.getElementById("hidrat-ml-meta");
+  const elLabel = document.getElementById("hidrat-copos-label");
+  const coposEl = document.getElementById("hidrat-copos");
+  const progEl = document.getElementById("hidrat-prog-fill");
+  if (elTotal) elTotal.textContent = totalMl >= 1000 ? (totalMl/1000).toFixed(1)+"L" : totalMl+"ml";
+  if (elMeta) elMeta.textContent = " / " + (metaMl >= 1000 ? (metaMl/1000).toFixed(1)+"L" : metaMl+"ml");
+  if (elLabel) elLabel.textContent = copos + " copo" + (copos !== 1 ? "s" : "") + " de " + cfg.ml + "ml";
+  if (progEl) progEl.style.width = pct + "%";
+  if (coposEl) {
+    let html = "";
+    for (let i = 0; i < maxCopos; i++) html += `<span class="hidrat-copo ${i < copos ? "cheio" : ""}">💧</span>`;
+    coposEl.innerHTML = html;
+  }
+}
+
+// ========== STREAK ==========
+function calcStreak() {
+  let streak = 0;
+  const today = hojeISO();
+  let d = new Date();
+  d.setDate(d.getDate() - 1); // start from yesterday
+  for (let i = 0; i < 60; i++) {
+    const iso = hojeISO(d);
+    const dd = state.dailyData[iso];
+    if (!dd) break;
+    const mf = (dd.metasFixas || []).filter(m => m.done).length;
+    const md = (dd.metas || []).filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
+    const tot = (dd.metasFixas || []).length + (dd.metas || []).filter(m => m.tipo === "diaria" || !m.tipo).length;
+    if (tot > 0 && (mf + md) / tot >= 0.5) streak++;
+    else break;
+    d.setDate(d.getDate() - 1);
+  }
+  // also check today
+  const todayData = state.dailyData[today];
+  if (todayData) {
+    const mf = state.metasFixas.filter(m => m.done).length;
+    const md = state.metas.filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
+    const tot = state.metasFixas.length + state.metas.filter(m => m.tipo === "diaria" || !m.tipo).length;
+    if (tot > 0 && (mf + md) / tot >= 0.5) streak++;
+  }
+  return streak;
+}
+function renderStreak() {
+  const s = calcStreak();
+  const el = document.getElementById("streak-num");
+  const banner = document.getElementById("streak-banner");
+  if (el) el.textContent = s;
+  if (banner) banner.style.display = s > 0 ? "flex" : "none";
+}
+
+// ========== WIDGET RESUMO ==========
+function updateWidget() {
+  const ult = state.sono[0];
+  const sono = ult ? ult.horas + "h" : "—";
+  const fixasDone = state.metasFixas.filter(m => m.done).length;
+  const diariasDone = state.metas.filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
+  const tot = state.metasFixas.length + state.metas.filter(m => m.tipo === "diaria" || !m.tipo).length;
+  const dn = fixasDone + diariasDone;
+  const copos = state.copos || 0;
+  const sess = state.pom.sessoes;
+  // calc score
+  let pts = 0, max = 100;
+  if (ult) pts += ult.horas >= 7 ? 25 : ult.horas >= 5 ? 15 : 5;
+  if (tot > 0) pts += Math.round((dn / tot) * 35);
+  pts += Math.min(25, Math.round((state.pom.minFoco / 80) * 25));
+  const celH = state.celular ? state.celular.horas + state.celular.minutos / 60 : 0;
+  if (state.celular) pts += celH <= 2 ? 15 : celH <= 4 ? 10 : celH <= 6 ? 5 : 0;
+  const elSono = document.getElementById("wr-sono");
+  const elMetas = document.getElementById("wr-metas");
+  const elHidrat = document.getElementById("wr-hidrat");
+  const elPom = document.getElementById("wr-pom");
+  const elScore = document.getElementById("wr-score");
+  if (elSono) elSono.textContent = sono;
+  if (elMetas) elMetas.textContent = dn + "/" + tot;
+  const cfg = getHidratConfig();
+  const totalMl = copos * cfg.ml;
+  if (elHidrat) elHidrat.textContent = totalMl >= 1000 ? (totalMl/1000).toFixed(1)+"L" : totalMl+"ml";
+  if (elPom) elPom.textContent = sess;
+  if (elScore) elScore.innerHTML = pts + '<span style="font-size:1rem;color:#90CAF9;">/100</span>';
+}
+
+// ========== GRAFICO SEMANAL ==========
+function calcScoreDay(dd, mf_live, md_live, mf_tot, md_tot, pom_live, cel_live) {
+  if (!dd) return null;
+  const sono = (dd.sono || [])[0];
+  let pts = 0;
+  if (sono) pts += sono.horas >= 7 ? 25 : sono.horas >= 5 ? 15 : 5;
+  const mf = (dd.metasFixas || []).filter(m => m.done).length;
+  const md = (dd.metas || []).filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
+  const tot = (dd.metasFixas || []).length + (dd.metas || []).filter(m => m.tipo === "diaria" || !m.tipo).length;
+  if (tot > 0) pts += Math.round(((mf + md) / tot) * 35);
+  const p = dd.pom || {};
+  pts += Math.min(25, Math.round(((p.minFoco || 0) / 80) * 25));
+  const cel = dd.celular;
+  if (cel) { const h = cel.horas + cel.minutos / 60; pts += h <= 2 ? 15 : h <= 4 ? 10 : h <= 6 ? 5 : 0; }
+  return Math.min(100, pts);
+}
+function renderChartSemanal() {
+  const el = document.getElementById("chart-semanal");
+  if (!el) return;
+  const days = [];
+  const hoje = hojeISO();
+  const diasSemana = ["D","S","T","Q","Q","S","S"];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const iso = hojeISO(d);
+    const dd = iso === hoje ? null : state.dailyData[iso];
+    let score = null;
+    if (iso === hoje) {
+      // use live state
+      const sono = state.sono[0];
+      let pts = 0;
+      if (sono) pts += sono.horas >= 7 ? 25 : sono.horas >= 5 ? 15 : 5;
+      const mf = state.metasFixas.filter(m => m.done).length;
+      const md = state.metas.filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
+      const tot = state.metasFixas.length + state.metas.filter(m => m.tipo === "diaria" || !m.tipo).length;
+      if (tot > 0) pts += Math.round(((mf + md) / tot) * 35);
+      pts += Math.min(25, Math.round((state.pom.minFoco / 80) * 25));
+      if (state.celular) { const h = state.celular.horas + state.celular.minutos / 60; pts += h <= 2 ? 15 : h <= 4 ? 10 : h <= 6 ? 5 : 0; }
+      score = Math.min(100, pts);
+    } else if (dd) {
+      score = calcScoreDay(dd);
+    }
+    days.push({ iso, score, dayLabel: diasSemana[d.getDay()], isHoje: iso === hoje });
+  }
+  const maxScore = 100;
+  let html = "";
+  days.forEach(day => {
+    const pct = day.score !== null ? Math.max(4, (day.score / maxScore) * 100) : 4;
+    const color = day.score === null ? "#E3F2FD" : day.isHoje ? "" : day.score >= 70 ? "#1B5E20" : day.score >= 40 ? "#1565C0" : "#90CAF9";
+    const barStyle = day.isHoje ? "" : `background:${color};`;
+    const val = day.score !== null ? day.score : "";
+    html += `<div class="chart-bar-wrap ${day.isHoje ? "chart-bar-today" : ""}">` +
+      `<div class="chart-bar-val">${val}</div>` +
+      `<div class="chart-bar" style="height:${pct}%;${barStyle}"></div>` +
+      `<div class="chart-bar-day">${day.dayLabel}</div>` +
+      `</div>`;
+  });
+  el.innerHTML = html;
 }
 
 // ========== INIT ==========
