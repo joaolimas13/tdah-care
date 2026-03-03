@@ -1780,6 +1780,15 @@ function getApelido() {
   return localStorage.getItem('tdah_apelido') || 'Usuario';
 }
 
+
+function fecharAdmin() {
+  const el = document.getElementById('admin-overlay');
+  if (el) {
+    el.classList.remove('show');
+    el.style.cssText = '';
+  }
+}
+
 // ========== ADMIN ==========
 function abrirAdmin() {
   const ap = document.getElementById('apelido-overlay');
@@ -1916,5 +1925,34 @@ window.addEventListener('load', function() {
   if (window.location.hash === '#admin') setTimeout(abrirAdmin, 500);
 });
 </script>
+
+<div class="apelido-overlay" id="apelido-overlay">
+  <div class="apelido-box">
+    <div class="apelido-logo">🧠</div>
+    <div class="apelido-titulo">Bem-vindo ao TDAH Care</div>
+    <div class="apelido-sub">Como posso te chamar?<br>Seu nome aparecerá nos relatórios.</div>
+    <input class="apelido-input" id="apelido-input" type="text" placeholder="Seu nome ou apelido..." maxlength="30" onkeydown="if(event.key==='Enter')salvarApelido()">
+    <button class="apelido-btn" onclick="salvarApelido()">Entrar 🚀</button>
+  </div>
+</div>
+
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-header">
+    <div class="admin-titulo">🔐 Painel Admin</div>
+    <button class="admin-close" onclick="fecharAdmin()">✕ Fechar</button>
+  </div>
+  <div id="admin-senha-wrap" style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(21,101,192,0.1);">
+    <div style="font-size:0.9rem;font-weight:700;color:#1565C0;margin-bottom:12px;">🔑 Senha de acesso</div>
+    <input id="admin-senha-input" type="password" placeholder="Digite a senha..."
+      style="width:100%;border:2px solid #90CAF9;border-radius:10px;padding:10px 14px;font-size:0.95rem;outline:none;box-sizing:border-box;margin-bottom:10px;"
+      onkeydown="if(event.key==='Enter')verificarSenhaAdmin()">
+    <button onclick="verificarSenhaAdmin()"
+      style="width:100%;padding:12px;background:linear-gradient(135deg,#1565C0,#29B6F6);color:white;border:none;border-radius:10px;font-size:0.9rem;font-weight:700;cursor:pointer;">
+      Entrar
+    </button>
+  </div>
+  <div id="admin-lista" style="display:none;"></div>
+</div>
+
 </body>
 </html>
