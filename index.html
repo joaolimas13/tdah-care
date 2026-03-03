@@ -536,27 +536,26 @@ textarea { resize: none; height: 80px; }
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="greeting"><h2 id="greeting-text">Olá! 👋</h2><p>Acompanhe seu dia com TDAH</p></div>
-  <div class="stats-row">
   <!-- WIDGET RESUMO DO DIA -->
   <div class="widget-resumo">
     <div class="widget-title">Resumo do dia</div>
     <div class="widget-grid">
       <div class="widget-item"><div class="widget-icon">😴</div><div class="widget-val" id="wr-sono">—</div><div class="widget-lbl">Sono</div></div>
       <div class="widget-item"><div class="widget-icon">🎯</div><div class="widget-val" id="wr-metas">0/0</div><div class="widget-lbl">Metas</div></div>
-      <div class="widget-item"><div class="widget-icon">💧</div><div class="widget-val" id="wr-hidrat">0</div><div class="widget-lbl">Copos</div></div>
+      <div class="widget-item"><div class="widget-icon">💧</div><div class="widget-val" id="wr-hidrat">0</div><div class="widget-lbl">Água</div></div>
       <div class="widget-item"><div class="widget-icon">🏔️</div><div class="widget-val" id="wr-pom">0</div><div class="widget-lbl">Sessões</div></div>
     </div>
     <div class="widget-score"><div class="widget-score-num" id="wr-score">0<span style="font-size:1rem;color:#90CAF9;">/100</span></div><div class="widget-score-lbl">score parcial de hoje</div></div>
   </div>
   <!-- STREAK -->
-  <div class="streak-banner" id="streak-banner">
+  <div class="streak-banner" id="streak-banner" style="display:none;">
     <div class="streak-flame">🔥</div>
     <div class="streak-info"><div class="streak-num" id="streak-num">0</div><div class="streak-label">dias consecutivos com metas</div></div>
   </div>
-    <div class="stat-card"><div class="stat-icon">😴</div><div class="stat-value" id="stat-sono">—</div><div class="stat-label">Sono</div></div>
-    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="stat-metas">0/0</div><div class="stat-label">Metas</div></div>
-    <div class="stat-card"><div class="stat-icon">💊</div><div class="stat-value" id="stat-remedio">—</div><div class="stat-label">Remédio</div></div>
-  </div>
+  <!-- hidden IDs for JS compatibility -->
+  <span id="stat-sono" style="display:none;"></span>
+  <span id="stat-metas" style="display:none;"></span>
+  <span id="stat-remedio" style="display:none;"></span>
   <div class="remedio-card">
     <div class="remedio-header">
       <div><div class="remedio-title">💊 Venvanse (Lisdexanfetamina)</div><div style="font-size:0.75rem;color:var(--text-light);">Duração: 12 horas</div></div>
