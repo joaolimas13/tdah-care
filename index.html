@@ -527,8 +527,8 @@ textarea { resize: none; height: 80px; }
 .chart-bar-today .chart-bar-day{color:#1565C0;font-weight:700;}
 
 /* ===== APELIDO MODAL ===== */
-.apelido-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,50,0.92);z-index:999;align-items:center;justify-content:center;}
-.apelido-overlay.show{display:flex;}
+.apelido-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,50,0.92);z-index:999;align-items:center;justify-content:center;pointer-events:none;}
+.apelido-overlay.show{display:flex;pointer-events:all;}
 .apelido-box{background:white;border-radius:24px;padding:32px 24px;max-width:340px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
 .apelido-logo{font-size:3rem;margin-bottom:8px;}
 .apelido-titulo{font-size:1.3rem;font-weight:900;color:#1565C0;margin-bottom:4px;}
@@ -542,8 +542,8 @@ textarea { resize: none; height: 80px; }
 .sync-err{background:#FFEBEE;color:#C62828;}
 .sync-sending{background:#E3F2FD;color:#1565C0;}
 /* ===== ADMIN ===== */
-.admin-overlay{display:none;position:fixed;inset:0;background:#F0F4FF;z-index:9999;overflow-y:auto;padding:20px;box-sizing:border-box;}
-.admin-overlay.show{display:block;}
+.admin-overlay{display:none;position:fixed;inset:0;background:#F0F4FF;z-index:9999;overflow-y:auto;padding:20px;box-sizing:border-box;pointer-events:none;}
+.admin-overlay.show{display:block !important;pointer-events:all;}
 .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
 .admin-titulo{font-size:1.2rem;font-weight:900;color:#1565C0;}
 .admin-close{background:#1565C0;color:white;border:none;border-radius:10px;padding:8px 16px;cursor:pointer;font-size:0.85rem;font-weight:700;}
@@ -2058,10 +2058,10 @@ function cancelAdminHold() { clearTimeout(_adminHoldTimer); }
 
 function abrirAdmin() {
   const ap = document.getElementById('apelido-overlay');
-  if (ap) ap.classList.remove('show');
+  if (ap) { ap.classList.remove('show'); ap.style.pointerEvents = 'none'; }
   const el = document.getElementById('admin-overlay');
   if (!el) { alert('Painel nao encontrado - tente recarregar'); return; }
-  el.style.display = 'block';
+  el.style.cssText = 'display:block; position:fixed; inset:0; background:#F0F4FF; z-index:9999; overflow-y:auto; padding:20px; box-sizing:border-box; pointer-events:all;';
   el.classList.add('show');
 }
 function verificarSenhaAdmin() {
@@ -2155,7 +2155,7 @@ setTimeout(verificarLembreteBackup, 2000);
   <div style="max-width:500px;margin:0 auto;">
     <div class="admin-header">
       <div class="admin-titulo">Painel Admin - TDAH Care</div>
-      <button class="admin-close" onclick="document.getElementById('admin-overlay').classList.remove('show');document.getElementById('admin-senha-wrap').style.display='block';document.getElementById('admin-lista').style.display='none';">Fechar</button>
+      <button class="admin-close" onclick="const el=document.getElementById('admin-overlay');el.classList.remove('show');el.style.cssText='display:none;pointer-events:none;';document.getElementById('admin-senha-wrap').style.display='block';document.getElementById('admin-lista').style.display='none';">Fechar</button>
     </div>
     <div id="admin-senha-wrap" style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <div style="font-size:0.85rem;color:#546E7A;margin-bottom:10px;">Senha de acesso:</div>
