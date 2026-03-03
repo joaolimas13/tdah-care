@@ -686,7 +686,7 @@ textarea { resize: none; height: 80px; }
     <div id="ultimo-sono-home"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:8px;">Nenhum registro ainda</p></div>
   </div>
   <button class="relatorio-btn" onclick="abrirCompartilhar()" style="background:linear-gradient(135deg,#1B5E20,#43A047);">📤 Enviar Progresso para Psicóloga</button>
-  <div class="page-footer" onclick="handleFooterTap()">produced by Jp</div>
+  <div class="page-footer" onclick="handleFooterTap()" style="padding:16px 0;cursor:pointer;">produced by Jp</div>
 </div>
 
 <!-- SONO -->
@@ -2593,6 +2593,8 @@ carregarConfigPom();
 verificarApelido();
 verificarLembreteSexta();
 setTimeout(verificarLembreteBackup, 2000);
+// Acesso admin via URL hash
+if (window.location.hash === '#admin') abrirAdmin();
 </script>
 <!-- FIREBASE -->
 <script type="module">
