@@ -2137,6 +2137,358 @@ carregarConfigPom();
 verificarApelido();
 verificarLembreteSexta();
 setTimeout(verificarLembreteBackup, 2000);
+  // ============================================================
+// TDAH Care - CORREÇÕES (adicione este bloco ao seu HTML)
+// Cole este conteúdo ANTES do </script> do bloco principal
+// (logo após a linha: setTimeout(verificarLembreteBackup, 2000); )
+// ============================================================
+
+function handleTitleTap() {}
+function handleAdminTap() { abrirAdmin(); }
+function debugAdmin() { abrirAdmin(); }
+
+function renderStreak() {
+  const banner = document.getElementById('streak-banner');
+  const numEl = document.getElementById('streak-num');
+  if (!banner || !numEl) return;
+  let streak = 0;
+  const hoje = new Date();
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(hoje); d.setDate(hoje.getDate() - i);
+    const iso = hojeISO(d);
+    const dd = state.dailyData[iso];
+    if (!dd) break;
+    const allM = [...(dd.metas||[]), ...(dd.metasFixas||[])];
+    if (allM.length > 0 && allM.filter(m=>m.done).length > 0) streak++;
+    else if (i > 0) break;
+  }
+  banner.style.display = streak >= 2 ? 'flex' : 'none';
+  numEl.textContent = streak + ' dias';
+}
+
+function updateWidget() {
+  const sono = state.sono && state.sono.length > 0 ? state.sono[0].horas + 'h' : '—';
+  const fixasDone = state.metasFixas.filter(m=>m.done).length;
+  const diariasDone = state.metas.filter(m=>m.done&&(m.tipo==='diaria'||!m.tipo)).length;
+  const tot = state.metasFixas.length + state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).length;
+  const dn = fixasDone + diariasDone;
+  const wrSono=document.getElementById('wr-sono'); if(wrSono) wrSono.textContent=sono;
+  const wrMetas=document.getElementById('wr-metas'); if(wrMetas) wrMetas.textContent=dn+'/'+tot;
+  const wrHidrat=document.getElementById('wr-hidrat'); if(wrHidrat) wrHidrat.textContent=(state.copos||0);
+  const wrPom=document.getElementById('wr-pom'); if(wrPom) wrPom.textContent=state.pom.sessoes||0;
+  let pts=0, max=0;
+  const sh=state.sono[0];
+  if(sh){max+=25;pts+=sh.horas>=7?25:sh.horas>=5?15:5;}
+  if(tot>0){max+=35;pts+=Math.round((dn/tot)*35);}
+  if(state.pom.minFoco>0){max+=25;pts+=Math.min(25,Math.round((state.pom.minFoco/80)*25));}
+  if(state.celular){const tm=state.celular.horas*60+state.celular.minutos;max+=15;pts+=tm<=120?15:tm<=240?8:0;}
+  const score=max>0?Math.round((pts/max)*100):0;
+  const wrScore=document.getElementById('wr-score');
+  if(wrScore) wrScore.innerHTML=score+'<span style="font-size:1rem;color:#90CAF9;">/100</span>';
+}
+
+function getHidratConfig() {
+  try { const raw=localStorage.getItem('tdah_hidrat_config'); if(raw) return JSON.parse(raw); } catch(e) {}
+  return {mlCopo:250, metaLitros:2.0};
+}
+
+function renderHidrat() {
+  const config=getHidratConfig();
+  const metaMl=config.metaLitros*1000;
+  const mlCopo=config.mlCopo;
+  const copos=state.copos||0;
+  const mlTotal=copos*mlCopo;
+  const mlTotalEl=document.getElementById('hidrat-ml-total'); if(mlTotalEl) mlTotalEl.textContent=mlTotal;
+  const mlMetaEl=document.getElementById('hidrat-ml-meta'); if(mlMetaEl) mlMetaEl.textContent=' / '+metaMl+'ml';
+  const coposLabel=document.getElementById('hidrat-copos-label'); if(coposLabel) coposLabel.textContent=copos+' copo'+(copos!==1?'s':'')+' de '+mlCopo+'ml';
+  const totalCoposMeta=Math.ceil(metaMl/mlCopo);
+  const coposEl=document.getElementById('hidrat-copos');
+  if(coposEl){let h='';for(let i=0;i<Math.min(totalCoposMeta,12);i++){h+='<span class="hidrat-copo'+(i<copos?' cheio':'')+'">💧</span>';}coposEl.innerHTML=h;}
+  const pct=Math.min(100,(mlTotal/metaMl)*100);
+  const progFill=document.getElementById('hidrat-prog-fill'); if(progFill) progFill.style.width=pct+'%';
+}
+
+function addCopo() {
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra para hoje');return;}
+  const config=getHidratConfig();
+  state.copos=(state.copos||0)+1;
+  salvar(); renderHidrat(); updateWidget();
+  const mlTotal=state.copos*config.mlCopo;
+  if(mlTotal>=config.metaLitros*1000) showToast('🎉 Meta de hidratação atingida!');
+  else showToast('💧 +'+config.mlCopo+'ml registrado!');
+}
+
+function remCopo() {
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra para hoje');return;}
+  if((state.copos||0)<=0){showToast('⚠️ Sem copos para remover');return;}
+  state.copos=state.copos-1;
+  salvar(); renderHidrat(); updateWidget();
+  showToast('↩️ 1 copo removido');
+}
+
+function toggleHidratConfig() {
+  const el=document.getElementById('hidrat-config'); if(!el) return;
+  const isOpen=el.style.display!=='none';
+  el.style.display=isOpen?'none':'block';
+  if(!isOpen){
+    const config=getHidratConfig();
+    const mlCopoInput=document.getElementById('hidrat-ml-copo');
+    const metaLitrosInput=document.getElementById('hidrat-meta-litros');
+    if(mlCopoInput) mlCopoInput.value=config.mlCopo;
+    if(metaLitrosInput) metaLitrosInput.value=config.metaLitros;
+  }
+}
+
+function salvarConfigHidrat() {
+  const mlCopoInput=document.getElementById('hidrat-ml-copo');
+  const metaLitrosInput=document.getElementById('hidrat-meta-litros');
+  const mlCopo=parseInt(mlCopoInput?mlCopoInput.value:250)||250;
+  const metaLitros=parseFloat(metaLitrosInput?metaLitrosInput.value:2.0)||2.0;
+  try{localStorage.setItem('tdah_hidrat_config',JSON.stringify({mlCopo,metaLitros}));}catch(e){}
+  renderHidrat(); updateWidget();
+}
+
+function renderChartSemanal() {
+  const container=document.getElementById('chart-semanal'); if(!container) return;
+  const labels=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const hoje=new Date(); let html='';
+  for(let i=6;i>=0;i--){
+    const d=new Date(hoje); d.setDate(hoje.getDate()-i);
+    const iso=hojeISO(d); const dd=state.dailyData[iso];
+    const isToday=iso===hojeISO(); const dayLabel=labels[d.getDay()];
+    let score=0;
+    if(dd){
+      let pts=0,max=0;
+      if(dd.sono&&dd.sono.length>0){max+=25;pts+=dd.sono[0].horas>=7?25:dd.sono[0].horas>=5?15:5;}
+      const allM=[...(dd.metas||[]),...(dd.metasFixas||[])];
+      if(allM.length>0){max+=35;pts+=Math.round((allM.filter(m=>m.done).length/allM.length)*35);}
+      if(dd.pom&&dd.pom.minFoco>0){max+=25;pts+=Math.min(25,Math.round((dd.pom.minFoco/80)*25));}
+      if(dd.celular){const tm=dd.celular.horas*60+dd.celular.minutos;max+=15;pts+=tm<=120?15:tm<=240?8:0;}
+      score=max>0?Math.round((pts/max)*100):0;
+    }
+    const height=dd?Math.max(6,score):4;
+    const cls=isToday?'chart-bar-wrap chart-bar-today':'chart-bar-wrap';
+    html+=`<div class="${cls}" style="height:100%;justify-content:flex-end;"><div class="chart-bar-val">${dd?score:''}</div><div class="chart-bar" style="height:${height}%;"></div><div class="chart-bar-day">${dayLabel}</div></div>`;
+  }
+  container.innerHTML=html;
+}
+
+// ========== REATIVAR FOCO - PROTOCOLO COMPLETO ==========
+let _nivelSelecionado=0, _passoAtual=0, _passoTimer=null, _passoSeg=0, _passoRodando=false, _breathInterval=null, _sentidoTimer=null;
+
+const PROTOCOLOS={
+  1:[
+    {icon:'💧',titulo:'Beba água agora',desc:'Desidratação piora a concentração. Levante, pegue um copo d\'água e beba agora.',tempo:30,tipo:'timer'},
+    {icon:'🚶',titulo:'Levante por 2 minutos',desc:'Ficar parado trava o cérebro. Dê uma volta rápida, mova o corpo.',tempo:120,tipo:'timer'},
+    {icon:'🎯',titulo:'Defina UMA tarefa pequena',desc:'Escolha uma tarefa que leve no máximo 10 minutos. Apenas uma. Escreva mentalmente o primeiro passo.',tempo:null,tipo:'acao'},
+  ],
+  2:[
+    {icon:'🌬️',titulo:'Respiração 4-7-8',desc:'Inspire por 4 segundos, segure por 7, expire por 8. Repita 3 vezes.',tempo:57,tipo:'respiracao'},
+    {icon:'👁️',titulo:'Técnica 5-4-3-2-1',desc:'Ancora você no presente. Siga os sentidos abaixo.',tempo:null,tipo:'sentidos'},
+    {icon:'💧',titulo:'Beba água e respire',desc:'Pegue água. Beba devagar. Respire fundo 3 vezes antes de voltar à tela.',tempo:30,tipo:'timer'},
+    {icon:'🎯',titulo:'Tarefa de 5 minutos',desc:'Abra a atividade. Trabalhe apenas 5 minutos. O início é o mais difícil.',tempo:null,tipo:'acao'},
+  ],
+  3:[
+    {icon:'📴',titulo:'Celular virado para baixo',desc:'Coloque o celular com a tela virada para baixo. Remova a maior distração agora.',tempo:null,tipo:'acao'},
+    {icon:'🌬️',titulo:'Respiração calmante',desc:'Inspire (4s), segure (4s), expire (6s). Faça 4 repetições agora.',tempo:56,tipo:'respiracao'},
+    {icon:'✏️',titulo:'Escreva o bloqueio',desc:'Abra o bloco de notas. Escreva: "Estou travado porque..." Complete a frase sem filtro.',tempo:null,tipo:'acao'},
+    {icon:'⏱️',titulo:'Regra dos 2 minutos',desc:'Você vai trabalhar APENAS 2 minutos. Se quiser parar depois, pode. Mas comece agora.',tempo:120,tipo:'timer'},
+    {icon:'🏔️',titulo:'Inicie o Modo Caverna',desc:'Você está pronto. O Modo Caverna vai te guiar pelos próximos minutos de foco.',tempo:null,tipo:'fim'},
+  ],
+};
+
+function abrirReativar() {
+  document.getElementById('reativar-modal').classList.add('show');
+  document.getElementById('reativar-nivel-select').style.display='block';
+  document.getElementById('protocolo-wrap').classList.remove('show');
+  document.getElementById('protocolo-fim').classList.remove('show');
+  document.querySelectorAll('.nivel-card').forEach(c=>c.classList.remove('selected'));
+  if(_passoTimer) clearInterval(_passoTimer);
+  _passoRodando=false;
+  if(_breathInterval) clearTimeout(_breathInterval);
+}
+
+function fecharReativarModal(e) {
+  if(e.target.id==='reativar-modal'){
+    document.getElementById('reativar-modal').classList.remove('show');
+    if(_passoTimer) clearInterval(_passoTimer);
+    _passoRodando=false;
+    if(_breathInterval) clearTimeout(_breathInterval);
+    document.getElementById('reativar-nivel-select').style.display='block';
+    document.getElementById('protocolo-wrap').classList.remove('show');
+    document.getElementById('protocolo-fim').classList.remove('show');
+    document.querySelectorAll('.nivel-card').forEach(c=>c.classList.remove('selected'));
+  }
+}
+
+function selecionarNivel(nivel,el) {
+  document.querySelectorAll('.nivel-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  _nivelSelecionado=nivel; _passoAtual=0;
+  setTimeout(()=>{
+    document.getElementById('reativar-nivel-select').style.display='none';
+    document.getElementById('protocolo-wrap').classList.add('show');
+    document.getElementById('protocolo-fim').classList.remove('show');
+    mostrarPasso(0);
+  },300);
+}
+
+function mostrarPasso(idx) {
+  const passos=PROTOCOLOS[_nivelSelecionado];
+  if(!passos||idx>=passos.length){
+    document.getElementById('protocolo-wrap').classList.remove('show');
+    document.getElementById('protocolo-fim').classList.add('show');
+    if(state.currentDate===hojeISO()){
+      const dd=state.dailyData[state.currentDate]||{};
+      if(!dd.reativarFoco) dd.reativarFoco=[];
+      dd.reativarFoco.push(new Date().toISOString());
+      state.dailyData[state.currentDate]=dd; salvar();
+    }
+    return;
+  }
+  const passo=passos[idx];
+  _passoAtual=idx;
+  if(_passoTimer) clearInterval(_passoTimer);
+  _passoRodando=false; _passoSeg=passo.tempo||0;
+  document.getElementById('passo-icon').textContent=passo.icon;
+  document.getElementById('passo-titulo').textContent=passo.titulo;
+  document.getElementById('passo-desc').textContent=passo.desc;
+  const dotWrap=document.getElementById('passo-progresso');
+  if(dotWrap){
+    let d='';
+    for(let i=0;i<passos.length;i++){d+=`<div class="passo-dot ${i<idx?'done':i===idx?'atual':''}"></div>`;}
+    dotWrap.innerHTML=d;
+  }
+  const timerWrap=document.getElementById('passo-timer-wrap');
+  const breathContainer=document.getElementById('breath-container');
+  const sentidosContainer=document.getElementById('sentidos-container');
+  const playBtn=document.getElementById('passo-play-btn');
+  timerWrap.style.display='none';
+  breathContainer.style.display='none';
+  sentidosContainer.style.display='none';
+  if(playBtn) playBtn.style.display='none';
+  if(passo.tipo==='timer'&&passo.tempo){
+    timerWrap.style.display='flex';
+    if(playBtn){playBtn.style.display='flex';playBtn.textContent='▶ Iniciar';playBtn.classList.remove('tocando');}
+    atualizarTimerPasso(passo.tempo,passo.tempo);
+  } else if(passo.tipo==='respiracao'){
+    breathContainer.style.display='block';
+    if(playBtn){playBtn.style.display='flex';playBtn.textContent='▶ Iniciar';playBtn.classList.remove('tocando');}
+    const c=document.getElementById('breath-circle'); if(c){c.textContent='Prepare-se';c.className='breath-circle';}
+    const ins=document.getElementById('breath-instruction'); if(ins) ins.textContent='Toque em Iniciar';
+  } else if(passo.tipo==='sentidos'){
+    sentidosContainer.style.display='block'; mostrarSentidoAtual(0);
+  }
+}
+
+function atualizarTimerPasso(seg,total) {
+  const mm=Math.floor(seg/60),ss=seg%60;
+  const display=document.getElementById('passo-time-display');
+  const label=document.getElementById('passo-time-label');
+  const ring=document.getElementById('passo-ring-fill');
+  if(display) display.textContent=total>=60?pad(mm)+':'+pad(ss):seg;
+  if(label) label.textContent=total>=60?'minutos':'segundos';
+  const circ=2*Math.PI*52;
+  const prog=total>0?(total-seg)/total:0;
+  if(ring){ring.style.strokeDasharray=circ;ring.style.strokeDashoffset=circ*(1-prog);}
+}
+
+function toggleTimerPasso() {
+  const passos=PROTOCOLOS[_nivelSelecionado];
+  const passo=passos?passos[_passoAtual]:null; if(!passo) return;
+  const playBtn=document.getElementById('passo-play-btn');
+  if(passo.tipo==='respiracao'){
+    _passoRodando=!_passoRodando;
+    if(playBtn){playBtn.textContent=_passoRodando?'⏸ Pausar':'▶ Iniciar';playBtn.classList.toggle('tocando',_passoRodando);}
+    iniciarAnimacaoRespiracao(_passoRodando);
+    return;
+  }
+  if(!passo.tempo) return;
+  if(_passoRodando){
+    clearInterval(_passoTimer); _passoRodando=false;
+    if(playBtn) playBtn.textContent='▶ Retomar';
+  } else {
+    if(_passoSeg<=0) _passoSeg=passo.tempo;
+    _passoRodando=true;
+    if(playBtn) playBtn.textContent='⏸ Pausar';
+    _passoTimer=setInterval(()=>{
+      _passoSeg--;
+      atualizarTimerPasso(_passoSeg,passo.tempo);
+      if(_passoSeg<=0){
+        clearInterval(_passoTimer); _passoRodando=false;
+        if(playBtn) playBtn.textContent='✅ Concluído!';
+        showToast('✅ Etapa concluída!'); playBeep();
+      }
+    },1000);
+  }
+}
+
+function pularPasso() {
+  if(_passoTimer) clearInterval(_passoTimer);
+  _passoRodando=false;
+  mostrarPasso(_passoAtual+1);
+}
+
+function proximoPasso() {
+  if(_passoTimer) clearInterval(_passoTimer);
+  _passoRodando=false;
+  mostrarPasso(_passoAtual+1);
+}
+
+function finalizarProtocolo() {
+  document.getElementById('reativar-modal').classList.remove('show');
+  document.getElementById('reativar-nivel-select').style.display='block';
+  document.getElementById('protocolo-wrap').classList.remove('show');
+  document.getElementById('protocolo-fim').classList.remove('show');
+  document.querySelectorAll('.nivel-card').forEach(c=>c.classList.remove('selected'));
+  _nivelSelecionado=0; _passoAtual=0;
+  const caveraBtn=document.querySelector('.nav-btn.caverna-nav');
+  if(caveraBtn) navigate('caverna',caveraBtn);
+}
+
+function iniciarAnimacaoRespiracao(ativo) {
+  const circle=document.getElementById('breath-circle');
+  const instruction=document.getElementById('breath-instruction');
+  if(!circle) return;
+  if(_breathInterval) clearTimeout(_breathInterval);
+  if(!ativo){
+    circle.textContent='Prepare-se'; circle.className='breath-circle';
+    if(instruction) instruction.textContent='Toque em Iniciar';
+    return;
+  }
+  const fases=[
+    {texto:'Inspire...',instrucao:'Inspire pelo nariz (4s)',classe:'inhale',dur:4000},
+    {texto:'Segure',instrucao:'Segure o ar (7s)',classe:'hold',dur:7000},
+    {texto:'Expire...',instrucao:'Expire pela boca (8s)',classe:'exhale',dur:8000},
+  ];
+  let fi=0;
+  function proxFase(){
+    const f=fases[fi%fases.length];
+    circle.textContent=f.texto; circle.className='breath-circle '+f.classe;
+    if(instruction) instruction.textContent=f.instrucao;
+    fi++; _breathInterval=setTimeout(proxFase,f.dur);
+  }
+  proxFase();
+}
+
+function mostrarSentidoAtual(idx) {
+  const sentidos=[
+    {label:'👀 Nome 5 coisas que você VÊ',exemplos:'Ex: mesa, janela, lâmpada, livro, copo'},
+    {label:'🤚 Nome 4 coisas que pode TOCAR',exemplos:'Ex: cadeira, teclado, roupa, chão'},
+    {label:'👂 Nome 3 coisas que OUVE',exemplos:'Ex: ventilador, trânsito, respiração'},
+    {label:'👃 Nome 2 coisas que CHEIRA',exemplos:'Ex: ar, comida, perfume'},
+    {label:'👅 Nome 1 coisa que PROVA',exemplos:'Ex: café, água, boca'},
+  ];
+  if(idx>=sentidos.length){showToast('✅ Técnica 5-4-3-2-1 concluída!');return;}
+  const label=document.getElementById('sentido-atual-label');
+  const exemplos=document.getElementById('sentido-exemplos');
+  if(label) label.textContent=sentidos[idx].label;
+  if(exemplos) exemplos.textContent=sentidos[idx].exemplos;
+  if(_sentidoTimer) clearTimeout(_sentidoTimer);
+  if(idx<sentidos.length-1){
+    _sentidoTimer=setTimeout(()=>mostrarSentidoAtual(idx+1),8000);
+  }
+}
 </script>
 
 <!-- APELIDO MODAL -->
@@ -2218,3 +2570,4 @@ window.addEventListener('load', function() {
 </script>
 </body>
 </html>
+
