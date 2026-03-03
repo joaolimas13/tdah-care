@@ -559,8 +559,8 @@ textarea { resize: none; height: 80px; }
 </head>
 <body>
 <div class="header">
-  <div><h1>🧠 TDAH Care</h1><span id="header-date"></span></div>
-  <div style="font-size:2rem;cursor:pointer;user-select:none;" onmousedown="startAdminHold()" ontouchstart="startAdminHold(event)" onmouseup="cancelAdminHold()" ontouchend="cancelAdminHold()" onmouseleave="cancelAdminHold()">👤</div>
+  <div onclick="handleTitleTap()"><h1>🧠 TDAH Care</h1><span id="header-date"></span></div>
+  <div style="font-size:2rem;cursor:pointer;" onclick="handleAdminTap()">👤</div>
 </div>
 
 <!-- HOME -->
@@ -2496,11 +2496,11 @@ function renderChartSemanal() {
 
 
 
-// Secret admin - segure o icone por 2 segundos
-let _adminHoldTimer = null;
-function startAdminHold(e) { if(e) e.preventDefault(); _adminHoldTimer = setTimeout(function(){ abrirAdmin(); if(navigator.vibrate) navigator.vibrate(100); }, 2000); }
-function cancelAdminHold() { clearTimeout(_adminHoldTimer); }
-
+// Admin: 3 toques rapidos no icone
+// Admin: clique 5x no titulo TDAH Care
+let _adminTaps=0,_adminTapTimer=null;
+let _titleTaps=0,_titleTimer=null;
+function handleAdminTap(){_adminTaps++;clearTimeout(_adminTapTimer);_adminTapTimer=setTimeout(function(){_adminTaps=0;},1500);if(_adminTaps>=3){_adminTaps=0;abrirAdmin();if(navigator.vibrate)navigator.vibrate(80);}}
 // ========== APELIDO & FIREBASE ==========
 function verificarApelido() {
   const apelido = localStorage.getItem('tdah_apelido');
@@ -2590,7 +2590,7 @@ verificarApelido();
 verificarLembreteSexta();
 setTimeout(verificarLembreteBackup, 2000);
 // Acesso admin via URL hash
-if (window.location.hash === '#admin') abrirAdmin();
+if (window.location.hash === '#admin') setTimeout(abrirAdmin, 800); 
 </script>
 <!-- FIREBASE -->
 <script type="module">
