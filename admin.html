@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel da Psicóloga</title>
+    <style>
+        /* Estilos para deixar o painel bonito e organizado para a psicóloga ler */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f0f2f5; color: #333; }
+        h1 { color: #2c3e50; text-align: center; }
+        #lista-relatorios { max-width: 800px; margin: 0 auto; }
+        
+        /* Estilo do "cartão" de cada paciente */
+        .cartao-paciente { 
+            background: white; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+            border-left: 5px solid #3498db;
+        }
+        .cabecalho-cartao { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+        .nome-paciente { font-size: 1.2em; font-weight: bold; color: #2980b9; margin: 0; }
+        .periodo { font-size: 0.9em; color: #7f8c8d; margin: 0; }
+        
+        /* Estilo para os dados (score, dias, etc) */
+        .dados-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .dado-item { background: #f8f9fa; padding: 8px; border-radius: 5px; font-size: 0.9em;}
+        .resumo { background: #e8f4f8; padding: 15px; border-radius: 8px; font-style: italic; }
+        
+        .mensagem-carregando { text-align: center; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+
+    <h1>Painel de Acompanhamento - Psicóloga</h1>
+    
+    <div id="lista-relatorios">
+        <p class="mensagem-carregando">Buscando os dados dos pacientes no banco de dados...</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        // Importando ferramentas exclusivas do Firestore (Banco de Dados)
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // 2. CONFIGURAÇÃO DO FIREBASE (⚠️ ATENÇÃO: VOCÊ PRECISA PREENCHER AQUI)
+        // Vá nas configurações do seu projeto no Firebase (ícone de engrenagem) e copie suas chaves.
+        const firebaseConfig = {
+            apiKey: "COLE_SUA_API_KEY_AQUI",
+            authDomain: "COLE_SEU_AUTH_DOMAIN_AQUI",
+            projectId: "COLE_SEU_PROJECT_ID_AQUI",
+            storageBucket: "COLE_SEU_STORAGE_BUCKET_AQUI",
+            messagingSenderId: "COLE_SEU_SENDER_ID_AQUI",
+            appId: "COLE_SEU_APP_ID_AQUI"
+        };
+
+        // 3. Inicializando o Firebase e o Banco de Dados
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 4. Função que busca os dados lá na coleção "usuarios" (que vimos no seu print)
+        async function buscarRelatorios() {
+            const divLista = document.getElementById('lista-relatorios');
+            
+            try {
+                // Pede ao banco de dados: "Me dê todos os documentos dentro da coleção 'usuarios'"
+                const querySnapshot = await getDocs(collection(db, "usuarios"));
+                
+                divLista.innerHTML = ""; // Limpa a mensagem de "Buscando..."
+
+                // Verifica se a coleção está vazia
+                if(querySnapshot.empty) {
+                    divLista.innerHTML = "<p class='mensagem-carregando'>Nenhum paciente registrado ainda.</p>";
+                    return;
+                }
+
+                // Para cada paciente que ele achar, vai montar um "cartão" na tela
+                querySnapshot.forEach((doc) => {
+                    const dados = doc.data(); // Pega os dados do paciente atual no loop
+                    
+                    // Monta a estrutura HTML usando os dados exatamente como estão no seu print
+                    const cartaoHTML = `
+                        <div class="cartao-paciente">
+                            <div class="cabecalho-cartao">
+                                <p class="nome-paciente">Paciente: ${dados.apelido || 'Sem nome'}</p>
+                                <p class="periodo">Período: ${dados.periodo || 'Não definido'}</p>
+                            </div>
+                            
+                            <div class="dados-grid">
+                                <div class="dado-item"><strong>Score:</strong> ${dados.score || 0}</div>
+                                <div class="dado-item"><strong>Dias de Dados:</strong> ${dados.diasDados || 0}</div>
+                                <div class="dado-item"><strong>Foco Total:</strong> ${dados.focoTotal || 0}</div>
+                                <div class="dado-item"><strong>Metas Cumpridas:</strong> ${dados.metasPct ? dados.metasPct + '%' : 'Não informou'}</div>
+                            </div>
+
+                            <div class="resumo">
+                                <strong>Resumo da Semana:</strong><br>
+                                ${dados.resumoSemana ? dados.resumoSemana : 'Nenhum resumo escrito.'}
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Adiciona o cartão pronto na lista da tela
+                    divLista.innerHTML += cartaoHTML;
+                });
+
+            } catch (erro) {
+                // Se der erro de conexão ou permissão, mostra na tela
+                console.error("Erro ao buscar dados: ", erro);
+                divLista.innerHTML = `<p style="color:red; text-align:center;">Erro ao carregar o banco de dados. Verifique o console.</p>`;
+            }
+        }
+
+        // 5. Executa a função assim que a página terminar de carregar
+        buscarRelatorios();
+    </script>
+</body>
+</html>
