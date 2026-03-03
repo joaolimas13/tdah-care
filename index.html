@@ -131,6 +131,18 @@ textarea { resize: none; height: 80px; }
 .section-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 12px; }
 .divider { height: 1px; background: #EEF2F7; margin: 16px 0; }
 .btn-danger { background: transparent; border: 2px solid #EF5350; color: #EF5350; border-radius: 12px; padding: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
+
+/* ===== RODAPÉ PRODUZIDO POR JP ===== */
+.page-footer {
+  text-align: center;
+  font-size: 0.68rem;
+  color: #B0BEC5;
+  letter-spacing: 0.5px;
+  padding: 8px 0 4px;
+  font-style: italic;
+}
+#page-caverna .page-footer { color: #3D3D5E; }
+
 #page-caverna { background: #0D0D1A; min-height: 100vh; padding: 20px; padding-bottom: 85px; color: #E0E0FF; }
 .caverna-header { text-align: center; margin-bottom: 24px; }
 .caverna-header h2 { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #A78BFA, #60A5FA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 4px; }
@@ -162,13 +174,6 @@ textarea { resize: none; height: 80px; }
 .session-dot.completo { background: rgba(124,58,237,0.2); border-color: #7C3AED; color: #A78BFA; }
 .session-dot.atual { background: rgba(124,58,237,0.4); border-color: #A78BFA; color: white; animation: pulse-dot 1.5s infinite; }
 @keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 0 rgba(167,139,250,0.4)} 50%{box-shadow:0 0 0 6px rgba(167,139,250,0)} }
-.cav-input-row { display: flex; gap: 8px; align-items: center; }
-.cav-input-row input { flex: 1; background: rgba(30,30,58,0.8); border: 1px solid #3D3D6E; color: #E0E0FF; border-radius: 10px; padding: 10px 14px; font-size: 0.95rem; }
-.cav-input-row input::placeholder { color: #4B5563; }
-.cav-input-row button { background: linear-gradient(135deg, #7C3AED, #4F46E5); color: white; border: none; border-radius: 10px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
-.celular-home-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
-.celular-home-row input { width: 70px; flex: none; }
-.celular-home-row button { padding: 12px 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
 .ciclos-manual-row { display: flex; gap: 8px; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid #2D2D4E; }
 .ciclos-manual-row input { width: 70px; flex: none; background: rgba(30,30,58,0.8); border: 1px solid #3D3D6E; color: #E0E0FF; border-radius: 10px; padding: 10px 12px; font-size: 0.95rem; }
 .ciclos-manual-row span { color: #9CA3AF; font-size: 0.82rem; flex: 1; }
@@ -469,6 +474,9 @@ textarea { resize: none; height: 80px; }
 .pom-config-item input { background: rgba(20,20,40,0.8); border: 1px solid #3D3D6E; color: #E0E0FF; border-radius: 10px; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; width: 100%; }
 .pom-config-sep { color: #4B5563; font-size: 1.2rem; font-weight: 700; margin-top: 16px; }
 .pom-config-btn { padding: 10px 16px; background: rgba(124,58,237,0.3); color: #A78BFA; border: 1px solid #7C3AED; border-radius: 10px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap; margin-top: 14px; }
+.celular-home-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+.celular-home-row input { width: 70px; flex: none; }
+.celular-home-row button { padding: 12px 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -550,6 +558,7 @@ textarea { resize: none; height: 80px; }
     <div id="ultimo-sono-home"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:8px;">Nenhum registro ainda</p></div>
   </div>
   <button class="relatorio-btn" onclick="abrirCompartilhar()" style="background:linear-gradient(135deg,#1B5E20,#43A047);">📤 Enviar Progresso para Psicóloga</button>
+  <div class="page-footer">produced by Jp</div>
 </div>
 
 <!-- SONO -->
@@ -582,6 +591,7 @@ textarea { resize: none; height: 80px; }
     <button class="btn btn-primary" onclick="salvarSono()">💾 Salvar Registro</button>
   </div>
   <div class="card"><div class="card-title">📅 Últimos registros</div><div id="historico-sono"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p></div></div>
+  <div class="page-footer">produced by Jp</div>
 </div>
 
 <!-- METAS -->
@@ -633,6 +643,7 @@ textarea { resize: none; height: 80px; }
   <div class="card"><div class="card-title">💡 Dica</div>
     <div style="background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:12px 16px;font-size:0.83rem;color:#5D4037;line-height:1.5;"><strong>TDAH e metas:</strong> Divida tarefas grandes em passos pequenos. Cada ✅ libera dopamina!</div>
   </div>
+  <div class="page-footer">produced by Jp</div>
 </div>
 
 <!-- CALENDÁRIO -->
@@ -653,6 +664,7 @@ textarea { resize: none; height: 80px; }
     <div class="calendar-grid" id="calendar-grid-days"></div>
   </div>
   <div id="daily-summary-card" style="display:none;"></div>
+  <div class="page-footer">produced by Jp</div>
 </div>
 
 <!-- CAVERNA -->
@@ -702,19 +714,7 @@ textarea { resize: none; height: 80px; }
     </div>
     <p style="font-size:0.68rem;color:#4B5563;margin-top:8px;">⏭ adiciona 1 sessão de 20min · ⏮ remove 1 sessão</p>
   </div>
-  <div class="caverna-card-dark">
-    <div class="caverna-card-title">📱 Tempo de celular hoje</div>
-    <div id="cav-celular-form">
-      <div class="cav-input-row">
-        <input type="number" id="cav-cel-h" placeholder="Horas" min="0" max="24">
-        <span style="color:#6B7280;font-size:0.85rem;">h</span>
-        <input type="number" id="cav-cel-m" placeholder="Min" min="0" max="59">
-        <span style="color:#6B7280;font-size:0.85rem;">min</span>
-        <button onclick="salvarCelularCaverna()">💾</button>
-      </div>
-    </div>
-    <div id="cav-celular-registrado" style="display:none;"></div>
-  </div>
+  <div class="page-footer">produced by Jp</div>
 </div>
 
 <!-- INFO -->
@@ -732,12 +732,14 @@ textarea { resize: none; height: 80px; }
     <div class="info-tip"><strong>✅ Recomendação:</strong> 7-9 horas com horários consistentes, mesmo nos fins de semana.</div>
     <div class="info-card"><h3>📱 Higiene do sono</h3><p>Evite telas 1 hora antes de dormir. A luz azul inibe a melatonina. Crie rotina: banho morno, leitura leve, ambiente fresco.</p></div>
     <div class="info-tip"><strong>⚠️ Atenção:</strong> Estimulantes tomados tarde dificultam o sono. Converse com seu médico.</div>
+    <div class="page-footer">produced by Jp</div>
   </div>
   <div class="info-content" id="info-eletrolitos">
     <div class="info-card"><h3>💧 Hidratação e TDAH</h3><p>Desidratação leve (1-2%) já impacta concentração e memória — funções comprometidas no TDAH.</p></div>
     <div class="info-tip"><strong>✅ Meta:</strong> 2-3 litros de água por dia.</div>
     <div class="info-card"><h3>🧂 Eletrólitos importantes</h3><p><strong>Magnésio:</strong> Reduz hiperatividade, melhora sono.<br><br><strong>Zinco:</strong> Relacionado à síntese de dopamina.<br><br><strong>Ferro:</strong> Deficiência agrava TDAH. Avalie com seu médico.</p></div>
     <div class="info-tip"><strong>⚠️ Importante:</strong> Não inicie suplementação sem orientação médica.</div>
+    <div class="page-footer">produced by Jp</div>
   </div>
   <div class="info-content" id="info-remedio">
     <div class="info-card"><h3>💊 Venvanse — Como funciona</h3><p>Pró-fármaco ativado no organismo. Início em 1-2h, pico entre 3-5h, duração total de até 12h.</p></div>
@@ -745,12 +747,14 @@ textarea { resize: none; height: 80px; }
     <div class="info-card"><h3>🍽️ Alimentação e medicação</h3><p>Estimulantes reduzem apetite. Tome café da manhã nutritivo ANTES da dose.</p></div>
     <div class="info-tip"><strong>⚠️ Nunca</strong> ajuste doses sem consultar seu médico.</div>
     <div class="info-card"><h3>🌙 Rebote ao fim do efeito</h3><p>Retorno dos sintomas, irritabilidade leve e fome são normais. Planeje atividades de menor demanda cognitiva para esse período.</p></div>
+    <div class="page-footer">produced by Jp</div>
   </div>
   <div class="info-content" id="info-estrategias">
     <div class="info-card"><h3>⏱️ Modo Caverna — Pomodoro 20/5</h3><p>20min de foco + 5min de pausa. Para TDAH, sessões mais curtas são mais eficazes. Após 4 sessões (1 ciclo), faça uma pausa maior de 15-20min.</p></div>
     <div class="info-card"><h3>📝 Body doubling</h3><p>Estudar na presença de outra pessoa (mesmo virtual) aumenta foco no TDAH.</p></div>
     <div class="info-tip"><strong>✅ Organização:</strong> Listas curtas de 3-5 itens. Muitas tarefas visíveis sobrecarregam.</div>
     <div class="info-card"><h3>🎵 Música e foco</h3><p>Lo-fi, instrumentais ou ruído branco melhoram concentração. Evite letras em tarefas de leitura.</p></div>
+    <div class="page-footer">produced by Jp</div>
   </div>
   <div class="info-content" id="info-relatorios">
     <div class="rel-subtabs">
@@ -768,6 +772,7 @@ textarea { resize: none; height: 80px; }
     <div id="relatorio-mensal-inline" style="display:none;">
       <div id="relatorio-mensal-wrap"></div>
     </div>
+    <div class="page-footer">produced by Jp</div>
   </div>
 </div>
 
@@ -790,13 +795,11 @@ textarea { resize: none; height: 80px; }
       <button class="comp-close" onclick="document.getElementById('compartilhar-modal').classList.remove('show')">✕</button>
     </div>
     <div class="compartilhar-body">
-
       <div class="comp-tabs">
         <button class="comp-tab active" onclick="switchCompTab('visual',this)">🎨 Visual</button>
         <button class="comp-tab" onclick="switchCompTab('texto',this)">💬 Texto</button>
         <button class="comp-tab" onclick="switchCompTab('pdf',this)">📄 PDF</button>
       </div>
-
       <!-- ABA VISUAL -->
       <div id="comp-visual" class="comp-tab-content">
         <div class="wrapped-card" id="wrapped-card">
@@ -844,7 +847,6 @@ textarea { resize: none; height: 80px; }
           <button class="comp-acao-btn btn-copiar" onclick="tirarPrintCard()">📸 Salvar como imagem</button>
         </div>
       </div>
-
       <!-- ABA TEXTO -->
       <div id="comp-texto" class="comp-tab-content" style="display:none;">
         <div class="texto-formatado" id="texto-progresso"></div>
@@ -853,7 +855,6 @@ textarea { resize: none; height: 80px; }
           <button class="comp-acao-btn btn-copiar" onclick="copiarTexto()">📋 Copiar texto</button>
         </div>
       </div>
-
       <!-- ABA PDF -->
       <div id="comp-pdf" class="comp-tab-content" style="display:none;">
         <div style="background:#F8FAFF;border-radius:14px;padding:20px;margin-bottom:16px;text-align:center;">
@@ -867,11 +868,9 @@ textarea { resize: none; height: 80px; }
           <button class="comp-acao-btn btn-copiar" onclick="imprimirRelatorio()">🖨️ Imprimir / Salvar PDF</button>
         </div>
       </div>
-
     </div>
   </div>
 </div>
-<!-- ===== FIM COMPARTILHAR ===== -->
 
 <!-- ===== REATIVAR FOCO MODAL ===== -->
 <div class="reativar-modal" id="reativar-modal" onclick="fecharReativarModal(event)">
@@ -882,7 +881,6 @@ textarea { resize: none; height: 80px; }
       <button class="reativar-close" onclick="document.getElementById('reativar-modal').classList.remove('show')">✕</button>
     </div>
     <div class="reativar-body">
-
       <!-- Seleção de nível -->
       <div id="reativar-nivel-select">
         <div class="nivel-grid">
@@ -903,7 +901,6 @@ textarea { resize: none; height: 80px; }
           </div>
         </div>
       </div>
-
       <!-- Protocolo -->
       <div class="protocolo-wrap" id="protocolo-wrap">
         <div class="passo-progresso" id="passo-progresso"></div>
@@ -940,7 +937,6 @@ textarea { resize: none; height: 80px; }
           <button class="passo-btn passo-btn-next" id="passo-next-btn" onclick="proximoPasso()">Feito ✓</button>
         </div>
       </div>
-
       <!-- Conclusão -->
       <div class="protocolo-fim" id="protocolo-fim">
         <span class="fim-emoji">🧠✨</span>
@@ -948,11 +944,9 @@ textarea { resize: none; height: 80px; }
         <p>Você fez o necessário para reativar seu sistema. Agora comece com uma tarefa pequena — apenas 10 minutos de foco.</p>
         <button class="fim-btn" onclick="finalizarProtocolo()">🏔️ Iniciar Modo Caverna</button>
       </div>
-
     </div>
   </div>
 </div>
-<!-- ===== FIM REATIVAR FOCO ===== -->
 
 <!-- ===== BACKUP FAB & MODAL ===== -->
 <button class="backup-fab" id="backup-fab-btn" onclick="abrirBackup()" title="Backup & Sincronização" style="position:relative;">
@@ -977,7 +971,6 @@ textarea { resize: none; height: 80px; }
         </div>
         <div id="backup-last-export" class="backup-last-info none">📁 Nenhum backup exportado ainda</div>
       </div>
-
       <div class="backup-section">
         <div class="backup-section-title">📤 Exportar backup</div>
         <div class="backup-section-desc">Baixe um arquivo JSON com todos os seus dados. Guarde no Google Drive, iCloud ou envie por e-mail para você mesmo.</div>
@@ -996,7 +989,6 @@ textarea { resize: none; height: 80px; }
           <div class="backup-progress-fill" id="export-progress-fill" style="width:0%"></div>
         </div>
       </div>
-
       <div class="backup-section">
         <div class="backup-section-title">📥 Importar / Restaurar</div>
         <div class="backup-section-desc">Restaure seus dados a partir de um arquivo JSON exportado. <strong style="color:#C62828;">Atenção: substituirá os dados atuais.</strong></div>
@@ -1030,7 +1022,6 @@ textarea { resize: none; height: 80px; }
           </button>
         </div>
       </div>
-
       <div class="backup-section">
         <div class="backup-section-title">⚙️ Configurações</div>
         <div class="auto-backup-row">
@@ -1050,7 +1041,6 @@ textarea { resize: none; height: 80px; }
     </div>
   </div>
 </div>
-<!-- ===== FIM BACKUP ===== -->
 
 <div class="toast" id="toast"></div>
 
@@ -1274,22 +1264,13 @@ function salvarCelular(){
   if(h===0&&m===0){showToast('⚠️ Informe o tempo de celular!');return;}
   state.celular={horas:h,minutos:m};salvar();renderCelular();showToast('📱 Tempo de celular salvo!');
 }
-function salvarCelularCaverna(){
-  if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra para hoje');return;}
-  const h=parseInt(document.getElementById('cav-cel-h').value)||0;const m=parseInt(document.getElementById('cav-cel-m').value)||0;
-  if(h===0&&m===0){showToast('⚠️ Informe o tempo!');return;}
-  state.celular={horas:h,minutos:m};salvar();renderCelular();showToast('📱 Tempo salvo!');
-}
 function renderCelular(){
   const hD=document.getElementById('celular-home-display'),hR=document.getElementById('celular-registrado-home');
-  const cF=document.getElementById('cav-celular-form'),cR=document.getElementById('cav-celular-registrado');
   if(state.celular){
     const txt=state.celular.horas+'h '+state.celular.minutos+'min';const av=avalCelular(state.celular.horas,state.celular.minutos);
     hD.style.display='none';hR.style.display='block';
     hR.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;"><div><div style="font-weight:700;font-size:1.1rem;color:var(--primary);">📱 ${txt}</div><div style="font-size:0.78rem;color:var(--text-light);">${av.msg}</div></div><span class="badge ${av.badge}">${av.label}</span></div><button onclick="resetarCelular()" style="margin-top:10px;font-size:0.78rem;color:var(--text-light);background:none;border:none;cursor:pointer;text-decoration:underline;">Editar registro</button>`;
-    cF.style.display='none';cR.style.display='block';
-    cR.innerHTML=`<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);border-radius:10px;padding:12px;margin-top:10px;color:#A78BFA;font-size:0.85rem;">📱 <strong style="color:#E0E0FF;">${txt}</strong> — ${av.msg}</div><button onclick="resetarCelular()" style="margin-top:8px;font-size:0.75rem;color:#6B7280;background:none;border:none;cursor:pointer;text-decoration:underline;">Editar</button>`;
-  }else{hD.style.display='block';hR.style.display='none';cF.style.display='block';cR.style.display='none';}
+  }else{hD.style.display='block';hR.style.display='none';}
 }
 function resetarCelular(){state.celular=null;salvar();document.getElementById('celular-horas').value='';document.getElementById('celular-minutos').value='';renderCelular();}
 function updateStats(){
@@ -1365,14 +1346,14 @@ function abrirRelatorio(){
   if(sh){const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};const p=sh.horas>=7?25:sh.horas>=5?15:5;pts+=p;pontosDetalhe.push({label:'😴 Sono',pts:p,max:25,ok:sh.horas>=7});if(sh.horas<7)dicas.push(`Tente dormir ${7-sh.horas<=1?'mais 1 hora':'pelo menos 7h'} — sono adequado potencializa o foco e o efeito do tratamento.`);sonoH=`<div class="rel-section" style="border-color:#1565C0;"><h3>😴 Sono</h3><div class="rel-row"><span>Horas dormidas</span><span class="rv">${sh.horas}h</span></div><div class="rel-row"><span>Qualidade</span><span class="rv">${qM[sh.qualidade]}</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${sh.horas>=7?'✅ Adequado':sh.horas>=5?'⚠️ Abaixo do ideal':'❌ Insuficiente'}</span></div></div>`;}
   else{pontosDetalhe.push({label:'😴 Sono',pts:0,max:25,ok:false});dicas.push('Registre seu sono diariamente.');sonoH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>😴 Sono</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;}
   const fixasDone=state.metasFixas.filter(m=>m.done).length;const tot=state.metasFixas.length+state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).length;const dn=fixasDone+state.metas.filter(m=>m.done&&(m.tipo==='diaria'||!m.tipo)).length;const pctM=tot>0?Math.round((dn/tot)*100):0;
-  max+=30;const ptsMetas=Math.round((pctM/100)*30);pts+=ptsMetas;pontosDetalhe.push({label:'🎯 Metas',pts:ptsMetas,max:30,ok:pctM>=70});if(pctM<70&&tot>0){const pend=tot-dn;dicas.push(`Ficaram ${pend} meta${pend>1?'s':''} pendente${pend>1?'s':''}.`);}
+  max+=35;const ptsMetas=Math.round((pctM/100)*35);pts+=ptsMetas;pontosDetalhe.push({label:'🎯 Metas',pts:ptsMetas,max:35,ok:pctM>=70});if(pctM<70&&tot>0){const pend=tot-dn;dicas.push(`Ficaram ${pend} meta${pend>1?'s':''} pendente${pend>1?'s':''}.`);}
   const todasMetas=[...state.metasFixas,...state.metas.filter(m=>m.tipo==='diaria'||!m.tipo)];
   const metasH=`<div class="rel-section" style="border-color:#2E7D32;"><h3>🎯 Metas do Dia</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn} de ${tot}</span></div><div class="rel-row"><span>Taxa</span><span class="rv">${pctM}%</span></div>${todasMetas.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'📌 ':''}<span style="font-size:0.7rem;">${m.prioridade==='alta'?'🔴':m.prioridade==='baixa'?'🟢':'🟡'}</span> ${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;
   const p=state.pom;max+=25;const ptsPom=Math.min(25,Math.round((p.minFoco/80)*25));pts+=ptsPom;pontosDetalhe.push({label:'🏔️ Caverna',pts:ptsPom,max:25,ok:p.minFoco>=40});if(p.minFoco<40)dicas.push('Tente completar ao menos 2 sessões de Modo Caverna amanhã.');
   const pomH=`<div class="rel-section" style="border-color:#7C3AED;"><h3>🏔️ Modo Caverna</h3><div class="rel-row"><span>Sessões</span><span class="rv">${p.sessoes}</span></div><div class="rel-row"><span>Ciclos</span><span class="rv">${p.ciclos}</span></div><div class="rel-row"><span>Foco total</span><span class="rv">${p.minFoco}min</span></div></div>`;
-  max+=20;let celH='';
-  if(state.celular){const tm=state.celular.horas*60+state.celular.minutos;const ptsCel=tm<=120?20:tm<=240?10:0;pts+=ptsCel;pontosDetalhe.push({label:'📱 Tela',pts:ptsCel,max:20,ok:ptsCel>=15});if(ptsCel<15)dicas.push('O tempo de tela foi elevado.');const av=avalCelular(state.celular.horas,state.celular.minutos);celH=`<div class="rel-section" style="border-color:#F57F17;"><h3>📱 Tela</h3><div class="rel-row"><span>Tempo</span><span class="rv">${state.celular.horas}h ${state.celular.minutos}min</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${av.msg}</span></div></div>`;}
-  else{pontosDetalhe.push({label:'📱 Tela',pts:0,max:20,ok:false});dicas.push('Registre o tempo de tela amanhã.');celH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>📱 Tela</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado.</p></div>`;}
+  max+=15;let celH='';
+  if(state.celular){const tm=state.celular.horas*60+state.celular.minutos;const ptsCel=tm<=120?15:tm<=240?8:0;pts+=ptsCel;pontosDetalhe.push({label:'📱 Tela',pts:ptsCel,max:15,ok:ptsCel>=10});if(ptsCel<10)dicas.push('O tempo de tela foi elevado.');const av=avalCelular(state.celular.horas,state.celular.minutos);celH=`<div class="rel-section" style="border-color:#F57F17;"><h3>📱 Tela</h3><div class="rel-row"><span>Tempo</span><span class="rv">${state.celular.horas}h ${state.celular.minutos}min</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${av.msg}</span></div></div>`;}
+  else{pontosDetalhe.push({label:'📱 Tela',pts:0,max:15,ok:false});dicas.push('Registre o tempo de tela amanhã.');celH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>📱 Tela</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado.</p></div>`;}
   let remH=state.remedio?`<div class="rel-section" style="border-color:#29B6F6;"><h3>💊 Medicação</h3><div class="rel-row"><span>Tomado às</span><span class="rv">${fmt(state.remedio.horaRegistro)}</span></div><div class="rel-row"><span>Status</span><span class="rv">✅ Registrado hoje</span></div></div>`:`<div class="rel-section" style="border-color:#B0BEC5;"><h3>💊 Medicação</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrada hoje.</p></div>`;
   let leitH=state.leitura?`<div class="rel-section" style="border-color:#6A1B9A;"><h3>📚 Leitura</h3><div class="rel-row"><span>Páginas lidas</span><span class="rv">${state.leitura.paginas} páginas</span></div></div>`:'';
   const nota=max>0?Math.round((pts/max)*100):0;const em=nota>=80?'🏆':nota>=60?'⭐':nota>=40?'💪':'🌱';const msg=nota>=80?'Dia excelente!':nota>=60?'Bom progresso!':nota>=40?'Continue tentando!':'Amanhã será melhor!';
@@ -1420,23 +1401,20 @@ function gerarRelatorioMensal(){
   const avgFoco = focoN>0 ? Math.round(focoTotal/focoN) : null;
   const avgCelular = celularN>0 ? Math.round(celularTotal/celularN) : null;
   const pctRemedio = Math.round((remedioN/diasDados)*100);
-  const pctSonoAdequado = sonoN>0 ? Math.round(((sonoN-sonoAbaixo7)/sonoN)*100) : null;
   const dataIni = new Date(today); dataIni.setDate(today.getDate()-29);
   const fmtD = d => d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
   const fmtM = d => d.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
 
-  // Score geral clínico 0-100
+  // Score geral clínico — SEM medicação no score (mudança #3)
   let scoreTotal=0, scoreMax=0;
-  if(avgSono!==null){scoreMax+=25; scoreTotal+=avgSono>=7?25:avgSono>=6?15:avgSono>=5?8:2;}
-  if(pctMetas!==null){scoreMax+=25; scoreTotal+=Math.round((pctMetas/100)*25);}
+  if(avgSono!==null){scoreMax+=30; scoreTotal+=avgSono>=7?30:avgSono>=6?18:avgSono>=5?8:2;}
+  if(pctMetas!==null){scoreMax+=30; scoreTotal+=Math.round((pctMetas/100)*30);}
   if(avgFoco!==null){scoreMax+=25; scoreTotal+=Math.min(25,Math.round((avgFoco/60)*25));}
   if(avgCelular!==null){scoreMax+=15; scoreTotal+=avgCelular<=120?15:avgCelular<=240?10:avgCelular<=360?5:0;}
-  scoreMax+=10; scoreTotal+=Math.round((pctRemedio/100)*10);
   const scoreGeral = scoreMax>0 ? Math.round((scoreTotal/scoreMax)*100) : 0;
   const scoreCor = scoreGeral>=75?'#2E7D32':scoreGeral>=50?'#F57F17':'#C62828';
   const scoreLabel = scoreGeral>=75?'Boa adesão ao tratamento':scoreGeral>=50?'Adesão moderada':'Adesão baixa — requer atenção';
 
-  // Mini gráfico de sono (últimas 4 semanas, barras semanais)
   const sonoValidos = sonoSeries.filter(v=>v!==null);
   const sonoMax = Math.max(...sonoValidos, 9);
   const focoMax = Math.max(...focoSeries, 60);
@@ -1447,58 +1425,45 @@ function gerarRelatorioMensal(){
   }).join('');
   const grafFoco = focoSeries.slice(-14).map(v => {
     const h = Math.round((v/focoMax)*100);
-    const cor = v>=60?'#7C3AED':v>=30?'#A78BFA':'#E3EAF2';
+    const cor = v>=60?'#7C3AED':v>=30?'#A78BFA':'#E3E3E3';
     return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};flex:1;" title="${v?v+'min':'—'}"></div>`;
   }).join('');
 
-  // Parecer textual por seção
   function parecerSono(){
     if(!avgSono) return 'Dados de sono insuficientes para análise.';
     let txt=`Média de ${avgSono.toFixed(1)}h/noite no período. `;
     if(avgSono>=8)txt+='Padrão de sono <strong>dentro dos parâmetros ideais</strong> para adultos com TDAH (7–9h). Sono adequado potencializa a eficácia do tratamento farmacológico.';
     else if(avgSono>=7)txt+='Sono <strong>limítrofe ao adequado</strong>. Pequenas variações para baixo podem impactar concentração e resposta ao medicamento.';
     else if(avgSono>=6)txt+='Sono <strong>abaixo do recomendado</strong>. Privação crônica leve (6–7h) agrava desatenção e impulsividade em pacientes com TDAH.';
-    else txt+='Sono <strong>significativamente abaixo do limiar terapêutico</strong>. Privação de sono desta magnitude compromete gravemente a regulação executiva e pode reduzir a eficácia da medicação.';
+    else txt+='Sono <strong>significativamente abaixo do limiar terapêutico</strong>. Privação de sono desta magnitude compromete gravemente a regulação executiva.';
     if(sonoAbaixo7>0)txt+=` Registradas <strong>${sonoAbaixo7} noites abaixo de 7h</strong> no período.`;
     return txt;
   }
-
   function parecerMetas(){
     if(pctMetas===null)return 'Dados de metas insuficientes para análise.';
     let txt=`Taxa de conclusão de metas: <strong>${pctMetas}%</strong> (${metasConcl}/${metasTotal}). `;
-    if(pctMetas>=80)txt+='<strong>Desempenho satisfatório</strong> na execução de planejamento. Indica boa capacidade de organização e follow-through no período.';
-    else if(pctMetas>=60)txt+='Desempenho <strong>moderado</strong>. Sugere dificuldades ocasionais de planejamento ou de manutenção de foco ao longo do dia.';
-    else if(pctMetas>=40)txt+='Desempenho <strong>abaixo do esperado</strong>. Padrão consistente com dificuldades executivas características do TDAH — considerar ajuste de estratégias.';
-    else txt+='<strong>Dificuldade persistente na execução de planejamento</strong>. Taxa inferior a 40% pode indicar sobrecarga, estratégias inadequadas ou necessidade de revisão terapêutica.';
+    if(pctMetas>=80)txt+='<strong>Desempenho satisfatório</strong> na execução de planejamento.';
+    else if(pctMetas>=60)txt+='Desempenho <strong>moderado</strong>. Sugere dificuldades ocasionais de planejamento.';
+    else if(pctMetas>=40)txt+='Desempenho <strong>abaixo do esperado</strong>. Considerar ajuste de estratégias.';
+    else txt+='<strong>Dificuldade persistente na execução de planejamento</strong>. Taxa inferior a 40% pode indicar sobrecarga.';
     return txt;
   }
-
   function parecerFoco(){
-    if(!avgFoco)return 'Nenhuma sessão de foco registrada no período. Recomenda-se iniciar uso do Modo Caverna.';
+    if(!avgFoco)return 'Nenhuma sessão de foco registrada no período.';
     const totalH = Math.floor(focoTotal/60), totalM = focoTotal%60;
     let txt=`Total de <strong>${totalH>0?totalH+'h ':''  }${totalM>0?totalM+'min':''}de foco registrado</strong> em ${focoN} dias ativos. Média de ${avgFoco}min/dia. `;
-    if(avgFoco>=60)txt+='Volume de foco <strong>adequado para adulto com TDAH</strong>. Consistência no uso de técnicas estruturadas.';
-    else if(avgFoco>=30)txt+='Volume de foco <strong>moderado</strong>. Há espaço para aumentar sessões de trabalho concentrado.';
-    else txt+='Volume de foco <strong>baixo</strong>. Sessões curtas e irregulares são esperadas em fases de desregulação. Considerar estratégias de body doubling ou ajuste do protocolo Pomodoro.';
+    if(avgFoco>=60)txt+='Volume de foco <strong>adequado</strong>.';
+    else if(avgFoco>=30)txt+='Volume de foco <strong>moderado</strong>.';
+    else txt+='Volume de foco <strong>baixo</strong>. Considerar estratégias adicionais.';
     return txt;
   }
-
-  function parecerMedicacao(){
-    let txt=`Medicação registrada em <strong>${remedioN} de ${diasDados} dias</strong> com dados (${pctRemedio}%). `;
-    if(pctRemedio>=90)txt+='<strong>Adesão medicamentosa excelente</strong>. Consistência farmacológica é fundamental para estabilidade clínica.';
-    else if(pctRemedio>=75)txt+='<strong>Boa adesão</strong> ao tratamento farmacológico.';
-    else if(pctRemedio>=50)txt+='<strong>Adesão moderada</strong>. Dias sem registro podem indicar esquecimento ou efeitos adversos — avaliar na consulta.';
-    else txt+='<strong>Adesão baixa ao tratamento</strong>. Este padrão pode comprometer significativamente a estabilidade clínica. Discussão prioritária na próxima consulta.';
-    return txt;
-  }
-
   function parecerTela(){
     if(!avgCelular)return 'Tempo de tela não monitorado no período.';
     const h=Math.floor(avgCelular/60), m=avgCelular%60;
     let txt=`Média de <strong>${h}h${m>0?m+'min':''}/dia</strong> de uso de dispositivos. `;
-    if(avgCelular<=120)txt+='<strong>Controle adequado</strong> do tempo de tela. Uso dentro de parâmetros que favorecem foco e sono.';
-    else if(avgCelular<=240)txt+='Uso <strong>moderado a elevado</strong>. Atenção ao impacto em sono e capacidade de foco prolongado.';
-    else txt+='<strong>Uso elevado de telas</strong>. Tempo excessivo em dispositivos correlaciona-se negativamente com atenção sustentada e qualidade do sono em pacientes com TDAH.';
+    if(avgCelular<=120)txt+='<strong>Controle adequado</strong> do tempo de tela.';
+    else if(avgCelular<=240)txt+='Uso <strong>moderado a elevado</strong>.';
+    else txt+='<strong>Uso elevado de telas</strong>. Correlaciona negativamente com atenção sustentada.';
     return txt;
   }
 
@@ -1506,108 +1471,58 @@ function gerarRelatorioMensal(){
 
   wrap.innerHTML = `
   <div style="font-size:0.72rem;color:#90A4AE;text-align:right;margin-bottom:8px;">📅 ${fmtD(dataIni)} a ${fmtD(today)}</div>
-
-  <!-- Cabeçalho clínico -->
   <div class="clinico-wrap">
     <div class="clinico-topo">
       <div class="ct-titulo">📋 Relatório Clínico de Acompanhamento</div>
       <div class="ct-sub">TDAH Care · ${fmtM(today)} · ${diasDados} dias com registro</div>
       <div class="ct-meta">
-        <div class="ct-meta-item">
-          <div class="ctm-val" style="color:${scoreCor};">${scoreGeral}</div>
-          <div class="ctm-lbl">Score geral /100</div>
-        </div>
-        <div class="ct-meta-item">
-          <div class="ctm-val">${diasDados}</div>
-          <div class="ctm-lbl">Dias registrados</div>
-        </div>
-        <div class="ct-meta-item">
-          <div class="ctm-val">${pctRemedio}%</div>
-          <div class="ctm-lbl">Adesão ao med.</div>
-        </div>
+        <div class="ct-meta-item"><div class="ctm-val" style="color:${scoreCor};">${scoreGeral}</div><div class="ctm-lbl">Score geral /100</div></div>
+        <div class="ct-meta-item"><div class="ctm-val">${diasDados}</div><div class="ctm-lbl">Dias registrados</div></div>
+        <div class="ct-meta-item"><div class="ctm-val">${pctRemedio}%</div><div class="ctm-lbl">Uso do remédio</div></div>
       </div>
     </div>
-
-    <!-- Quadro geral -->
     <div class="clinico-secao">
       <div class="clinico-secao-titulo">📊 Indicadores do Período</div>
       ${avgSono!==null?row('Média de sono/noite', avgSono.toFixed(1)+'h', avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit', avgSono>=7?'Adequado':avgSono>=6?'Atenção':'Crítico'):''}
       ${pctMetas!==null?row('Taxa de conclusão de metas', pctMetas+'% ('+metasConcl+'/'+metasTotal+')', pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit', pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
       ${avgFoco!==null?row('Média de foco diário', avgFoco+'min/dia', avgFoco>=40?'cl-norm':avgFoco>=20?'cl-atenc':'cl-crit', avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}
       ${avgCelular!==null?row('Média de tempo de tela', Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia', avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit', avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
-      ${row('Adesão medicamentosa', remedioN+'/'+diasDados+' dias', pctRemedio>=80?'cl-norm':pctRemedio>=60?'cl-atenc':'cl-crit', pctRemedio>=80?'Boa':pctRemedio>=60?'Moderada':'Baixa')}
+      ${remedioN>0?row('Registro de medicação', remedioN+'/'+diasDados+' dias', pctRemedio>=80?'cl-norm':pctRemedio>=60?'cl-atenc':'cl-crit', pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo'):''}
       ${reativarTotal>0?row('Ativações de protocolo de foco', reativarTotal+'x em '+Object.keys(diasReativar).length+' dias', reativarTotal<=5?'cl-norm':reativarTotal<=15?'cl-atenc':'cl-crit', reativarTotal<=5?'Ocasional':reativarTotal<=15?'Frequente':'Intenso'):''}
       ${leituraN>0?row('Leitura acumulada', leituraTotal+' páginas em '+leituraN+' dias', 'cl-norm', 'Registrada'):''}
     </div>
   </div>
-
-  <!-- Gráfico sono -->
   ${sonoN>0?`<div class="clinico-wrap">
     <div class="clinico-secao">
       <div class="clinico-secao-titulo">😴 Evolução do Sono — últimas 2 semanas</div>
       <div class="clinico-grafico">${grafSono}</div>
-      <div style="display:flex;gap:12px;font-size:0.65rem;color:#90A4AE;margin-top:4px;">
-        <span>🟢 ≥7h adequado</span><span>🟠 6-7h atenção</span><span>🔴 &lt;6h crítico</span>
-      </div>
+      <div style="display:flex;gap:12px;font-size:0.65rem;color:#90A4AE;margin-top:4px;"><span>🟢 ≥7h adequado</span><span>🟠 6-7h atenção</span><span>🔴 &lt;6h crítico</span></div>
       <div style="height:1px;background:#EEF2F7;margin:12px 0;"></div>
       <div class="clinico-secao-titulo">🏔️ Foco diário — últimas 2 semanas</div>
       <div class="clinico-grafico">${grafFoco}</div>
       <div style="font-size:0.65rem;color:#90A4AE;margin-top:4px;">🟣 ≥60min adequado · 🔵 30-60min moderado</div>
     </div>
   </div>`:''}
-
-  <!-- Parecer clínico detalhado -->
   <div class="clinico-wrap">
     <div class="clinico-secao">
       <div class="clinico-secao-titulo">📝 Análise Clínica Detalhada</div>
-
-      <div style="margin-bottom:14px;">
-        <div style="font-size:0.78rem;font-weight:700;color:#1565C0;margin-bottom:6px;">😴 Sono e Recuperação Neurológica</div>
-        <div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerSono()}</div>
-      </div>
-
-      <div style="margin-bottom:14px;">
-        <div style="font-size:0.78rem;font-weight:700;color:#2E7D32;margin-bottom:6px;">🎯 Função Executiva e Planejamento</div>
-        <div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerMetas()}</div>
-      </div>
-
-      <div style="margin-bottom:14px;">
-        <div style="font-size:0.78rem;font-weight:700;color:#7C3AED;margin-bottom:6px;">🏔️ Atenção Sustentada e Foco</div>
-        <div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerFoco()}</div>
-      </div>
-
-      <div style="margin-bottom:14px;">
-        <div style="font-size:0.78rem;font-weight:700;color:#1565C0;margin-bottom:6px;">💊 Adesão ao Tratamento Farmacológico</div>
-        <div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerMedicacao()}</div>
-      </div>
-
-      ${avgCelular!==null?`<div style="margin-bottom:14px;">
-        <div style="font-size:0.78rem;font-weight:700;color:#F57F17;margin-bottom:6px;">📱 Regulação do Uso de Tecnologia</div>
-        <div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerTela()}</div>
-      </div>`:''}
-
-      ${reativarTotal>0?`<div style="margin-bottom:4px;">
-        <div style="font-size:0.78rem;font-weight:700;color:#E65100;margin-bottom:6px;">⚡ Uso do Protocolo de Reativação de Foco</div>
-        <div style="font-size:0.83rem;color:#37474F;line-height:1.7;">Protocolo ativado <strong>${reativarTotal}x</strong> em ${Object.keys(diasReativar).length} dias. ${reativarTotal<=5?'Uso esporádico, dentro do esperado.':reativarTotal<=15?'Frequência moderada de episódios de bloqueio cognitivo — padrão característico do TDAH.':'Frequência elevada de ativações — pode indicar período de maior desregulação atencional. Recomenda-se discussão na consulta.'}</div>
-      </div>`:''}
+      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#1565C0;margin-bottom:6px;">😴 Sono e Recuperação Neurológica</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerSono()}</div></div>
+      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#2E7D32;margin-bottom:6px;">🎯 Função Executiva e Planejamento</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerMetas()}</div></div>
+      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#7C3AED;margin-bottom:6px;">🏔️ Atenção Sustentada e Foco</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerFoco()}</div></div>
+      ${avgCelular!==null?`<div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#F57F17;margin-bottom:6px;">📱 Regulação do Uso de Tecnologia</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerTela()}</div></div>`:''}
+      ${reativarTotal>0?`<div style="margin-bottom:4px;"><div style="font-size:0.78rem;font-weight:700;color:#E65100;margin-bottom:6px;">⚡ Uso do Protocolo de Reativação de Foco</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">Protocolo ativado <strong>${reativarTotal}x</strong> em ${Object.keys(diasReativar).length} dias. ${reativarTotal<=5?'Uso esporádico.':reativarTotal<=15?'Frequência moderada de episódios de bloqueio cognitivo.':'Frequência elevada — pode indicar período de maior desregulação atencional.'}</div></div>`:''}
     </div>
   </div>
-
-  <!-- Score e conclusão -->
   <div class="clinico-wrap">
     <div class="clinico-secao">
       <div class="clinico-secao-titulo">⭐ Avaliação Geral do Período</div>
       <div style="display:flex;align-items:center;gap:16px;padding:8px 0;">
         <div style="width:64px;height:64px;border-radius:50%;background:${scoreCor};display:flex;align-items:center;justify-content:center;color:white;font-size:1.3rem;font-weight:900;flex-shrink:0;">${scoreGeral}</div>
-        <div>
-          <div style="font-size:0.9rem;font-weight:700;color:#1A237E;">${scoreLabel}</div>
-          <div style="font-size:0.78rem;color:#546E7A;margin-top:4px;line-height:1.5;">Score calculado a partir de sono, metas, foco, tela e medicação</div>
-        </div>
+        <div><div style="font-size:0.9rem;font-weight:700;color:#1A237E;">${scoreLabel}</div><div style="font-size:0.78rem;color:#546E7A;margin-top:4px;line-height:1.5;">Score baseado em sono, metas, foco e tempo de tela</div></div>
       </div>
     </div>
   </div>
-
-  <div class="clinico-aviso">⚠️ <strong>Importante:</strong> Este relatório é gerado automaticamente a partir de dados autodeclarados. Não substitui avaliação clínica profissional. Compartilhe com seu médico ou psicólogo como material de apoio à consulta.</div>
+  <div class="clinico-aviso">⚠️ <strong>Importante:</strong> Este relatório é gerado automaticamente a partir de dados autodeclarados. Não substitui avaliação clínica profissional.</div>
   `;
 }
 function renderCalendar(date){
@@ -1640,7 +1555,6 @@ function switchInfo(tab,btn){
   btn.classList.add('active');
   if(tab==='relatorios') gerarRelatorioMensal();
 }
-
 function switchRelSubtab(tab) {
   document.getElementById('relatorio-diario-inline').style.display = tab==='diario'?'block':'none';
   document.getElementById('relatorio-mensal-inline').style.display = tab==='mensal'?'block':'none';
@@ -1648,35 +1562,21 @@ function switchRelSubtab(tab) {
   document.getElementById('subtab-mensal').className = 'rel-subtab mensal'+(tab==='mensal'?' active':'');
   if(tab==='mensal') gerarRelatorioMensal();
 }
-
 function gerarRelatorioDiarioInline() {
-  // Reutiliza toda a lógica existente de abrirRelatorio mas coloca inline
   const now=new Date();
-  const conteudo=document.getElementById('relatorio-body');
-  // Gera o relatorio no modal mas captura o HTML
   abrirRelatorio();
-  // Copia pro inline depois de gerado
   setTimeout(()=>{
     const htmlGerado = document.getElementById('relatorio-body').innerHTML;
     const diaStr = now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
     document.getElementById('relatorio-diario-conteudo').innerHTML =
-      `<div style="margin-top:16px;">
-        <div style="font-size:0.72rem;color:#90A4AE;margin-bottom:12px;">📅 ${diaStr}</div>
-        ${htmlGerado}
-        <button onclick="document.getElementById('relatorio-diario-conteudo').innerHTML='';document.querySelector('.rel-subtabs').previousElementSibling&&document.getElementById('relatorio-diario-inline').querySelector('div').style.display='block'" style="width:100%;padding:12px;background:#EEF2FF;border:1px solid #C5CAE9;border-radius:12px;font-size:0.85rem;font-weight:700;color:#1A237E;cursor:pointer;margin-top:12px;">🔄 Atualizar</button>
-      </div>`;
+      `<div style="margin-top:16px;"><div style="font-size:0.72rem;color:#90A4AE;margin-bottom:12px;">📅 ${diaStr}</div>${htmlGerado}<button onclick="document.getElementById('relatorio-diario-conteudo').innerHTML=''" style="width:100%;padding:12px;background:#EEF2FF;border:1px solid #C5CAE9;border-radius:12px;font-size:0.85rem;font-weight:700;color:#1A237E;cursor:pointer;margin-top:12px;">🔄 Atualizar</button></div>`;
     document.getElementById('relatorio-modal').classList.remove('show');
   }, 50);
 }
 
-// ========== BACKUP & SINCRONIZAÇÃO ==========
+// ========== BACKUP ==========
 let _importData = null;
-
-function abrirBackup() {
-  atualizarStatsBackup();
-  document.getElementById('backup-modal').classList.add('show');
-  document.getElementById('backup-ping').classList.remove('show');
-}
+function abrirBackup() { atualizarStatsBackup(); document.getElementById('backup-modal').classList.add('show'); document.getElementById('backup-ping').classList.remove('show'); }
 function fecharBackupModal(e) { if(e.target.id==='backup-modal') document.getElementById('backup-modal').classList.remove('show'); }
 function atualizarStatsBackup() {
   const dias=Object.keys(state.dailyData).length;
@@ -1689,19 +1589,17 @@ function atualizarStatsBackup() {
   else{lbEl.className='backup-last-info none';lbEl.textContent='📁 Nenhum backup exportado ainda';}
   const rem=localStorage.getItem('tdah_backup_reminder')==='true';const tog=document.getElementById('backup-reminder-toggle');if(tog)tog.className='toggle-switch'+(rem?' on':'');
 }
-function gerarBackupJSON() {
-  return JSON.stringify({version:'1.0',app:'TDAH Care',exportDate:new Date().toISOString(),data:{dailyData:state.dailyData,metasHist:state.metasHist,metasFixas:state.metasFixas}},null,2);
-}
+function gerarBackupJSON() { return JSON.stringify({version:'1.0',app:'TDAH Care',exportDate:new Date().toISOString(),data:{dailyData:state.dailyData,metasHist:state.metasHist,metasFixas:state.metasFixas}},null,2); }
 function exportarJSON() {
   const prog=document.getElementById('export-progress'),fill=document.getElementById('export-progress-fill');
   prog.classList.add('show');let w=0;const iv=setInterval(()=>{w+=20;fill.style.width=w+'%';if(w>=100){clearInterval(iv);setTimeout(()=>{prog.classList.remove('show');fill.style.width='0%';},500);}},60);
   const json=gerarBackupJSON();const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');
   const date=new Date().toISOString().split('T')[0];a.href=url;a.download='tdah-care-backup-'+date+'.json';a.click();URL.revokeObjectURL(url);
-  localStorage.setItem('tdah_last_backup',new Date().toISOString());atualizarStatsBackup();showToast('✅ Backup exportado com sucesso!');
+  localStorage.setItem('tdah_last_backup',new Date().toISOString());atualizarStatsBackup();showToast('✅ Backup exportado!');
 }
 async function copiarBackupClipboard() {
   const json=gerarBackupJSON();
-  try{await navigator.clipboard.writeText(json);showToast('📋 Backup copiado para área de transferência!');}
+  try{await navigator.clipboard.writeText(json);showToast('📋 Backup copiado!');}
   catch(e){const ta=document.createElement('textarea');ta.value=json;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('📋 Backup copiado!');}
   localStorage.setItem('tdah_last_backup',new Date().toISOString());atualizarStatsBackup();
 }
@@ -1711,7 +1609,7 @@ async function compartilharBackup() {
   else exportarJSON();
 }
 function toggleBackupReminder() {
-  const tog=document.getElementById('backup-reminder-toggle');const atual=tog.classList.contains('on');tog.className='toggle-switch'+(atual?'':' on');localStorage.setItem('tdah_backup_reminder',!atual);showToast(!atual?'🔔 Lembrete de backup ativado!':'🔕 Lembrete desativado');
+  const tog=document.getElementById('backup-reminder-toggle');const atual=tog.classList.contains('on');tog.className='toggle-switch'+(atual?'':' on');localStorage.setItem('tdah_backup_reminder',!atual);showToast(!atual?'🔔 Lembrete ativado!':'🔕 Lembrete desativado');
 }
 function verificarLembreteBackup() {
   const rem=localStorage.getItem('tdah_backup_reminder')==='true';if(!rem)return;
@@ -1728,7 +1626,7 @@ function processarArquivo(file){
 }
 function importarDoPaste(){
   const txt=document.getElementById('import-paste-input').value.trim();if(!txt){showToast('⚠️ Cole o backup no campo acima');return;}
-  try{const d=JSON.parse(txt);validarEPrevisualizarBackup(d);}catch(e){showToast('❌ Texto inválido — verifique se é um backup correto');}
+  try{const d=JSON.parse(txt);validarEPrevisualizarBackup(d);}catch(e){showToast('❌ Texto inválido');}
 }
 function validarEPrevisualizarBackup(data){
   if(!data.app||data.app!=='TDAH Care'||!data.data){showToast('❌ Este arquivo não é um backup do TDAH Care');return;}
@@ -1747,8 +1645,6 @@ function confirmarImport(){
   try{if(d.dailyData)localStorage.setItem('tdah_daily',JSON.stringify(d.dailyData));if(d.metasHist)localStorage.setItem('tdah_mhist',JSON.stringify(d.metasHist));if(d.metasFixas)localStorage.setItem('tdah_fixas',JSON.stringify(d.metasFixas));document.getElementById('backup-modal').classList.remove('show');showToast('✅ Dados restaurados! Recarregando...');setTimeout(()=>location.reload(),1500);}
   catch(e){showToast('❌ Erro ao restaurar os dados');}
 }
-// ========== FIM BACKUP ==========
-
 
 // ========== POMODORO EDITÁVEL ==========
 function aplicarConfigPom() {
@@ -1759,16 +1655,13 @@ function aplicarConfigPom() {
   const pausaMin = Math.min(30, Math.max(1, p));
   document.getElementById('pom-foco-input').value = focoMin;
   document.getElementById('pom-pausa-input').value = pausaMin;
-  // Atualiza as constantes dinâmicas
   state.pomConfig = { foco: focoMin * 60, pausa: pausaMin * 60 };
   state.pom.seg = state.pom.fase === 'foco' ? state.pomConfig.foco : state.pomConfig.pausa;
   document.getElementById('caverna-subtitle').textContent = `Pomodoro ${focoMin}min foco / ${pausaMin}min pausa`;
   atualizarUIPom();
   showToast(`✅ ${focoMin}min foco / ${pausaMin}min pausa aplicado!`);
-  // Salva config
   try { localStorage.setItem('tdah_pom_config', JSON.stringify({foco: focoMin, pausa: pausaMin})); } catch(e) {}
 }
-
 function carregarConfigPom() {
   try {
     const c = localStorage.getItem('tdah_pom_config');
@@ -1783,36 +1676,26 @@ function carregarConfigPom() {
     }
   } catch(e) { state.pomConfig = { foco: POM_FOCO, pausa: POM_PAUSA }; }
 }
-
-// Override das funções que usam POM_FOCO/POM_PAUSA para usar pomConfig
 function getPomFoco() { return state.pomConfig ? state.pomConfig.foco : POM_FOCO; }
 function getPomPausa() { return state.pomConfig ? state.pomConfig.pausa : POM_PAUSA; }
 
 // ========== COMPARTILHAR PROGRESSO ==========
-
 function verificarLembreteSexta() {
-  const hoje = new Date();
-  const diaSemana = hoje.getDay(); // 5 = sexta
+  const hj = new Date();
   const banner = document.getElementById('lembrete-sexta');
-  if (banner) banner.style.display = diaSemana === 5 ? 'block' : 'none';
+  if (banner) banner.style.display = hj.getDay() === 5 ? 'block' : 'none';
 }
-
-function fecharCompartilharModal(e) {
-  if (e.target.id === 'compartilhar-modal') document.getElementById('compartilhar-modal').classList.remove('show');
-}
-
+function fecharCompartilharModal(e) { if (e.target.id === 'compartilhar-modal') document.getElementById('compartilhar-modal').classList.remove('show'); }
 function switchCompTab(tab, btn) {
   document.querySelectorAll('.comp-tab-content').forEach(c => c.style.display = 'none');
   document.querySelectorAll('.comp-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('comp-' + tab).style.display = 'block';
   btn.classList.add('active');
 }
-
 function calcularDadosSemana() {
   const hoje = new Date();
   let sonoTotal=0,sonoN=0,metasConcl=0,metasTotal=0,focoTotal=0,celTotal=0,celN=0,remedioN=0,diasDados=0,reativarN=0;
   const dataInicio = new Date(hoje); dataInicio.setDate(hoje.getDate()-6);
-
   for (let i=0; i<7; i++) {
     const d = new Date(hoje); d.setDate(hoje.getDate()-i);
     const iso = hojeISO(d); const dd = state.dailyData[iso];
@@ -1825,7 +1708,6 @@ function calcularDadosSemana() {
     if (dd.remedio) remedioN++;
     if (dd.reativarFoco) reativarN+=dd.reativarFoco.length;
   }
-
   const fmtData = d => d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
   return {
     diasDados, sonoMedia: sonoN>0?(sonoTotal/sonoN).toFixed(1):null,
@@ -1838,16 +1720,15 @@ function calcularDadosSemana() {
     scoreGeral: calcularScoreSemana({sonoMedia:sonoN>0?(sonoTotal/sonoN):null, metasPct:metasTotal>0?Math.round((metasConcl/metasTotal)*100):null, focoTotal, celMedia:celN>0?Math.round(celTotal/celN):null})
   };
 }
-
+// Score semanal também sem medicação (#3)
 function calcularScoreSemana(d) {
   let pts=0, max=0;
-  if (d.sonoMedia!==null) { max+=25; pts+=d.sonoMedia>=7?25:d.sonoMedia>=6?15:5; }
-  if (d.metasPct!==null) { max+=30; pts+=Math.round((d.metasPct/100)*30); }
+  if (d.sonoMedia!==null) { max+=30; pts+=d.sonoMedia>=7?30:d.sonoMedia>=6?18:5; }
+  if (d.metasPct!==null) { max+=35; pts+=Math.round((d.metasPct/100)*35); }
   if (d.focoTotal>0) { max+=25; pts+=Math.min(25,Math.round((d.focoTotal/280)*25)); }
-  if (d.celMedia!==null) { max+=20; pts+=d.celMedia<=120?20:d.celMedia<=240?10:0; }
+  if (d.celMedia!==null) { max+=10; pts+=d.celMedia<=120?10:d.celMedia<=240?5:0; }
   return max>0?Math.round((pts/max)*100):0;
 }
-
 function abrirCompartilhar() {
   const dados = calcularDadosSemana();
   preencherWrappedCard(dados);
@@ -1856,56 +1737,28 @@ function abrirCompartilhar() {
   document.getElementById('compartilhar-modal').classList.add('show');
   switchCompTab('visual', document.querySelector('.comp-tab'));
 }
-
 function preencherWrappedCard(d) {
   const score = d.scoreGeral;
   const emoji = score>=80?'🏆':score>=60?'⭐':score>=40?'💪':'🌱';
   document.getElementById('wc-periodo').textContent = d.periodo;
   document.getElementById('wc-score').textContent = emoji+' '+score;
-
-  if (d.sonoMedia) {
-    document.getElementById('wc-sono').textContent = d.sonoMedia+'h';
-    document.getElementById('wc-sono-bar').style.width = Math.min(100,(d.sonoMedia/9)*100)+'%';
-  } else { document.getElementById('wc-sono').textContent = '—'; }
-
-  if (d.metasPct!==null) {
-    document.getElementById('wc-metas').textContent = d.metasPct+'%';
-    document.getElementById('wc-metas-bar').style.width = d.metasPct+'%';
-  } else { document.getElementById('wc-metas').textContent = '—'; }
-
-  if (d.focoTotal>0) {
-    document.getElementById('wc-foco').textContent = d.focoH>0?d.focoH+'h'+d.focoM+'m':d.focoTotal+'min';
-    document.getElementById('wc-foco-bar').style.width = Math.min(100,(d.focoTotal/300)*100)+'%';
-  } else { document.getElementById('wc-foco').textContent = '—'; }
-
-  if (d.celMedia!==null) {
-    const ch=Math.floor(d.celMedia/60),cm=d.celMedia%60;
-    document.getElementById('wc-tela').textContent = ch+'h'+(cm>0?cm+'m':'');
-    document.getElementById('wc-tela-bar').style.width = Math.max(0,100-Math.min(100,(d.celMedia/360)*100))+'%';
-  } else { document.getElementById('wc-tela').textContent = '—'; }
-
-  // Destaque
+  if (d.sonoMedia) { document.getElementById('wc-sono').textContent = d.sonoMedia+'h'; document.getElementById('wc-sono-bar').style.width = Math.min(100,(d.sonoMedia/9)*100)+'%'; } else { document.getElementById('wc-sono').textContent = '—'; }
+  if (d.metasPct!==null) { document.getElementById('wc-metas').textContent = d.metasPct+'%'; document.getElementById('wc-metas-bar').style.width = d.metasPct+'%'; } else { document.getElementById('wc-metas').textContent = '—'; }
+  if (d.focoTotal>0) { document.getElementById('wc-foco').textContent = d.focoH>0?d.focoH+'h'+d.focoM+'m':d.focoTotal+'min'; document.getElementById('wc-foco-bar').style.width = Math.min(100,(d.focoTotal/300)*100)+'%'; } else { document.getElementById('wc-foco').textContent = '—'; }
+  if (d.celMedia!==null) { const ch=Math.floor(d.celMedia/60),cm=d.celMedia%60; document.getElementById('wc-tela').textContent = ch+'h'+(cm>0?cm+'m':''); document.getElementById('wc-tela-bar').style.width = Math.max(0,100-Math.min(100,(d.celMedia/360)*100))+'%'; } else { document.getElementById('wc-tela').textContent = '—'; }
   let destaque = '';
   if (d.sonoMedia>=7.5) destaque = '😴 Sono excelente — média de '+d.sonoMedia+'h!';
   else if (d.metasPct>=80) destaque = '✅ '+d.metasPct+'% das metas concluídas!';
   else if (d.focoTotal>=120) destaque = '🏔️ '+d.focoH+'h'+d.focoM+'min de foco esta semana!';
-  else if (d.remedioN>=5) destaque = '💊 Medicação tomada '+d.remedioN+' de 7 dias!';
+  else if (d.remedioN>=5) destaque = '💊 Medicação registrada '+d.remedioN+' de 7 dias!';
   else if (d.reativarN>0) destaque = '⚡ Reativei o foco '+d.reativarN+'x e segui em frente!';
   else destaque = '📈 '+d.diasDados+' dias de dados registrados esta semana!';
   document.getElementById('wc-destaque').textContent = destaque;
 }
-
 function preencherTexto(d) {
   const score = d.scoreGeral;
   const emoji = score>=80?'🏆':score>=60?'⭐':score>=40?'💪':'🌱';
-  const hoje = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-  let txt = `📊 Progresso Semanal — TDAH Care
-${d.periodo}
-━━━━━━━━━━━━━━━━━━━━
-
-${emoji} Score da semana: ${score}/100
-
-`;
+  let txt = `📊 Progresso Semanal — TDAH Care\n${d.periodo}\n━━━━━━━━━━━━━━━━━━━━\n\n${emoji} Score da semana: ${score}/100\n\n`;
   if (d.sonoMedia) txt += `😴 Sono médio: ${d.sonoMedia}h ${d.sonoMedia>=7?'✅':'⚠️'}\n`;
   if (d.metasPct!==null) txt += `✅ Metas: ${d.metasConcl}/${d.metasTotal} (${d.metasPct}%) ${d.metasPct>=70?'✅':'⚠️'}\n`;
   if (d.focoTotal>0) txt += `🏔️ Foco total: ${d.focoH>0?d.focoH+'h ':''  }${d.focoM>0?d.focoM+'min':''}\n`;
@@ -1915,21 +1768,11 @@ ${emoji} Score da semana: ${score}/100
   txt += `\n━━━━━━━━━━━━━━━━━━━━\n📱 Gerado pelo TDAH Care`;
   document.getElementById('texto-progresso').textContent = txt;
 }
-
 function preencherPDFInfo(d) {
   const el = document.getElementById('pdf-preview-info');
   const score = d.scoreGeral;
-  el.innerHTML = `
-    <div style="font-weight:700;margin-bottom:8px;">📋 O PDF incluirá:</div>
-    <div>• Score geral da semana: <strong>${score}/100</strong></div>
-    ${d.sonoMedia?`<div>• Média de sono: <strong>${d.sonoMedia}h</strong></div>`:''}
-    ${d.metasPct!==null?`<div>• Taxa de metas: <strong>${d.metasPct}%</strong></div>`:''}
-    ${d.focoTotal>0?`<div>• Tempo de foco: <strong>${d.focoH>0?d.focoH+'h':''} ${d.focoM>0?d.focoM+'min':''}</strong></div>`:''}
-    ${d.reativarN>0?`<div>• Ativações de foco: <strong>${d.reativarN}x</strong></div>`:''}
-    <div style="margin-top:8px;font-size:0.75rem;color:#546E7A;">Período: ${d.periodo}</div>
-  `;
+  el.innerHTML = `<div style="font-weight:700;margin-bottom:8px;">📋 O PDF incluirá:</div><div>• Score geral da semana: <strong>${score}/100</strong></div>${d.sonoMedia?`<div>• Média de sono: <strong>${d.sonoMedia}h</strong></div>`:''  }${d.metasPct!==null?`<div>• Taxa de metas: <strong>${d.metasPct}%</strong></div>`:''  }${d.focoTotal>0?`<div>• Tempo de foco: <strong>${d.focoH>0?d.focoH+'h':''} ${d.focoM>0?d.focoM+'min':''}</strong></div>`:''  }${d.reativarN>0?`<div>• Ativações de foco: <strong>${d.reativarN}x</strong></div>`:''  }<div style="margin-top:8px;font-size:0.75rem;color:#546E7A;">Período: ${d.periodo}</div>`;
 }
-
 async function compartilharWhatsApp() {
   const dados = calcularDadosSemana();
   const score = dados.scoreGeral;
@@ -1941,74 +1784,34 @@ async function compartilharWhatsApp() {
   if (dados.celMedia!==null) { const ch=Math.floor(dados.celMedia/60),cm=dados.celMedia%60; txt += `📱 Tela: *${ch}h${cm>0?cm+'min':''}/dia*\n`; }
   if (dados.reativarN>0) txt += `⚡ Reativei o foco: *${dados.reativarN}x*\n`;
   txt += `\n_Gerado pelo TDAH Care_ 📱`;
-  const url = 'https://wa.me/?text='+encodeURIComponent(txt);
-  window.open(url, '_blank');
+  window.open('https://wa.me/?text='+encodeURIComponent(txt), '_blank');
 }
-
-async function enviarTextoWhatsApp() {
-  const txt = document.getElementById('texto-progresso').textContent;
-  const url = 'https://wa.me/?text='+encodeURIComponent(txt);
-  window.open(url, '_blank');
-}
-
+async function enviarTextoWhatsApp() { window.open('https://wa.me/?text='+encodeURIComponent(document.getElementById('texto-progresso').textContent), '_blank'); }
 async function copiarTexto() {
   const txt = document.getElementById('texto-progresso').textContent;
   try { await navigator.clipboard.writeText(txt); showToast('📋 Texto copiado!'); }
   catch(e) { const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('📋 Copiado!'); }
 }
-
-function tirarPrintCard() {
-  showToast('📸 Tire um print desta tela para salvar o cartão!');
-}
-
+function tirarPrintCard() { showToast('📸 Tire um print desta tela para salvar o cartão!'); }
 function gerarPDFSemanal() {
   const dados = calcularDadosSemana();
   const score = dados.scoreGeral;
   const emoji = score>=80?'🏆':score>=60?'⭐':score>=40?'💪':'🌱';
   const hoje = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-  const style_open = '<st'+'yle>';
-  const style_close = '</st'+'yle>';
-  const head_close = '</he'+'ad>';
-  const body_open = '<bo'+'dy>';
-  const body_close = '</bo'+'dy>';
-  const html_close = '</ht'+'ml>';
-
   const itens = [
     dados.sonoMedia ? `<div class="item"><div class="val">${dados.sonoMedia}h</div><div class="lbl">😴 Média de sono</div></div>` : '',
     dados.metasPct!==null ? `<div class="item"><div class="val">${dados.metasPct}%</div><div class="lbl">✅ Metas (${dados.metasConcl}/${dados.metasTotal})</div></div>` : '',
     dados.focoTotal>0 ? `<div class="item"><div class="val">${dados.focoH>0?dados.focoH+'h ':'' }${dados.focoM>0?dados.focoM+'min':''}</div><div class="lbl">🏔️ Tempo de foco</div></div>` : '',
     dados.celMedia!==null ? `<div class="item"><div class="val">${Math.floor(dados.celMedia/60)}h${dados.celMedia%60>0?dados.celMedia%60+'min':''}</div><div class="lbl">📱 Tela/dia</div></div>` : '',
-    dados.remedioN>0 ? `<div class="item"><div class="val">${dados.remedioN}/7</div><div class="lbl">💊 Medicação</div></div>` : '',
+    dados.remedioN>0 ? `<div class="item"><div class="val">${dados.remedioN}/7</div><div class="lbl">💊 Medicação registrada</div></div>` : '',
     dados.reativarN>0 ? `<div class="item"><div class="val">${dados.reativarN}x</div><div class="lbl">⚡ Reativações</div></div>` : '',
   ].join('');
-
   const obs = [
-    dados.sonoMedia>=7 ? '✅ Sono dentro dos parâmetros recomendados (7-9h).' : dados.sonoMedia ? '⚠️ Sono abaixo do ideal — pode impactar foco e resposta ao tratamento.' : '',
-    dados.metasPct>=70 ? ' ✅ Taxa de conclusão de metas satisfatória.' : dados.metasPct!==null ? ' ⚠️ Taxa de conclusão abaixo de 70% — considerar estratégias de planejamento.' : '',
-    dados.reativarN>0 ? ` ⚡ Protocolo de reativação necessário ${dados.reativarN}x — sinal de oscilações de foco.` : '',
+    dados.sonoMedia>=7 ? '✅ Sono dentro dos parâmetros recomendados (7-9h).' : dados.sonoMedia ? '⚠️ Sono abaixo do ideal.' : '',
+    dados.metasPct>=70 ? ' ✅ Taxa de conclusão de metas satisfatória.' : dados.metasPct!==null ? ' ⚠️ Taxa de conclusão abaixo de 70%.' : '',
+    dados.reativarN>0 ? ` ⚡ Protocolo de reativação necessário ${dados.reativarN}x.` : '',
   ].join('');
-
-  const conteudo = '<html><head><meta charset="UTF-8">'
-    + style_open
-    + 'body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px;color:#1A237E;}'
-    + '.header{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:white;padding:24px;border-radius:12px;margin-bottom:24px;}'
-    + '.header h1{font-size:1.3rem;margin:0 0 4px;} .header p{font-size:0.85rem;opacity:0.9;margin:0;}'
-    + '.score-box{text-align:center;background:#F1F8E9;border:2px solid #A5D6A7;border-radius:12px;padding:20px;margin-bottom:20px;}'
-    + '.score-num{font-size:3rem;font-weight:900;color:#1B5E20;} .score-label{font-size:0.85rem;color:#388E3C;}'
-    + '.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}'
-    + '.item{background:#F8FAFF;border:1px solid #E3EAF2;border-radius:10px;padding:14px;}'
-    + '.item .val{font-size:1.3rem;font-weight:800;color:#1565C0;} .item .lbl{font-size:0.75rem;color:#546E7A;margin-top:2px;}'
-    + '.parecer{background:#F0F7FF;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:14px;font-size:0.85rem;color:#37474F;line-height:1.6;}'
-    + '.footer{text-align:center;font-size:0.72rem;color:#90A4AE;margin-top:24px;padding-top:16px;border-top:1px solid #EEF2F7;}'
-    + style_close + head_close + body_open
-    + '<div class="header"><h1>📊 Relatório Semanal — TDAH Care</h1><p>Período: '+dados.periodo+' · Gerado em: '+hoje+'</p></div>'
-    + '<div class="score-box"><div class="score-num">'+emoji+' '+score+'</div><div class="score-label">Score geral da semana / 100</div></div>'
-    + '<div class="grid">'+itens+'</div>'
-    + '<div class="parecer"><strong>📝 Observações automáticas:</strong><br><br>'+obs+'<br><br><em style="font-size:0.78rem;color:#90A4AE;">⚠️ Relatório automático — não substitui avaliação clínica profissional.</em></div>'
-    + '<div class="footer">TDAH Care · Relatório gerado automaticamente · '+hoje+'</div>'
-    + body_close + html_close;
-
+  const conteudo = `<html><head><meta charset="UTF-8"><style>body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px;color:#1A237E;}.header{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:white;padding:24px;border-radius:12px;margin-bottom:24px;}.header h1{font-size:1.3rem;margin:0 0 4px;}.header p{font-size:0.85rem;opacity:0.9;margin:0;}.score-box{text-align:center;background:#F1F8E9;border:2px solid #A5D6A7;border-radius:12px;padding:20px;margin-bottom:20px;}.score-num{font-size:3rem;font-weight:900;color:#1B5E20;}.score-label{font-size:0.85rem;color:#388E3C;}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}.item{background:#F8FAFF;border:1px solid #E3EAF2;border-radius:10px;padding:14px;}.item .val{font-size:1.3rem;font-weight:800;color:#1565C0;}.item .lbl{font-size:0.75rem;color:#546E7A;margin-top:2px;}.parecer{background:#F0F7FF;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:14px;font-size:0.85rem;color:#37474F;line-height:1.6;}.footer{text-align:center;font-size:0.72rem;color:#90A4AE;margin-top:24px;padding-top:16px;border-top:1px solid #EEF2F7;}</style></head><body><div class="header"><h1>📊 Relatório Semanal — TDAH Care</h1><p>Período: ${dados.periodo} · Gerado em: ${hoje}</p></div><div class="score-box"><div class="score-num">${emoji} ${score}</div><div class="score-label">Score geral da semana / 100</div></div><div class="grid">${itens}</div><div class="parecer"><strong>📝 Observações automáticas:</strong><br><br>${obs}<br><br><em style="font-size:0.78rem;color:#90A4AE;">⚠️ Relatório automático — não substitui avaliação clínica profissional.</em></div><div class="footer">TDAH Care · produced by Jp · ${hoje}</div></body></html>`;
   const blob = new Blob([conteudo], {type:'text/html'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -2017,31 +1820,26 @@ function gerarPDFSemanal() {
   a.click(); URL.revokeObjectURL(url);
   showToast('📄 Relatório baixado! Abra no navegador e imprima como PDF.');
 }
+function imprimirRelatorio() { gerarPDFSemanal(); }
 
-function imprimirRelatorio() {
-  gerarPDFSemanal();
-}
-
-// ========== FIM COMPARTILHAR ==========
-
+// ========== PROTOCOLOS REATIVAR FOCO ==========
+// MUDANÇA #1: "Tela em Branco" (nível 3) sem o passo de gelo nas mãos
 const PROTOCOLOS = {
-  1: [ // Travado — 5 min
+  1: [
     { icon:'💧', titulo:'Beba água agora', desc:'Desidratação piora a concentração. Levante, pegue um copo d\'água e beba devagar.', tipo:'timer', duracao:30, label:'segundos' },
     { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz contando 4, segure 7, expire pela boca contando 8. Vamos fazer 1 ciclo.', tipo:'breath', ciclos:1 },
     { icon:'📵', titulo:'Feche tudo agora', desc:'Feche todas as abas, apps e notificações. Coloque o celular virado para baixo por 10 minutos.', tipo:'timer', duracao:20, label:'segundos' },
     { icon:'🏔️', titulo:'Hora de focar', desc:'Seu cérebro está pronto. Comece com uma sessão curta de foco — você consegue!', tipo:'final' },
   ],
-  2: [ // Cabeça Pesada — 15 min
+  2: [
     { icon:'💧', titulo:'Beba água agora', desc:'Desidratação piora muito a concentração. Beba um copo cheio agora.', tipo:'timer', duracao:30, label:'segundos' },
     { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz contando 4, segure 7, expire pela boca contando 8. Vamos fazer 2 ciclos.', tipo:'breath', ciclos:2 },
-    { icon:'🧊', titulo:'Gelo nas mãos', desc:'Segure gelo ou ponha os pulsos em água fria por 30 segundos. O choque térmico ativa o sistema nervoso.', tipo:'timer', duracao:30, label:'segundos' },
     { icon:'🌑', titulo:'Ambiente escuro', desc:'Apague as luzes ou feche as persianas. Fique em silêncio total por 5 minutos. Sem celular.', tipo:'timer', duracao:300, label:'minutos' },
     { icon:'🏔️', titulo:'Hora de focar', desc:'Você fez o necessário. Comece com uma tarefa pequena agora.', tipo:'final' },
   ],
-  3: [ // Tela em Branco — 30 min
+  3: [
     { icon:'💧', titulo:'Beba água agora', desc:'Primeiro: levante e beba água. Não pule isso — é o reset mais simples que existe.', tipo:'timer', duracao:30, label:'segundos' },
     { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz contando 4, segure 7, expire pela boca contando 8. Vamos fazer 3 ciclos completos.', tipo:'breath', ciclos:3 },
-    { icon:'🧊', titulo:'Gelo nas mãos', desc:'Segure gelo por 1 minuto inteiro. O desconforto físico interrompe o loop mental e ativa a dopamina.', tipo:'timer', duracao:60, label:'segundos' },
     { icon:'🌑', titulo:'Ambiente escuro e silencioso', desc:'Apague tudo. Dobre sobre você mesmo ou deite. 10 minutos sem nenhum estímulo. Isso reseta o sistema.', tipo:'timer', duracao:600, label:'minutos' },
     { icon:'🚿', titulo:'Banho frio (se possível)', desc:'Se puder, tome 2 minutos de água fria agora. É o protocolo mais eficaz para reset dopaminérgico.', tipo:'timer', duracao:120, label:'segundos' },
     { icon:'👁️', titulo:'Técnica 5-4-3-2-1', desc:'Vamos engajar seus sentidos para ancorar no presente.', tipo:'sentidos' },
@@ -2065,7 +1863,6 @@ let _reativarState = {
 };
 
 function abrirReativar() {
-  // Reset estado
   _reativarState = { nivel:null, passos:[], passoAtual:0, timerSeg:0, timerTotal:0, timerInterval:null, breathCiclo:0, breathTotal:0, breathFase:null, breathInterval:null, sentidoAtual:0 };
   document.getElementById('reativar-nivel-select').style.display = 'block';
   document.getElementById('protocolo-wrap').classList.remove('show');
@@ -2073,69 +1870,52 @@ function abrirReativar() {
   document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('reativar-modal').classList.add('show');
 }
-
-function fecharReativarModal(e) {
-  if (e.target.id === 'reativar-modal') pararTimersReativar();
-}
-
+function fecharReativarModal(e) { if (e.target.id === 'reativar-modal') pararTimersReativar(); }
 function pararTimersReativar() {
   if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
-  if (_reativarState.breathInterval) clearInterval(_reativarState.breathInterval);
+  if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
   document.getElementById('reativar-modal').classList.remove('show');
 }
-
 function selecionarNivel(n, el) {
   document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   _reativarState.nivel = n;
   _reativarState.passos = PROTOCOLOS[n];
   _reativarState.passoAtual = 0;
-
-  // Registra uso no estado diário
   if (!state.dailyData[hojeISO()]) state.dailyData[hojeISO()] = {};
   if (!state.dailyData[hojeISO()].reativarFoco) state.dailyData[hojeISO()].reativarFoco = [];
   state.dailyData[hojeISO()].reativarFoco.push({ ts: new Date().toISOString(), nivel: n });
   salvar();
-
   setTimeout(() => {
     document.getElementById('reativar-nivel-select').style.display = 'none';
     document.getElementById('protocolo-wrap').classList.add('show');
     renderPasso();
   }, 300);
 }
-
 function renderPasso() {
   const passos = _reativarState.passos;
   const idx = _reativarState.passoAtual;
   const passo = passos[idx];
   if (!passo) return;
-
   if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
   if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
   _reativarState.timerRodando = false;
-
   const dots = passos.map((_, i) => `<div class="passo-dot ${i<idx?'done':i===idx?'atual':''}"></div>`).join('');
   document.getElementById('passo-progresso').innerHTML = dots;
-
   document.getElementById('passo-icon').textContent = passo.icon;
   document.getElementById('passo-titulo').textContent = passo.titulo;
   document.getElementById('passo-desc').textContent = passo.desc;
-
   document.getElementById('passo-timer-wrap').style.display = 'none';
   document.getElementById('breath-container').style.display = 'none';
   document.getElementById('sentidos-container').style.display = 'none';
-
   const playBtn = document.getElementById('passo-play-btn');
   const nextBtn = document.getElementById('passo-next-btn');
-
-  // Reset botões
   playBtn.style.display = 'none';
   playBtn.className = 'passo-btn passo-btn-play';
   playBtn.textContent = '▶ Iniciar';
   nextBtn.style.display = 'flex';
   nextBtn.textContent = 'Feito ✓';
   nextBtn.disabled = false;
-
   if (passo.tipo === 'timer') {
     document.getElementById('passo-timer-wrap').style.display = 'flex';
     _reativarState.timerSeg = passo.duracao;
@@ -2144,7 +1924,6 @@ function renderPasso() {
     atualizarDisplayTimer();
     playBtn.style.display = 'flex';
     nextBtn.style.display = 'none';
-
   } else if (passo.tipo === 'breath') {
     document.getElementById('breath-container').style.display = 'block';
     document.getElementById('breath-circle').className = 'breath-circle';
@@ -2153,40 +1932,27 @@ function renderPasso() {
     _reativarState.breathCicloTotal = passo.ciclos;
     playBtn.style.display = 'flex';
     nextBtn.style.display = 'none';
-
   } else if (passo.tipo === 'sentidos') {
     document.getElementById('sentidos-container').style.display = 'block';
     _reativarState.sentidoAtual = 0;
     renderSentido();
-
   } else if (passo.tipo === 'final') {
     nextBtn.textContent = 'Concluir protocolo 🎉';
   }
 }
-
 function toggleTimerPasso() {
   const passo = _reativarState.passos[_reativarState.passoAtual];
   const playBtn = document.getElementById('passo-play-btn');
-
   if (!_reativarState.timerRodando) {
-    // Inicia ou retoma
     _reativarState.timerRodando = true;
     playBtn.className = 'passo-btn passo-btn-play tocando';
     playBtn.textContent = '⏸ Pausar';
-
-    if (passo.tipo === 'timer') {
-      rodarTimerPasso();
-    } else if (passo.tipo === 'breath') {
-      if (!_reativarState.breathIniciado) {
-        _reativarState.breathIniciado = true;
-        _reativarState.breathCiclo = 0;
-        executarFaseBreath('prepare', _reativarState.breathCicloTotal);
-      } else {
-        executarFaseBreath(_reativarState.breathFase, _reativarState.breathCicloTotal);
-      }
+    if (passo.tipo === 'timer') { rodarTimerPasso(); }
+    else if (passo.tipo === 'breath') {
+      if (!_reativarState.breathIniciado) { _reativarState.breathIniciado = true; _reativarState.breathCiclo = 0; executarFaseBreath('prepare', _reativarState.breathCicloTotal); }
+      else { executarFaseBreath(_reativarState.breathFase, _reativarState.breathCicloTotal); }
     }
   } else {
-    // Pausa
     _reativarState.timerRodando = false;
     playBtn.className = 'passo-btn passo-btn-play';
     playBtn.textContent = '▶ Continuar';
@@ -2194,7 +1960,6 @@ function toggleTimerPasso() {
     if (_reativarState.breathInterval) { clearTimeout(_reativarState.breathInterval); _reativarState.breathInterval = null; }
   }
 }
-
 function rodarTimerPasso() {
   _reativarState.timerInterval = setInterval(() => {
     if (!_reativarState.timerRodando) { clearInterval(_reativarState.timerInterval); return; }
@@ -2204,7 +1969,6 @@ function rodarTimerPasso() {
       clearInterval(_reativarState.timerInterval);
       _reativarState.timerRodando = false;
       playBeep();
-      // Timer concluído — mostra botão Feito
       document.getElementById('passo-play-btn').style.display = 'none';
       const nextBtn = document.getElementById('passo-next-btn');
       nextBtn.style.display = 'flex';
@@ -2213,7 +1977,6 @@ function rodarTimerPasso() {
     }
   }, 1000);
 }
-
 function atualizarDisplayTimer() {
   const seg = _reativarState.timerSeg;
   const total = _reativarState.timerTotal;
@@ -2229,71 +1992,45 @@ function atualizarDisplayTimer() {
     document.getElementById('passo-time-label').textContent = 'segundos';
   }
 }
-
-function iniciarTimerPasso(duracao, label) {
-  // Mantido por compatibilidade — agora o fluxo usa toggleTimerPasso/rodarTimerPasso
-  _reativarState.timerSeg = duracao;
-  _reativarState.timerTotal = duracao;
-  _reativarState.timerLabel = label;
-  atualizarDisplayTimer();
-}
-
-function iniciarRespiracao(totalCiclos) {
-  _reativarState.breathCiclo = 0;
-  _reativarState.breathTotal = totalCiclos;
-  _reativarState.breathIniciado = false;
-  executarFaseBreath('prepare', totalCiclos);
-}
-
 function executarFaseBreath(fase, totalCiclos) {
-  if (!_reativarState.timerRodando) return; // pausado — não avança
+  if (!_reativarState.timerRodando) return;
   const circle = document.getElementById('breath-circle');
   const instr = document.getElementById('breath-instruction');
   _reativarState.breathFase = fase;
-
   if (fase === 'prepare') {
-    circle.className = 'breath-circle';
-    circle.textContent = 'Prepare-se';
+    circle.className = 'breath-circle'; circle.textContent = 'Prepare-se';
     instr.textContent = `Ciclo 1 de ${totalCiclos} — Inspire pelo nariz`;
     _reativarState.breathInterval = setTimeout(() => executarFaseBreath('inhale', totalCiclos), 1500);
   } else if (fase === 'inhale') {
-    circle.className = 'breath-circle inhale';
-    circle.textContent = 'Inspire... 4s';
+    circle.className = 'breath-circle inhale'; circle.textContent = 'Inspire... 4s';
     instr.textContent = '🌬️ Inspire lentamente pelo nariz';
     _reativarState.breathInterval = setTimeout(() => executarFaseBreath('hold', totalCiclos), 4000);
   } else if (fase === 'hold') {
-    circle.className = 'breath-circle hold';
-    circle.textContent = 'Segure... 7s';
+    circle.className = 'breath-circle hold'; circle.textContent = 'Segure... 7s';
     instr.textContent = '⏸ Segure o ar';
     _reativarState.breathInterval = setTimeout(() => executarFaseBreath('exhale', totalCiclos), 7000);
   } else if (fase === 'exhale') {
-    circle.className = 'breath-circle exhale';
-    circle.textContent = 'Expire... 8s';
+    circle.className = 'breath-circle exhale'; circle.textContent = 'Expire... 8s';
     instr.textContent = '💨 Expire lentamente pela boca';
     _reativarState.breathInterval = setTimeout(() => {
       _reativarState.breathCiclo++;
       if (_reativarState.breathCiclo < totalCiclos) {
-        circle.className = 'breath-circle';
-        circle.textContent = `Ciclo ${_reativarState.breathCiclo+1}`;
+        circle.className = 'breath-circle'; circle.textContent = `Ciclo ${_reativarState.breathCiclo+1}`;
         instr.textContent = `Ciclo ${_reativarState.breathCiclo+1} de ${totalCiclos}`;
         _reativarState.breathFase = 'inhale';
         _reativarState.breathInterval = setTimeout(() => executarFaseBreath('inhale', totalCiclos), 1000);
       } else {
-        circle.className = 'breath-circle';
-        circle.textContent = '✓ Concluído';
+        circle.className = 'breath-circle'; circle.textContent = '✓ Concluído';
         instr.textContent = '✅ Respiração concluída!';
         _reativarState.timerRodando = false;
         document.getElementById('passo-play-btn').style.display = 'none';
         const nextBtn = document.getElementById('passo-next-btn');
-        nextBtn.style.display = 'flex';
-        nextBtn.textContent = 'Feito ✓';
-        nextBtn.disabled = false;
+        nextBtn.style.display = 'flex'; nextBtn.textContent = 'Feito ✓'; nextBtn.disabled = false;
         playBeep();
       }
     }, 8000);
   }
 }
-
 function renderSentido() {
   const s = SENTIDOS[_reativarState.sentidoAtual];
   document.getElementById('sentido-atual-label').textContent = s.label;
@@ -2301,64 +2038,38 @@ function renderSentido() {
   const restantes = SENTIDOS.length - _reativarState.sentidoAtual;
   document.getElementById('passo-next-btn').textContent = restantes > 1 ? `Próximo sentido (${restantes-1} restante${restantes-1>1?'s':''})` : 'Concluir ✓';
 }
-
 function proximoPasso() {
   const passo = _reativarState.passos[_reativarState.passoAtual];
-
-  // Se é passo de sentidos, avança sentido por sentido
   if (passo && passo.tipo === 'sentidos') {
-    if (_reativarState.sentidoAtual < SENTIDOS.length - 1) {
-      _reativarState.sentidoAtual++;
-      renderSentido();
-      return;
-    }
+    if (_reativarState.sentidoAtual < SENTIDOS.length - 1) { _reativarState.sentidoAtual++; renderSentido(); return; }
   }
-
-  // Se é o passo final
-  if (passo && passo.tipo === 'final') {
-    finalizarProtocolo();
-    return;
-  }
-
+  if (passo && passo.tipo === 'final') { finalizarProtocolo(); return; }
   if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
   if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
-  _reativarState.timerRodando = false;
-  _reativarState.breathIniciado = false;
+  _reativarState.timerRodando = false; _reativarState.breathIniciado = false;
   _reativarState.passoAtual++;
-  if (_reativarState.passoAtual >= _reativarState.passos.length) {
-    mostrarFimProtocolo();
-  } else {
-    renderPasso();
-  }
+  if (_reativarState.passoAtual >= _reativarState.passos.length) mostrarFimProtocolo();
+  else renderPasso();
 }
-
 function pularPasso() {
   if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
   if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
-  _reativarState.timerRodando = false;
-  _reativarState.breathIniciado = false;
+  _reativarState.timerRodando = false; _reativarState.breathIniciado = false;
   _reativarState.passoAtual++;
-  if (_reativarState.passoAtual >= _reativarState.passos.length) {
-    mostrarFimProtocolo();
-  } else {
-    renderPasso();
-  }
+  if (_reativarState.passoAtual >= _reativarState.passos.length) mostrarFimProtocolo();
+  else renderPasso();
 }
-
 function mostrarFimProtocolo() {
   document.getElementById('protocolo-wrap').classList.remove('show');
   document.getElementById('protocolo-fim').classList.add('show');
 }
-
 function finalizarProtocolo() {
   pararTimersReativar();
-  // Vai para o modo caverna
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-caverna').classList.add('active');
   document.querySelectorAll('.nav-btn')[4].classList.add('active');
   showToast('🏔️ Modo Caverna ativado! Foco de 10 min!');
-  // Aplica pomodoro de 10 min pra reativação
   if (!state.pom.rodando) {
     document.getElementById('pom-foco-input').value = 10;
     document.getElementById('pom-pausa-input').value = 5;
@@ -2366,14 +2077,11 @@ function finalizarProtocolo() {
   }
 }
 
-// ========== FIM REATIVAR FOCO ==========
-
+// ========== INIT ==========
 init();
 carregarConfigPom();
 verificarLembreteSexta();
 setTimeout(verificarLembreteBackup, 2000);
-
-
 </script>
 </body>
 </html>
