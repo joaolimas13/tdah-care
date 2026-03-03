@@ -2012,6 +2012,133 @@ function gerarPDFSemanal() {
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TDAH Care">
 <meta name="mobile-web-app-capable" content="yes"><style>body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:40px;color:#1A237E;}.header{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:white;padding:24px;border-radius:12px;margin-bottom:24px;}.header h1{font-size:1.3rem;margin:0 0 4px;}.header p{font-size:0.85rem;opacity:0.9;margin:0;}.score-box{text-align:center;background:#F1F8E9;border:2px solid #A5D6A7;border-radius:12px;padding:20px;margin-bottom:20px;}.score-num{font-size:3rem;font-weight:900;color:#1B5E20;}.score-label{font-size:0.85rem;color:#388E3C;}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}.item{background:#F8FAFF;border:1px solid #E3EAF2;border-radius:10px;padding:14px;}.item .val{font-size:1.3rem;font-weight:800;color:#1565C0;}.item .lbl{font-size:0.75rem;color:#546E7A;margin-top:2px;}.parecer{background:#F0F7FF;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:14px;font-size:0.85rem;color:#37474F;line-height:1.6;}.footer{text-align:center;font-size:0.72rem;color:#90A4AE;margin-top:24px;padding-top:16px;border-top:1px solid #EEF2F7;}</style></head><body><div class="header"><h1>📊 Relatório Semanal — TDAH Care</h1><p>Período: ${dados.periodo} · Gerado em: ${hoje}</p></div><div class="score-box"><div class="score-num">${emoji} ${score}</div><div class="score-label">Score geral da semana / 100</div></div><div class="grid">${itens}</div><div class="parecer"><strong>📝 Observações automáticas:</strong><br><br>${obs}<br><br><em style="font-size:0.78rem;color:#90A4AE;">⚠️ Relatório automático — não substitui avaliação clínica profissional.</em></div><div class="footer">TDAH Care · produced by Jp · ${hoje}</div>
+
+`;
+  const blob = new Blob([conteudo], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const data = new Date().toISOString().split('T')[0];
+  a.href = url; a.download = 'tdah-care-relatorio-semanal-'+data+'.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Relatorio baixado! Abra no navegador e imprima como PDF.');
+}
+function imprimirRelatorio() { gerarPDFSemanal(); }
+
+// ========== APELIDO ==========
+function verificarApelido() {
+  const apelido = localStorage.getItem('tdah_apelido');
+  if (!apelido) {
+    setTimeout(function() {
+      const overlay = document.getElementById('apelido-overlay');
+      if (overlay) overlay.classList.add('show');
+    }, 600);
+  }
+}
+function salvarApelido() {
+  const inp = document.getElementById('apelido-input');
+  const val = inp ? inp.value.trim() : '';
+  if (!val) { if(inp) inp.style.borderColor='#EF5350'; setTimeout(function(){if(inp)inp.style.borderColor='#90CAF9';},1000); return; }
+  localStorage.setItem('tdah_apelido', val);
+  const overlay = document.getElementById('apelido-overlay');
+  if (overlay) overlay.classList.remove('show');
+  showToast('Ola, ' + val + '!');
+}
+function getApelido() {
+  return localStorage.getItem('tdah_apelido') || 'Usuario';
+}
+
+// ========== ADMIN ==========
+let _adminHoldTimer = null;
+function startAdminHold(e) {
+  if(e) e.preventDefault();
+  _adminHoldTimer = setTimeout(function(){ abrirAdmin(); if(navigator.vibrate) navigator.vibrate(100); }, 2000);
+}
+function cancelAdminHold() { clearTimeout(_adminHoldTimer); }
+
+function abrirAdmin() {
+  const ap = document.getElementById('apelido-overlay');
+  if (ap) ap.classList.remove('show');
+  const el = document.getElementById('admin-overlay');
+  if (!el) { alert('Painel nao encontrado - tente recarregar'); return; }
+  el.style.display = 'block';
+  el.classList.add('show');
+}
+function verificarSenhaAdmin() {
+  const inp = document.getElementById('admin-senha-input');
+  if (!inp) return;
+  if (inp.value === 'tdah2025jp') {
+    const wrap = document.getElementById('admin-senha-wrap');
+    const lista = document.getElementById('admin-lista');
+    if(wrap) wrap.style.display = 'none';
+    if(lista) lista.style.display = 'block';
+    carregarDadosAdmin();
+  } else {
+    inp.style.borderColor = '#EF5350';
+    setTimeout(function(){ inp.style.borderColor = '#90CAF9'; }, 1000);
+  }
+}
+async function carregarDadosAdmin() {
+  const lista = document.getElementById('admin-lista');
+  if (!lista) return;
+  lista.innerHTML = '<p style="color:#90A4AE;text-align:center;padding:20px">Carregando...</p>';
+  if (!window._carregarUsuariosAdmin) {
+    lista.innerHTML = '<p style="color:#EF5350;text-align:center">Firebase nao conectado. Aguarde e tente novamente.</p>';
+    return;
+  }
+  const users = await window._carregarUsuariosAdmin();
+  if (!users.length) {
+    lista.innerHTML = '<p style="color:#90A4AE;text-align:center;padding:20px">Nenhum usuario sincronizado ainda.</p>';
+    return;
+  }
+  lista.innerHTML = users.map(function(u) {
+    const dt = u.ultimoEnvio ? new Date(u.ultimoEnvio).toLocaleString('pt-BR') : '-';
+    const s = u.score || 0;
+    const cor = s>=70 ? '#2E7D32' : s>=40 ? '#F57F17' : '#C62828';
+    return '<div class="admin-user-card">' +
+      '<div class="admin-user-name">' + u.apelido + '</div>' +
+      '<div class="admin-user-meta">Ultimo envio: ' + dt + ' · ' + (u.diasDados||0) + ' dias</div>' +
+      '<div class="admin-user-stats">' +
+        '<div class="admin-stat"><div class="admin-stat-val" style="color:' + cor + '">' + s + '</div><div class="admin-stat-lbl">Score</div></div>' +
+        '<div class="admin-stat"><div class="admin-stat-val">' + (u.sonoMedia ? u.sonoMedia+'h' : '-') + '</div><div class="admin-stat-lbl">Sono</div></div>' +
+        '<div class="admin-stat"><div class="admin-stat-val">' + (u.metasPct!=null ? u.metasPct+'%' : '-') + '</div><div class="admin-stat-lbl">Metas</div></div>' +
+        '<div class="admin-stat"><div class="admin-stat-val">' + (u.focoTotal ? Math.round(u.focoTotal/60)+'h' : '-') + '</div><div class="admin-stat-lbl">Foco</div></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ========== SYNC ==========
+async function sincronizarComFirebase(dadosSemana) {
+  const apelido = getApelido();
+  const badge = document.getElementById('sync-status-badge');
+  if (badge) { badge.className='sync-badge sync-sending'; badge.textContent='Sincronizando...'; badge.style.display='inline-flex'; }
+  if (!window._fbReady || !window._sincronizarFirebase) {
+    if (badge) { badge.className='sync-badge sync-err'; badge.textContent='Sem conexao'; }
+    return;
+  }
+  const ok = await window._sincronizarFirebase(apelido, {
+    score: dadosSemana.scoreGeral,
+    sonoMedia: dadosSemana.sonoMedia,
+    metasPct: dadosSemana.metasPct,
+    focoTotal: dadosSemana.focoTotal,
+    diasDados: dadosSemana.diasDados,
+    periodo: dadosSemana.periodo
+  });
+  if (badge) {
+    badge.className = 'sync-badge ' + (ok ? 'sync-ok' : 'sync-err');
+    badge.textContent = ok ? 'Enviado!' : 'Falha no envio';
+  }
+}
+
+// ========== INIT ==========
+init();
+carregarConfigPom();
+verificarApelido();
+verificarLembreteSexta();
+setTimeout(verificarLembreteBackup, 2000);
+</script>
+
 <!-- APELIDO MODAL -->
 <div class="apelido-overlay" id="apelido-overlay">
   <div class="apelido-box">
@@ -2028,7 +2155,7 @@ function gerarPDFSemanal() {
   <div style="max-width:500px;margin:0 auto;">
     <div class="admin-header">
       <div class="admin-titulo">Painel Admin - TDAH Care</div>
-      <button class="admin-close" onclick="document.getElementById('admin-overlay').classList.remove('show')">Fechar</button>
+      <button class="admin-close" onclick="document.getElementById('admin-overlay').classList.remove('show');document.getElementById('admin-senha-wrap').style.display='block';document.getElementById('admin-lista').style.display='none';">Fechar</button>
     </div>
     <div id="admin-senha-wrap" style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;">
       <div style="font-size:0.85rem;color:#546E7A;margin-bottom:10px;">Senha de acesso:</div>
@@ -2038,564 +2165,6 @@ function gerarPDFSemanal() {
     <div id="admin-lista" style="display:none;"></div>
   </div>
 </div>
-
-</body></html>`;
-  const blob = new Blob([conteudo], {type:'text/html'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const data = new Date().toISOString().split('T')[0];
-  a.href = url; a.download = `tdah-care-relatorio-semanal-${data}.html`;
-  a.click(); URL.revokeObjectURL(url);
-  showToast('📄 Relatório baixado! Abra no navegador e imprima como PDF.');
-}
-function imprimirRelatorio() { gerarPDFSemanal(); }
-
-// ========== PROTOCOLOS REATIVAR FOCO ==========
-// MUDANÇA #1: "Tela em Branco" (nível 3) sem o passo de gelo nas mãos
-const PROTOCOLOS = {
-  1: [
-    { icon:'💧', titulo:'Beba água agora', desc:'Desidratação piora a concentração. Levante, pegue um copo d\'água e beba devagar.', tipo:'timer', duracao:30, label:'segundos' },
-    { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz contando 4, segure 7, expire pela boca contando 8. Vamos fazer 1 ciclo.', tipo:'breath', ciclos:1 },
-    { icon:'📵', titulo:'Feche tudo agora', desc:'Feche todas as abas, apps e notificações. Coloque o celular virado para baixo por 10 minutos.', tipo:'timer', duracao:20, label:'segundos' },
-    { icon:'🏔️', titulo:'Hora de focar', desc:'Seu cérebro está pronto. Comece com uma sessão curta de foco — você consegue!', tipo:'final' },
-  ],
-  2: [
-    { icon:'💧', titulo:'Beba água agora', desc:'Desidratação piora muito a concentração. Beba um copo cheio agora.', tipo:'timer', duracao:30, label:'segundos' },
-    { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz contando 4, segure 7, expire pela boca contando 8. Vamos fazer 2 ciclos.', tipo:'breath', ciclos:2 },
-    { icon:'🌑', titulo:'Ambiente escuro', desc:'Apague as luzes ou feche as persianas. Fique em silêncio total por 5 minutos. Sem celular.', tipo:'timer', duracao:300, label:'minutos' },
-    { icon:'🏔️', titulo:'Hora de focar', desc:'Você fez o necessário. Comece com uma tarefa pequena agora.', tipo:'final' },
-  ],
-  3: [
-    { icon:'💧', titulo:'Beba água agora', desc:'Primeiro: levante e beba água. Não pule isso — é o reset mais simples que existe.', tipo:'timer', duracao:30, label:'segundos' },
-    { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz contando 4, segure 7, expire pela boca contando 8. Vamos fazer 3 ciclos completos.', tipo:'breath', ciclos:3 },
-    { icon:'🌑', titulo:'Ambiente escuro e silencioso', desc:'Apague tudo. Dobre sobre você mesmo ou deite. 10 minutos sem nenhum estímulo. Isso reseta o sistema.', tipo:'timer', duracao:600, label:'minutos' },
-    { icon:'🚿', titulo:'Banho frio (se possível)', desc:'Se puder, tome 2 minutos de água fria agora. É o protocolo mais eficaz para reset dopaminérgico.', tipo:'timer', duracao:120, label:'segundos' },
-    { icon:'👁️', titulo:'Técnica 5-4-3-2-1', desc:'Vamos engajar seus sentidos para ancorar no presente.', tipo:'sentidos' },
-    { icon:'🏔️', titulo:'Você está pronto', desc:'Seu sistema foi resetado. Comece com a tarefa mais simples que você tem. Apenas 10 minutos.', tipo:'final' },
-  ]
-};
-
-const SENTIDOS = [
-  { label:'👀 5 coisas que você VÊ', exemplo:'ex: a janela, a mesa, uma caneta...' },
-  { label:'✋ 4 coisas que você TOCA', exemplo:'ex: a cadeira, a roupa, o chão...' },
-  { label:'👂 3 coisas que você OUVE', exemplo:'ex: ventilador, carro na rua, silêncio...' },
-  { label:'👃 2 coisas que você CHEIRA', exemplo:'ex: o ambiente, sua roupa...' },
-  { label:'👅 1 coisa que você SABOREIA', exemplo:'ex: o gosto da água, do café...' },
-];
-
-let _reativarState = {
-  nivel: null, passos: [], passoAtual: 0,
-  timerSeg: 0, timerTotal: 0, timerInterval: null,
-  breathCiclo: 0, breathTotal: 0, breathFase: null, breathInterval: null,
-  sentidoAtual: 0,
-};
-
-function abrirReativar() {
-  _reativarState = { nivel:null, passos:[], passoAtual:0, timerSeg:0, timerTotal:0, timerInterval:null, breathCiclo:0, breathTotal:0, breathFase:null, breathInterval:null, sentidoAtual:0 };
-  document.getElementById('reativar-nivel-select').style.display = 'block';
-  document.getElementById('protocolo-wrap').classList.remove('show');
-  document.getElementById('protocolo-fim').classList.remove('show');
-  document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('reativar-modal').classList.add('show');
-}
-function fecharReativarModal(e) { if (e.target.id === 'reativar-modal') pararTimersReativar(); }
-function pararTimersReativar() {
-  if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
-  if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
-  document.getElementById('reativar-modal').classList.remove('show');
-}
-function selecionarNivel(n, el) {
-  document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  _reativarState.nivel = n;
-  _reativarState.passos = PROTOCOLOS[n];
-  _reativarState.passoAtual = 0;
-  if (!state.dailyData[hojeISO()]) state.dailyData[hojeISO()] = {};
-  if (!state.dailyData[hojeISO()].reativarFoco) state.dailyData[hojeISO()].reativarFoco = [];
-  state.dailyData[hojeISO()].reativarFoco.push({ ts: new Date().toISOString(), nivel: n });
-  salvar();
-  setTimeout(() => {
-    document.getElementById('reativar-nivel-select').style.display = 'none';
-    document.getElementById('protocolo-wrap').classList.add('show');
-    renderPasso();
-  }, 300);
-}
-function renderPasso() {
-  const passos = _reativarState.passos;
-  const idx = _reativarState.passoAtual;
-  const passo = passos[idx];
-  if (!passo) return;
-  if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
-  if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
-  _reativarState.timerRodando = false;
-  const dots = passos.map((_, i) => `<div class="passo-dot ${i<idx?'done':i===idx?'atual':''}"></div>`).join('');
-  document.getElementById('passo-progresso').innerHTML = dots;
-  document.getElementById('passo-icon').textContent = passo.icon;
-  document.getElementById('passo-titulo').textContent = passo.titulo;
-  document.getElementById('passo-desc').textContent = passo.desc;
-  document.getElementById('passo-timer-wrap').style.display = 'none';
-  document.getElementById('breath-container').style.display = 'none';
-  document.getElementById('sentidos-container').style.display = 'none';
-  const playBtn = document.getElementById('passo-play-btn');
-  const nextBtn = document.getElementById('passo-next-btn');
-  playBtn.style.display = 'none';
-  playBtn.className = 'passo-btn passo-btn-play';
-  playBtn.textContent = '▶ Iniciar';
-  nextBtn.style.display = 'flex';
-  nextBtn.textContent = 'Feito ✓';
-  nextBtn.disabled = false;
-  if (passo.tipo === 'timer') {
-    document.getElementById('passo-timer-wrap').style.display = 'flex';
-    _reativarState.timerSeg = passo.duracao;
-    _reativarState.timerTotal = passo.duracao;
-    _reativarState.timerLabel = passo.label;
-    atualizarDisplayTimer();
-    playBtn.style.display = 'flex';
-    nextBtn.style.display = 'none';
-  } else if (passo.tipo === 'breath') {
-    document.getElementById('breath-container').style.display = 'block';
-    document.getElementById('breath-circle').className = 'breath-circle';
-    document.getElementById('breath-circle').textContent = 'Pronto?';
-    document.getElementById('breath-instruction').textContent = `${passo.ciclos} ciclo${passo.ciclos>1?'s':''} de respiração 4-7-8`;
-    _reativarState.breathCicloTotal = passo.ciclos;
-    playBtn.style.display = 'flex';
-    nextBtn.style.display = 'none';
-  } else if (passo.tipo === 'sentidos') {
-    document.getElementById('sentidos-container').style.display = 'block';
-    _reativarState.sentidoAtual = 0;
-    renderSentido();
-  } else if (passo.tipo === 'final') {
-    nextBtn.textContent = 'Concluir protocolo 🎉';
-  }
-}
-function toggleTimerPasso() {
-  const passo = _reativarState.passos[_reativarState.passoAtual];
-  const playBtn = document.getElementById('passo-play-btn');
-  if (!_reativarState.timerRodando) {
-    _reativarState.timerRodando = true;
-    playBtn.className = 'passo-btn passo-btn-play tocando';
-    playBtn.textContent = '⏸ Pausar';
-    if (passo.tipo === 'timer') { rodarTimerPasso(); }
-    else if (passo.tipo === 'breath') {
-      if (!_reativarState.breathIniciado) { _reativarState.breathIniciado = true; _reativarState.breathCiclo = 0; executarFaseBreath('prepare', _reativarState.breathCicloTotal); }
-      else { executarFaseBreath(_reativarState.breathFase, _reativarState.breathCicloTotal); }
-    }
-  } else {
-    _reativarState.timerRodando = false;
-    playBtn.className = 'passo-btn passo-btn-play';
-    playBtn.textContent = '▶ Continuar';
-    if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
-    if (_reativarState.breathInterval) { clearTimeout(_reativarState.breathInterval); _reativarState.breathInterval = null; }
-  }
-}
-function rodarTimerPasso() {
-  _reativarState.timerInterval = setInterval(() => {
-    if (!_reativarState.timerRodando) { clearInterval(_reativarState.timerInterval); return; }
-    _reativarState.timerSeg--;
-    atualizarDisplayTimer();
-    if (_reativarState.timerSeg <= 0) {
-      clearInterval(_reativarState.timerInterval);
-      _reativarState.timerRodando = false;
-      playBeep();
-      document.getElementById('passo-play-btn').style.display = 'none';
-      const nextBtn = document.getElementById('passo-next-btn');
-      nextBtn.style.display = 'flex';
-      nextBtn.textContent = 'Feito ✓';
-      nextBtn.disabled = false;
-    }
-  }, 1000);
-}
-function atualizarDisplayTimer() {
-  const seg = _reativarState.timerSeg;
-  const total = _reativarState.timerTotal;
-  const CIRC_PASSO = 2 * Math.PI * 52;
-  const prog = 1 - (seg / total);
-  document.getElementById('passo-ring-fill').style.strokeDashoffset = CIRC_PASSO * (1 - prog);
-  if (_reativarState.timerLabel === 'minutos') {
-    const m = Math.floor(seg/60), s = seg%60;
-    document.getElementById('passo-time-display').textContent = pad(m)+':'+pad(s);
-    document.getElementById('passo-time-label').textContent = 'restante';
-  } else {
-    document.getElementById('passo-time-display').textContent = seg;
-    document.getElementById('passo-time-label').textContent = 'segundos';
-  }
-}
-function executarFaseBreath(fase, totalCiclos) {
-  if (!_reativarState.timerRodando) return;
-  const circle = document.getElementById('breath-circle');
-  const instr = document.getElementById('breath-instruction');
-  _reativarState.breathFase = fase;
-  if (fase === 'prepare') {
-    circle.className = 'breath-circle'; circle.textContent = 'Prepare-se';
-    instr.textContent = `Ciclo 1 de ${totalCiclos} — Inspire pelo nariz`;
-    _reativarState.breathInterval = setTimeout(() => executarFaseBreath('inhale', totalCiclos), 1500);
-  } else if (fase === 'inhale') {
-    circle.className = 'breath-circle inhale'; circle.textContent = 'Inspire... 4s';
-    instr.textContent = '🌬️ Inspire lentamente pelo nariz';
-    _reativarState.breathInterval = setTimeout(() => executarFaseBreath('hold', totalCiclos), 4000);
-  } else if (fase === 'hold') {
-    circle.className = 'breath-circle hold'; circle.textContent = 'Segure... 7s';
-    instr.textContent = '⏸ Segure o ar';
-    _reativarState.breathInterval = setTimeout(() => executarFaseBreath('exhale', totalCiclos), 7000);
-  } else if (fase === 'exhale') {
-    circle.className = 'breath-circle exhale'; circle.textContent = 'Expire... 8s';
-    instr.textContent = '💨 Expire lentamente pela boca';
-    _reativarState.breathInterval = setTimeout(() => {
-      _reativarState.breathCiclo++;
-      if (_reativarState.breathCiclo < totalCiclos) {
-        circle.className = 'breath-circle'; circle.textContent = `Ciclo ${_reativarState.breathCiclo+1}`;
-        instr.textContent = `Ciclo ${_reativarState.breathCiclo+1} de ${totalCiclos}`;
-        _reativarState.breathFase = 'inhale';
-        _reativarState.breathInterval = setTimeout(() => executarFaseBreath('inhale', totalCiclos), 1000);
-      } else {
-        circle.className = 'breath-circle'; circle.textContent = '✓ Concluído';
-        instr.textContent = '✅ Respiração concluída!';
-        _reativarState.timerRodando = false;
-        document.getElementById('passo-play-btn').style.display = 'none';
-        const nextBtn = document.getElementById('passo-next-btn');
-        nextBtn.style.display = 'flex'; nextBtn.textContent = 'Feito ✓'; nextBtn.disabled = false;
-        playBeep();
-      }
-    }, 8000);
-  }
-}
-function renderSentido() {
-  const s = SENTIDOS[_reativarState.sentidoAtual];
-  document.getElementById('sentido-atual-label').textContent = s.label;
-  document.getElementById('sentido-exemplos').textContent = s.exemplo;
-  const restantes = SENTIDOS.length - _reativarState.sentidoAtual;
-  document.getElementById('passo-next-btn').textContent = restantes > 1 ? `Próximo sentido (${restantes-1} restante${restantes-1>1?'s':''})` : 'Concluir ✓';
-}
-function proximoPasso() {
-  const passo = _reativarState.passos[_reativarState.passoAtual];
-  if (passo && passo.tipo === 'sentidos') {
-    if (_reativarState.sentidoAtual < SENTIDOS.length - 1) { _reativarState.sentidoAtual++; renderSentido(); return; }
-  }
-  if (passo && passo.tipo === 'final') { finalizarProtocolo(); return; }
-  if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
-  if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
-  _reativarState.timerRodando = false; _reativarState.breathIniciado = false;
-  _reativarState.passoAtual++;
-  if (_reativarState.passoAtual >= _reativarState.passos.length) mostrarFimProtocolo();
-  else renderPasso();
-}
-function pularPasso() {
-  if (_reativarState.timerInterval) clearInterval(_reativarState.timerInterval);
-  if (_reativarState.breathInterval) clearTimeout(_reativarState.breathInterval);
-  _reativarState.timerRodando = false; _reativarState.breathIniciado = false;
-  _reativarState.passoAtual++;
-  if (_reativarState.passoAtual >= _reativarState.passos.length) mostrarFimProtocolo();
-  else renderPasso();
-}
-function mostrarFimProtocolo() {
-  document.getElementById('protocolo-wrap').classList.remove('show');
-  document.getElementById('protocolo-fim').classList.add('show');
-}
-function finalizarProtocolo() {
-  pararTimersReativar();
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
-  document.getElementById('page-caverna').classList.add('active');
-  document.querySelectorAll('.nav-btn')[4].classList.add('active');
-  showToast('🏔️ Modo Caverna ativado! Foco de 10 min!');
-  if (!state.pom.rodando) {
-    document.getElementById('pom-foco-input').value = 10;
-    document.getElementById('pom-pausa-input').value = 5;
-    aplicarConfigPom();
-  }
-}
-
-
-// ========== HIDRATACAO ==========
-function getHidratConfig() {
-  const ml = parseInt(localStorage.getItem('hidrat_ml_copo')) || 250;
-  const litros = parseFloat(localStorage.getItem('hidrat_meta_litros')) || 2.0;
-  return { ml, metaMl: Math.round(litros * 1000) };
-}
-function salvarConfigHidrat() {
-  const ml = parseInt(document.getElementById('hidrat-ml-copo').value) || 250;
-  const litros = parseFloat(document.getElementById('hidrat-meta-litros').value) || 2.0;
-  localStorage.setItem('hidrat_ml_copo', ml);
-  localStorage.setItem('hidrat_meta_litros', litros);
-  renderHidrat();
-}
-function toggleHidratConfig() {
-  const el = document.getElementById('hidrat-config');
-  const cfg = getHidratConfig();
-  if (el.style.display === 'none') {
-    el.style.display = 'block';
-    document.getElementById('hidrat-ml-copo').value = cfg.ml;
-    document.getElementById('hidrat-meta-litros').value = (cfg.metaMl / 1000).toFixed(1);
-  } else {
-    el.style.display = 'none';
-  }
-}
-function addCopo() {
-  const d = state.currentDate;
-  if (!state.dailyData[d]) state.dailyData[d] = {};
-  const hoje_data = state.dailyData[d];
-  const cfg = getHidratConfig();
-  const maxCopos = Math.ceil(cfg.metaMl / cfg.ml) + 2;
-  hoje_data.copos = Math.min(maxCopos, (hoje_data.copos || 0) + 1);
-  if (d === hojeISO()) state.copos = hoje_data.copos;
-  salvar(); renderHidrat(); updateWidget();
-  const totalMl = hoje_data.copos * cfg.ml;
-  showToast('Agua: ' + totalMl + 'ml de ' + cfg.metaMl + 'ml hoje!');
-}
-function remCopo() {
-  const d = state.currentDate;
-  if (!state.dailyData[d]) return;
-  const hoje_data = state.dailyData[d];
-  hoje_data.copos = Math.max(0, (hoje_data.copos || 0) - 1);
-  if (d === hojeISO()) state.copos = hoje_data.copos;
-  salvar(); renderHidrat(); updateWidget();
-}
-function renderHidrat() {
-  const d = state.currentDate;
-  const copos = (state.dailyData[d] && state.dailyData[d].copos) || state.copos || 0;
-  const cfg = getHidratConfig();
-  const totalMl = copos * cfg.ml;
-  const metaMl = cfg.metaMl;
-  const maxCopos = Math.ceil(metaMl / cfg.ml);
-  const pct = Math.min(100, Math.round((totalMl / metaMl) * 100));
-  const elTotal = document.getElementById('hidrat-ml-total');
-  const elMeta = document.getElementById('hidrat-ml-meta');
-  const elLabel = document.getElementById('hidrat-copos-label');
-  const coposEl = document.getElementById('hidrat-copos');
-  const progEl = document.getElementById('hidrat-prog-fill');
-  if (elTotal) elTotal.textContent = totalMl >= 1000 ? (totalMl/1000).toFixed(1)+'L' : totalMl+'ml';
-  if (elMeta) elMeta.textContent = ' / ' + (metaMl >= 1000 ? (metaMl/1000).toFixed(1)+'L' : metaMl+'ml');
-  if (elLabel) elLabel.textContent = copos + ' copo' + (copos !== 1 ? 's' : '') + ' de ' + cfg.ml + 'ml';
-  if (progEl) progEl.style.width = pct + '%';
-  if (coposEl) {
-    let html = '';
-    for (let i = 0; i < maxCopos; i++) html += '<span class="hidrat-copo ' + (i < copos ? 'cheio' : '') + '">\u{1F4A7}</span>';
-    coposEl.innerHTML = html;
-  }
-}
-// ========== STREAK ==========
-function calcStreak() {
-  let streak = 0;
-  const today = hojeISO();
-  let d = new Date();
-  d.setDate(d.getDate() - 1); // start from yesterday
-  for (let i = 0; i < 60; i++) {
-    const iso = hojeISO(d);
-    const dd = state.dailyData[iso];
-    if (!dd) break;
-    const mf = (dd.metasFixas || []).filter(m => m.done).length;
-    const md = (dd.metas || []).filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
-    const tot = (dd.metasFixas || []).length + (dd.metas || []).filter(m => m.tipo === "diaria" || !m.tipo).length;
-    if (tot > 0 && (mf + md) / tot >= 0.5) streak++;
-    else break;
-    d.setDate(d.getDate() - 1);
-  }
-  // also check today
-  const todayData = state.dailyData[today];
-  if (todayData) {
-    const mf = state.metasFixas.filter(m => m.done).length;
-    const md = state.metas.filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
-    const tot = state.metasFixas.length + state.metas.filter(m => m.tipo === "diaria" || !m.tipo).length;
-    if (tot > 0 && (mf + md) / tot >= 0.5) streak++;
-  }
-  return streak;
-}
-function renderStreak() {
-  const s = calcStreak();
-  const el = document.getElementById("streak-num");
-  const banner = document.getElementById("streak-banner");
-  if (el) el.textContent = s;
-  if (banner) banner.style.display = s > 0 ? "flex" : "none";
-}
-
-// ========== WIDGET RESUMO ==========
-function updateWidget() {
-  const ult = state.sono[0];
-  const sono = ult ? ult.horas + "h" : "—";
-  const fixasDone = state.metasFixas.filter(m => m.done).length;
-  const diariasDone = state.metas.filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
-  const tot = state.metasFixas.length + state.metas.filter(m => m.tipo === "diaria" || !m.tipo).length;
-  const dn = fixasDone + diariasDone;
-  const copos = state.copos || 0;
-  const sess = state.pom.sessoes;
-  // calc score
-  let pts = 0, max = 100;
-  if (ult) pts += ult.horas >= 7 ? 25 : ult.horas >= 5 ? 15 : 5;
-  if (tot > 0) pts += Math.round((dn / tot) * 35);
-  pts += Math.min(25, Math.round((state.pom.minFoco / 80) * 25));
-  const celH = state.celular ? state.celular.horas + state.celular.minutos / 60 : 0;
-  if (state.celular) pts += celH <= 2 ? 15 : celH <= 4 ? 10 : celH <= 6 ? 5 : 0;
-  const elSono = document.getElementById("wr-sono");
-  const elMetas = document.getElementById("wr-metas");
-  const elHidrat = document.getElementById("wr-hidrat");
-  const elPom = document.getElementById("wr-pom");
-  const elScore = document.getElementById("wr-score");
-  if (elSono) elSono.textContent = sono;
-  if (elMetas) elMetas.textContent = dn + "/" + tot;
-  if (elHidrat) elHidrat.textContent = copos;
-  if (elPom) elPom.textContent = sess;
-  if (elScore) elScore.innerHTML = pts + '<span style="font-size:1rem;color:#90CAF9;">/100</span>';
-}
-
-// ========== GRAFICO SEMANAL ==========
-function calcScoreDay(dd, mf_live, md_live, mf_tot, md_tot, pom_live, cel_live) {
-  if (!dd) return null;
-  const sono = (dd.sono || [])[0];
-  let pts = 0;
-  if (sono) pts += sono.horas >= 7 ? 25 : sono.horas >= 5 ? 15 : 5;
-  const mf = (dd.metasFixas || []).filter(m => m.done).length;
-  const md = (dd.metas || []).filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
-  const tot = (dd.metasFixas || []).length + (dd.metas || []).filter(m => m.tipo === "diaria" || !m.tipo).length;
-  if (tot > 0) pts += Math.round(((mf + md) / tot) * 35);
-  const p = dd.pom || {};
-  pts += Math.min(25, Math.round(((p.minFoco || 0) / 80) * 25));
-  const cel = dd.celular;
-  if (cel) { const h = cel.horas + cel.minutos / 60; pts += h <= 2 ? 15 : h <= 4 ? 10 : h <= 6 ? 5 : 0; }
-  return Math.min(100, pts);
-}
-function renderChartSemanal() {
-  const el = document.getElementById("chart-semanal");
-  if (!el) return;
-  const days = [];
-  const hoje = hojeISO();
-  const diasSemana = ["D","S","T","Q","Q","S","S"];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    const iso = hojeISO(d);
-    const dd = iso === hoje ? null : state.dailyData[iso];
-    let score = null;
-    if (iso === hoje) {
-      // use live state
-      const sono = state.sono[0];
-      let pts = 0;
-      if (sono) pts += sono.horas >= 7 ? 25 : sono.horas >= 5 ? 15 : 5;
-      const mf = state.metasFixas.filter(m => m.done).length;
-      const md = state.metas.filter(m => m.done && (m.tipo === "diaria" || !m.tipo)).length;
-      const tot = state.metasFixas.length + state.metas.filter(m => m.tipo === "diaria" || !m.tipo).length;
-      if (tot > 0) pts += Math.round(((mf + md) / tot) * 35);
-      pts += Math.min(25, Math.round((state.pom.minFoco / 80) * 25));
-      if (state.celular) { const h = state.celular.horas + state.celular.minutos / 60; pts += h <= 2 ? 15 : h <= 4 ? 10 : h <= 6 ? 5 : 0; }
-      score = Math.min(100, pts);
-    } else if (dd) {
-      score = calcScoreDay(dd);
-    }
-    days.push({ iso, score, dayLabel: diasSemana[d.getDay()], isHoje: iso === hoje });
-  }
-  const maxScore = 100;
-  let html = "";
-  days.forEach(day => {
-    const pct = day.score !== null ? Math.max(4, (day.score / maxScore) * 100) : 4;
-    const color = day.score === null ? "#E3F2FD" : day.isHoje ? "" : day.score >= 70 ? "#1B5E20" : day.score >= 40 ? "#1565C0" : "#90CAF9";
-    const barStyle = day.isHoje ? "" : `background:${color};`;
-    const val = day.score !== null ? day.score : "";
-    html += `<div class="chart-bar-wrap ${day.isHoje ? "chart-bar-today" : ""}">` +
-      `<div class="chart-bar-val">${val}</div>` +
-      `<div class="chart-bar" style="height:${pct}%;${barStyle}"></div>` +
-      `<div class="chart-bar-day">${day.dayLabel}</div>` +
-      `</div>`;
-  });
-  el.innerHTML = html;
-}
-
-
-
-// Admin: 3 toques rapidos no icone
-// Admin: clique 5x no titulo TDAH Care
-let _adminTaps=0,_adminTapTimer=null;
-let _titleTaps=0,_titleTimer=null;
-function handleAdminTap(){_adminTaps++;clearTimeout(_adminTapTimer);_adminTapTimer=setTimeout(function(){_adminTaps=0;},1500);if(_adminTaps>=3){_adminTaps=0;abrirAdmin();if(navigator.vibrate)navigator.vibrate(80);}}
-// ========== APELIDO & FIREBASE ==========
-function verificarApelido() {
-  const apelido = localStorage.getItem('tdah_apelido');
-  if (!apelido) {
-    setTimeout(() => document.getElementById('apelido-overlay').classList.add('show'), 600);
-  }
-}
-function salvarApelido() {
-  const inp = document.getElementById('apelido-input');
-  const val = inp.value.trim();
-  if (!val) { inp.style.borderColor = '#EF5350'; setTimeout(() => inp.style.borderColor = '#90CAF9', 1000); return; }
-  localStorage.setItem('tdah_apelido', val);
-  document.getElementById('apelido-overlay').classList.remove('show');
-  showToast('Ola, ' + val + '!');
-}
-function getApelido() {
-  return localStorage.getItem('tdah_apelido') || 'Anonimo';
-}
-
-async function sincronizarComFirebase(dadosSemana) {
-  const apelido = getApelido();
-  const badge = document.getElementById('sync-status-badge');
-  if (badge) { badge.className = 'sync-badge sync-sending'; badge.textContent = 'Sincronizando...'; }
-  if (!window._fbReady || !window._sincronizarFirebase) {
-    if (badge) { badge.className = 'sync-badge sync-err'; badge.textContent = 'Sem conexao'; }
-    return;
-  }
-  const ok = await window._sincronizarFirebase(apelido, {
-    score: dadosSemana.scoreGeral,
-    sonoMedia: dadosSemana.sonoMedia,
-    metasPct: dadosSemana.metasPct,
-    focoTotal: dadosSemana.focoTotal,
-    diasDados: dadosSemana.diasDados,
-    periodo: dadosSemana.periodo,
-    resumoTexto: dadosSemana.resumoTexto || ''
-  });
-  if (badge) {
-    badge.className = 'sync-badge ' + (ok ? 'sync-ok' : 'sync-err');
-    badge.textContent = ok ? 'Enviado com sucesso!' : 'Falha no envio';
-  }
-}
-
-// ========== ADMIN ==========
-function abrirAdmin() {
-  var ap = document.getElementById("apelido-overlay");
-  if (ap) ap.classList.remove("show");
-  var el = document.getElementById("admin-overlay");
-  if (!el) { alert("admin-overlay nao encontrado"); return; }
-  el.style.cssText = "display:block!important;position:fixed;inset:0;z-index:9999;background:#F0F4FF;overflow-y:auto;padding:20px;box-sizing:border-box;";
-  el.classList.add("show");
-}
-function verificarSenhaAdmin() {
-  var senha = document.getElementById("admin-senha-input").value;
-  if (senha === "tdah2025jp") {
-    document.getElementById("admin-senha-wrap").style.display = "none";
-    document.getElementById("admin-lista").style.display = "block";
-    carregarDadosAdmin();
-  } else {
-    document.getElementById("admin-senha-input").style.borderColor = "#EF5350";
-    setTimeout(function(){ document.getElementById("admin-senha-input").style.borderColor = "#90CAF9"; }, 1000);
-  }
-}
-async function carregarDadosAdmin() {
-  var lista = document.getElementById("admin-lista");
-  lista.innerHTML = "<p style=color:#90A4AE;text-align:center;padding:20px>Carregando...</p>";
-  if (!window._carregarUsuariosAdmin) { lista.innerHTML = "<p style=color:#EF5350;text-align:center>Firebase nao conectado.</p>"; return; }
-  var users = await window._carregarUsuariosAdmin();
-  if (!users.length) { lista.innerHTML = "<p style=color:#90A4AE;text-align:center;padding:20px>Nenhum usuario ainda.</p>"; return; }
-  lista.innerHTML = users.map(function(u) {
-    var dt = u.ultimoEnvio ? new Date(u.ultimoEnvio).toLocaleString("pt-BR") : "—";
-    var s = u.score || 0;
-    var cor = s>=70?"#2E7D32":s>=40?"#F57F17":"#C62828";
-    return "<div class=admin-user-card><div class=admin-user-name>" + u.apelido + "</div><div class=admin-user-meta>" + dt + " &middot; " + (u.diasDados||0) + " dias</div><div class=admin-user-stats><div class=admin-stat><div class=admin-stat-val style=color:" + cor + ">" + s + "</div><div class=admin-stat-lbl>Score</div></div><div class=admin-stat><div class=admin-stat-val>" + (u.sonoMedia?u.sonoMedia+"h":"&mdash;") + "</div><div class=admin-stat-lbl>Sono</div></div><div class=admin-stat><div class=admin-stat-val>" + (u.metasPct!=null?u.metasPct+"%":"&mdash;") + "</div><div class=admin-stat-lbl>Metas</div></div><div class=admin-stat><div class=admin-stat-val>" + (u.focoTotal?Math.round(u.focoTotal/60)+"h":"&mdash;") + "</div><div class=admin-stat-lbl>Foco</div></div></div></div>";
-  }).join("");
-}
-
-
-
-// ========== INIT ==========
-init();
-carregarConfigPom();
-// verificarApelido movido para window.load no Firebase compat
-verificarLembreteSexta();
-setTimeout(verificarLembreteBackup, 2000);
-// Acesso admin via URL hash
-// hash admin tratado no window.load abaixo
-</script>
-
-</body>
-</html>
-
 <!-- FIREBASE COMPAT -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -2623,8 +2192,7 @@ window._sincronizarFirebase = async function(apelido, dados) {
       metasPct: dados.metasPct || null,
       focoTotal: dados.focoTotal || 0,
       diasDados: dados.diasDados || 0,
-      periodo: dados.periodo || '',
-      resumoSemana: dados.resumoTexto || ''
+      periodo: dados.periodo || ''
     }, { merge: true });
     return true;
   } catch(e) { console.error('Firebase error:', e); return false; }
@@ -2639,13 +2207,14 @@ window._carregarUsuariosAdmin = async function() {
   } catch(e) { console.error('Admin error:', e); return []; }
 };
 
-// Apelido modal — inicializa aqui após DOM pronto
 window.addEventListener('load', function() {
   const apelido = localStorage.getItem('tdah_apelido');
   if (!apelido) {
     const overlay = document.getElementById('apelido-overlay');
     if (overlay) overlay.classList.add('show');
   }
-  if (window.location.hash === '#admin') setTimeout(abrirAdmin, 300);
+  if (window.location.hash === '#admin') setTimeout(abrirAdmin, 500);
 });
 </script>
+</body>
+</html>
