@@ -604,16 +604,38 @@ textarea { resize: none; height: 80px; }
 
   <!-- HIDRATACAO -->
   <div class="hidrat-card">
-    <div class="hidrat-title">💧 Hidratação</div>
-    <div class="hidrat-row">
-      <button class="hidrat-btn" onclick="addCopo()">+</button>
-      <div>
-        <div class="hidrat-count"><span id="hidrat-count">0</span><span style="font-size:0.9rem;color:#1565C0;opacity:0.7;">/8</span></div>
-        <div class="hidrat-meta">copos hoje</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div class="hidrat-title" style="margin-bottom:0;">💧 Hidratação</div>
+      <button onclick="toggleHidratConfig()" style="background:none;border:none;font-size:0.72rem;color:#1565C0;cursor:pointer;opacity:0.8;">⚙️ configurar</button>
+    </div>
+    <div id="hidrat-config" style="display:none;background:rgba(255,255,255,0.6);border-radius:10px;padding:10px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <label style="font-size:0.78rem;color:#1565C0;font-weight:600;min-width:80px;">Meu copo:</label>
+        <input type="number" id="hidrat-ml-copo" min="100" max="1000" step="50" placeholder="250"
+          style="width:70px;border:1.5px solid #90CAF9;border-radius:8px;padding:4px 8px;font-size:0.85rem;text-align:center;"
+          oninput="salvarConfigHidrat()">
+        <span style="font-size:0.78rem;color:#1565C0;">ml</span>
       </div>
-      <button class="hidrat-btn" onclick="remCopo()" style="background:#90CAF9;font-size:1rem;">−</button>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <label style="font-size:0.78rem;color:#1565C0;font-weight:600;min-width:80px;">Meta diária:</label>
+        <input type="number" id="hidrat-meta-litros" min="0.5" max="5" step="0.5" placeholder="2.0"
+          style="width:70px;border:1.5px solid #90CAF9;border-radius:8px;padding:4px 8px;font-size:0.85rem;text-align:center;"
+          oninput="salvarConfigHidrat()">
+        <span style="font-size:0.78rem;color:#1565C0;">litros</span>
+      </div>
+    </div>
+    <div class="hidrat-row">
+      <button class="hidrat-btn" onclick="remCopo()" style="background:#90CAF9;font-size:1.2rem;">−</button>
+      <div style="flex:1;text-align:center;">
+        <div class="hidrat-count"><span id="hidrat-ml-total">0</span><span style="font-size:0.85rem;color:#1565C0;opacity:0.7;" id="hidrat-ml-meta"> / 2000ml</span></div>
+        <div class="hidrat-meta" id="hidrat-copos-label">0 copos de 250ml</div>
+      </div>
+      <button class="hidrat-btn" onclick="addCopo()">+</button>
     </div>
     <div class="hidrat-copos" id="hidrat-copos"></div>
+    <div style="margin-top:8px;height:6px;background:rgba(255,255,255,0.5);border-radius:3px;overflow:hidden;">
+      <div id="hidrat-prog-fill" style="height:100%;background:#1565C0;border-radius:3px;width:0%;transition:width 0.3s;"></div>
+    </div>
   </div>
   <div class="card">
     <div class="card-title">📱 Tempo de tela hoje</div>
@@ -2215,14 +2237,40 @@ function finalizarProtocolo() {
 
 
 // ========== HIDRATACAO ==========
+function getHidratConfig() {
+  const ml = parseInt(localStorage.getItem('hidrat_ml_copo')) || 250;
+  const litros = parseFloat(localStorage.getItem('hidrat_meta_litros')) || 2.0;
+  return { ml, metaMl: Math.round(litros * 1000) };
+}
+function salvarConfigHidrat() {
+  const ml = parseInt(document.getElementById('hidrat-ml-copo').value) || 250;
+  const litros = parseFloat(document.getElementById('hidrat-meta-litros').value) || 2.0;
+  localStorage.setItem('hidrat_ml_copo', ml);
+  localStorage.setItem('hidrat_meta_litros', litros);
+  renderHidrat();
+}
+function toggleHidratConfig() {
+  const el = document.getElementById('hidrat-config');
+  const cfg = getHidratConfig();
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    document.getElementById('hidrat-ml-copo').value = cfg.ml;
+    document.getElementById('hidrat-meta-litros').value = (cfg.metaMl / 1000).toFixed(1);
+  } else {
+    el.style.display = 'none';
+  }
+}
 function addCopo() {
   const d = state.currentDate;
   if (!state.dailyData[d]) state.dailyData[d] = {};
   const hoje_data = state.dailyData[d];
-  hoje_data.copos = Math.min(8, (hoje_data.copos || 0) + 1);
+  const cfg = getHidratConfig();
+  const maxCopos = Math.ceil(cfg.metaMl / cfg.ml) + 2;
+  hoje_data.copos = Math.min(maxCopos, (hoje_data.copos || 0) + 1);
   if (d === hojeISO()) state.copos = hoje_data.copos;
   salvar(); renderHidrat(); updateWidget();
-  showToast("💧 +" + hoje_data.copos + " copo" + (hoje_data.copos > 1 ? "s" : "") + " hoje!");
+  const totalMl = hoje_data.copos * cfg.ml;
+  showToast('Agua: ' + totalMl + 'ml de ' + cfg.metaMl + 'ml hoje!');
 }
 function remCopo() {
   const d = state.currentDate;
@@ -2235,16 +2283,26 @@ function remCopo() {
 function renderHidrat() {
   const d = state.currentDate;
   const copos = (state.dailyData[d] && state.dailyData[d].copos) || state.copos || 0;
-  const el = document.getElementById("hidrat-count");
-  const coposEl = document.getElementById("hidrat-copos");
-  if (el) el.textContent = copos;
+  const cfg = getHidratConfig();
+  const totalMl = copos * cfg.ml;
+  const metaMl = cfg.metaMl;
+  const maxCopos = Math.ceil(metaMl / cfg.ml);
+  const pct = Math.min(100, Math.round((totalMl / metaMl) * 100));
+  const elTotal = document.getElementById('hidrat-ml-total');
+  const elMeta = document.getElementById('hidrat-ml-meta');
+  const elLabel = document.getElementById('hidrat-copos-label');
+  const coposEl = document.getElementById('hidrat-copos');
+  const progEl = document.getElementById('hidrat-prog-fill');
+  if (elTotal) elTotal.textContent = totalMl >= 1000 ? (totalMl/1000).toFixed(1)+'L' : totalMl+'ml';
+  if (elMeta) elMeta.textContent = ' / ' + (metaMl >= 1000 ? (metaMl/1000).toFixed(1)+'L' : metaMl+'ml');
+  if (elLabel) elLabel.textContent = copos + ' copo' + (copos !== 1 ? 's' : '') + ' de ' + cfg.ml + 'ml';
+  if (progEl) progEl.style.width = pct + '%';
   if (coposEl) {
-    let html = "";
-    for (let i = 0; i < 8; i++) html += `<span class="hidrat-copo ${i < copos ? "cheio" : ""}">💧</span>`;
+    let html = '';
+    for (let i = 0; i < maxCopos; i++) html += '<span class="hidrat-copo ' + (i < copos ? 'cheio' : '') + '">\u{1F4A7}</span>';
     coposEl.innerHTML = html;
   }
 }
-
 // ========== STREAK ==========
 function calcStreak() {
   let streak = 0;
