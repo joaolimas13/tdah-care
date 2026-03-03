@@ -686,6 +686,7 @@ textarea { resize: none; height: 80px; }
     <div id="ultimo-sono-home"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:8px;">Nenhum registro ainda</p></div>
   </div>
   <button class="relatorio-btn" onclick="abrirCompartilhar()" style="background:linear-gradient(135deg,#1B5E20,#43A047);">📤 Enviar Progresso para Psicóloga</button>
+  <button onclick="abrirAdmin()" style="background:#1565C0;color:white;border:none;border-radius:12px;padding:10px;width:100%;font-size:0.8rem;cursor:pointer;margin-bottom:8px;">🔐 Admin (temp)</button>
   <div class="page-footer" style="padding:16px 0;">produced by Jp</div>
 </div>
 
@@ -930,6 +931,9 @@ textarea { resize: none; height: 80px; }
       <div id="relatorio-mensal-wrap"></div>
     </div>
     <div class="page-footer">produced by Jp</div>
+    <div style="text-align:center;margin-top:4px;">
+      <button onclick="abrirAdmin()" style="background:none;border:none;font-size:0.62rem;color:#CFD8DC;cursor:pointer;padding:8px;">⚙</button>
+    </div>
   </div>
 </div>
 
@@ -2548,6 +2552,7 @@ function abrirAdmin() {
   // Fecha modal de apelido se estiver aberto
   const ap = document.getElementById("apelido-overlay");
   if(ap) ap.classList.remove("show");
+  if(!adminEl){ console.error("admin-overlay nao encontrado"); alert("Painel admin nao carregou. Tente recarregar a pagina."); return; }
   const adminEl = document.getElementById("admin-overlay"); if(adminEl) adminEl.classList.add("show");
 }
 function verificarSenhaAdmin() {
