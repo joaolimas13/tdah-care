@@ -2035,62 +2035,6 @@ function gerarPDFSemanal() {
   </div>
 </div>
 
-<!-- FIREBASE -->
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
-  authDomain: "cleantdah.firebaseapp.com",
-  projectId: "cleantdah",
-  storageBucket: "cleantdah.firebasestorage.app",
-  messagingSenderId: "553813989536",
-  appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window._fbReady = true;
-window._fbDb = db;
-
-window._sincronizarFirebase = async function(apelido, dados) {
-  try {
-    const userId = apelido.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    const docRef = doc(db, 'usuarios', userId);
-    await setDoc(docRef, {
-      apelido: apelido,
-      ultimoEnvio: new Date().toISOString(),
-      score: dados.score,
-      sonoMedia: dados.sonoMedia || null,
-      metasPct: dados.metasPct || null,
-      focoTotal: dados.focoTotal || 0,
-      diasDados: dados.diasDados || 0,
-      periodo: dados.periodo || '',
-      resumoSemana: dados.resumoTexto || ''
-    }, { merge: true });
-    return true;
-  } catch(e) {
-    console.error('Firebase error:', e);
-    return false;
-  }
-};
-
-window._carregarUsuariosAdmin = async function() {
-  try {
-    const snap = await getDocs(collection(db, 'usuarios'));
-    const users = [];
-    snap.forEach(d => users.push(d.data()));
-    users.sort((a,b) => (b.ultimoEnvio||'').localeCompare(a.ultimoEnvio||''));
-    return users;
-  } catch(e) {
-    console.error('Admin error:', e);
-    return [];
-  }
-};
-</script>
-
 </body></html>`;
   const blob = new Blob([conteudo], {type:'text/html'});
   const url = URL.createObjectURL(blob);
@@ -2650,5 +2594,61 @@ verificarApelido();
 verificarLembreteSexta();
 setTimeout(verificarLembreteBackup, 2000);
 </script>
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, doc, setDoc, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
+  authDomain: "cleantdah.firebaseapp.com",
+  projectId: "cleantdah",
+  storageBucket: "cleantdah.firebasestorage.app",
+  messagingSenderId: "553813989536",
+  appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window._fbReady = true;
+window._fbDb = db;
+
+window._sincronizarFirebase = async function(apelido, dados) {
+  try {
+    const userId = apelido.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const docRef = doc(db, 'usuarios', userId);
+    await setDoc(docRef, {
+      apelido: apelido,
+      ultimoEnvio: new Date().toISOString(),
+      score: dados.score,
+      sonoMedia: dados.sonoMedia || null,
+      metasPct: dados.metasPct || null,
+      focoTotal: dados.focoTotal || 0,
+      diasDados: dados.diasDados || 0,
+      periodo: dados.periodo || '',
+      resumoSemana: dados.resumoTexto || ''
+    }, { merge: true });
+    return true;
+  } catch(e) {
+    console.error('Firebase error:', e);
+    return false;
+  }
+};
+
+window._carregarUsuariosAdmin = async function() {
+  try {
+    const snap = await getDocs(collection(db, 'usuarios'));
+    const users = [];
+    snap.forEach(d => users.push(d.data()));
+    users.sort((a,b) => (b.ultimoEnvio||'').localeCompare(a.ultimoEnvio||''));
+    return users;
+  } catch(e) {
+    console.error('Admin error:', e);
+    return [];
+  }
+};
+</script>
+
 </body>
 </html>
