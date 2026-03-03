@@ -560,7 +560,7 @@ textarea { resize: none; height: 80px; }
 <body>
 <div class="header">
   <div><h1>🧠 TDAH Care</h1><span id="header-date"></span></div>
-  <div style="font-size:2rem;">👤</div>
+  <div style="font-size:2rem;cursor:pointer;user-select:none;" onmousedown="startAdminHold()" ontouchstart="startAdminHold(event)" onmouseup="cancelAdminHold()" ontouchend="cancelAdminHold()" onmouseleave="cancelAdminHold()">👤</div>
 </div>
 
 <!-- HOME -->
@@ -2496,14 +2496,10 @@ function renderChartSemanal() {
 
 
 
-// Secret admin tap
-let _footerTaps = 0, _footerTimer = null;
-function handleFooterTap() {
-  _footerTaps++;
-  clearTimeout(_footerTimer);
-  _footerTimer = setTimeout(() => { _footerTaps = 0; }, 2000);
-  if (_footerTaps >= 5) { _footerTaps = 0; abrirAdmin(); }
-}
+// Secret admin - segure o icone por 2 segundos
+let _adminHoldTimer = null;
+function startAdminHold(e) { if(e) e.preventDefault(); _adminHoldTimer = setTimeout(function(){ abrirAdmin(); if(navigator.vibrate) navigator.vibrate(100); }, 2000); }
+function cancelAdminHold() { clearTimeout(_adminHoldTimer); }
 
 // ========== APELIDO & FIREBASE ==========
 function verificarApelido() {
