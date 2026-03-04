@@ -5,33 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel da Psicóloga - CleanTdah</title>
     <style>
-        /* ESTILOS VISUAIS DO PAINEL */
         body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: #f0f2f5; color: #333; }
         h1 { color: #2c3e50; text-align: center; }
         .container { max-width: 900px; margin: 0 auto; }
-        
-        /* Estilos do Resumo no Topo */
         .painel-resumo { display: flex; justify-content: space-around; background: #2980b9; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .resumo-item { text-align: center; }
         .resumo-valor { font-size: 2em; font-weight: bold; }
-        
-        /* Botões de Ação do Topo */
         .acoes-topo { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 20px; }
         button { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-atualizar { background-color: #27ae60; color: white; }
         .btn-csv { background-color: #f39c12; color: white; }
         .btn-remover { background-color: #e74c3c; color: white; padding: 5px 10px; font-size: 0.9em; margin-top: 10px;}
         button:hover { opacity: 0.8; }
-
-        /* Estilo dos Cards Expandíveis */
         details { background: white; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px; border-left: 5px solid #3498db; }
         summary { font-size: 1.2em; font-weight: bold; color: #2c3e50; cursor: pointer; list-style: none; outline: none; }
         summary::-webkit-details-marker { display: none; }
         .conteudo-card { margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
-        
         .dados-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
         .dado-item { background: #f8f9fa; padding: 10px; border-radius: 5px; }
-        
         .analise-auto { background: #e8f8f5; padding: 10px; border-radius: 5px; border-left: 4px solid #1abc9c; font-style: italic; margin-bottom: 10px; }
     </style>
 </head>
@@ -53,7 +44,7 @@
 
         <div class="acoes-topo">
             <button class="btn-atualizar" id="btn-atualizar">🔄 Atualizar Dados</button>
-            <button class="btn-csv" id="btn-csv">📊 Exportar CSV (Excel)</button>
+            <button class="btn-csv" id="btn-csv">📊 Exportar CSV</button>
         </div>
         
         <div id="lista-relatorios">
@@ -61,11 +52,10 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-        // 1. SISTEMA DE SENHA SIMPLES
+    <script>
         const senhaCorreta = "psico2024";
         const senhaDigitada = prompt("Bem-vinda ao Painel Admin. Digite a senha para acessar:");
         
@@ -76,23 +66,20 @@
             throw new Error("Execução interrompida por senha incorreta.");
         }
 
-        // 2. CONFIGURAÇÃO DO FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
             authDomain: "cleantdah.firebaseapp.com",
             projectId: "cleantdah",
             storageBucket: "cleantdah.firebasestorage.app",
             messagingSenderId: "553813989536",
-            appId: "1:553813989536:web:7852d1fea9d8906ee091c5",
-            measurementId: "G-K2H1FJ0GWD"
+            appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         let dadosGlobais = [];
 
-        // 3. FUNÇÃO PARA GERAR A ANÁLISE AUTOMÁTICA
         function gerarAnalise(dados) {
             let analise = "Análise automática: ";
             let alertas = 0;
@@ -117,7 +104,6 @@
             return analise;
         }
 
-        // 4. FUNÇÃO PRINCIPAL: BUSCAR OS DADOS NO FIREBASE
         async function buscarRelatorios() {
             const divLista = document.getElementById('lista-relatorios');
             divLista.innerHTML = "<p style='text-align:center;'>Atualizando dados do Firebase...</p>";
@@ -127,7 +113,7 @@
             let qtdPacientes = 0;
 
             try {
-                const querySnapshot = await getDocs(collection(db, "usuarios"));
+                const querySnapshot = await db.collection("usuarios").get();
                 divLista.innerHTML = ""; 
 
                 if(querySnapshot.empty) {
@@ -156,15 +142,27 @@
                         if (dias.length > 0) {
                             historicoHTML += `<div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
                                 <strong style="color: #2c3e50;">📅 Histórico Diário Detalhado:</strong>
-                                <div style="max-height: 220px; overflow-y: auto; margin-top: 10px; padding-right: 5px;">`;
+                                <div style="max-height: 250px; overflow-y: auto; margin-top: 10px; padding-right: 5px;">`;
                             
                             dias.forEach(data => {
                                 const info = dados.dailyData[data];
+                                
+                                // Extração exata dos dados do TDAH Care
+                                const sonoTxt = (info.sono && info.sono[0]) ? info.sono[0].horas + 'h' : 'N/A';
+                                const focoTxt = (info.pom && info.pom.minFoco) ? info.pom.minFoco + 'm' : '0m';
+                                const celTxt = (info.celular) ? info.celular.horas + 'h ' + info.celular.minutos + 'm' : 'N/A';
+                                const aguaTxt = (info.copos) ? (info.copos * 250) + 'ml' : '0ml';
+                                const remedioTxt = (info.remedio && info.remedio.horaRegistro) ? '✅' : '❌';
+                                
+                                let metasConc = 0; let metasTot = 0;
+                                if(info.metas) { metasTot += info.metas.length; metasConc += info.metas.filter(m=>m.done).length; }
+                                if(info.metasFixas) { metasTot += info.metasFixas.length; metasConc += info.metasFixas.filter(m=>m.done).length; }
+
                                 historicoHTML += `
                                     <div style="border-bottom: 1px dashed #ccc; padding: 8px 0; font-size: 0.9em;">
                                         <strong style="color: #2980b9;">${data}</strong><br>
-                                        • Humor: ${info.humor || 'N/A'} | Sono: ${info.sono || info.sleep || 0}h | Foco: ${info.foco || info.focus || 'N/A'}<br>
-                                        ${info.nota ? `• Nota/Diário: <em>${info.nota}</em>` : ''}
+                                        • Sono: ${sonoTxt} | Foco: ${focoTxt} | Celular: ${celTxt}<br>
+                                        • Água: ${aguaTxt} | Metas: ${metasConc}/${metasTot} | Remédio: ${remedioTxt}
                                     </div>`;
                             });
                             historicoHTML += `</div></div>`;
@@ -174,27 +172,22 @@
                     let metasHTML = "";
                     if (dados.metas && Array.isArray(dados.metas) && dados.metas.length > 0) {
                         metasHTML += `<div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
-                            <strong style="color: #2c3e50;">🎯 Metas:</strong>
+                            <strong style="color: #2c3e50;">🎯 Metas de Hoje:</strong>
                             <ul style="margin-top: 5px; padding-left: 20px; font-size: 0.9em; list-style: none;">`;
                         dados.metas.forEach(meta => {
-                            const status = (meta.done || meta.concluida) ? '✅' : '⏳';
-                            const nomeMeta = meta.texto || meta.t || meta.nome || 'Meta';
+                            const status = (meta.done) ? '✅' : '⏳';
+                            const nomeMeta = meta.texto || 'Meta';
                             metasHTML += `<li>${status} ${nomeMeta}</li>`;
                         });
                         metasHTML += `</ul></div>`;
                     }
 
                     let remediosHTML = "";
-                    if (dados.remedios && Array.isArray(dados.remedios) && dados.remedios.length > 0) {
-                        remediosHTML += `<div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
-                            <strong style="color: #2c3e50;">💊 Medicamentos:</strong>
-                            <ul style="margin-top: 5px; padding-left: 20px; font-size: 0.9em; list-style: circle;">`;
-                        dados.remedios.forEach(remedio => {
-                            const nomeRemedio = remedio.nome || 'Remédio';
-                            const dose = remedio.dose || remedio.horario ? ` - ${remedio.dose || remedio.horario}` : '';
-                            remediosHTML += `<li>${nomeRemedio}${dose}</li>`;
-                        });
-                        remediosHTML += `</ul></div>`;
+                    if (dados.remedio && dados.remedio.horaRegistro) {
+                        const dataStr = new Date(dados.remedio.horaRegistro).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                        remediosHTML += `<div style="margin-top: 10px; padding: 10px; background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px;">
+                            <strong style="color: #2e7d32;">💊 Medicação Atual:</strong> Registrada às ${dataStr}
+                        </div>`;
                     }
                     
                     // --- FIM DA GERAÇÃO DO RELATÓRIO DETALHADO ---
@@ -215,11 +208,6 @@
                                     <div class="dado-item"><strong>Dias Inseridos:</strong> ${dados.diasDados || 0}</div>
                                 </div>
                                 
-                                <div class="dado-item" style="margin-bottom: 10px;">
-                                    <strong>Resumo da Semana:</strong><br>
-                                    ${dados.resumoSemana ? dados.resumoSemana : 'Nenhum resumo escrito.'}
-                                </div>
-
                                 ${historicoHTML}
                                 ${metasHTML}
                                 ${remediosHTML}
@@ -242,13 +230,11 @@
             }
         }
 
-        // 5. FUNÇÃO PARA DELETAR PACIENTE
         window.deletarPaciente = async function(id) {
             const confirmacao = confirm("Tem certeza que deseja APAGAR os dados deste paciente? Essa ação não pode ser desfeita.");
-            
             if (confirmacao) {
                 try {
-                    await deleteDoc(doc(db, "usuarios", id));
+                    await db.collection("usuarios").doc(id).delete();
                     alert("Paciente removido com sucesso!");
                     buscarRelatorios(); 
                 } catch (error) {
@@ -257,18 +243,16 @@
             }
         }
 
-        // 6. FUNÇÃO PARA EXPORTAR CSV (EXCEL)
         document.getElementById('btn-csv').addEventListener('click', () => {
             if (dadosGlobais.length === 0) {
                 alert("Não há dados para exportar.");
                 return;
             }
 
-            let csvContent = "ID,Apelido,Periodo,Score,FocoTotal,MediaSono,MetasPct,Resumo\n";
+            let csvContent = "ID,Apelido,Periodo,Score,FocoTotal,MediaSono,MetasPct\n";
 
             dadosGlobais.forEach(paciente => {
-                const resumoLimpo = paciente.resumoSemana ? paciente.resumoSemana.replace(/\n/g, " ") : "";
-                csvContent += `${paciente.id},${paciente.apelido || ''},${paciente.periodo || ''},${paciente.score || 0},${paciente.focoTotal || 0},${paciente.sonoMedia || ''},${paciente.metasPct || ''},"${resumoLimpo}"\n`;
+                csvContent += `${paciente.id},${paciente.apelido || ''},${paciente.periodo || ''},${paciente.score || 0},${paciente.focoTotal || 0},${paciente.sonoMedia || ''},${paciente.metasPct || ''}\n`;
             });
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -282,12 +266,10 @@
             document.body.removeChild(link);
         });
 
-        // 7. BOTÃO DE ATUALIZAR
         document.getElementById('btn-atualizar').addEventListener('click', () => {
             buscarRelatorios();
         });
 
-        // Executa a busca assim que a página carrega e a senha é aceita
         buscarRelatorios();
     </script>
 </body>
