@@ -26,7 +26,7 @@
         /* Estilo dos Cards Expandíveis */
         details { background: white; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px; border-left: 5px solid #3498db; }
         summary { font-size: 1.2em; font-weight: bold; color: #2c3e50; cursor: pointer; list-style: none; outline: none; }
-        summary::-webkit-details-marker { display: none; } /* Remove a setinha padrão no Chrome */
+        summary::-webkit-details-marker { display: none; }
         .conteudo-card { margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
         
         .dados-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
@@ -66,7 +66,7 @@
         import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         // 1. SISTEMA DE SENHA SIMPLES
-        const senhaCorreta = "psico2024"; // <-- Senha de acesso ao painel
+        const senhaCorreta = "psico2024";
         const senhaDigitada = prompt("Bem-vinda ao Painel Admin. Digite a senha para acessar:");
         
         if (senhaDigitada === senhaCorreta) {
@@ -76,7 +76,7 @@
             throw new Error("Execução interrompida por senha incorreta.");
         }
 
-        // 2. CONFIGURAÇÃO DO FIREBASE (Suas chaves exatas!)
+        // 2. CONFIGURAÇÃO DO FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
             authDomain: "cleantdah.firebaseapp.com",
@@ -90,7 +90,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Variável para guardar os dados e exportar pro Excel depois
         let dadosGlobais = [];
 
         // 3. FUNÇÃO PARA GERAR A ANÁLISE AUTOMÁTICA
@@ -151,10 +150,9 @@
 
                     // --- INÍCIO DA GERAÇÃO DO RELATÓRIO DETALHADO ---
 
-                    // 1. Gerar HTML dos Registros Diários (Histórico)
                     let historicoHTML = "";
                     if (dados.dailyData && typeof dados.dailyData === 'object') {
-                        const dias = Object.keys(dados.dailyData).sort().reverse(); // Mais recentes primeiro
+                        const dias = Object.keys(dados.dailyData).sort().reverse(); 
                         if (dias.length > 0) {
                             historicoHTML += `<div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
                                 <strong style="color: #2c3e50;">📅 Histórico Diário Detalhado:</strong>
@@ -173,7 +171,6 @@
                         }
                     }
 
-                    // 2. Gerar HTML das Metas
                     let metasHTML = "";
                     if (dados.metas && Array.isArray(dados.metas) && dados.metas.length > 0) {
                         metasHTML += `<div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
@@ -187,7 +184,6 @@
                         metasHTML += `</ul></div>`;
                     }
 
-                    // 3. Gerar HTML dos Medicamentos (se houver)
                     let remediosHTML = "";
                     if (dados.remedios && Array.isArray(dados.remedios) && dados.remedios.length > 0) {
                         remediosHTML += `<div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
@@ -203,7 +199,6 @@
                     
                     // --- FIM DA GERAÇÃO DO RELATÓRIO DETALHADO ---
 
-                    // Cria o Card Expandível
                     const cartaoHTML = `
                         <details>
                             <summary>👤 ${dados.apelido || idDoDocumento} (Clique para expandir)</summary>
@@ -237,14 +232,13 @@
                     divLista.innerHTML += cartaoHTML;
                 });
 
-                // Atualiza o Resumo no Topo
                 document.getElementById('total-pacientes').innerText = qtdPacientes;
                 const media = (totalScore / qtdPacientes).toFixed(1); 
                 document.getElementById('score-medio').innerText = media;
 
             } catch (erro) {
                 console.error("Erro: ", erro);
-                divLista.innerHTML = \`<p style="color:red; text-align:center;">Erro ao conectar com o banco de dados.</p>\`;
+                divLista.innerHTML = `<p style="color:red; text-align:center;">Erro ao conectar com o banco de dados.</p>`;
             }
         }
 
