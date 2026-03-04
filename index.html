@@ -1791,12 +1791,8 @@ function fecharAdmin() {
 
 // ========== ADMIN ==========
 function abrirAdmin() {
-  const ap = document.getElementById('apelido-overlay');
-  if (ap) { ap.classList.remove('show'); ap.style.pointerEvents = 'none'; }
-  const el = document.getElementById('admin-overlay');
-  if (!el) { alert('Painel nao encontrado - tente recarregar'); return; }
-  el.style.cssText = 'display:block; position:fixed; inset:0; background:#F0F4FF; z-index:9999; overflow-y:auto; padding:20px; box-sizing:border-box; pointer-events:all;';
-  el.classList.add('show');
+    // Isso fará com que o botão abra a nova página em uma nova guia!
+    window.open('admin.html', '_blank');
 }
 function verificarSenhaAdmin() {
   const inp = document.getElementById('admin-senha-input');
@@ -1956,4 +1952,5 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
