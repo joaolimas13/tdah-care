@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel da Psicóloga - Avançado</title>
+    <title>Painel da Psicóloga - CleanTdah</title>
     <style>
         /* ESTILOS VISUAIS DO PAINEL */
         body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: #f0f2f5; color: #333; }
@@ -38,7 +38,7 @@
 <body>
 
     <div class="container" id="conteudo-principal" style="display: none;">
-        <h1>Painel de Acompanhamento</h1>
+        <h1>Painel de Acompanhamento - CleanTdah</h1>
         
         <div class="painel-resumo">
             <div class="resumo-item">
@@ -63,11 +63,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        // Adicionamos 'deleteDoc' e 'doc' para podermos apagar arquivos!
         import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         // 1. SISTEMA DE SENHA SIMPLES
-        const senhaCorreta = "psico2024"; // <-- MUDE A SENHA AQUI SE QUISER
+        const senhaCorreta = "psico2024"; // <-- Senha de acesso ao painel
         const senhaDigitada = prompt("Bem-vinda ao Painel Admin. Digite a senha para acessar:");
         
         if (senhaDigitada === senhaCorreta) {
@@ -76,22 +75,22 @@
             document.body.innerHTML = "<h1 style='text-align:center; color:red; margin-top:50px;'>Acesso Negado. Senha incorreta.</h1>";
             throw new Error("Execução interrompida por senha incorreta.");
         }
-        
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+        // 2. CONFIGURAÇÃO DO FIREBASE (Suas chaves exatas!)
         const firebaseConfig = {
-          apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
-          authDomain: "cleantdah.firebaseapp.com",
-          projectId: "cleantdah",
-          storageBucket: "cleantdah.firebasestorage.app",
-          messagingSenderId: "553813989536",
-          appId: "1:553813989536:web:7852d1fea9d8906ee091c5",
-          measurementId: "G-K2H1FJ0GWD"
+            apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
+            authDomain: "cleantdah.firebaseapp.com",
+            projectId: "cleantdah",
+            storageBucket: "cleantdah.firebasestorage.app",
+            messagingSenderId: "553813989536",
+            appId: "1:553813989536:web:7852d1fea9d8906ee091c5",
+            measurementId: "G-K2H1FJ0GWD"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Variável global para guardar os dados e exportar pro Excel depois
+        // Variável para guardar os dados e exportar pro Excel depois
         let dadosGlobais = [];
 
         // 3. FUNÇÃO PARA GERAR A ANÁLISE AUTOMÁTICA
@@ -106,23 +105,25 @@
                 alertas++;
             }
 
-            if (dados.sonoMedia < 6) {
+            if (dados.sonoMedia && dados.sonoMedia < 6) {
                 analise += "💤 Privação de sono detectada. ";
                 alertas++;
             }
 
             if (alertas === 0 && dados.score > 0) {
                 analise += "Paciente mantendo bons hábitos na semana.";
+            } else if (dados.score === 0 || !dados.score) {
+                analise += "Poucos dados inseridos para uma análise completa.";
             }
             return analise;
         }
 
-        // 4. FUNÇÃO PRINCIPAL: BUSCAR OS DADOS
+        // 4. FUNÇÃO PRINCIPAL: BUSCAR OS DADOS NO FIREBASE
         async function buscarRelatorios() {
             const divLista = document.getElementById('lista-relatorios');
             divLista.innerHTML = "<p style='text-align:center;'>Atualizando dados do Firebase...</p>";
             
-            dadosGlobais = []; // Limpa os dados antigos
+            dadosGlobais = []; 
             let totalScore = 0;
             let qtdPacientes = 0;
 
@@ -137,19 +138,18 @@
                     return;
                 }
 
-                // Passa por cada paciente
                 querySnapshot.forEach((documento) => {
                     const dados = documento.data();
-                    const idDoDocumento = documento.id; // Precisamos do ID para poder deletar depois
+                    const idDoDocumento = documento.id; 
                     
-                    dadosGlobais.push({ id: idDoDocumento, ...dados }); // Salva pro CSV
+                    dadosGlobais.push({ id: idDoDocumento, ...dados }); 
 
                     qtdPacientes++;
                     totalScore += Number(dados.score) || 0;
 
                     const analiseTexto = gerarAnalise(dados);
 
-                    // Cria o Card Expandível (Tag <details>)
+                    // Cria o Card Expandível
                     const cartaoHTML = `
                         <details>
                             <summary>👤 ${dados.apelido || idDoDocumento} (Clique para expandir)</summary>
@@ -163,6 +163,7 @@
                                     <div class="dado-item"><strong>Média de Sono:</strong> ${dados.sonoMedia || 'N/A'} h</div>
                                     <div class="dado-item"><strong>Foco Total:</strong> ${dados.focoTotal || 0}</div>
                                     <div class="dado-item"><strong>Metas Cumpridas:</strong> ${dados.metasPct ? dados.metasPct + '%' : 'N/A'}</div>
+                                    <div class="dado-item"><strong>Dias Inseridos:</strong> ${dados.diasDados || 0}</div>
                                 </div>
                                 
                                 <div class="dado-item" style="margin-bottom: 10px;">
@@ -180,26 +181,24 @@
 
                 // Atualiza o Resumo no Topo
                 document.getElementById('total-pacientes').innerText = qtdPacientes;
-                const media = (totalScore / qtdPacientes).toFixed(1); // Deixa com 1 casa decimal
+                const media = (totalScore / qtdPacientes).toFixed(1); 
                 document.getElementById('score-medio').innerText = media;
 
             } catch (erro) {
                 console.error("Erro: ", erro);
-                divLista.innerHTML = `<p style="color:red; text-align:center;">Erro ao conectar com o banco.</p>`;
+                divLista.innerHTML = `<p style="color:red; text-align:center;">Erro ao conectar com o banco de dados.</p>`;
             }
         }
 
         // 5. FUNÇÃO PARA DELETAR PACIENTE
-        // Colocamos no "window" para o botão HTML conseguir enxergar essa função
         window.deletarPaciente = async function(id) {
             const confirmacao = confirm("Tem certeza que deseja APAGAR os dados deste paciente? Essa ação não pode ser desfeita.");
             
             if (confirmacao) {
                 try {
-                    // Aponta para o documento específico e deleta
                     await deleteDoc(doc(db, "usuarios", id));
                     alert("Paciente removido com sucesso!");
-                    buscarRelatorios(); // Atualiza a tela automaticamente
+                    buscarRelatorios(); 
                 } catch (error) {
                     alert("Erro ao remover: " + error.message);
                 }
@@ -213,23 +212,18 @@
                 return;
             }
 
-            // Cria o cabeçalho do arquivo CSV
             let csvContent = "ID,Apelido,Periodo,Score,FocoTotal,MediaSono,MetasPct,Resumo\n";
 
-            // Preenche as linhas com os dados
             dadosGlobais.forEach(paciente => {
-                // Limpa quebras de linha no resumo para não bugar o Excel
                 const resumoLimpo = paciente.resumoSemana ? paciente.resumoSemana.replace(/\n/g, " ") : "";
-                
                 csvContent += `${paciente.id},${paciente.apelido || ''},${paciente.periodo || ''},${paciente.score || 0},${paciente.focoTotal || 0},${paciente.sonoMedia || ''},${paciente.metasPct || ''},"${resumoLimpo}"\n`;
             });
 
-            // Código para forçar o download do arquivo
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", "relatorio_pacientes.csv");
+            link.setAttribute("download", "relatorio_pacientes_cleantdah.csv");
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
@@ -241,7 +235,7 @@
             buscarRelatorios();
         });
 
-        // Executa a busca inicial assim que passa da senha
+        // Executa a busca assim que a página carrega e a senha é aceita
         buscarRelatorios();
     </script>
 </body>
