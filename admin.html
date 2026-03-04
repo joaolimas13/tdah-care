@@ -149,6 +149,60 @@
 
                     const analiseTexto = gerarAnalise(dados);
 
+                    // --- INÍCIO DA GERAÇÃO DO RELATÓRIO DETALHADO ---
+
+                    // 1. Gerar HTML dos Registros Diários (Histórico)
+                    let historicoHTML = "";
+                    if (dados.dailyData && typeof dados.dailyData === 'object') {
+                        const dias = Object.keys(dados.dailyData).sort().reverse(); // Mais recentes primeiro
+                        if (dias.length > 0) {
+                            historicoHTML += `<div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
+                                <strong style="color: #2c3e50;">📅 Histórico Diário Detalhado:</strong>
+                                <div style="max-height: 220px; overflow-y: auto; margin-top: 10px; padding-right: 5px;">`;
+                            
+                            dias.forEach(data => {
+                                const info = dados.dailyData[data];
+                                historicoHTML += `
+                                    <div style="border-bottom: 1px dashed #ccc; padding: 8px 0; font-size: 0.9em;">
+                                        <strong style="color: #2980b9;">${data}</strong><br>
+                                        • Humor: ${info.humor || 'N/A'} | Sono: ${info.sono || info.sleep || 0}h | Foco: ${info.foco || info.focus || 'N/A'}<br>
+                                        ${info.nota ? `• Nota/Diário: <em>${info.nota}</em>` : ''}
+                                    </div>`;
+                            });
+                            historicoHTML += `</div></div>`;
+                        }
+                    }
+
+                    // 2. Gerar HTML das Metas
+                    let metasHTML = "";
+                    if (dados.metas && Array.isArray(dados.metas) && dados.metas.length > 0) {
+                        metasHTML += `<div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
+                            <strong style="color: #2c3e50;">🎯 Metas:</strong>
+                            <ul style="margin-top: 5px; padding-left: 20px; font-size: 0.9em; list-style: none;">`;
+                        dados.metas.forEach(meta => {
+                            const status = (meta.done || meta.concluida) ? '✅' : '⏳';
+                            const nomeMeta = meta.texto || meta.t || meta.nome || 'Meta';
+                            metasHTML += `<li>${status} ${nomeMeta}</li>`;
+                        });
+                        metasHTML += `</ul></div>`;
+                    }
+
+                    // 3. Gerar HTML dos Medicamentos (se houver)
+                    let remediosHTML = "";
+                    if (dados.remedios && Array.isArray(dados.remedios) && dados.remedios.length > 0) {
+                        remediosHTML += `<div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
+                            <strong style="color: #2c3e50;">💊 Medicamentos:</strong>
+                            <ul style="margin-top: 5px; padding-left: 20px; font-size: 0.9em; list-style: circle;">`;
+                        dados.remedios.forEach(remedio => {
+                            const nomeRemedio = remedio.nome || 'Remédio';
+                            const dose = remedio.dose || remedio.horario ? ` - ${remedio.dose || remedio.horario}` : '';
+                            remediosHTML += `<li>${nomeRemedio}${dose}</li>`;
+                        });
+                        remediosHTML += `</ul></div>`;
+                    }
+                    
+                    // --- FIM DA GERAÇÃO DO RELATÓRIO DETALHADO ---
+
                     // Cria o Card Expandível
                     const cartaoHTML = `
                         <details>
@@ -171,7 +225,11 @@
                                     ${dados.resumoSemana ? dados.resumoSemana : 'Nenhum resumo escrito.'}
                                 </div>
 
-                                <button class="btn-remover" onclick="window.deletarPaciente('${idDoDocumento}')">🗑️ Remover Paciente</button>
+                                ${historicoHTML}
+                                ${metasHTML}
+                                ${remediosHTML}
+
+                                <button class="btn-remover" onclick="window.deletarPaciente('${idDoDocumento}')" style="margin-top: 15px;">🗑️ Remover Paciente</button>
                             </div>
                         </details>
                     `;
@@ -186,7 +244,7 @@
 
             } catch (erro) {
                 console.error("Erro: ", erro);
-                divLista.innerHTML = `<p style="color:red; text-align:center;">Erro ao conectar com o banco de dados.</p>`;
+                divLista.innerHTML = \`<p style="color:red; text-align:center;">Erro ao conectar com o banco de dados.</p>\`;
             }
         }
 
