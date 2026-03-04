@@ -1037,23 +1037,247 @@ function updateWidget() {
   document.getElementById('wr-pom').textContent = state.pom.sessoes || 0;
   document.getElementById('wr-score').innerHTML = `${dn*10}<span style="font-size:1rem;color:#90CAF9;">/100</span>`;
 }
-function abrirReativar() { document.getElementById('reativar-modal').classList.add('show'); }
-function fecharReativarModal(e) { if(e.target.id==='reativar-modal') document.getElementById('reativar-modal').classList.remove('show'); }
+// ===== REATIVAR FOCO =====
+const PROTOCOLOS = {
+  1: [ // Travado
+    { icon:'💧', titulo:'Beba água agora', desc:'Desidratação piora a concentração. Levante e beba um copo d\'água completo antes de continuar.', tipo:'acao' },
+    { icon:'🚶', titulo:'Levante por 2 minutos', desc:'Saia da cadeira. Dê uma volta curta, estique o corpo. Movimento físico ativa o córtex pré-frontal.', tipo:'timer', tempoSeg:120 },
+    { icon:'🎯', titulo:'Defina UMA tarefa', desc:'Qual é a ÚNICA coisa que você vai fazer nos próximos 20 minutos? Escreva ou diga em voz alta.', tipo:'acao' },
+  ],
+  2: [ // Cabeça pesada
+    { icon:'🌬️', titulo:'Respiração 4-7-8', desc:'Inspire pelo nariz por 4s, segure por 7s, expire pela boca por 8s. Repita 3 vezes. Ativa o sistema parassimpático.', tipo:'respiracao' },
+    { icon:'💧', titulo:'Água + algo leve', desc:'Cabeça pesada pode ser queda de glicose. Beba água e coma uma fruta ou algo leve agora.', tipo:'acao' },
+    { icon:'💡', titulo:'Reduza os estímulos', desc:'Feche abas desnecessárias, coloque o celular virado, diminua a luminosidade. Ambiente simples = mente mais clara.', tipo:'acao' },
+    { icon:'⏱️', titulo:'Apenas 5 minutos', desc:'Não pense em 20min. Abra a tarefa e foque por APENAS 5 minutos. Depois decide se continua.', tipo:'timer', tempoSeg:300 },
+  ],
+  3: [ // Tela em branco
+    { icon:'📝', titulo:'Dump mental — 2 min', desc:'Escreva TUDO que está na sua cabeça agora, sem filtro. Esvaziar a mente libera espaço cognitivo.', tipo:'timer', tempoSeg:120 },
+    { icon:'💪', titulo:'10 flexões ou 15 agachamentos', desc:'Exercício físico curto aumenta dopamina e norepinefrina instantaneamente — os mesmos neurotransmissores do remédio. Faça agora: 10 flexões (ou de joelho se precisar) OU 15 agachamentos. Sem desculpa, leva 30 segundos.', tipo:'exercicio', tempoSeg:60 },
+    { icon:'🌬️', titulo:'Respiração quadrada', desc:'Inspire 4s → Segure 4s → Expire 4s → Segure 4s. Repita 4 vezes. Reduz o cortisol rapidamente.', tipo:'respiracao' },
+    { icon:'🔍', titulo:'Qual é o menor passo?', desc:'Não pense na tarefa toda. Apenas: qual é a PRIMEIRA ação de 2 minutos para começar? Ex: "abrir o documento" ou "escrever o título".', tipo:'acao' },
+    { icon:'⚡', titulo:'Arranque — 2 minutos', desc:'Faça só esse primeiro passo. Apenas 2 minutos. A inércia quebra assim que você começa.', tipo:'timer', tempoSeg:120 },
+  ]
+};
+
+let passoAtual = 0;
+let nivelAtual = 0;
+let timerPassoInterval = null;
+let timerPassoSeg = 0;
+let timerRodando = false;
+let breathInterval = null;
+
 function selecionarNivel(nivel, btn) {
-  document.querySelectorAll('.nivel-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
   btn.classList.add('selected');
+  nivelAtual = nivel;
+  passoAtual = 0;
+  document.getElementById('reativar-nivel-select').style.display = 'none';
   document.getElementById('protocolo-wrap').classList.add('show');
+  document.getElementById('protocolo-fim').classList.remove('show');
+  renderPasso();
 }
-function pularPasso() { showToast('Passo pulado ⏭️'); proximoPasso(); }
-function toggleTimerPasso() { showToast('Timer em desenvolvimento ⏱️'); }
+
+function renderPasso() {
+  const passos = PROTOCOLOS[nivelAtual];
+  if (!passos) return;
+  if (timerPassoInterval) { clearInterval(timerPassoInterval); timerPassoInterval = null; }
+  if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+  timerRodando = false;
+
+  // Dots de progresso
+  document.getElementById('passo-progresso').innerHTML = passos.map((_, i) =>
+    ``
+  ).join('');
+
+  const passo = passos[passoAtual];
+  document.getElementById('passo-icon').textContent = passo.icon;
+  document.getElementById('passo-titulo').textContent = passo.titulo;
+  document.getElementById('passo-desc').textContent = passo.desc;
+
+  const playBtn = document.getElementById('passo-play-btn');
+  const nextBtn = document.getElementById('passo-next-btn');
+  const cardEl = document.getElementById('passo-card');
+
+  // Remover extra anterior
+  const oldExtra = cardEl.querySelector('.passo-extra');
+  if (oldExtra) oldExtra.remove();
+
+  if (passo.tipo === 'timer' || passo.tipo === 'exercicio') {
+    timerPassoSeg = passo.tempoSeg || 60;
+    playBtn.style.display = 'flex';
+    playBtn.textContent = '▶ Iniciar';
+    playBtn.className = 'passo-btn passo-btn-play';
+    playBtn.disabled = false;
+    nextBtn.textContent = 'Pular ⏭';
+    const CIRC_PASSO = 2 * Math.PI * 52;
+    const extra = document.createElement('div');
+    extra.className = 'passo-extra';
+    extra.innerHTML = `
+      
+        
+          
+            
+            
+          
+          
+            ${formatTimePasso(timerPassoSeg)}
+            restantes
+          
+        
+      `;
+    cardEl.appendChild(extra);
+  } else if (passo.tipo === 'respiracao') {
+    playBtn.style.display = 'flex';
+    playBtn.textContent = '▶ Iniciar guia';
+    playBtn.className = 'passo-btn passo-btn-play';
+    playBtn.disabled = false;
+    nextBtn.textContent = 'Feito ✓';
+    const extra = document.createElement('div');
+    extra.className = 'passo-extra';
+    extra.innerHTML = `
+      
+        Pronto?
+        Pressione iniciar
+        
+      `;
+    cardEl.appendChild(extra);
+  } else {
+    playBtn.style.display = 'none';
+    nextBtn.textContent = 'Feito ✓';
+  }
+}
+
+function formatTimePasso(s) {
+  return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+}
+
+function toggleTimerPasso() {
+  const passo = PROTOCOLOS[nivelAtual][passoAtual];
+  if (passo.tipo === 'respiracao') { iniciarRespiracao(); return; }
+  const CIRC_PASSO = 2 * Math.PI * 52;
+  if (timerRodando) {
+    clearInterval(timerPassoInterval);
+    timerRodando = false;
+    document.getElementById('passo-play-btn').textContent = '▶ Continuar';
+  } else {
+    document.getElementById('passo-timer-wrap').style.display = 'flex';
+    document.getElementById('passo-play-btn').textContent = '⏸ Pausar';
+    timerRodando = true;
+    const total = passo.tempoSeg || 60;
+    timerPassoInterval = setInterval(() => {
+      timerPassoSeg--;
+      document.getElementById('passo-time-display').textContent = formatTimePasso(Math.max(0,timerPassoSeg));
+      const prog = timerPassoSeg / total;
+      document.getElementById('passo-ring-fill').style.strokeDashoffset = CIRC_PASSO * prog;
+      if (timerPassoSeg <= 0) {
+        clearInterval(timerPassoInterval); timerRodando = false;
+        playBeep();
+        document.getElementById('passo-play-btn').textContent = '✓ Concluído!';
+        document.getElementById('passo-play-btn').disabled = true;
+        document.getElementById('passo-next-btn').textContent = 'Feito ✓';
+      }
+    }, 1000);
+  }
+}
+
+const BREATH_478 = [
+  { label:'Inspire', dur:4000, scale:1.4, cor:'#43A047' },
+  { label:'Segure', dur:7000, scale:1.4, cor:'#1565C0' },
+  { label:'Expire', dur:8000, scale:1.0, cor:'#7C3AED' },
+];
+const BREATH_BOX = [
+  { label:'Inspire', dur:4000, scale:1.35, cor:'#43A047' },
+  { label:'Segure', dur:4000, scale:1.35, cor:'#1565C0' },
+  { label:'Expire', dur:4000, scale:1.0, cor:'#7C3AED' },
+  { label:'Segure', dur:4000, scale:1.0, cor:'#E65100' },
+];
+
+function iniciarRespiracao() {
+  const passo = PROTOCOLOS[nivelAtual][passoAtual];
+  const isBox = passo.titulo.toLowerCase().includes('quadrada');
+  const steps = isBox ? BREATH_BOX : BREATH_478;
+  const totalCiclos = isBox ? 4 : 3;
+  let ciclo = 0, stepIdx = 0;
+  document.getElementById('breath-container').style.display = 'block';
+  document.getElementById('passo-play-btn').style.display = 'none';
+  function runStep() {
+    if (ciclo >= totalCiclos) {
+      const c = document.getElementById('breath-circle');
+      c.style.transform = 'scale(1)';
+      c.textContent = '✓ Feito!';
+      document.getElementById('breath-label').textContent = 'Respiração concluída';
+      document.getElementById('breath-ciclo').textContent = '';
+      document.getElementById('passo-next-btn').textContent = 'Feito ✓';
+      playBeep(); return;
+    }
+    const s = steps[stepIdx];
+    const c = document.getElementById('breath-circle');
+    c.style.transition = `transform ${s.dur}ms ease-in-out, background ${s.dur}ms`;
+    c.style.transform = `scale(${s.scale})`;
+    c.style.background = `radial-gradient(circle, ${s.cor}80, ${s.cor}20)`;
+    c.style.borderColor = s.cor + '80';
+    c.textContent = s.label;
+    document.getElementById('breath-label').textContent = s.label + ' — ' + (s.dur/1000) + 's';
+    document.getElementById('breath-ciclo').textContent = 'Ciclo ' + (ciclo+1) + ' de ' + totalCiclos;
+    breathInterval = setTimeout(() => {
+      stepIdx++;
+      if (stepIdx >= steps.length) { stepIdx = 0; ciclo++; }
+      runStep();
+    }, s.dur);
+  }
+  runStep();
+}
+
 function proximoPasso() {
-  document.getElementById('protocolo-wrap').classList.remove('show');
-  document.getElementById('protocolo-fim').classList.add('show');
+  const passos = PROTOCOLOS[nivelAtual];
+  if (timerPassoInterval) { clearInterval(timerPassoInterval); timerPassoInterval = null; }
+  if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+  const playBtn = document.getElementById('passo-play-btn');
+  if (playBtn) playBtn.disabled = false;
+  passoAtual++;
+  if (passoAtual >= passos.length) {
+    document.getElementById('protocolo-wrap').classList.remove('show');
+    document.getElementById('protocolo-fim').classList.add('show');
+    if (state.currentDate === hojeISO()) {
+      const dd = state.dailyData[state.currentDate] || {};
+      if (!dd.reativarFoco) dd.reativarFoco = [];
+      dd.reativarFoco.push({ nivel: nivelAtual, hora: new Date().toISOString() });
+      state.dailyData[state.currentDate] = dd;
+      salvar();
+    }
+  } else {
+    renderPasso();
+  }
 }
+
+function pularPasso() {
+  showToast('Passo pulado ⏭️');
+  proximoPasso();
+}
+
+function abrirReativar() {
+  nivelAtual = 0; passoAtual = 0;
+  if (timerPassoInterval) { clearInterval(timerPassoInterval); timerPassoInterval = null; }
+  if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+  document.getElementById('reativar-nivel-select').style.display = 'block';
+  document.getElementById('protocolo-wrap').classList.remove('show');
+  document.getElementById('protocolo-fim').classList.remove('show');
+  document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('reativar-modal').classList.add('show');
+}
+
+function fecharReativarModal(e) {
+  if (e.target.id === 'reativar-modal') {
+    if (timerPassoInterval) { clearInterval(timerPassoInterval); timerPassoInterval = null; }
+    if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+    document.getElementById('reativar-modal').classList.remove('show');
+  }
+}
+
 function finalizarProtocolo() {
   document.getElementById('reativar-modal').classList.remove('show');
   navigate('caverna', document.querySelector('.caverna-nav'));
-  showToast('Modo Caverna ativado!');
+  showToast('🏔️ Modo Caverna ativado!');
 }
 // ----------------------------------------
 
@@ -1954,6 +2178,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
