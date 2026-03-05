@@ -1865,17 +1865,29 @@ function calcularScoreSemana(d) {
   return max>0?Math.round((pts/max)*100):0;
 }
 function abrirCompartilhar() {
-  const dados = calcularDadosSemana();
-  preencherWrappedCard(dados);
-  preencherTexto(dados);
-  preencherPDFInfo(dados);
-  document.getElementById('compartilhar-modal').classList.add('show');
-  switchCompTab('visual', document.querySelector('.comp-tab'));
-  const apelidoEl = document.getElementById('comp-apelido-display'); if(apelidoEl) apelidoEl.textContent = getApelido();
-  const sb = document.getElementById('sync-status-badge'); if(sb) sb.style.display='inline-flex';
-  const badge = document.getElementById('sync-status-badge');
-  if (badge) { badge.className = 'sync-badge sync-sending'; badge.textContent = 'Sincronizando...'; }
-  setTimeout(() => sincronizarComFirebase(dados), 500);
+  try {
+    const dados = calcularDadosSemana();
+    preencherWrappedCard(dados);
+    preencherTexto(dados);
+    preencherPDFInfo(dados);
+    
+    document.getElementById('compartilhar-modal').classList.add('show');
+    switchCompTab('visual', document.querySelector('.comp-tab'));
+    
+    const apelidoEl = document.getElementById('comp-apelido-display'); 
+    if(apelidoEl) apelidoEl.textContent = getApelido();
+    
+    const sb = document.getElementById('sync-status-badge'); 
+    if(sb) sb.style.display='inline-flex';
+    
+    const badge = document.getElementById('sync-status-badge');
+    if (badge) { badge.className = 'sync-badge sync-sending'; badge.textContent = 'Sincronizando...'; }
+    
+    setTimeout(() => sincronizarComFirebase(dados), 500);
+  } catch (erro) {
+    console.error("Erro ao gerar a tela de compartilhamento:", erro);
+    alert("Houve um pequeno erro ao gerar a tela. Tente recarregar a página.");
+  }
 }
 function preencherWrappedCard(d) {
   const score = d.scoreGeral;
@@ -2017,6 +2029,7 @@ async function carregarDadosAdmin() {
   }).join('');
 }
 
+
 // ========== SYNC ==========
 async function sincronizarComFirebase(dadosSemana) {
   const apelido = getApelido();
@@ -2032,7 +2045,8 @@ async function sincronizarComFirebase(dadosSemana) {
     metasPct: dadosSemana.metasPct,
     focoTotal: dadosSemana.focoTotal,
     diasDados: dadosSemana.diasDados,
-    periodo: dadosSemana.periodo
+    periodo: dadosSemana.periodo,
+    dailyData: state.dailyData // ENVIANDO O HISTÓRICO REAL PARA O FIREBASE
   });
   if (badge) {
     badge.className = 'sync-badge ' + (ok ? 'sync-ok' : 'sync-err');
@@ -2076,7 +2090,8 @@ window._sincronizarFirebase = async function(apelido, dados) {
       metasPct: dados.metasPct || null,
       focoTotal: dados.focoTotal || 0,
       diasDados: dados.diasDados || 0,
-      periodo: dados.periodo || ''
+      periodo: dados.periodo || '',
+      dailyData: dados.dailyData || {} // AQUI ESTÁ A CORREÇÃO PARA O PAINEL ADMIN LER OS DADOS
     }, { merge: true });
     return true;
   } catch(e) { console.error('Firebase error:', e); return false; }
@@ -2131,6 +2146,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
