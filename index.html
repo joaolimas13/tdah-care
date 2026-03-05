@@ -1037,76 +1037,147 @@ function updateWidget() {
   document.getElementById('wr-pom').textContent = state.pom.sessoes || 0;
   document.getElementById('wr-score').innerHTML = `${dn*10}<span style="font-size:1rem;color:#90CAF9;">/100</span>`;
 }
-// --- LÓGICA DO REATIVAR FOCO ---
-// Aqui criamos a lista de passos. Você pode alterar os textos depois se quiser!
-const protocoloPassos = [
-  { icon: '💧', titulo: 'Beba água agora', desc: 'Desidratação piora a concentração. Levante e beba um copo d\'água.', timer: 0 },
-  { icon: '🫁', titulo: 'Respire fundo', desc: 'Inspire e expire lentamente para acalmar a ansiedade e oxigenar o cérebro.', timer: 15 },
-  { icon: '🧹', titulo: 'Limpe a mesa', desc: 'Tire 1 coisa que não pertence à sua mesa agora. Menos distração visual = mais foco.', timer: 0 }
-];
+// --- LÓGICA DO REATIVAR FOCO (POR CONTEXTO E NÍVEL) ---
 
+// Aqui estão armazenadas todas as suas trilhas específicas:
+const passosReativar = {
+  casa: {
+    baixa: [
+      { icon: '📝', titulo: 'Esvaziar "RAM"', desc: 'Escreva em um papel ou no app as 3 distrações que estão "rodando em segundo plano" na sua mente agora.', timer: 0 },
+      { icon: '🧊', titulo: 'Água Gelada', desc: 'Beba um copo grande de água bem gelada. O choque térmico interno desperta o sistema de alerta.', timer: 0 },
+      { icon: '🫁', titulo: 'Respiração Quadrada', desc: 'Inspira 4s, Segura 4s, Expira 4s, Segura 4s. Faça isso por 1 minuto.', timer: 60 },
+      { icon: '🏃', titulo: 'Atividade Física', desc: 'Faça 10 polichinelos ou 10 agachamentos rápidos para bombear sangue para o cérebro.', timer: 0 },
+      { icon: '🎯', titulo: 'Ação Única', desc: 'Escolha uma tarefa minúscula e comece agora (ex: abrir o documento, lavar 1 prato).', timer: 0 }
+    ],
+    alta: [
+      { icon: '🔥', titulo: 'Atividade Física', desc: 'Trote no lugar ou faça "burpees". Suba o batimento cardíaco para liberar dopamina.', timer: 30 },
+      { icon: '🚿', titulo: 'Água Gelada', desc: 'Lave o rosto com água gelada ou tome banho gelado. Isso "reseta" o sistema nervoso.', timer: 180 },
+      { icon: '🌪️', titulo: 'Esvaziar "RAM"', desc: 'Pegue um papel e faça um "Brain Dump" furioso: escreva tudo o que te preocupa até sentir que não há mais nada.', timer: 0 },
+      { icon: '😮‍💨', titulo: 'Respiração do Fole', desc: 'Inspirações e expirações rápidas pelo nariz para oxigenação profunda.', timer: 30 }
+    ]
+  },
+  publico: {
+    baixa: [
+      { icon: '📱', titulo: 'Esvaziar "RAM"', desc: 'Abra o bloco de notas do celular e liste as tarefas que estão te gerando ansiedade. Tire-as da cabeça e coloque-as na tela.', timer: 0 },
+      { icon: '💧', titulo: 'Água Gelada', desc: 'Dê goles lentos em água gelada, sentindo o caminho que o líquido faz. Isso traz consciência corporal.', timer: 0 },
+      { icon: '🧘', titulo: 'Respiração Discreta', desc: 'Respire fundo pelo nariz e solte o ar pela boca o mais silenciosamente possível, contando até 6 na expiração.', timer: 0 },
+      { icon: '🚶', titulo: 'Atividade Discreta', desc: 'Caminhe até o banheiro ou bebedouro em passo acelerado. O movimento das pernas ajuda a organizar o pensamento.', timer: 0 }
+    ],
+    alta: [
+      { icon: '🚰', titulo: 'Água Gelada (Pulsos)', desc: 'Vá ao banheiro e deixe a água mais gelada possível correr sobre os seus pulsos.', timer: 30 },
+      { icon: '🧱', titulo: 'Atividade Isométrica', desc: 'Pressione as palmas das mãos ou os pés contra o chão com toda a força por 10 segundos e relaxe. Repita 3 vezes.', timer: 30 },
+      { icon: '🫁', titulo: 'Respiração 4-7-8', desc: 'Inspira 4s, segura 7s, solta 8s. A expiração longa desativa a resposta de luta ou fuga.', timer: 0 },
+      { icon: '✍️', titulo: 'Esvaziar "RAM"', desc: 'Escreva no papel tudo que está pensando e planejando até sentir alívio.', timer: 0 },
+      { icon: '🧠', titulo: 'Emergência Cognitiva', desc: 'Escolha um número alto (ex: 187) e subtraia de 7 em 7 mentalmente (180, 173, 166...).', timer: 0 }
+    ]
+  }
+};
+
+let ctxSelecionado = null;
+let nivelSelecionado = null;
+let protocoloAtual = [];
 let passoAtual = 0;
 let timerPasso = null;
 let tempoPassoRestante = 0;
 
 function abrirReativar() { 
   document.getElementById('reativar-modal').classList.add('show'); 
+  renderizarSelecaoContexto(); 
 }
 
 function fecharReativarModal(e) { 
-  // Verifica se clicou fora do modal ou no botão de fechar (o X)
   if(e.target.id==='reativar-modal' || e.target.classList.contains('reativar-close')) {
     document.getElementById('reativar-modal').classList.remove('show');
-    resetarReativar(); // Limpa a tela para a próxima vez que abrir
+    resetarReativar();
   } 
 }
 
-function selecionarNivel(nivel, btn) {
-  document.querySelectorAll('.nivel-card').forEach(c=>c.classList.remove('selected'));
-  btn.classList.add('selected');
+// Etapa 1: Pergunta onde a pessoa está
+function renderizarSelecaoContexto() {
+  document.getElementById('protocolo-wrap').classList.remove('show');
+  document.getElementById('protocolo-fim').classList.remove('show');
   
-  // Esconde os níveis e mostra os passos
+  const div = document.getElementById('reativar-nivel-select');
+  div.style.display = 'block';
+  div.innerHTML = `
+    <h3 style="color:#E0E0FF; text-align:center; font-size:1.1rem; margin-bottom:16px;">📍 Onde você está agora?</h3>
+    <div class="nivel-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="nivel-card" onclick="setContexto('casa')">
+        <span class="nivel-emoji">🏠</span><div class="nivel-nome">Em Casa</div><div class="nivel-desc">Liberdade de movimento</div>
+      </div>
+      <div class="nivel-card" onclick="setContexto('publico')">
+        <span class="nivel-emoji">🏢</span><div class="nivel-nome">Em Público</div><div class="nivel-desc">Foco e discrição</div>
+      </div>
+    </div>
+  `;
+}
+
+function setContexto(ctx) {
+  ctxSelecionado = ctx;
+  renderizarSelecaoNivel();
+}
+
+// Etapa 2: Pergunta o nível de desatenção
+function renderizarSelecaoNivel() {
+  const div = document.getElementById('reativar-nivel-select');
+  div.innerHTML = `
+    <h3 style="color:#E0E0FF; text-align:center; font-size:1.1rem; margin-bottom:16px;">🧠 Como está seu foco?</h3>
+    <div class="nivel-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="nivel-card" onclick="iniciarProtocolo('baixa')">
+        <span class="nivel-emoji">🟡</span><div class="nivel-nome">Desatenção Baixa</div><div class="nivel-desc">Preciso de um ajuste de rota</div>
+      </div>
+      <div class="nivel-card" onclick="iniciarProtocolo('alta')">
+        <span class="nivel-emoji">🔴</span><div class="nivel-nome">Desatenção Alta</div><div class="nivel-desc">Reset total / Emergência</div>
+      </div>
+    </div>
+    <button style="width:100%; padding:12px; background:transparent; border:1px solid #2D2D4E; color:#9CA3AF; border-radius:12px; cursor:pointer; font-weight:700;" onclick="renderizarSelecaoContexto()">⬅️ Voltar</button>
+  `;
+}
+
+// Etapa 3: Inicia a trilha correta
+function iniciarProtocolo(nivel) {
+  nivelSelecionado = nivel;
+  protocoloAtual = passosReativar[ctxSelecionado][nivelSelecionado];
+  passoAtual = 0;
+  
   document.getElementById('reativar-nivel-select').style.display = 'none';
   document.getElementById('protocolo-wrap').classList.add('show');
-  
-  passoAtual = 0;
   renderizarPasso();
 }
 
 function renderizarPasso() {
-  // Se já passou do último passo, mostra a tela final
-  if (passoAtual >= protocoloPassos.length) {
+  if (passoAtual >= protocoloAtual.length) {
     document.getElementById('protocolo-wrap').classList.remove('show');
     document.getElementById('protocolo-fim').classList.add('show');
     return;
   }
 
-  // Pega o passo atual da lista
-  const p = protocoloPassos[passoAtual];
+  const p = protocoloAtual[passoAtual];
   document.getElementById('passo-icon').textContent = p.icon;
   document.getElementById('passo-titulo').textContent = p.titulo;
   document.getElementById('passo-desc').textContent = p.desc;
 
-  // Atualiza as bolinhas de progresso
+  // Bolinhas de progresso dinâmicas de acordo com a quantidade de passos
   let htmlDots = '';
-  for(let i=0; i<protocoloPassos.length; i++) {
+  for(let i=0; i<protocoloAtual.length; i++) {
     if (i < passoAtual) htmlDots += '<div class="passo-dot done"></div>';
     else if (i === passoAtual) htmlDots += '<div class="passo-dot atual"></div>';
     else htmlDots += '<div class="passo-dot"></div>';
   }
   document.getElementById('passo-progresso').innerHTML = htmlDots;
 
-  // Configura o botão de Play/Timer
   const playBtn = document.getElementById('passo-play-btn');
   clearInterval(timerPasso);
   
   if (p.timer > 0) {
-    playBtn.style.display = 'block'; // Mostra o botão
-    playBtn.textContent = '▶ Iniciar ' + p.timer + 's';
+    playBtn.style.display = 'block';
+    // Se for 60s ou mais, mostra em minutos para ficar mais limpo
+    const txtTempo = p.timer >= 60 ? (p.timer/60) + 'min' : p.timer + 's';
+    playBtn.textContent = '▶ Iniciar ' + txtTempo;
     playBtn.classList.remove('tocando');
     tempoPassoRestante = p.timer;
   } else {
-    playBtn.style.display = 'none'; // Esconde se não tiver timer
+    playBtn.style.display = 'none';
   }
 }
 
@@ -1125,24 +1196,25 @@ function toggleTimerPasso() {
   const playBtn = document.getElementById('passo-play-btn');
   
   if (playBtn.classList.contains('tocando')) {
-    // Se já está tocando, pausa
     clearInterval(timerPasso);
     playBtn.classList.remove('tocando');
     playBtn.textContent = '▶ Continuar';
   } else {
-    // Dá o play
     playBtn.classList.add('tocando');
     timerPasso = setInterval(() => {
       tempoPassoRestante--;
       if (tempoPassoRestante <= 0) {
-        // O tempo acabou!
         clearInterval(timerPasso);
         playBtn.classList.remove('tocando');
         playBtn.textContent = '✅ Concluído';
-        playBeep(); // Toca o sonzinho que já existe no seu código
-        setTimeout(proximoPasso, 1000); // Avança sozinho após 1 segundo
+        playBeep();
+        setTimeout(proximoPasso, 1000);
       } else {
-        playBtn.textContent = '⏸ ' + tempoPassoRestante + 's';
+        // Formata o timer rodando (ex: 2m 5s)
+        const m = Math.floor(tempoPassoRestante / 60);
+        const s = tempoPassoRestante % 60;
+        const txt = m > 0 ? `${m}m ${s}s` : `${s}s`;
+        playBtn.textContent = '⏸ ' + txt;
       }
     }, 1000);
   }
@@ -1150,20 +1222,18 @@ function toggleTimerPasso() {
 
 function finalizarProtocolo() {
   document.getElementById('reativar-modal').classList.remove('show');
-  resetarReativar(); // Prepara para a próxima vez
+  resetarReativar();
   navigate('caverna', document.querySelector('.caverna-nav'));
   showToast('Modo Caverna ativado!');
 }
 
 function resetarReativar() {
-  // Devolve o modal ao seu estado original (mostrando os 3 níveis)
-  document.getElementById('reativar-nivel-select').style.display = 'block';
-  document.getElementById('protocolo-wrap').classList.remove('show');
-  document.getElementById('protocolo-fim').classList.remove('show');
-  document.querySelectorAll('.nivel-card').forEach(c=>c.classList.remove('selected'));
+  ctxSelecionado = null;
+  nivelSelecionado = null;
   clearInterval(timerPasso);
+  renderizarSelecaoContexto(); // Volta para a tela inicial de contexto
 }
-// ------------------------------
+// --------------------------------------------------------
 // ----------------------------------------
 
 function salvar() {
@@ -2061,6 +2131,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
