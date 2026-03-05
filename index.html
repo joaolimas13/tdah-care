@@ -1037,24 +1037,133 @@ function updateWidget() {
   document.getElementById('wr-pom').textContent = state.pom.sessoes || 0;
   document.getElementById('wr-score').innerHTML = `${dn*10}<span style="font-size:1rem;color:#90CAF9;">/100</span>`;
 }
-function abrirReativar() { document.getElementById('reativar-modal').classList.add('show'); }
-function fecharReativarModal(e) { if(e.target.id==='reativar-modal') document.getElementById('reativar-modal').classList.remove('show'); }
+// --- LÓGICA DO REATIVAR FOCO ---
+// Aqui criamos a lista de passos. Você pode alterar os textos depois se quiser!
+const protocoloPassos = [
+  { icon: '💧', titulo: 'Beba água agora', desc: 'Desidratação piora a concentração. Levante e beba um copo d\'água.', timer: 0 },
+  { icon: '🫁', titulo: 'Respire fundo', desc: 'Inspire e expire lentamente para acalmar a ansiedade e oxigenar o cérebro.', timer: 15 },
+  { icon: '🧹', titulo: 'Limpe a mesa', desc: 'Tire 1 coisa que não pertence à sua mesa agora. Menos distração visual = mais foco.', timer: 0 }
+];
+
+let passoAtual = 0;
+let timerPasso = null;
+let tempoPassoRestante = 0;
+
+function abrirReativar() { 
+  document.getElementById('reativar-modal').classList.add('show'); 
+}
+
+function fecharReativarModal(e) { 
+  // Verifica se clicou fora do modal ou no botão de fechar (o X)
+  if(e.target.id==='reativar-modal' || e.target.classList.contains('reativar-close')) {
+    document.getElementById('reativar-modal').classList.remove('show');
+    resetarReativar(); // Limpa a tela para a próxima vez que abrir
+  } 
+}
+
 function selecionarNivel(nivel, btn) {
   document.querySelectorAll('.nivel-card').forEach(c=>c.classList.remove('selected'));
   btn.classList.add('selected');
+  
+  // Esconde os níveis e mostra os passos
+  document.getElementById('reativar-nivel-select').style.display = 'none';
   document.getElementById('protocolo-wrap').classList.add('show');
+  
+  passoAtual = 0;
+  renderizarPasso();
 }
-function pularPasso() { showToast('Passo pulado ⏭️'); proximoPasso(); }
-function toggleTimerPasso() { showToast('Timer em desenvolvimento ⏱️'); }
+
+function renderizarPasso() {
+  // Se já passou do último passo, mostra a tela final
+  if (passoAtual >= protocoloPassos.length) {
+    document.getElementById('protocolo-wrap').classList.remove('show');
+    document.getElementById('protocolo-fim').classList.add('show');
+    return;
+  }
+
+  // Pega o passo atual da lista
+  const p = protocoloPassos[passoAtual];
+  document.getElementById('passo-icon').textContent = p.icon;
+  document.getElementById('passo-titulo').textContent = p.titulo;
+  document.getElementById('passo-desc').textContent = p.desc;
+
+  // Atualiza as bolinhas de progresso
+  let htmlDots = '';
+  for(let i=0; i<protocoloPassos.length; i++) {
+    if (i < passoAtual) htmlDots += '<div class="passo-dot done"></div>';
+    else if (i === passoAtual) htmlDots += '<div class="passo-dot atual"></div>';
+    else htmlDots += '<div class="passo-dot"></div>';
+  }
+  document.getElementById('passo-progresso').innerHTML = htmlDots;
+
+  // Configura o botão de Play/Timer
+  const playBtn = document.getElementById('passo-play-btn');
+  clearInterval(timerPasso);
+  
+  if (p.timer > 0) {
+    playBtn.style.display = 'block'; // Mostra o botão
+    playBtn.textContent = '▶ Iniciar ' + p.timer + 's';
+    playBtn.classList.remove('tocando');
+    tempoPassoRestante = p.timer;
+  } else {
+    playBtn.style.display = 'none'; // Esconde se não tiver timer
+  }
+}
+
+function pularPasso() { 
+  showToast('Passo pulado ⏭️'); 
+  passoAtual++;
+  renderizarPasso();
+}
+
 function proximoPasso() {
-  document.getElementById('protocolo-wrap').classList.remove('show');
-  document.getElementById('protocolo-fim').classList.add('show');
+  passoAtual++;
+  renderizarPasso();
 }
+
+function toggleTimerPasso() {
+  const playBtn = document.getElementById('passo-play-btn');
+  
+  if (playBtn.classList.contains('tocando')) {
+    // Se já está tocando, pausa
+    clearInterval(timerPasso);
+    playBtn.classList.remove('tocando');
+    playBtn.textContent = '▶ Continuar';
+  } else {
+    // Dá o play
+    playBtn.classList.add('tocando');
+    timerPasso = setInterval(() => {
+      tempoPassoRestante--;
+      if (tempoPassoRestante <= 0) {
+        // O tempo acabou!
+        clearInterval(timerPasso);
+        playBtn.classList.remove('tocando');
+        playBtn.textContent = '✅ Concluído';
+        playBeep(); // Toca o sonzinho que já existe no seu código
+        setTimeout(proximoPasso, 1000); // Avança sozinho após 1 segundo
+      } else {
+        playBtn.textContent = '⏸ ' + tempoPassoRestante + 's';
+      }
+    }, 1000);
+  }
+}
+
 function finalizarProtocolo() {
   document.getElementById('reativar-modal').classList.remove('show');
+  resetarReativar(); // Prepara para a próxima vez
   navigate('caverna', document.querySelector('.caverna-nav'));
   showToast('Modo Caverna ativado!');
 }
+
+function resetarReativar() {
+  // Devolve o modal ao seu estado original (mostrando os 3 níveis)
+  document.getElementById('reativar-nivel-select').style.display = 'block';
+  document.getElementById('protocolo-wrap').classList.remove('show');
+  document.getElementById('protocolo-fim').classList.remove('show');
+  document.querySelectorAll('.nivel-card').forEach(c=>c.classList.remove('selected'));
+  clearInterval(timerPasso);
+}
+// ------------------------------
 // ----------------------------------------
 
 function salvar() {
@@ -1952,6 +2061,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
