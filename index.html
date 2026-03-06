@@ -1866,13 +1866,15 @@ function calcularScoreSemana(d) {
 }
 function abrirCompartilhar() {
   try {
+    // 1. Força a abertura visual primeiro, blindando o travamento
+    document.getElementById('compartilhar-modal').classList.add('show');
+    switchCompTab('visual', document.querySelector('.comp-tab'));
+    
+    // 2. Tenta processar e preencher as informações
     const dados = calcularDadosSemana();
     preencherWrappedCard(dados);
     preencherTexto(dados);
     preencherPDFInfo(dados);
-    
-    document.getElementById('compartilhar-modal').classList.add('show');
-    switchCompTab('visual', document.querySelector('.comp-tab'));
     
     const apelidoEl = document.getElementById('comp-apelido-display'); 
     if(apelidoEl) apelidoEl.textContent = getApelido();
@@ -1883,10 +1885,11 @@ function abrirCompartilhar() {
     const badge = document.getElementById('sync-status-badge');
     if (badge) { badge.className = 'sync-badge sync-sending'; badge.textContent = 'Sincronizando...'; }
     
+    // 3. Executa a sincronização
     setTimeout(() => sincronizarComFirebase(dados), 500);
   } catch (erro) {
-    console.error("Erro ao gerar a tela de compartilhamento:", erro);
-    alert("Houve um pequeno erro ao gerar a tela. Tente recarregar a página.");
+    console.error("Erro no botão de compartilhar:", erro);
+    alert("Houve um erro técnico ao gerar a tela de compartilhamento. Detalhe: " + erro.message);
   }
 }
 function preencherWrappedCard(d) {
@@ -2146,6 +2149,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
