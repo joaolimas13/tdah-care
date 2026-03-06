@@ -95,8 +95,9 @@
     </div>
 
     <div class="acoes-topo">
-        <button class="btn-atualizar" id="btn-atualizar">🔄 Atualizar Dados</button>
-        <button class="btn-csv" id="btn-csv">📊 Exportar CSV</button>
+    <button class="btn-atualizar" id="btn-atualizar">🔄 Atualizar Dados</button>
+    <button class="btn-csv" id="btn-csv">📊 Exportar CSV</button>
+    <button class="btn-pdf" onclick="imprimirRelatorioAdmin()" style="background-color: #c0392b; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">📄 Salvar PDF</button>
     </div>
     
     <div id="lista-relatorios">
@@ -491,7 +492,40 @@
             alert("Erro ao remover: " + error.message);
         }
     }
-
+    window.imprimirRelatorioAdmin = function() {
+    if (!dadosGlobais || dadosGlobais.length === 0) {
+        alert("Não há dados para gerar o PDF.");
+        return;
+    }
+    
+    let htmlPrint = "<html><head><title>Relatório Pacientes - TDAH Care</title>";
+    htmlPrint += "<style>body{font-family:sans-serif; padding:20px;} .paciente{border-bottom:1px solid #ccc; margin-bottom:15px; padding-bottom:15px;} h2{color:#2c3e50; margin-bottom:5px;} p{margin:3px 0; font-size:14px;} .alerta{color:#e74c3c; font-weight:bold;}</style>";
+    htmlPrint += "</head><body>";
+    htmlPrint += "<h1>Relatório Geral de Pacientes</h1>";
+    htmlPrint += "<p>Data de geração: " + new Date().toLocaleDateString('pt-BR') + "</p><hr/>";
+    
+    dadosGlobais.forEach(p => {
+        htmlPrint += "<div class='paciente'>";
+        htmlPrint += "<h2>👤 " + (p.apelido || p.id) + "</h2>";
+        htmlPrint += "<p><strong>Score Atual:</strong> " + (p.score || 0) + "/100</p>";
+        htmlPrint += "<p><strong>Média de Sono:</strong> " + (p.sonoMedia ? p.sonoMedia + "h" : "Sem dados") + "</p>";
+        htmlPrint += "<p><strong>Metas Concluídas:</strong> " + (p.metasPct ? p.metasPct + "%" : "Sem dados") + "</p>";
+        htmlPrint += "<p><strong>Tempo de Foco:</strong> " + (p.focoTotal || 0) + " minutos</p>";
+        htmlPrint += "<p><strong>Dias Registrados:</strong> " + (p.diasDados || 0) + "</p>";
+        if (p.score < 40 && p.score > 0) {
+            htmlPrint += "<p class='alerta'>⚠️ Paciente com score baixo. Requer atenção.</p>";
+        }
+        htmlPrint += "</div>";
+    });
+    
+    htmlPrint += "</body></html>";
+    
+    const janelaPrint = window.open('', '', 'width=800,height=600');
+    janelaPrint.document.write(htmlPrint);
+    janelaPrint.document.close();
+    janelaPrint.focus();
+    janelaPrint.print();
+};
     document.getElementById('btn-csv').addEventListener('click', () => {
         if (!dadosGlobais.length) { alert("Não há dados para exportar."); return; }
         let csv = "ID,Apelido,Periodo,Score,FocoTotal,MediaSono,MetasPct,DiasRegistrados\n";
