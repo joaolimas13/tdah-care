@@ -1936,53 +1936,112 @@ async function enviarRelatorioCompletoWhatsApp() {
             <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.celMedia !== null ? Math.floor(d.celMedia/60) + 'h ' + (d.celMedia%60) + 'min/dia' : 'Não registrado'}</td>
           </tr>
         </table>
-      </div>
-    </div>
-    <div style="background: #FFF8E1; border: 1px solid #FFE082; border-radius: 12px; padding: 15px; font-size: 14px; color: #5D4037;">
-      ⚠️ <strong>Importante:</strong> Relatório gerado automaticamente pelo aplicativo TDAH Care.
+      </div>// ========== COMPARTILHAR PROGRESSO COMO IMAGEM (WHATSAPP) ==========
+
+async function enviarRelatorioCompletoWhatsApp() {
+  showToast('📸 Gerando imagem do relatório... Aguarde.');
+
+  const d = calcularDadosSemana();
+  const apelido = getApelido();
+  
+  // 1. Cria o cartão visual (tamanho fixo de 400px, perfeito para tela de celular)
+  const card = document.createElement('div');
+  card.style.position = 'fixed';
+  card.style.top = '0';
+  card.style.left = '0';
+  card.style.width = '400px';
+  card.style.padding = '20px';
+  // Fundo com a cor primária do seu app para dar contraste
+  card.style.background = 'linear-gradient(135deg, #1565C0, #1976D2)';
+  card.style.fontFamily = 'Arial, sans-serif';
+  card.style.zIndex = '999999';
+  card.style.boxSizing = 'border-box';
+
+  // 2. Monta um layout limpo, direto e profissional
+  card.innerHTML = `
+    <div style="background: white; border-radius: 16px; padding: 24px; color: #1A237E; box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="margin: 0; font-size: 22px; color: #1565C0;">📋 Relatório Clínico</h2>
+            <div style="font-size: 14px; color: #546E7A; margin-top: 6px;">Paciente: <strong>${apelido}</strong></div>
+            <div style="font-size: 12px; color: #90A4AE; margin-top: 2px;">${d.periodo}</div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+            <div style="flex: 1; background: #F0F4F8; padding: 12px; border-radius: 12px; text-align: center; border: 1px solid #E3EAF2;">
+                <div style="font-size: 28px; font-weight: 900; color: #2E7D32;">${d.scoreGeral}</div>
+                <div style="font-size: 11px; color: #546E7A; text-transform: uppercase; margin-top: 2px;">Score /100</div>
+            </div>
+            <div style="flex: 1; background: #F0F4F8; padding: 12px; border-radius: 12px; text-align: center; border: 1px solid #E3EAF2;">
+                <div style="font-size: 28px; font-weight: 900; color: #1565C0;">${d.remedioN}</div>
+                <div style="font-size: 11px; color: #546E7A; text-transform: uppercase; margin-top: 2px;">Dias c/ Remédio</div>
+            </div>
+        </div>
+
+        <div style="background: #F8FAFF; border: 2px solid #E3EAF2; border-radius: 12px; padding: 16px; margin-bottom: 15px;">
+            <div style="font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                <span style="color: #546E7A;">😴 Sono Médio</span>
+                <strong style="color: #1A237E;">${d.sonoMedia ? d.sonoMedia + 'h' : '—'}</strong>
+            </div>
+            <div style="font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                <span style="color: #546E7A;">🎯 Metas Concluídas</span>
+                <strong style="color: #1A237E;">${d.metasPct !== null ? d.metasPct + '%' : '—'}</strong>
+            </div>
+            <div style="font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                <span style="color: #546E7A;">🏔️ Foco Profundo</span>
+                <strong style="color: #1A237E;">${d.focoH > 0 ? d.focoH + 'h ' : ''}${d.focoM > 0 ? d.focoM + 'min' : d.focoTotal + 'min'}</strong>
+            </div>
+            <div style="font-size: 14px; display: flex; justify-content: space-between;">
+                <span style="color: #546E7A;">📱 Uso de Tela (Média)</span>
+                <strong style="color: #1A237E;">${d.celMedia !== null ? Math.floor(d.celMedia/60) + 'h ' + (d.celMedia%60) + 'min' : '—'}</strong>
+            </div>
+        </div>
+        
+        <div style="text-align: center; font-size: 11px; color: #90A4AE; margin-top: 20px;">
+            Gerado automaticamente pelo App TDAH Care 🧠
+        </div>
     </div>
   `;
 
-  document.body.appendChild(printArea);
+  document.body.appendChild(card);
 
-  // 3. Aguarda meio segundo pro celular renderizar tudo certinho lá no topo
-  await new Promise(resolve => setTimeout(resolve, 600));
-
-  const opt = {
-    margin:       0,
-    filename:     `Relatorio_${apelido.replace(/\s+/g, '_')}.pdf`,
-    image:        { type: 'jpeg', quality: 1.0 },
-    // scrollY: 0 obriga a câmera do gerador a focar no topo da tela, evitando o branco
-    html2canvas:  { scale: 2, useCORS: true, scrollY: 0, windowWidth: 800 },
-    jsPDF:        { unit: 'px', format: [800, printArea.offsetHeight + 60], orientation: 'portrait' }
-  };
+  // 3. Aguarda 300ms para renderizar
+  await new Promise(r => setTimeout(r, 300));
 
   try {
-    const pdfBlob = await html2pdf().set(opt).from(printArea).outputPdf('blob');
-    const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
+    // 4. Usa a biblioteca html2canvas (que já vem embutida no html2pdf) para tirar a FOTO do cartão
+    const canvas = await html2canvas(card, { scale: 3, backgroundColor: null, logging: false });
     
-    // Limpa a tela e volta o usuário pra onde ele estava lendo!
-    document.body.removeChild(printArea);
-    window.scrollTo(0, scrollOriginal);
+    // Remove o elemento da tela
+    document.body.removeChild(card);
 
-    sincronizarComFirebase(d);
+    // Converte o canvas para um arquivo de imagem (PNG)
+    canvas.toBlob(async (blob) => {
+        const file = new File([blob], `Relatorio_${apelido.replace(/\s+/g, '')}.png`, { type: 'image/png' });
+        
+        sincronizarComFirebase(d);
 
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({
-        title: 'Relatório TDAH Care',
-        text: `Olá! Segue em anexo o relatório clínico de ${apelido}.`,
-        files: [file]
-      });
-      showToast('✅ Enviado com sucesso!');
-    } else {
-      html2pdf().set(opt).from(printArea).save();
-      showToast('⬇️ PDF baixado! Envie no WhatsApp manualmente.');
-    }
-  } catch(e) {
-    console.error(e);
-    showToast('⚠️ Erro ao gerar PDF.');
-    if(document.body.contains(printArea)) document.body.removeChild(printArea);
-    window.scrollTo(0, scrollOriginal);
+        // 5. Aciona o Compartilhamento Nativo (Igual ao botão de "Compartilhar" do celular)
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                title: 'Relatório TDAH',
+                text: `Olá! Segue em anexo a imagem do meu relatório semanal do TDAH Care.`,
+                files: [file]
+            });
+            showToast('✅ Imagem pronta para envio!');
+        } else {
+            // Se estiver no PC ou navegador antigo, apenas baixa a imagem
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = file.name;
+            a.click();
+            showToast('⬇️ Imagem salva! Envie no WhatsApp manualmente.');
+        }
+    }, 'image/png');
+
+  } catch (err) {
+    console.error(err);
+    showToast('⚠️ Erro ao gerar imagem.');
+    if(document.body.contains(card)) document.body.removeChild(card);
   }
 }
 function verificarApelido() {
@@ -2182,6 +2241,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
