@@ -1874,6 +1874,8 @@ function calcularScoreSemana(d) {
 // ========== COMPARTILHAR PROGRESSO DIRETO NO WHATSAPP ==========
 
 
+// ========== COMPARTILHAR PROGRESSO COMO IMAGEM (WHATSAPP) - VERSÃO AJUSTADA ==========
+
 async function enviarRelatorioCompletoWhatsApp() {
   showToast('📸 Gerando imagem do relatório... Aguarde.');
 
@@ -1940,17 +1942,15 @@ async function enviarRelatorioCompletoWhatsApp() {
 
   document.body.appendChild(card);
 
-  // 3. Aguarda 300ms para renderizar
-  await new Promise(r => setTimeout(r, 300));
+  // 3. Aguarda 1500ms para renderizar (AUMENTADO)
+  await new Promise(r => setTimeout(r, 1500));
 
   try {
-    // 4. Usa a biblioteca html2canvas (que já vem embutida no html2pdf) para tirar a FOTO do cartão
-    const canvas = await html2canvas(card, { scale: 3, backgroundColor: null, logging: false });
+    // 4. Usa html2canvas com scale REDUZIDO (AUMENTADO AQUI PARA 1.5)
+    const canvas = await html2canvas(card, { scale: 1.5, backgroundColor: null, logging: false });
     
-    // Remove o elemento da tela
     document.body.removeChild(card);
 
-    // Converte o canvas para um arquivo de imagem (PNG)
     canvas.toBlob(async (blob) => {
         const file = new File([blob], `Relatorio_${apelido.replace(/\s+/g, '')}.png`, { type: 'image/png' });
         
@@ -2177,6 +2177,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
