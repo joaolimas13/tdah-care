@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="Acompanhamento diário para TDAH">
@@ -882,7 +883,10 @@ textarea { resize: none; height: 80px; }
           <div style="font-size:0.82rem;color:#546E7A;line-height:1.6;margin-bottom:16px;">Gera um PDF formatado com dados da semana.</div>
           <div id="pdf-preview-info" style="background:#EEF2FF;border-radius:10px;padding:12px;font-size:0.8rem;text-align:left;"></div>
         </div>
-        <div class="comp-acoes"><button class="comp-acao-btn btn-pdf" onclick="gerarPDFSemanal()">📄 Gerar e Baixar PDF</button></div>
+       <div class="comp-acoes">
+  <button class="comp-acao-btn btn-whatsapp" onclick="compartilharPDFWhatsApp()">📱 Enviar PDF pelo WhatsApp</button>
+  <button class="comp-acao-btn btn-pdf" onclick="gerarPDFSemanal()">📄 Apenas Baixar PDF</button>
+</div>
       </div>
     </div>
   </div>
@@ -1948,8 +1952,93 @@ async function copiarTexto() {
   catch(e) { const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('📋 Copiado!'); }
 }
 function tirarPrintCard() { showToast('📸 Tire um print desta tela para salvar o cartão!'); }
-function gerarPDFSemanal() { showToast('📄 Função PDF não totalmente implementada na prévia, mas a lógica foi salva!'); }
-function imprimirRelatorio() { gerarPDFSemanal(); }
+// --- GERAÇÃO E COMPARTILHAMENTO DE PDF ---
+
+async function compartilharPDFWhatsApp() {
+  showToast('⏳ Gerando relatório completo... Aguarde.');
+
+  // 1. Gera os dados completos da semana (como no admin)
+  const dados = calcularDadosSemana();
+  const apelido = getApelido();
+  
+  // 2. Cria um elemento HTML invisível "bonitão" só para o PDF ler
+  const pdfContainer = document.createElement('div');
+  pdfContainer.style.padding = '20px';
+  pdfContainer.style.background = '#ffffff';
+  pdfContainer.style.fontFamily = 'sans-serif';
+  pdfContainer.style.color = '#1A237E';
+  
+  pdfContainer.innerHTML = `
+    <div style="text-align:center; margin-bottom:20px;">
+      <h1 style="color:#1565C0; margin-bottom:5px;">📋 Relatório Clínico Semanal</h1>
+      <p style="color:#546E7A; margin-top:0;">Paciente: <strong>${apelido}</strong></p>
+      <p style="color:#546E7A; margin-top:0;">Período: ${dados.periodo}</p>
+    </div>
+    
+    <div style="background:#F8FAFF; border: 2px solid #E3EAF2; border-radius:12px; padding:15px; margin-bottom:20px;">
+      <h2 style="font-size:1.2rem; color:#1565C0; margin-top:0; border-bottom:1px solid #E3EAF2; padding-bottom:8px;">📊 Resumo Geral</h2>
+      <p><strong>Score de Adesão:</strong> ${dados.scoreGeral}/100</p>
+      <p><strong>Dias com registro na semana:</strong> ${dados.diasDados} dias</p>
+      <p><strong>Uso de Medicação:</strong> ${dados.remedioN} registros</p>
+    </div>
+
+    <div style="background:#F8FAFF; border: 2px solid #E3EAF2; border-radius:12px; padding:15px; margin-bottom:20px;">
+      <h2 style="font-size:1.2rem; color:#2E7D32; margin-top:0; border-bottom:1px solid #E3EAF2; padding-bottom:8px;">🧠 Indicadores de Rotina</h2>
+      <p><strong>😴 Qualidade do Sono:</strong> Média de ${dados.sonoMedia ? dados.sonoMedia + 'h/noite' : 'Não registrado'}</p>
+      <p><strong>🎯 Conclusão de Metas:</strong> ${dados.metasPct !== null ? dados.metasPct + '% (' + dados.metasConcl + '/' + dados.metasTotal + ')' : 'Não registrado'}</p>
+      <p><strong>🏔️ Tempo de Foco (Caverna):</strong> ${dados.focoH > 0 ? dados.focoH + 'h ' : ''}${dados.focoM > 0 ? dados.focoM + 'min' : dados.focoTotal + 'min'}</p>
+      <p><strong>📱 Tempo de Tela (Média):</strong> ${dados.celMedia !== null ? Math.floor(dados.celMedia/60) + 'h ' + (dados.celMedia%60) + 'min/dia' : 'Não registrado'}</p>
+      <p><strong>⚡ Protocolo de Emergência Usado:</strong> ${dados.reativarN} vezes</p>
+    </div>
+    
+    <div style="margin-top:30px; text-align:center; font-size:0.8rem; color:#90A4AE;">
+      <p>Relatório gerado automaticamente pelo aplicativo TDAH Care.</p>
+    </div>
+  `;
+
+  document.body.appendChild(pdfContainer); // Adiciona na tela invisivelmente
+
+  // 3. Configura a qualidade e o formato do PDF
+  const opt = {
+    margin:       10,
+    filename:     `Relatorio_${apelido.replace(/\s+/g, '_')}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  // 4. Gera o PDF como um "Arquivo Real" (Blob) para podermos enviar
+  try {
+    const pdfBlob = await html2pdf().set(opt).from(pdfContainer).outputPdf('blob');
+    const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
+    
+    // Remove o HTML invisível que criamos
+    document.body.removeChild(pdfContainer);
+
+    // 5. Tenta abrir a gaveta nativa de compartilhamento do celular
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: 'Relatório TDAH Care',
+        text: `Olá! Segue em anexo o relatório clínico de acompanhamento de ${apelido}.`,
+        files: [file]
+      });
+      showToast('✅ Enviado com sucesso!');
+    } else {
+      // Se for no PC ou o celular não suportar, ele baixa o PDF e avisa o usuário
+      html2pdf().set(opt).from(pdfContainer).save();
+      showToast('⬇️ PDF baixado! Envie-o manualmente no WhatsApp.');
+    }
+  } catch (err) {
+    console.error(err);
+    showToast('⚠️ Erro ao gerar PDF. Tente novamente.');
+    if(document.body.contains(pdfContainer)) document.body.removeChild(pdfContainer);
+  }
+}
+
+// Substituímos a função antiga por essa para quem clicar baixar manualmente também
+function gerarPDFSemanal() {
+  compartilharPDFWhatsApp(); 
+}
 
 // ========== APELIDO ==========
 function verificarApelido() {
@@ -2149,6 +2238,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
