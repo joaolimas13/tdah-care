@@ -538,7 +538,7 @@ textarea { resize: none; height: 80px; }
   <div id="lembrete-sexta" style="display:none;background:linear-gradient(135deg,#1B5E20,#2E7D32);border-radius:16px;padding:16px;margin-bottom:16px;color:white;">
     <div style="font-size:0.9rem;font-weight:800;margin-bottom:4px;">📅 É sexta-feira!</div>
     <div style="font-size:0.78rem;opacity:0.9;margin-bottom:12px;">Hora de enviar seu progresso semanal para sua psicóloga 🧠</div>
-    <button onclick="abrirCompartilhar()" style="width:100%;padding:10px;background:white;color:#1B5E20;border:none;border-radius:10px;font-size:0.85rem;font-weight:800;cursor:pointer;">📤 Gerar e Compartilhar Progresso</button>
+    <button onclick="enviarRelatorioCompletoWhatsApp()" style="width:100%;padding:10px;background:white;color:#1B5E20;border:none;border-radius:10px;font-size:0.85rem;font-weight:800;cursor:pointer;">📤 Gerar e Compartilhar Progresso</button>
   </div>
 
   <button class="reativar-btn" onclick="abrirReativar()">⚡ Reativar Foco</button>
@@ -1869,118 +1869,128 @@ function calcularScoreSemana(d) {
 }
 // ========== COMPARTILHAR PROGRESSO DIRETO NO WHATSAPP ==========
 
+// ========== COMPARTILHAR PROGRESSO DIRETO NO WHATSAPP ==========
+
 async function enviarRelatorioCompletoWhatsApp() {
-  showToast('⏳ Gerando relatório clínico... Aguarde.');
+  showToast('⏳ Preparando relatório... Aguarde.');
 
   const d = calcularDadosSemana();
   const apelido = getApelido();
   
-  // 1. Cria um contêiner físico na tela (isso EVITA o PDF branco no celular)
-  const pdfContainer = document.createElement('div');
-  // Escondemos ele jogando o z-index lá pra trás, mas forçamos ele a ter 800px de largura
-  pdfContainer.style.position = 'absolute';
-  pdfContainer.style.top = '0';
-  pdfContainer.style.left = '0';
-  pdfContainer.style.width = '800px'; 
-  pdfContainer.style.backgroundColor = '#F0F4F8';
-  pdfContainer.style.padding = '40px';
-  pdfContainer.style.zIndex = '-9999';
-  
-  // 2. Montamos o HTML detalhado, igual do Admin
-  pdfContainer.innerHTML = `
-    <div style="font-family: Arial, sans-serif; color: #1A237E;">
-      <div style="text-align: right; font-size: 14px; color: #90A4AE; margin-bottom: 10px;">📅 ${d.periodo}</div>
-      
-      <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px;">
-        <div style="background: #1565C0; color: white; padding: 25px;">
-          <h1 style="margin: 0 0 5px 0; font-size: 24px;">📋 Relatório Clínico de Acompanhamento</h1>
-          <div style="font-size: 16px; opacity: 0.9;">Paciente: ${apelido} · ${d.diasDados} dias registrados nesta semana</div>
-        </div>
-        
-        <div style="padding: 25px;">
-          <div style="display: flex; gap: 20px; margin-bottom: 25px;">
-            <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
-              <div style="font-size: 32px; font-weight: bold; color: #2E7D32;">${d.scoreGeral}</div>
-              <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Score de Adesão /100</div>
-            </div>
-            <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
-              <div style="font-size: 32px; font-weight: bold; color: #1565C0;">${d.remedioN}</div>
-              <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Dias com Medicação</div>
-            </div>
-            <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
-              <div style="font-size: 32px; font-weight: bold; color: #E65100;">${d.reativarN}</div>
-              <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Protocolos de Emergência Usados</div>
-            </div>
-          </div>
+  // 1. Cria uma tela branca que cobre o celular todo (Isso OBRIGA o celular a renderizar, resolvendo o bug do PDF branco)
+  const overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100vw';
+  overlay.style.height = '100vh';
+  overlay.style.backgroundColor = '#F0F4F8';
+  overlay.style.zIndex = '999999';
+  overlay.style.overflow = 'hidden';
+  overlay.style.display = 'flex';
+  overlay.style.justifyContent = 'center';
 
-          <h2 style="font-size: 18px; color: #1565C0; border-bottom: 2px solid #EEF2F7; padding-bottom: 10px; margin-bottom: 15px;">📊 Indicadores Diários de Rotina</h2>
-          
-          <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
-            <tr style="border-bottom: 1px solid #EEF2F7;">
-              <td style="padding: 12px 0; color: #546E7A;">😴 Média de Sono</td>
-              <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.sonoMedia ? d.sonoMedia + 'h/noite' : 'Não registrado'}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #EEF2F7;">
-              <td style="padding: 12px 0; color: #546E7A;">🎯 Conclusão de Metas</td>
-              <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.metasPct !== null ? d.metasPct + '% (' + d.metasConcl + '/' + d.metasTotal + ')' : 'Não registrado'}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #EEF2F7;">
-              <td style="padding: 12px 0; color: #546E7A;">🏔️ Tempo de Foco Focado</td>
-              <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.focoH > 0 ? d.focoH + 'h ' : ''}${d.focoM > 0 ? d.focoM + 'min' : d.focoTotal + 'min'}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #EEF2F7;">
-              <td style="padding: 12px 0; color: #546E7A;">📱 Tempo de Tela (Média)</td>
-              <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.celMedia !== null ? Math.floor(d.celMedia/60) + 'h ' + (d.celMedia%60) + 'min/dia' : 'Não registrado'}</td>
-            </tr>
-          </table>
-        </div>
+  // 2. Cria a folha do relatório no tamanho exato
+  const printArea = document.createElement('div');
+  printArea.style.width = '800px';
+  printArea.style.padding = '40px';
+  printArea.style.backgroundColor = '#ffffff';
+  printArea.style.color = '#1A237E';
+  printArea.style.fontFamily = 'Arial, sans-serif';
+
+  printArea.innerHTML = `
+    <div style="text-align: right; font-size: 14px; color: #90A4AE; margin-bottom: 10px;">📅 ${d.periodo}</div>
+    
+    <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px;">
+      <div style="background: #1565C0; color: white; padding: 25px;">
+        <h1 style="margin: 0 0 5px 0; font-size: 24px;">📋 Relatório Clínico de Acompanhamento</h1>
+        <div style="font-size: 16px; opacity: 0.9;">Paciente: ${apelido} · ${d.diasDados} dias registrados nesta semana</div>
       </div>
       
-      <div style="background: #FFF8E1; border: 1px solid #FFE082; border-radius: 12px; padding: 15px; font-size: 14px; color: #5D4037;">
-        ⚠️ <strong>Importante:</strong> Relatório gerado automaticamente pelo aplicativo TDAH Care a partir de dados autodeclarados pelo paciente. 
+      <div style="padding: 25px;">
+        <div style="display: flex; gap: 20px; margin-bottom: 25px;">
+          <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
+            <div style="font-size: 32px; font-weight: bold; color: #2E7D32;">${d.scoreGeral}</div>
+            <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Score de Adesão /100</div>
+          </div>
+          <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
+            <div style="font-size: 32px; font-weight: bold; color: #1565C0;">${d.remedioN}</div>
+            <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Dias com Medicação</div>
+          </div>
+          <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
+            <div style="font-size: 32px; font-weight: bold; color: #E65100;">${d.reativarN}</div>
+            <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Protocolos Usados</div>
+          </div>
+        </div>
+
+        <h2 style="font-size: 18px; color: #1565C0; border-bottom: 2px solid #EEF2F7; padding-bottom: 10px; margin-bottom: 15px;">📊 Indicadores Diários de Rotina</h2>
+        
+        <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
+          <tr style="border-bottom: 1px solid #EEF2F7;">
+            <td style="padding: 12px 0; color: #546E7A;">😴 Média de Sono</td>
+            <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.sonoMedia ? d.sonoMedia + 'h/noite' : 'Não registrado'}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #EEF2F7;">
+            <td style="padding: 12px 0; color: #546E7A;">🎯 Conclusão de Metas</td>
+            <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.metasPct !== null ? d.metasPct + '% (' + d.metasConcl + '/' + d.metasTotal + ')' : 'Não registrado'}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #EEF2F7;">
+            <td style="padding: 12px 0; color: #546E7A;">🏔️ Tempo de Foco</td>
+            <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.focoH > 0 ? d.focoH + 'h ' : ''}${d.focoM > 0 ? d.focoM + 'min' : d.focoTotal + 'min'}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #EEF2F7;">
+            <td style="padding: 12px 0; color: #546E7A;">📱 Tempo de Tela (Média)</td>
+            <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.celMedia !== null ? Math.floor(d.celMedia/60) + 'h ' + (d.celMedia%60) + 'min/dia' : 'Não registrado'}</td>
+          </tr>
+        </table>
       </div>
+    </div>
+    
+    <div style="background: #FFF8E1; border: 1px solid #FFE082; border-radius: 12px; padding: 15px; font-size: 14px; color: #5D4037;">
+      ⚠️ <strong>Importante:</strong> Relatório gerado automaticamente pelo aplicativo TDAH Care. 
     </div>
   `;
 
-  // 3. Cola ele na tela (invisível pro usuário, mas visível pro gerador de PDF)
-  document.body.appendChild(pdfContainer);
+  overlay.appendChild(printArea);
+  document.body.appendChild(overlay);
+
+  // 3. Aguarda 0.5 segundos para o navegador "pintar" a tela fisicamente
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   const opt = {
     margin:       0,
-    filename:     `Relatorio_Clinico_${apelido.replace(/\s+/g, '_')}.pdf`,
+    filename:     `Relatorio_${apelido.replace(/\s+/g, '_')}.pdf`,
     image:        { type: 'jpeg', quality: 1.0 },
-    // O windowWidth obriga o celular a renderizar como se fosse uma tela grande
-    html2canvas:  { scale: 2, useCORS: true, windowWidth: 800 },
-    jsPDF:        { unit: 'px', format: [800, pdfContainer.offsetHeight + 80], orientation: 'portrait' }
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'px', format: [800, printArea.offsetHeight + 60], orientation: 'portrait' }
   };
 
   try {
-    const pdfBlob = await html2pdf().set(opt).from(pdfContainer).outputPdf('blob');
+    const pdfBlob = await html2pdf().set(opt).from(printArea).outputPdf('blob');
     const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
     
-    // 4. Limpa a tela imediatamente após "bater a foto"
-    document.body.removeChild(pdfContainer);
+    // 4. Remove a tela branca do celular
+    document.body.removeChild(overlay);
 
-    // 5. Tenta abrir a gaveta nativa de compartilhamento (WhatsApp)
+    // Salva no banco e tenta abrir a gaveta de compartilhamento nativa (WhatsApp)
+    sincronizarComFirebase(d);
+
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      // Também avisa pro Firebase que geramos o relatório!
-      sincronizarComFirebase(d);
       await navigator.share({
         title: 'Relatório TDAH Care',
-        text: `Olá! Segue em anexo o relatório clínico de acompanhamento de ${apelido}.`,
+        text: `Olá! Segue em anexo o relatório clínico de ${apelido}.`,
         files: [file]
       });
-      showToast('✅ PDF Enviado com sucesso!');
+      showToast('✅ Enviado com sucesso!');
     } else {
-      // Se tiver num computador ou navegador antigo, apenas baixa
-      html2pdf().set(opt).from(pdfContainer).save();
-      sincronizarComFirebase(d);
+      // Se não suportar share nativo, baixa o arquivo
+      html2pdf().set(opt).from(printArea).save();
       showToast('⬇️ PDF baixado! Envie no WhatsApp manualmente.');
     }
-  } catch (err) {
-    console.error(err);
-    showToast('⚠️ Erro ao gerar PDF. Tente novamente.');
-    if(document.body.contains(pdfContainer)) document.body.removeChild(pdfContainer);
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️ Erro ao gerar PDF.');
+    if(document.body.contains(overlay)) document.body.removeChild(overlay);
   }
 }
 function verificarApelido() {
@@ -2180,6 +2190,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
