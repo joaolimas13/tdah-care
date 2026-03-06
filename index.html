@@ -1873,70 +1873,6 @@ function calcularScoreSemana(d) {
 
 // ========== COMPARTILHAR PROGRESSO DIRETO NO WHATSAPP ==========
 
-async function enviarRelatorioCompletoWhatsApp() {
-  showToast('⏳ Preparando relatório... Aguarde.');
-
-  const d = calcularDadosSemana();
-  const apelido = getApelido();
-  
-  // 1. A MÁGICA ANTI-BRANCO: Salva onde o usuário está e joga a tela pro topo absolute!
-  const scrollOriginal = window.scrollY;
-  window.scrollTo(0, 0);
-  
-  // 2. Cria a folha de impressão física
-  const printArea = document.createElement('div');
-  printArea.style.position = 'absolute';
-  printArea.style.top = '0';
-  printArea.style.left = '0';
-  printArea.style.width = '800px';
-  printArea.style.backgroundColor = '#ffffff';
-  printArea.style.padding = '40px';
-  printArea.style.color = '#1A237E';
-  printArea.style.fontFamily = 'Arial, sans-serif';
-  printArea.style.zIndex = '999999'; // Fica por cima de tudo pra foto sair perfeita
-
-  printArea.innerHTML = `
-    <div style="text-align: right; font-size: 14px; color: #90A4AE; margin-bottom: 10px;">📅 ${d.periodo}</div>
-    <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px;">
-      <div style="background: #1565C0; color: white; padding: 25px;">
-        <h1 style="margin: 0 0 5px 0; font-size: 24px;">📋 Relatório Clínico de Acompanhamento</h1>
-        <div style="font-size: 16px; opacity: 0.9;">Paciente: ${apelido} · ${d.diasDados} dias registrados nesta semana</div>
-      </div>
-      <div style="padding: 25px;">
-        <div style="display: flex; gap: 20px; margin-bottom: 25px;">
-          <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
-            <div style="font-size: 32px; font-weight: bold; color: #2E7D32;">${d.scoreGeral}</div>
-            <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Score de Adesão /100</div>
-          </div>
-          <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
-            <div style="font-size: 32px; font-weight: bold; color: #1565C0;">${d.remedioN}</div>
-            <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Dias com Medicação</div>
-          </div>
-          <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
-            <div style="font-size: 32px; font-weight: bold; color: #E65100;">${d.reativarN}</div>
-            <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Protocolos Usados</div>
-          </div>
-        </div>
-        <h2 style="font-size: 18px; color: #1565C0; border-bottom: 2px solid #EEF2F7; padding-bottom: 10px; margin-bottom: 15px;">📊 Indicadores Diários de Rotina</h2>
-        <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
-          <tr style="border-bottom: 1px solid #EEF2F7;">
-            <td style="padding: 12px 0; color: #546E7A;">😴 Média de Sono</td>
-            <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.sonoMedia ? d.sonoMedia + 'h/noite' : 'Não registrado'}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #EEF2F7;">
-            <td style="padding: 12px 0; color: #546E7A;">🎯 Conclusão de Metas</td>
-            <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.metasPct !== null ? d.metasPct + '% (' + d.metasConcl + '/' + d.metasTotal + ')' : 'Não registrado'}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #EEF2F7;">
-            <td style="padding: 12px 0; color: #546E7A;">🏔️ Tempo de Foco</td>
-            <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.focoH > 0 ? d.focoH + 'h ' : ''}${d.focoM > 0 ? d.focoM + 'min' : d.focoTotal + 'min'}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #EEF2F7;">
-            <td style="padding: 12px 0; color: #546E7A;">📱 Tempo de Tela (Média)</td>
-            <td style="padding: 12px 0; font-weight: bold; text-align: right;">${d.celMedia !== null ? Math.floor(d.celMedia/60) + 'h ' + (d.celMedia%60) + 'min/dia' : 'Não registrado'}</td>
-          </tr>
-        </table>
-      </div>// ========== COMPARTILHAR PROGRESSO COMO IMAGEM (WHATSAPP) ==========
 
 async function enviarRelatorioCompletoWhatsApp() {
   showToast('📸 Gerando imagem do relatório... Aguarde.');
@@ -2241,6 +2177,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
