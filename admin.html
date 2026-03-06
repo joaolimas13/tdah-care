@@ -497,34 +497,83 @@
         alert("Não há dados para gerar o PDF.");
         return;
     }
+
+    // Calcula as datas (padrão: últimos 30 dias) igualzinho o app faz na tela
+    const hoje = new Date();
+    const iniDefault = new Date(); 
+    iniDefault.setDate(hoje.getDate() - 29);
+    const strIni = hojeISO(iniDefault);
+    const strFim = hojeISO(hoje);
+
+    let htmlPrint = "<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'><title>Relatório Clínico Completo - CleanTdah</title>";
     
-    let htmlPrint = "<html><head><title>Relatório Pacientes - TDAH Care</title>";
-    htmlPrint += "<style>body{font-family:sans-serif; padding:20px;} .paciente{border-bottom:1px solid #ccc; margin-bottom:15px; padding-bottom:15px;} h2{color:#2c3e50; margin-bottom:5px;} p{margin:3px 0; font-size:14px;} .alerta{color:#e74c3c; font-weight:bold;}</style>";
-    htmlPrint += "</head><body>";
-    htmlPrint += "<h1>Relatório Geral de Pacientes</h1>";
-    htmlPrint += "<p>Data de geração: " + new Date().toLocaleDateString('pt-BR') + "</p><hr/>";
-    
-    dadosGlobais.forEach(p => {
-        htmlPrint += "<div class='paciente'>";
-        htmlPrint += "<h2>👤 " + (p.apelido || p.id) + "</h2>";
-        htmlPrint += "<p><strong>Score Atual:</strong> " + (p.score || 0) + "/100</p>";
-        htmlPrint += "<p><strong>Média de Sono:</strong> " + (p.sonoMedia ? p.sonoMedia + "h" : "Sem dados") + "</p>";
-        htmlPrint += "<p><strong>Metas Concluídas:</strong> " + (p.metasPct ? p.metasPct + "%" : "Sem dados") + "</p>";
-        htmlPrint += "<p><strong>Tempo de Foco:</strong> " + (p.focoTotal || 0) + " minutos</p>";
-        htmlPrint += "<p><strong>Dias Registrados:</strong> " + (p.diasDados || 0) + "</p>";
-        if (p.score < 40 && p.score > 0) {
-            htmlPrint += "<p class='alerta'>⚠️ Paciente com score baixo. Requer atenção.</p>";
+    // Injeta o CSS essencial para manter o layout do relatório na impressão do PDF
+    htmlPrint += "<style>";
+    htmlPrint += `
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; color: #333; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 30px; font-size: 24px; }
+        .paciente-container { page-break-after: always; margin-bottom: 40px; }
+        .paciente-header { font-size: 20px; font-weight: bold; color: #1A237E; margin-bottom: 15px; border-bottom: 2px solid #1A237E; padding-bottom: 5px; }
+
+        /* Estilos do Relatório Clínico */
+        .clinico-wrap { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #ddd; margin-bottom: 12px; }
+        .clinico-secao { padding: 14px 18px; border-bottom: 1px solid #EEF2F7; }
+        .clinico-secao:last-child { border-bottom: none; }
+        .clinico-secao-titulo { font-size: 13px; font-weight: 800; color: #1565C0; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+        .clinico-linha { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #F5F7FA; font-size: 13px; }
+        .clinico-linha .cl-lbl { color: #546E7A; flex: 1; }
+        .clinico-linha .cl-val { font-weight: 700; color: #1A237E; margin-left: 8px; }
+        .clinico-linha .cl-badge { font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 700; margin-left: 6px; flex-shrink: 0; }
+        .clinico-grafico { display: flex; gap: 4px; align-items: flex-end; height: 60px; margin: 10px 0; }
+        .clinico-grafico-bar { flex: 1; border-radius: 4px 4px 0 0; min-height: 4px; border: 1px solid rgba(0,0,0,0.1); }
+        .clinico-parecer { background: #F0F7FF; border-left: 4px solid #1565C0; padding: 14px 16px; margin: 10px 0; font-size: 13px; color: #37474F; line-height: 1.6; }
+        .clinico-aviso { background: #FFF8E1; border: 1px solid #FFE082; padding: 10px 14px; font-size: 12px; color: #5D4037; margin-top: 10px; border-radius: 8px; }
+        .clinico-topo { background: #1565C0; color: white; padding: 16px 20px; }
+        .clinico-topo .ct-titulo { font-size: 16px; font-weight: 800; margin-bottom: 2px; }
+        .clinico-topo .ct-sub { font-size: 12px; opacity: 0.9; margin-bottom: 10px; }
+        .ct-meta { display: flex; gap: 10px; }
+        .ct-meta-item { background: rgba(255,255,255,0.2); border-radius: 10px; padding: 8px 12px; flex: 1; text-align: center; border: 1px solid rgba(255,255,255,0.4); }
+        .ct-meta-item .ctm-val { font-size: 18px; font-weight: 800; }
+        .ct-meta-item .ctm-lbl { font-size: 10px; opacity: 0.9; margin-top: 2px; }
+        .cl-norm { background: #E8F5E9; color: #2E7D32; }
+        .cl-atenc { background: #FFF8E1; color: #F57F17; }
+        .cl-crit  { background: #FFEBEE; color: #C62828; }
+        
+        /* Força a impressão a exibir as cores e quebrar página por paciente */
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .paciente-container { page-break-after: always; }
+            .clinico-wrap { page-break-inside: avoid; }
         }
+    `;
+    htmlPrint += "</style></head><body>";
+    
+    htmlPrint += "<h1>Relatório Clínico Consolidado</h1>";
+
+    // Puxa a análise completa de cada paciente
+    dadosGlobais.forEach(p => {
+        htmlPrint += "<div class='paciente-container'>";
+        htmlPrint += "<div class='paciente-header'>👤 Paciente: " + (p.apelido || p.id) + "</div>";
+        
+        // Chamamos a função que você já tem pronta no admin.html, injetando os dados do paciente
+        const relatorioCompleto = gerarRelatorioClinico(p.dailyData, strIni, strFim);
+        htmlPrint += relatorioCompleto;
+        
         htmlPrint += "</div>";
     });
-    
+
     htmlPrint += "</body></html>";
-    
-    const janelaPrint = window.open('', '', 'width=800,height=600');
+
+    // Abre a aba de impressão e joga o HTML lá
+    const janelaPrint = window.open('', '', 'width=900,height=700');
     janelaPrint.document.write(htmlPrint);
     janelaPrint.document.close();
-    janelaPrint.focus();
-    janelaPrint.print();
+    
+    // Aguarda meio segundo para as cores renderizarem e chama o "Salvar como PDF"
+    setTimeout(() => {
+        janelaPrint.focus();
+        janelaPrint.print();
+    }, 500);
 };
     document.getElementById('btn-csv').addEventListener('click', () => {
         if (!dadosGlobais.length) { alert("Não há dados para exportar."); return; }
