@@ -1871,42 +1871,37 @@ function calcularScoreSemana(d) {
 
 // ========== COMPARTILHAR PROGRESSO DIRETO NO WHATSAPP ==========
 
+// ========== COMPARTILHAR PROGRESSO DIRETO NO WHATSAPP ==========
+
 async function enviarRelatorioCompletoWhatsApp() {
   showToast('⏳ Preparando relatório... Aguarde.');
 
   const d = calcularDadosSemana();
   const apelido = getApelido();
   
-  // 1. Cria uma tela branca que cobre o celular todo (Isso OBRIGA o celular a renderizar, resolvendo o bug do PDF branco)
-  const overlay = document.createElement('div');
-  overlay.style.position = 'fixed';
-  overlay.style.top = '0';
-  overlay.style.left = '0';
-  overlay.style.width = '100vw';
-  overlay.style.height = '100vh';
-  overlay.style.backgroundColor = '#F0F4F8';
-  overlay.style.zIndex = '999999';
-  overlay.style.overflow = 'hidden';
-  overlay.style.display = 'flex';
-  overlay.style.justifyContent = 'center';
-
-  // 2. Cria a folha do relatório no tamanho exato
+  // 1. A MÁGICA ANTI-BRANCO: Salva onde o usuário está e joga a tela pro topo absolute!
+  const scrollOriginal = window.scrollY;
+  window.scrollTo(0, 0);
+  
+  // 2. Cria a folha de impressão física
   const printArea = document.createElement('div');
+  printArea.style.position = 'absolute';
+  printArea.style.top = '0';
+  printArea.style.left = '0';
   printArea.style.width = '800px';
-  printArea.style.padding = '40px';
   printArea.style.backgroundColor = '#ffffff';
+  printArea.style.padding = '40px';
   printArea.style.color = '#1A237E';
   printArea.style.fontFamily = 'Arial, sans-serif';
+  printArea.style.zIndex = '999999'; // Fica por cima de tudo pra foto sair perfeita
 
   printArea.innerHTML = `
     <div style="text-align: right; font-size: 14px; color: #90A4AE; margin-bottom: 10px;">📅 ${d.periodo}</div>
-    
     <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px;">
       <div style="background: #1565C0; color: white; padding: 25px;">
         <h1 style="margin: 0 0 5px 0; font-size: 24px;">📋 Relatório Clínico de Acompanhamento</h1>
         <div style="font-size: 16px; opacity: 0.9;">Paciente: ${apelido} · ${d.diasDados} dias registrados nesta semana</div>
       </div>
-      
       <div style="padding: 25px;">
         <div style="display: flex; gap: 20px; margin-bottom: 25px;">
           <div style="flex: 1; background: #F8FAFF; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #E3EAF2;">
@@ -1922,9 +1917,7 @@ async function enviarRelatorioCompletoWhatsApp() {
             <div style="font-size: 12px; color: #546E7A; text-transform: uppercase;">Protocolos Usados</div>
           </div>
         </div>
-
         <h2 style="font-size: 18px; color: #1565C0; border-bottom: 2px solid #EEF2F7; padding-bottom: 10px; margin-bottom: 15px;">📊 Indicadores Diários de Rotina</h2>
-        
         <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
           <tr style="border-bottom: 1px solid #EEF2F7;">
             <td style="padding: 12px 0; color: #546E7A;">😴 Média de Sono</td>
@@ -1945,23 +1938,22 @@ async function enviarRelatorioCompletoWhatsApp() {
         </table>
       </div>
     </div>
-    
     <div style="background: #FFF8E1; border: 1px solid #FFE082; border-radius: 12px; padding: 15px; font-size: 14px; color: #5D4037;">
-      ⚠️ <strong>Importante:</strong> Relatório gerado automaticamente pelo aplicativo TDAH Care. 
+      ⚠️ <strong>Importante:</strong> Relatório gerado automaticamente pelo aplicativo TDAH Care.
     </div>
   `;
 
-  overlay.appendChild(printArea);
-  document.body.appendChild(overlay);
+  document.body.appendChild(printArea);
 
-  // 3. Aguarda 0.5 segundos para o navegador "pintar" a tela fisicamente
-  await new Promise(resolve => setTimeout(resolve, 500));
+  // 3. Aguarda meio segundo pro celular renderizar tudo certinho lá no topo
+  await new Promise(resolve => setTimeout(resolve, 600));
 
   const opt = {
     margin:       0,
     filename:     `Relatorio_${apelido.replace(/\s+/g, '_')}.pdf`,
     image:        { type: 'jpeg', quality: 1.0 },
-    html2canvas:  { scale: 2, useCORS: true },
+    // scrollY: 0 obriga a câmera do gerador a focar no topo da tela, evitando o branco
+    html2canvas:  { scale: 2, useCORS: true, scrollY: 0, windowWidth: 800 },
     jsPDF:        { unit: 'px', format: [800, printArea.offsetHeight + 60], orientation: 'portrait' }
   };
 
@@ -1969,10 +1961,10 @@ async function enviarRelatorioCompletoWhatsApp() {
     const pdfBlob = await html2pdf().set(opt).from(printArea).outputPdf('blob');
     const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
     
-    // 4. Remove a tela branca do celular
-    document.body.removeChild(overlay);
+    // Limpa a tela e volta o usuário pra onde ele estava lendo!
+    document.body.removeChild(printArea);
+    window.scrollTo(0, scrollOriginal);
 
-    // Salva no banco e tenta abrir a gaveta de compartilhamento nativa (WhatsApp)
     sincronizarComFirebase(d);
 
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -1983,14 +1975,14 @@ async function enviarRelatorioCompletoWhatsApp() {
       });
       showToast('✅ Enviado com sucesso!');
     } else {
-      // Se não suportar share nativo, baixa o arquivo
       html2pdf().set(opt).from(printArea).save();
       showToast('⬇️ PDF baixado! Envie no WhatsApp manualmente.');
     }
   } catch(e) {
     console.error(e);
     showToast('⚠️ Erro ao gerar PDF.');
-    if(document.body.contains(overlay)) document.body.removeChild(overlay);
+    if(document.body.contains(printArea)) document.body.removeChild(printArea);
+    window.scrollTo(0, scrollOriginal);
   }
 }
 function verificarApelido() {
@@ -2190,6 +2182,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
