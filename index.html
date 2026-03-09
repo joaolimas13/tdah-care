@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <meta charset="UTF-8">
 <meta name="description" content="Acompanhamento diário para TDAH">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -541,7 +541,8 @@ textarea { resize: none; height: 80px; }
     <button onclick="enviarRelatorioCompletoWhatsApp()" style="width:100%;padding:10px;background:white;color:#1B5E20;border:none;border-radius:10px;font-size:0.85rem;font-weight:800;cursor:pointer;">📤 Gerar e Compartilhar Progresso</button>
   </div>
 
-  <button class="reativar-btn" onclick="abrirReativar()">⚡ Reativar Foco</button>
+  <button onclick="salvarDiarioManual()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1565C0,#1976D2);color:white;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(21,101,192,0.3);">💾 Salvar Registro do Dia</button>
+<button class="reativar-btn" onclick="abrirReativar()">⚡ Reativar Foco</button>
 
   <div class="hidrat-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
@@ -2085,6 +2086,17 @@ async function sincronizarComFirebase(dadosSemana) {
   }
 }
 
+// ========== SALVAR DIÁRIO MANUAL ==========
+function salvarDiarioManual() {
+    salvar();
+    showToast('✅ Dados do dia salvos!');
+    // Sincroniza com Firebase se disponível
+    const apelido = localStorage.getItem('tdah_apelido');
+    if (apelido && window._fbReady) {
+        sincronizarAgora();
+    }
+}
+
 // ========== INIT ==========
 init();
 carregarConfigPom();
@@ -2177,18 +2189,3 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
