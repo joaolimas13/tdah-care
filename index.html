@@ -4352,6 +4352,39 @@ window.addEventListener('load', function() {
   }
   if (window.location.hash === '#admin') setTimeout(abrirAdmin, 500);
 });
+  // ====== FUNÇÃO NOVA: EXPORTAR PARA A PSICÓLOGA ======
+function exportarParaPsicologa() {
+    try {
+        // Coleta os dados salvos sem falhar caso falte algum
+        const dadosPaciente = {
+            apelido: localStorage.getItem('apelido') || 'Paciente',
+            score: localStorage.getItem('score') || 0,
+            focoTotal: localStorage.getItem('focoTotal') || "0",
+            sonoMedia: localStorage.getItem('sonoMedia') || "0",
+            metasPct: localStorage.getItem('metasPct') || 0,
+            dataExportacao: new Date().toLocaleDateString('pt-BR')
+        };
+
+        // Transforma num arquivo .json inteligente
+        const jsonString = JSON.stringify(dadosPaciente);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        
+        // Cria o download para o paciente te enviar
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", `TDAHCare_${dadosPaciente.apelido}.json`);
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        alert("✅ Pronto! O arquivo foi baixado no seu celular. Agora é só enviar para a sua psicóloga!");
+    } catch (error) {
+        alert("❌ Erro ao exportar os dados: " + error.message);
+    }
+}
+// ====================================================
 </script>
 
 <div class="apelido-overlay" id="apelido-overlay">
@@ -4384,4 +4417,5 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
