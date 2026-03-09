@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <head>
 <meta charset="UTF-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <meta name="description" content="Acompanhamento diário para TDAH">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TDAH Care</title>
@@ -542,7 +542,8 @@ textarea { resize: none; height: 80px; }
   </div>
 
   <button id="btn-salvar-dia" onclick="salvarDiarioManual()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1565C0,#1976D2);color:white;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(21,101,192,0.3);">💾 Salvar e Sincronizar com a Psicóloga</button>
-<button class="reativar-btn" onclick="abrirReativar()">⚡ Reativar Foco</button>
+
+  <button class="reativar-btn" onclick="abrirReativar()">⚡ Reativar Foco</button>
 
   <div class="hidrat-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
@@ -935,9 +936,9 @@ textarea { resize: none; height: 80px; }
   <div class="backup-content">
     <div class="backup-header"><h2>💾 Backup & Sincronização</h2><button class="backup-close" onclick="fecharBackupModal({target:{id:'backup-modal'}})">✕</button></div>
     <div class="backup-body">
-      <div class="backup-section" style="margin-bottom:14px;">
+      <div class="backup-section">
         <div class="backup-section-title">📱 WhatsApp da Psicóloga</div>
-        <p style="font-size:0.78rem;color:#546E7A;margin-bottom:10px;">Configure para enviar relatórios direto para ela.</p>
+        <p class="backup-section-desc">Configure para enviar relatórios direto para ela.</p>
         <div style="display:flex;gap:8px;align-items:center;">
           <input type="tel" id="psicologa-tel-input" placeholder="DDD + número (ex: 64999991234)"
             style="flex:1;padding:10px 12px;border:1.5px solid #90CAF9;border-radius:10px;font-size:0.85rem;outline:none;"
@@ -945,6 +946,15 @@ textarea { resize: none; height: 80px; }
           <button onclick="testarWhatsAppPsicologa()"
             style="background:#25D366;color:white;border:none;border-radius:10px;padding:10px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">💬 Testar</button>
         </div>
+      </div>
+      <div class="backup-section">
+        <div class="backup-section-title">📊 Dados salvos</div>
+        <div class="backup-stats">
+          <div class="backup-stat"><div class="bv" id="bk-dias">0</div><div class="bl">Dias</div></div>
+          <div class="backup-stat"><div class="bv" id="bk-metas">0</div><div class="bl">Metas</div></div>
+          <div class="backup-stat"><div class="bv" id="bk-size">0b</div><div class="bl">Tamanho</div></div>
+        </div>
+        <div class="backup-last-info none" id="backup-last-export">📁 Nenhum backup exportado ainda</div>
       </div>
       <div class="backup-section">
         <div class="backup-section-title">📤 Exportar backup</div>
@@ -1304,7 +1314,6 @@ function init() {
   buildHoursGrid();
   carregarDia(hojeISO());
   renderCalendar(currentCalendarDate);
-  // Carrega tel da psicóloga salvo
   const telSalvo = localStorage.getItem('tdah_psicologa_tel') || '';
   const telInput = document.getElementById('psicologa-tel-input');
   if(telInput && telSalvo) telInput.value = telSalvo;
@@ -1898,107 +1907,107 @@ function calcularScoreSemana(d) {
 // ========== COMPARTILHAR PROGRESSO COMO IMAGEM (WHATSAPP) - VERSÃO AJUSTADA ==========
 
 async function enviarRelatorioCompletoWhatsApp() {
+  showToast('📸 Gerando imagem do relatório... Aguarde.');
+
   const d = calcularDadosSemana();
   const apelido = getApelido();
-  showToast('📤 Preparando relatório...');
+  
+  // 1. Cria o cartão visual (tamanho fixo de 400px, perfeito para tela de celular)
+  const card = document.createElement('div');
+  card.style.position = 'fixed';
+  card.style.top = '0';
+  card.style.left = '0';
+  card.style.width = '400px';
+  card.style.padding = '20px';
+  // Fundo com a cor primária do seu app para dar contraste
+  card.style.background = 'linear-gradient(135deg, #1565C0, #1976D2)';
+  card.style.fontFamily = 'Arial, sans-serif';
+  card.style.zIndex = '999999';
+  card.style.boxSizing = 'border-box';
 
-  const cardHTML = `
-    <div style="width:380px;background:#1565C0;padding:20px;font-family:Arial,sans-serif;box-sizing:border-box;">
-      <div style="background:white;border-radius:16px;padding:20px;color:#1A237E;">
-        <div style="text-align:center;margin-bottom:16px;">
-          <div style="font-size:22px;font-weight:900;color:#1565C0;">📋 Relatório Semanal</div>
-          <div style="font-size:13px;color:#546E7A;margin-top:4px;">TDAH Care · ${d.periodo}</div>
-          <div style="font-size:13px;color:#546E7A;">Paciente: <strong>${apelido}</strong></div>
+  // 2. Monta um layout limpo, direto e profissional
+  card.innerHTML = `
+    <div style="background: white; border-radius: 16px; padding: 24px; color: #1A237E; box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="margin: 0; font-size: 22px; color: #1565C0;">📋 Relatório Clínico</h2>
+            <div style="font-size: 14px; color: #546E7A; margin-top: 6px;">Paciente: <strong>${apelido}</strong></div>
+            <div style="font-size: 12px; color: #90A4AE; margin-top: 2px;">${d.periodo}</div>
         </div>
-        <div style="display:flex;gap:10px;margin-bottom:16px;">
-          <div style="flex:1;background:#F0F4F8;padding:12px;border-radius:10px;text-align:center;border:1px solid #E3EAF2;">
-            <div style="font-size:28px;font-weight:900;color:#2E7D32;">${d.scoreGeral}</div>
-            <div style="font-size:11px;color:#546E7A;text-transform:uppercase;">Score /100</div>
-          </div>
-          <div style="flex:1;background:#F0F4F8;padding:12px;border-radius:10px;text-align:center;border:1px solid #E3EAF2;">
-            <div style="font-size:28px;font-weight:900;color:#1565C0;">${d.remedioN}</div>
-            <div style="font-size:11px;color:#546E7A;text-transform:uppercase;">Dias c/ Remédio</div>
-          </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+            <div style="flex: 1; background: #F0F4F8; padding: 12px; border-radius: 12px; text-align: center; border: 1px solid #E3EAF2;">
+                <div style="font-size: 28px; font-weight: 900; color: #2E7D32;">${d.scoreGeral}</div>
+                <div style="font-size: 11px; color: #546E7A; text-transform: uppercase; margin-top: 2px;">Score /100</div>
+            </div>
+            <div style="flex: 1; background: #F0F4F8; padding: 12px; border-radius: 12px; text-align: center; border: 1px solid #E3EAF2;">
+                <div style="font-size: 28px; font-weight: 900; color: #1565C0;">${d.remedioN}</div>
+                <div style="font-size: 11px; color: #546E7A; text-transform: uppercase; margin-top: 2px;">Dias c/ Remédio</div>
+            </div>
         </div>
-        <div style="background:#F8FAFF;border:2px solid #E3EAF2;border-radius:12px;padding:14px;margin-bottom:12px;">
-          <div style="font-size:14px;margin-bottom:10px;display:flex;justify-content:space-between;">
-            <span style="color:#546E7A;">😴 Sono Médio</span><strong style="color:#1A237E;">${d.sonoMedia ? d.sonoMedia+'h' : '—'}</strong>
-          </div>
-          <div style="font-size:14px;margin-bottom:10px;display:flex;justify-content:space-between;">
-            <span style="color:#546E7A;">🎯 Metas Concluídas</span><strong style="color:#1A237E;">${d.metasPct !== null ? d.metasPct+'%' : '—'}</strong>
-          </div>
-          <div style="font-size:14px;margin-bottom:10px;display:flex;justify-content:space-between;">
-            <span style="color:#546E7A;">🏔️ Foco Profundo</span><strong style="color:#1A237E;">${d.focoH > 0 ? d.focoH+'h ' : ''}${d.focoM > 0 ? d.focoM+'min' : d.focoTotal+'min'}</strong>
-          </div>
-          <div style="font-size:14px;display:flex;justify-content:space-between;">
-            <span style="color:#546E7A;">📱 Uso de Tela</span><strong style="color:#1A237E;">${d.celMedia !== null ? Math.floor(d.celMedia/60)+'h '+(d.celMedia%60)+'min' : '—'}</strong>
-          </div>
+
+        <div style="background: #F8FAFF; border: 2px solid #E3EAF2; border-radius: 12px; padding: 16px; margin-bottom: 15px;">
+            <div style="font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                <span style="color: #546E7A;">😴 Sono Médio</span>
+                <strong style="color: #1A237E;">${d.sonoMedia ? d.sonoMedia + 'h' : '—'}</strong>
+            </div>
+            <div style="font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                <span style="color: #546E7A;">🎯 Metas Concluídas</span>
+                <strong style="color: #1A237E;">${d.metasPct !== null ? d.metasPct + '%' : '—'}</strong>
+            </div>
+            <div style="font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                <span style="color: #546E7A;">🏔️ Foco Profundo</span>
+                <strong style="color: #1A237E;">${d.focoH > 0 ? d.focoH + 'h ' : ''}${d.focoM > 0 ? d.focoM + 'min' : d.focoTotal + 'min'}</strong>
+            </div>
+            <div style="font-size: 14px; display: flex; justify-content: space-between;">
+                <span style="color: #546E7A;">📱 Uso de Tela (Média)</span>
+                <strong style="color: #1A237E;">${d.celMedia !== null ? Math.floor(d.celMedia/60) + 'h ' + (d.celMedia%60) + 'min' : '—'}</strong>
+            </div>
         </div>
-        <div style="text-align:center;font-size:11px;color:#90A4AE;">Gerado pelo App TDAH Care 🧠</div>
-      </div>
+        
+        <div style="text-align: center; font-size: 11px; color: #90A4AE; margin-top: 20px;">
+            Gerado automaticamente pelo App TDAH Care 🧠
+        </div>
     </div>
   `;
 
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;z-index:-1;';
-  wrapper.innerHTML = cardHTML;
-  document.body.appendChild(wrapper);
-  const card = wrapper.firstElementChild;
+  document.body.appendChild(card);
 
-  await new Promise(r => setTimeout(r, 800));
+  // 3. Aguarda 1500ms para renderizar (AUMENTADO)
+  await new Promise(r => setTimeout(r, 1500));
 
-  // Sincroniza com Firebase
-  sincronizarComFirebase(d);
+  try {
+    // 4. Usa html2canvas com scale REDUZIDO (AUMENTADO AQUI PARA 1.5)
+    const canvas = await html2canvas(card, { scale: 1.5, backgroundColor: null, logging: false });
+    
+    document.body.removeChild(card);
 
-  let imagemOk = false;
-  if (typeof html2canvas !== 'undefined') {
-    try {
-      const canvas = await html2canvas(card, {
-        scale: 2, backgroundColor: '#1565C0', useCORS: true,
-        allowTaint: true, logging: false, width: 380
-      });
-      if(document.body.contains(wrapper)) document.body.removeChild(wrapper);
-      imagemOk = true;
-      canvas.toBlob(async (blob) => {
-        const file = new File([blob], `Relatorio_${apelido.replace(/\s+/g,'')}.png`, {type:'image/png'});
-        if (navigator.canShare && navigator.canShare({files:[file]})) {
-          await navigator.share({title:'Relatório TDAH', text:'Meu relatório semanal do TDAH Care', files:[file]});
-          showToast('✅ Relatório compartilhado!');
+    canvas.toBlob(async (blob) => {
+        const file = new File([blob], `Relatorio_${apelido.replace(/\s+/g, '')}.png`, { type: 'image/png' });
+        
+        sincronizarComFirebase(d);
+
+        // 5. Aciona o Compartilhamento Nativo (Igual ao botão de "Compartilhar" do celular)
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                title: 'Relatório TDAH',
+                text: `Olá! Segue em anexo a imagem do meu relatório semanal do TDAH Care.`,
+                files: [file]
+            });
+            showToast('✅ Imagem pronta para envio!');
         } else {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url; a.download = file.name; a.click();
-          setTimeout(() => URL.revokeObjectURL(url), 2000);
-          showToast('⬇️ Imagem salva! Envie no WhatsApp.');
+            // Se estiver no PC ou navegador antigo, apenas baixa a imagem
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = file.name;
+            a.click();
+            showToast('⬇️ Imagem salva! Envie no WhatsApp manualmente.');
         }
-      }, 'image/png');
-    } catch(err) {
-      console.error('html2canvas falhou:', err);
-      if(document.body.contains(wrapper)) document.body.removeChild(wrapper);
-    }
-  } else {
-    if(document.body.contains(wrapper)) document.body.removeChild(wrapper);
-  }
+    }, 'image/png');
 
-  if (!imagemOk) {
-    const numTel = localStorage.getItem('tdah_psicologa_tel') || '';
-    const msg = encodeURIComponent(
-      `📋 *Relatório Semanal — TDAH Care*\n` +
-      `👤 ${apelido} · ${d.periodo}\n\n` +
-      `📊 Score: *${d.scoreGeral}/100*\n` +
-      `😴 Sono médio: *${d.sonoMedia ? d.sonoMedia+'h' : '—'}*\n` +
-      `🎯 Metas: *${d.metasPct !== null ? d.metasPct+'%' : '—'}* (${d.metasConcl}/${d.metasTotal})\n` +
-      `🏔️ Foco: *${d.focoH > 0 ? d.focoH+'h ' : ''}${d.focoM}min*\n` +
-      `💊 Remédio: *${d.remedioN}/7 dias*\n` +
-      `📱 Tela: *${d.celMedia !== null ? Math.floor(d.celMedia/60)+'h'+(d.celMedia%60)+'min' : '—'}*\n\n` +
-      `_Gerado pelo TDAH Care_`
-    );
-    if (numTel) {
-      window.open('https://wa.me/55' + numTel.replace(/\D/g,'') + '?text=' + msg, '_blank');
-    } else {
-      window.open('https://wa.me/?text=' + msg, '_blank');
-    }
-    showToast('📱 Relatório enviado pelo WhatsApp!');
+  } catch (err) {
+    console.error(err);
+    showToast('⚠️ Erro ao gerar imagem.');
+    if(document.body.contains(card)) document.body.removeChild(card);
   }
 }
 function verificarApelido() {
@@ -2089,16 +2098,8 @@ async function sincronizarComFirebase(dadosSemana) {
   if (badge) { badge.className='sync-badge sync-sending'; badge.textContent='Sincronizando...'; badge.style.display='inline-flex'; }
   if (!window._fbReady || !window._sincronizarFirebase) {
     if (badge) { badge.className='sync-badge sync-err'; badge.textContent='Sem conexao'; }
-    return false;
+    return;
   }
-  
-  // Garante que o dailyData completo do localStorage seja enviado (não só o da sessão atual)
-  let fullDailyData = state.dailyData;
-  try {
-    const raw = localStorage.getItem('tdah_daily');
-    if (raw) fullDailyData = JSON.parse(raw);
-  } catch(e) {}
-
   const ok = await window._sincronizarFirebase(apelido, {
     score: dadosSemana.scoreGeral,
     sonoMedia: dadosSemana.sonoMedia,
@@ -2106,21 +2107,17 @@ async function sincronizarComFirebase(dadosSemana) {
     focoTotal: dadosSemana.focoTotal,
     diasDados: dadosSemana.diasDados,
     periodo: dadosSemana.periodo,
-    dailyData: fullDailyData
+    dailyData: state.dailyData // ENVIANDO O HISTÓRICO REAL PARA O FIREBASE
   });
   if (badge) {
     badge.className = 'sync-badge ' + (ok ? 'sync-ok' : 'sync-err');
     badge.textContent = ok ? 'Enviado!' : 'Falha no envio';
   }
-  return ok;
 }
 
-// ========== SALVAR DIÁRIO ==========
+// ========== SALVAR DIÁRIO MANUAL ==========
 function salvarDiarioManual() {
-  // 1. Salva o estado atual no dailyData
   salvar();
-
-  // 2. Feedback visual imediato
   const btn = document.getElementById('btn-salvar-dia');
   if(btn) {
     btn.textContent = '🔄 Sincronizando...';
@@ -2128,16 +2125,11 @@ function salvarDiarioManual() {
     btn.style.background = 'linear-gradient(135deg,#F57F17,#FFA726)';
   }
   showToast('💾 Salvando dados...');
-
-  // 3. Recarrega dailyData COMPLETO do localStorage
   try {
     const raw = localStorage.getItem('tdah_daily');
-    if (raw) state.dailyData = JSON.parse(raw);
+    if(raw) state.dailyData = JSON.parse(raw);
   } catch(e) {}
-
-  // 4. Calcula e sincroniza com Firebase
   const dadosSemana = calcularDadosSemana();
-
   sincronizarComFirebase(dadosSemana).then((ok) => {
     if(btn) {
       btn.disabled = false;
@@ -2162,7 +2154,7 @@ function salvarDiarioManual() {
 
 function testarWhatsAppPsicologa() {
   const tel = localStorage.getItem('tdah_psicologa_tel') || '';
-  if (!tel) { showToast('⚠️ Digite o número primeiro!'); return; }
+  if(!tel) { showToast('⚠️ Digite o número primeiro!'); return; }
   const apelido = getApelido();
   const msg = encodeURIComponent('Olá! Este é um teste do app TDAH Care de ' + apelido + ' 👋');
   window.open('https://wa.me/55' + tel.replace(/\D/g,'') + '?text=' + msg, '_blank');
