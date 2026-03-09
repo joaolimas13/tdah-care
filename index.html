@@ -600,7 +600,8 @@ textarea { resize: none; height: 80px; }
     <div id="ultimo-sono-home"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:8px;">Nenhum registro ainda</p></div>
   </div>
   
-<button class="relatorio-btn" onclick="enviarRelatorioCompletoWhatsApp()" style="background:linear-gradient(135deg,#1B5E20,#43A047);">📤 Enviar Relatório PDF (WhatsApp)</button>  <button onclick="debugAdmin()" style="background:#1565C0;color:white;border:none;border-radius:12px;padding:10px;width:100%;font-size:0.8rem;cursor:pointer;margin-bottom:8px;">🔐 Admin</button>
+<button id="btn-enviar-psicologa" class="relatorio-btn" onclick="enviarProgressoPsicologa()" style="background:linear-gradient(135deg,#1B5E20,#43A047);">📤 Enviar Progresso para a Psicóloga</button>
+  <button onclick="debugAdmin()" style="background:#1565C0;color:white;border:none;border-radius:12px;padding:10px;width:100%;font-size:0.8rem;cursor:pointer;margin-bottom:8px;">🔐 Admin</button>
   <div class="page-footer" style="padding:16px 0;">produced by Jp</div>
 </div>
 
@@ -944,7 +945,7 @@ textarea { resize: none; height: 80px; }
             style="flex:1;padding:10px 12px;border:1.5px solid #90CAF9;border-radius:10px;font-size:0.85rem;outline:none;"
             oninput="localStorage.setItem('tdah_psicologa_tel',this.value)">
           <button onclick="testarWhatsAppPsicologa()"
-            style="background:#25D366;color:white;border:none;border-radius:10px;padding:10px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">💬 Testar</button>
+            style="background:#25D366;color:white;border:none;border-radius:10px;padding:10px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">💬 Enviar Mensagem</button>
         </div>
       </div>
       <div class="backup-section">
@@ -2150,6 +2151,39 @@ function salvarDiarioManual() {
       }, 4000);
     }
   });
+}
+
+async function enviarProgressoPsicologa() {
+  const btn = document.getElementById('btn-enviar-psicologa');
+  if(btn) {
+    btn.textContent = '🔄 Enviando...';
+    btn.disabled = true;
+  }
+  salvar();
+  try {
+    const raw = localStorage.getItem('tdah_daily');
+    if(raw) state.dailyData = JSON.parse(raw);
+  } catch(e) {}
+  const dadosSemana = calcularDadosSemana();
+  const ok = await sincronizarComFirebase(dadosSemana);
+  if(btn) {
+    btn.disabled = false;
+    if(ok) {
+      btn.textContent = '✅ Dados enviados com sucesso!';
+      btn.style.background = 'linear-gradient(135deg,#1565C0,#29B6F6)';
+      showToast('✅ Progresso enviado para a psicóloga!');
+    } else {
+      btn.textContent = '⚠️ Sem conexão — tente novamente';
+      btn.style.background = 'linear-gradient(135deg,#546E7A,#78909C)';
+      showToast('⚠️ Falha na conexão. Dados salvos localmente.');
+    }
+    setTimeout(() => {
+      if(btn) {
+        btn.textContent = '📤 Enviar Progresso para a Psicóloga';
+        btn.style.background = 'linear-gradient(135deg,#1B5E20,#43A047)';
+      }
+    }, 3500);
+  }
 }
 
 function testarWhatsAppPsicologa() {
