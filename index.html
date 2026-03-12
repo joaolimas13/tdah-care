@@ -1539,7 +1539,8 @@ function gerarRelatorioMensal(){
   const daysN = Math.round((dataFimObj - dataIniObj) / (1000*60*60*24)) + 1;
   let sonoTotal=0,sonoN=0,sonoAbaixo7=0,sonoAbaixo6=0,metasConcl=0,metasTotal=0,
       focoTotal=0,focoN=0,celularTotal=0,celularN=0,remedioN=0,
-      leituraTotal=0,leituraN=0,diasDados=0,reativarTotal=0;
+      leituraTotal=0,leituraN=0,diasDados=0,reativarTotal=0,
+      aguaTotal=0,aguaN=0;
   const diasReativar={}; const sonoSeries=[]; const focoSeries=[];
 
   for(let i=daysN-1;i>=0;i--){
@@ -1559,7 +1560,7 @@ function gerarRelatorioMensal(){
     if(dd.celular){ celularTotal+=dd.celular.horas*60+dd.celular.minutos; celularN++; }
     if(dd.remedio) remedioN++;
     if(dd.leitura){ leituraTotal+=dd.leitura.paginas; leituraN++; }
-    if(dd.copos>0){ const ml=(dd.copos*(dd.copoMl||250)); aguaTotal=(aguaTotal||0)+ml; aguaN=(aguaN||0)+1; }
+    if(dd.copos>0){ aguaTotal+=(dd.copos*(dd.copoMl||250)); aguaN++; }
     if(dd.reativarFoco&&dd.reativarFoco.length>0){ reativarTotal+=dd.reativarFoco.length; diasReativar[iso]=dd.reativarFoco.length; }
   }
 
@@ -2262,6 +2263,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
 
 
