@@ -742,7 +742,7 @@
                                 const sonoTxt = (info.sono && info.sono[0]) ? info.sono[0].horas + 'h' : 'N/A';
                                 const focoTxt = (info.pom && info.pom.minFoco) ? info.pom.minFoco + 'm' : '0m';
                                 const celTxt = (info.celular) ? info.celular.horas + 'h ' + info.celular.minutos + 'm' : 'N/A';
-                                const aguaTxt = (info.copos) ? (info.copos * 250) + 'ml' : '0ml';
+                                const aguaTxt = (info.copos) ? (info.copos * (info.copoMl || 250)) + 'ml' : '0ml';
                                 const remedioTxt = (info.remedio && info.remedio.horaRegistro) ? '✅' : '❌';
                                 
                                 let metasConc = 0; let metasTot = 0;
