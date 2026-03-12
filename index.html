@@ -1228,7 +1228,7 @@ function resetarReativar() {
 function salvar() {
   state.dailyData[state.currentDate] = {
     sono: state.sono, remedio: state.remedio ? {...state.remedio, horaRegistro: state.remedio.horaRegistro instanceof Date ? state.remedio.horaRegistro.toISOString() : state.remedio.horaRegistro} : null,
-    metas: state.metas, metasFixas: state.metasFixas, celular: state.celular, leitura: state.leitura, copos: state.copos||0,
+    metas: state.metas, metasFixas: state.metasFixas, celular: state.celular, leitura: state.leitura, copos: state.copos||0, copoMl: hidratConfig.copoMl||250,
     pom: {sessoes:state.pom.sessoes,ciclos:state.pom.ciclos,sessNoCiclo:state.pom.sessNoCiclo,minFoco:state.pom.minFoco,data:state.pom.data||state.currentDate}
   };
   try {
@@ -1718,6 +1718,7 @@ function mostrarSumarioDia(iso){
   const mAll=[...(dd.metasFixas||[]),...(dd.metas||[])];if(mAll.length>0){const dn=mAll.filter(m=>m.done).length;html+=`<div class="rel-section" style="border-color:#2E7D32"><h3>🎯 Metas</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn}/${mAll.length}</span></div>${mAll.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'📌 ':''}${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;}
   if(dd.pom&&(dd.pom.sessoes>0||dd.pom.ciclos>0))html+=`<div class="rel-section" style="border-color:#7C3AED"><h3>🏔️ Caverna</h3><div class="rel-row"><span>Sessões</span><span class="rv">${dd.pom.sessoes}</span></div><div class="rel-row"><span>Foco total</span><span class="rv">${dd.pom.minFoco}min</span></div></div>`;
   if(dd.celular)html+=`<div class="rel-section" style="border-color:#F57F17"><h3>📱 Tela</h3><div class="rel-row"><span>Tempo</span><span class="rv">${dd.celular.horas}h ${dd.celular.minutos}min</span></div></div>`;
+  if(dd.copos>0){const mlCopo=dd.copoMl||250;html+=`<div class="rel-section" style="border-color:#29B6F6"><h3>💧 Hidratação</h3><div class="rel-row"><span>Total ingerido</span><span class="rv">${dd.copos*mlCopo}ml</span></div><div class="rel-row"><span>Copos</span><span class="rv">${dd.copos} copo${dd.copos>1?'s':''} de ${mlCopo}ml</span></div></div>`;}
   if(dd.leitura)html+=`<div class="rel-section" style="border-color:#6A1B9A"><h3>📚 Leitura</h3><div class="rel-row"><span>Páginas</span><span class="rv">${dd.leitura.paginas}</span></div></div>`;
   html+='</div>';card.innerHTML=html;card.style.display='block';
 }
@@ -2262,4 +2263,5 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
 
