@@ -33,8 +33,8 @@ body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--
 .nav-btn .icon { font-size: 1.25rem; }
 .nav-btn.active { color: var(--primary); }
 .nav-btn.active .icon { transform: translateY(-2px); }
-.nav-btn.caverna-nav { background: linear-gradient(135deg, #1A1A2E, #16213E); color: #E0E0FF; }
-.nav-btn.caverna-nav.active { color: #A78BFA; }
+.nav-btn.foco-nav { background: linear-gradient(135deg, #050B1F, #0A1628); color: #C8D8FF; }
+.nav-btn.foco-nav.active { color: #60A5FA; }
 .page { display: none; padding: 20px; padding-bottom: 85px; }
 .page.active { display: block; }
 .card { background: white; border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
@@ -146,7 +146,7 @@ textarea { resize: none; height: 80px; }
 .btn-danger { background: transparent; border: 2px solid #EF5350; color: #EF5350; border-radius: 12px; padding: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
 .page-footer { text-align: center; font-size: 0.68rem; color: #B0BEC5; letter-spacing: 0.5px; padding: 8px 0 4px; font-style: italic; }
 #page-caverna .page-footer { color: #3D3D5E; }
-#page-caverna { background: #0D0D1A; min-height: 100vh; padding: 20px; padding-bottom: 85px; color: #E0E0FF; }
+/* foco espacial CSS injected below */
 .caverna-header { text-align: center; margin-bottom: 24px; }
 .caverna-header h2 { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #A78BFA, #60A5FA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 4px; }
 .caverna-header p { font-size: 0.8rem; color: #6B7280; }
@@ -466,6 +466,85 @@ textarea { resize: none; height: 80px; }
 .admin-stat{text-align:center;background:#F8FAFF;border-radius:10px;padding:8px 4px;}
 .admin-stat-val{font-size:0.95rem;font-weight:800;color:#1565C0;}
 .admin-stat-lbl{font-size:0.6rem;color:#90A4AE;}
+
+/* ====== MODO FOCO ESPACIAL ====== */
+#page-caverna { background: #020818; min-height: 100vh; padding: 0; padding-bottom: 85px; color: #E0E0FF; position: relative; overflow-x: hidden; }
+#foco-canvas { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; height: 100%; pointer-events: none; z-index: 0; }
+#foco-page-inner { position: relative; z-index: 1; padding: 20px; padding-bottom: 20px; }
+.foco-header { text-align: center; margin-bottom: 14px; }
+.foco-header h2 { font-size: 1.35rem; font-weight: 900; background: linear-gradient(135deg, #60A5FA, #A78BFA, #F472B6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 2px; }
+.foco-header p { font-size: 0.75rem; color: #3D5070; }
+.foco-xp-bar-wrap { background: rgba(255,255,255,0.04); border: 1px solid rgba(96,165,250,0.18); border-radius: 16px; padding: 10px 14px; margin-bottom: 12px; }
+.foco-xp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.foco-nivel-badge { font-size: 0.7rem; font-weight: 800; color: #60A5FA; background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.25); padding: 3px 10px; border-radius: 20px; }
+.foco-xp-text { font-size: 0.65rem; color: #3D5070; }
+.foco-xp-bar { height: 7px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.foco-xp-fill { height: 100%; background: linear-gradient(to right, #3B82F6, #8B5CF6, #EC4899); border-radius: 4px; transition: width 0.7s ease; }
+.foco-planeta-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; font-size: 0.72rem; color: #3D5070; }
+.foco-planeta-atual { font-size: 1.8rem; filter: drop-shadow(0 0 8px rgba(96,165,250,0.7)); animation: planeta-float 3s ease-in-out infinite; }
+@keyframes planeta-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+.foco-nave-row { font-size: 1.1rem; animation: nave-fly 2s ease-in-out infinite; }
+@keyframes nave-fly { 0%,100%{transform:translateX(0) rotate(-8deg)} 50%{transform:translateX(5px) rotate(4deg)} }
+.foco-status-badge { display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; margin-bottom: 14px; }
+.foco-timer-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+.foco-ring { position: relative; width: 210px; height: 210px; }
+.foco-ring svg { position: absolute; top: 0; left: 0; width: 210px; height: 210px; transform: rotate(-90deg); }
+.foco-ring-bg { fill: none; stroke: rgba(255,255,255,0.04); stroke-width: 10; }
+.foco-ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
+.foco-center { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.foco-nave-center { font-size: 2.2rem; margin-bottom: 2px; filter: drop-shadow(0 0 10px rgba(96,165,250,0.9)); animation: nave-pulse 1.5s ease-in-out infinite; transition: opacity 0.3s; }
+.foco-nave-center.pausado { animation: none; opacity: 0.35; filter: none; }
+@keyframes nave-pulse { 0%,100%{filter:drop-shadow(0 0 6px rgba(96,165,250,0.5))} 50%{filter:drop-shadow(0 0 18px rgba(96,165,250,1))} }
+.foco-time { font-size: 2.8rem; font-weight: 800; color: white; letter-spacing: -2px; line-height: 1; font-variant-numeric: tabular-nums; }
+.foco-phase { font-size: 0.68rem; color: #3D5070; margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; }
+.foco-controls { display: flex; gap: 14px; justify-content: center; margin-bottom: 18px; }
+.foco-btn { width: 58px; height: 58px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.foco-btn-main { width: 74px; height: 74px; font-size: 1.8rem; background: linear-gradient(135deg, #1D4ED8, #7C3AED); color: white; box-shadow: 0 0 28px rgba(124,58,237,0.55); }
+.foco-btn-main:active { transform: scale(0.92); }
+.foco-btn-skip, .foco-btn-reset { background: rgba(255,255,255,0.04); color: #4B5563; border: 1px solid rgba(255,255,255,0.08); }
+.foco-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.foco-stat-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 12px 8px; text-align: center; }
+.foco-stat-box .v { font-size: 1.15rem; font-weight: 800; color: #60A5FA; display: block; }
+.foco-stat-box .l { font-size: 0.58rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+.foco-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+.foco-card-title { font-size: 0.68rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.foco-session-row { display: flex; gap: 7px; flex-wrap: wrap; }
+.foco-dot { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; border: 2px solid rgba(255,255,255,0.07); color: #374151; }
+.foco-dot.completo { background: rgba(59,130,246,0.15); border-color: #3B82F6; color: #60A5FA; }
+.foco-dot.atual { background: rgba(124,58,237,0.3); border-color: #8B5CF6; color: white; animation: pulse-dot 1.5s infinite; }
+.foco-manual-row { display: flex; gap: 8px; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
+.foco-manual-row span { color: #4B5563; font-size: 0.75rem; flex: 1; }
+.foco-badges-row { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 4px; }
+.foco-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; border: 1px solid; opacity: 0.25; transition: all 0.3s; }
+.foco-badge.unlocked { opacity: 1; animation: badge-pop 0.5s ease; }
+@keyframes badge-pop { 0%{transform:scale(0.4)} 70%{transform:scale(1.25)} 100%{transform:scale(1)} }
+.foco-badge-azul { background: rgba(59,130,246,0.12); color: #60A5FA; border-color: rgba(59,130,246,0.25); }
+.foco-badge-roxo { background: rgba(139,92,246,0.12); color: #A78BFA; border-color: rgba(139,92,246,0.25); }
+.foco-badge-ouro { background: rgba(251,191,36,0.12); color: #FCD34D; border-color: rgba(251,191,36,0.25); }
+.foco-badge-verde { background: rgba(52,211,153,0.12); color: #34D399; border-color: rgba(52,211,153,0.25); }
+.foco-badge-rosa { background: rgba(244,114,182,0.12); color: #F472B6; border-color: rgba(244,114,182,0.25); }
+.pom-config-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+.pom-config-title { font-size: 0.68rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.pom-config-row { display: flex; gap: 10px; align-items: center; }
+.pom-config-item { flex: 1; text-align: center; }
+.pom-config-item label { font-size: 0.65rem; color: #4B5563; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.pom-config-item input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #E0E0FF; border-radius: 10px; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; width: 100%; }
+.pom-config-sep { color: #374151; font-size: 1.2rem; font-weight: 700; margin-top: 16px; }
+.pom-config-btn { padding: 10px 14px; background: rgba(99,102,241,0.2); color: #818CF8; border: 1px solid rgba(99,102,241,0.35); border-radius: 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap; margin-top: 14px; }
+.celebracao-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 500; background: rgba(2,8,24,0.85); align-items: center; justify-content: center; flex-direction: column; }
+.celebracao-overlay.show { display: flex; }
+.celebracao-box { background: linear-gradient(135deg, rgba(10,16,40,0.99), rgba(25,15,55,0.99)); border: 1px solid rgba(139,92,246,0.4); border-radius: 28px; padding: 36px 28px; text-align: center; max-width: 320px; width: 90%; animation: celebrate-in 0.5s cubic-bezier(0.175,0.885,0.32,1.275); box-shadow: 0 0 60px rgba(139,92,246,0.35); }
+@keyframes celebrate-in { from{transform:scale(0.4);opacity:0} to{transform:scale(1);opacity:1} }
+.celebracao-emoji { font-size: 4rem; margin-bottom: 10px; display: block; animation: spin-once 0.6s ease; }
+@keyframes spin-once { from{transform:rotate(-180deg) scale(0)} to{transform:rotate(0) scale(1)} }
+.celebracao-titulo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, #60A5FA, #A78BFA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+.celebracao-xp { font-size: 2rem; font-weight: 900; color: #FCD34D; margin-bottom: 4px; }
+.celebracao-sub { font-size: 0.82rem; color: #6B7280; margin-bottom: 16px; line-height: 1.6; }
+.celebracao-prox-planeta { font-size: 1.1rem; margin-bottom: 18px; color: #A78BFA; }
+.celebracao-btn { background: linear-gradient(135deg, #1D4ED8, #7C3AED); color: white; border: none; border-radius: 14px; padding: 14px 32px; font-size: 1rem; font-weight: 800; cursor: pointer; }
+.confetti-piece { position: fixed; width: 8px; height: 8px; border-radius: 2px; animation: confetti-fall 2.5s ease-in forwards; pointer-events: none; z-index: 501; }
+@keyframes confetti-fall { 0%{opacity:1;transform:translateY(-20px) rotate(0deg)} 100%{opacity:0;transform:translateY(800px) rotate(720deg)} }
+#page-caverna .page-footer { color: #1E2A3A; }
 </style>
 </head>
 <body>
@@ -712,8 +791,32 @@ textarea { resize: none; height: 80px; }
 </div>
 
 <div class="page" id="page-caverna">
-  <div class="caverna-header"><h2>🏔️ Modo Caverna</h2><p id="caverna-subtitle">Pomodoro 20min foco / 5min pausa</p></div>
-  <div style="text-align:center;"><span class="caverna-status-badge status-idle" id="caverna-status-badge">⏸ Aguardando início</span></div>
+<canvas id="foco-canvas"></canvas>
+<div id="foco-page-inner">
+
+  <div class="foco-header">
+    <h2>🚀 Modo Foco — Missão Espacial</h2>
+    <p id="caverna-subtitle">Pomodoro · XP · Planetas · Badges</p>
+  </div>
+
+  <div class="foco-xp-bar-wrap">
+    <div class="foco-xp-row">
+      <span class="foco-nivel-badge" id="foco-nivel-badge">⭐ Nível 1 — Recruta</span>
+      <span class="foco-xp-text" id="foco-xp-text">0 / 100 XP</span>
+    </div>
+    <div class="foco-xp-bar"><div class="foco-xp-fill" id="foco-xp-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="foco-planeta-row">
+    <span class="foco-nave-row">🚀</span>
+    <span>Missão para</span>
+    <span class="foco-planeta-atual" id="foco-planeta-emoji">🌍</span>
+    <span id="foco-planeta-nome">Terra</span>
+  </div>
+
+  <div style="text-align:center;">
+    <span class="foco-status-badge status-idle" id="caverna-status-badge">⏸ Aguardando início</span>
+  </div>
 
   <div class="pom-config-card">
     <div class="pom-config-title">⚙️ Configurar tempo</div>
@@ -730,33 +833,69 @@ textarea { resize: none; height: 80px; }
       <button class="pom-config-btn" onclick="aplicarConfigPom()">✓ Aplicar</button>
     </div>
   </div>
-  <div class="caverna-timer-wrap">
-    <div class="caverna-ring">
-      <svg viewBox="0 0 220 220"><circle class="caverna-ring-bg" cx="110" cy="110" r="96"/><circle class="caverna-ring-fill" id="caverna-ring-fill" cx="110" cy="110" r="96" stroke="#A78BFA" stroke-dasharray="603.19" stroke-dashoffset="0"/></svg>
-      <div class="caverna-center"><div class="caverna-time" id="caverna-time-display">20:00</div><div class="caverna-phase" id="caverna-phase-label">FOCO</div></div>
+
+  <div class="foco-timer-wrap">
+    <div class="foco-ring">
+      <svg viewBox="0 0 210 210">
+        <circle class="foco-ring-bg" cx="105" cy="105" r="96"/>
+        <circle class="foco-ring-fill" id="caverna-ring-fill" cx="105" cy="105" r="96"
+          stroke="#3B82F6" stroke-dasharray="603.19" stroke-dashoffset="0"/>
+      </svg>
+      <div class="foco-center">
+        <div class="foco-nave-center pausado" id="foco-nave-center">🚀</div>
+        <div class="foco-time" id="caverna-time-display">20:00</div>
+        <div class="foco-phase" id="caverna-phase-label">FOCO</div>
+      </div>
     </div>
   </div>
-  <div class="caverna-controls">
-    <button class="caverna-btn caverna-btn-reset" onclick="resetarPomodoro()" title="Reiniciar">🔄</button>
-    <button class="caverna-btn caverna-btn-main" id="caverna-play-btn" onclick="togglePomodoro()">▶</button>
-    <button class="caverna-btn caverna-btn-skip" onclick="pularFase()" title="Pular fase">⏭</button>
+
+  <div class="foco-controls">
+    <button class="foco-btn foco-btn-reset" onclick="resetarPomodoro()" title="Reiniciar">🔄</button>
+    <button class="foco-btn foco-btn-main" id="caverna-play-btn" onclick="togglePomodoro()">▶</button>
+    <button class="foco-btn foco-btn-skip" onclick="pularFase()" title="Pular fase">⏭</button>
   </div>
-  <div class="caverna-stats-grid">
-    <div class="caverna-stat-box"><span class="v" id="cav-sessoes">0</span><span class="l">Sessões</span></div>
-    <div class="caverna-stat-box"><span class="v" id="cav-foco-total">0min</span><span class="l">Foco hoje</span></div>
-    <div class="caverna-stat-box"><span class="v" id="cav-ciclos">0</span><span class="l">Ciclos</span></div>
+
+  <div class="foco-stats-grid">
+    <div class="foco-stat-box"><span class="v" id="cav-sessoes">0</span><span class="l">Sessões</span></div>
+    <div class="foco-stat-box"><span class="v" id="cav-foco-total">0min</span><span class="l">Foco hoje</span></div>
+    <div class="foco-stat-box"><span class="v" id="cav-ciclos">0</span><span class="l">Ciclos</span></div>
   </div>
-  <div class="caverna-card-dark">
-    <div class="caverna-card-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div>
-    <div class="session-dot-row" id="session-dots"></div>
-    <div class="ciclos-manual-row" style="margin-top:14px;padding-top:12px;border-top:1px solid #2D2D4E;">
-      <span style="color:#9CA3AF;font-size:0.78rem;flex:1;">Celular desligou? Ajuste as sessões:</span>
-      <button onclick="removerSessaoManual()" title="Remover 1 sessão" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:8px 14px;font-size:1rem;font-weight:700;cursor:pointer;">⏮</button>
-      <button onclick="adicionarSessaoManual()" title="Adicionar 1 sessão" style="background:rgba(124,58,237,0.25);color:#A78BFA;border:1px solid #7C3AED;border-radius:10px;padding:8px 14px;font-size:1rem;font-weight:700;cursor:pointer;">⏭</button>
+
+  <div class="foco-card">
+    <div class="foco-card-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div>
+    <div class="foco-session-row" id="session-dots"></div>
+    <div class="foco-manual-row">
+      <span>Celular desligou? Ajuste as sessões:</span>
+      <button onclick="removerSessaoManual()" title="Remover 1 sessão" style="background:rgba(239,68,68,0.1);color:#F87171;border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">⏮</button>
+      <button onclick="adicionarSessaoManual()" title="Adicionar 1 sessão" style="background:rgba(99,102,241,0.12);color:#818CF8;border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">⏭</button>
     </div>
-    <p style="font-size:0.68rem;color:#4B5563;margin-top:8px;">⏭ adiciona 1 sessão de 20min · ⏮ remove 1 sessão</p>
+    <p style="font-size:0.63rem;color:#2D3748;margin-top:6px;">⏭ adiciona 1 sessão de foco · ⏮ remove 1 sessão</p>
   </div>
+
+  <div class="foco-card">
+    <div class="foco-card-title">🏅 Conquistas</div>
+    <div class="foco-badges-row" id="foco-badges-row">
+      <span class="foco-badge foco-badge-azul" id="badge-primeiro">🚀 Decolagem</span>
+      <span class="foco-badge foco-badge-roxo" id="badge-ciclo1">🪐 Órbita</span>
+      <span class="foco-badge foco-badge-verde" id="badge-ciclo5">🌙 Lua</span>
+      <span class="foco-badge foco-badge-ouro" id="badge-ciclo10">⭐ Estrela</span>
+      <span class="foco-badge foco-badge-rosa" id="badge-ciclo25">🌌 Galáxia</span>
+    </div>
+  </div>
+
   <div class="page-footer">produced by Jp</div>
+</div>
+</div>
+
+<div class="celebracao-overlay" id="celebracao-overlay">
+  <div class="celebracao-box">
+    <span class="celebracao-emoji" id="celeb-emoji">🎉</span>
+    <div class="celebracao-titulo">Ciclo Completo! 🚀</div>
+    <div class="celebracao-xp" id="celeb-xp">+50 XP</div>
+    <div class="celebracao-sub" id="celeb-sub">Você completou mais um ciclo de foco!</div>
+    <div class="celebracao-prox-planeta" id="celeb-planeta"></div>
+    <button class="celebracao-btn" onclick="fecharCelebracao()">Continuar Missão 🚀</button>
+  </div>
 </div>
 
 <div class="page" id="page-info">
@@ -934,7 +1073,7 @@ textarea { resize: none; height: 80px; }
   <button class="nav-btn" onclick="navigate('sono',this)"><span class="icon">😴</span><span>Sono</span></button>
   <button class="nav-btn" onclick="navigate('metas',this)"><span class="icon">🎯</span><span>Metas</span></button>
   <button class="nav-btn" onclick="navigate('calendario',this)"><span class="icon">🗓️</span><span>Histórico</span></button>
-  <button class="nav-btn caverna-nav" onclick="navigate('caverna',this)"><span class="icon">🏔️</span><span>Caverna</span></button>
+  <button class="nav-btn foco-nav" onclick="navigate('caverna',this)"><span class="icon">🚀</span><span>Foco</span></button>
   <button class="nav-btn" onclick="navigate('info',this)"><span class="icon">📚</span><span>Info</span></button>
 </div>
 
@@ -1482,7 +1621,7 @@ function renderPom(){
   const p=state.pom;document.getElementById('cav-sessoes').textContent=p.sessoes;
   const min=p.minFoco;document.getElementById('cav-foco-total').textContent=min>=60?Math.floor(min/60)+'h'+(min%60>0?min%60+'m':''):min+'min';
   document.getElementById('cav-ciclos').textContent=p.ciclos;
-  let html='';for(let i=0;i<SESS_CICLO;i++){if(i<p.sessNoCiclo)html+=`<div class="session-dot completo">✓</div>`;else if(i===p.sessNoCiclo&&p.fase==='foco'&&p.rodando)html+=`<div class="session-dot atual">${i+1}</div>`;else html+=`<div class="session-dot">${i+1}</div>`;}
+  let html='';for(let i=0;i<SESS_CICLO;i++){if(i<p.sessNoCiclo)html+=`<div class="foco-dot completo">✓</div>`;else if(i===p.sessNoCiclo&&p.fase==='foco'&&p.rodando)html+=`<div class="foco-dot atual">${i+1}</div>`;else html+=`<div class="foco-dot">${i+1}</div>`;}
   document.getElementById('session-dots').innerHTML=html;
 }
 function playBeep(){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=440;g.gain.setValueAtTime(0.3,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.6);o.start(ctx.currentTime);o.stop(ctx.currentTime+0.6);}catch(e){}}
@@ -2231,6 +2370,310 @@ window.addEventListener('load', function() {
   }
   if (window.location.hash === '#admin') setTimeout(abrirAdmin, 500);
 });
+
+// =============================================
+// MODO FOCO — MISSÃO ESPACIAL 🚀
+// =============================================
+const PLANETAS_FOCO = [
+  { emoji:'🌍', nome:'Terra',     min:0  },
+  { emoji:'🌙', nome:'Lua',       min:2  },
+  { emoji:'🔴', nome:'Marte',     min:5  },
+  { emoji:'💫', nome:'Asteroide', min:10 },
+  { emoji:'🪐', nome:'Júpiter',   min:20 },
+  { emoji:'🌀', nome:'Saturno',   min:35 },
+  { emoji:'🔵', nome:'Urano',     min:55 },
+  { emoji:'🌌', nome:'Galáxia',   min:80 },
+];
+
+const NIVEIS_FOCO = [
+  { n:1, nome:'Recruta',    xp:0    },
+  { n:2, nome:'Explorador', xp:100  },
+  { n:3, nome:'Navegador',  xp:250  },
+  { n:4, nome:'Astronauta', xp:500  },
+  { n:5, nome:'Comandante', xp:900  },
+  { n:6, nome:'Almirante',  xp:1500 },
+  { n:7, nome:'Lendário',   xp:2500 },
+];
+
+const BADGES_FOCO = [
+  { id:'badge-primeiro', ciclos:0,  sessoes:1  },
+  { id:'badge-ciclo1',   ciclos:1,  sessoes:0  },
+  { id:'badge-ciclo5',   ciclos:5,  sessoes:0  },
+  { id:'badge-ciclo10',  ciclos:10, sessoes:0  },
+  { id:'badge-ciclo25',  ciclos:25, sessoes:0  },
+];
+
+let _focoXP         = parseInt(localStorage.getItem('foco_xp')||'0');
+let _focoCiclos     = parseInt(localStorage.getItem('foco_ciclos_totais')||'0');
+let _focoSessoes    = parseInt(localStorage.getItem('foco_sessoes_totais')||'0');
+let _focoBadges     = JSON.parse(localStorage.getItem('foco_badges')||'[]');
+
+function _salvarFocoData() {
+  localStorage.setItem('foco_xp',          _focoXP);
+  localStorage.setItem('foco_ciclos_totais',_focoCiclos);
+  localStorage.setItem('foco_sessoes_totais',_focoSessoes);
+  localStorage.setItem('foco_badges',       JSON.stringify(_focoBadges));
+}
+
+function _getNivel() {
+  let n = NIVEIS_FOCO[0];
+  for (const nv of NIVEIS_FOCO) { if (_focoXP >= nv.xp) n = nv; }
+  return n;
+}
+
+function _getProxNivel() {
+  const cur = _getNivel();
+  return NIVEIS_FOCO.find(n => n.n === cur.n + 1) || null;
+}
+
+function _getPlaneta() {
+  let p = PLANETAS_FOCO[0];
+  for (const pl of PLANETAS_FOCO) { if (_focoCiclos >= pl.min) p = pl; }
+  return p;
+}
+
+function _getProxPlaneta() {
+  return PLANETAS_FOCO.find(p => p.min > _focoCiclos) || null;
+}
+
+function renderFocoXP() {
+  const nivel   = _getNivel();
+  const prox    = _getProxNivel();
+  const proxP   = _getProxPlaneta();
+
+  const elBadge = document.getElementById('foco-nivel-badge');
+  if (elBadge) elBadge.textContent = `⭐ Nível ${nivel.n} — ${nivel.nome}`;
+
+  const elXpTxt = document.getElementById('foco-xp-text');
+  if (elXpTxt) {
+    elXpTxt.textContent = prox
+      ? `${_focoXP} / ${prox.xp} XP`
+      : `${_focoXP} XP — Máximo!`;
+  }
+
+  const elFill = document.getElementById('foco-xp-fill');
+  if (elFill && prox) {
+    const pct = Math.min(100, ((_focoXP - nivel.xp) / (prox.xp - nivel.xp)) * 100);
+    elFill.style.width = pct + '%';
+  } else if (elFill) elFill.style.width = '100%';
+
+  const elPE = document.getElementById('foco-planeta-emoji');
+  const elPN = document.getElementById('foco-planeta-nome');
+  if (elPE) elPE.textContent = proxP ? proxP.emoji : _getPlaneta().emoji;
+  if (elPN) elPN.textContent = proxP ? proxP.nome  : _getPlaneta().nome;
+
+  _renderBadges();
+  _syncFirebaseFoco();
+}
+
+function _renderBadges() {
+  for (const b of BADGES_FOCO) {
+    const el = document.getElementById(b.id);
+    if (!el) continue;
+    const ok = (b.ciclos > 0 && _focoCiclos >= b.ciclos) ||
+               (b.sessoes > 0 && _focoSessoes >= b.sessoes);
+    if (ok) {
+      if (!_focoBadges.includes(b.id)) { _focoBadges.push(b.id); _salvarFocoData(); }
+      el.classList.add('unlocked');
+    }
+  }
+}
+
+function _adicionarXP(qtd) {
+  const nivAntes = _getNivel().n;
+  _focoXP += qtd;
+  _salvarFocoData();
+  if (_getNivel().n > nivAntes) {
+    showToast(`⬆️ Level UP! Nível ${_getNivel().n} — ${_getNivel().nome}!`);
+  }
+  renderFocoXP();
+}
+
+function fecharCelebracao() {
+  document.getElementById('celebracao-overlay').classList.remove('show');
+  document.querySelectorAll('.confetti-piece').forEach(c => c.remove());
+}
+
+function _mostrarCelebracao(xpGanho) {
+  const planeta = _getPlaneta();
+  const proxP   = _getProxPlaneta();
+  const el      = document.getElementById('celebracao-overlay');
+  document.getElementById('celeb-emoji').textContent = planeta.emoji;
+  document.getElementById('celeb-xp').textContent    = `+${xpGanho} XP`;
+  const ciclosParaProx = proxP ? proxP.min - _focoCiclos : 0;
+  document.getElementById('celeb-sub').innerHTML =
+    `Você completou <strong style="color:#60A5FA">${_focoCiclos}</strong> ciclo(s) no total.<br>` +
+    (proxP
+      ? `${ciclosParaProx} ciclo(s) para alcançar ${proxP.emoji} ${proxP.nome}!`
+      : '🌌 Você conquistou a galáxia!');
+  document.getElementById('celeb-planeta').textContent =
+    proxP ? `Próximo destino: ${proxP.emoji} ${proxP.nome}` : '🏆 Missão completa!';
+  el.classList.add('show');
+  _dispararConfetti();
+}
+
+function _dispararConfetti() {
+  const cores = ['#60A5FA','#A78BFA','#F472B6','#FCD34D','#34D399','#FB923C'];
+  for (let i = 0; i < 70; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `left:${Math.random()*100}vw;top:-10px;background:${cores[Math.floor(Math.random()*cores.length)]};animation-delay:${Math.random()*1.5}s;animation-duration:${1.5+Math.random()*1.5}s;transform:rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+function _syncFirebaseFoco() {
+  if (!window._fbReady || !window._sincronizarFirebase) return;
+  const apelido = getApelido ? getApelido() : null;
+  if (!apelido) return;
+  try {
+    window._sincronizarFirebase(apelido, {
+      focoXP:       _focoXP,
+      focoNivel:    _getNivel().n,
+      focoCiclos:   _focoCiclos,
+      focoSessoes:  _focoSessoes,
+      focoBadges:   _focoBadges,
+      focoTotal:    state.pom.minFoco || 0,
+      diasDados:    Object.keys(state.dailyData || {}).length,
+      score:        Math.min(100, Math.round((_focoXP / 500) * 100)),
+      periodo:      new Date().toLocaleDateString('pt-BR'),
+      dailyData:    state.dailyData || {}
+    });
+  } catch(e) {}
+}
+
+function _atualizarNaveCenter() {
+  const nave = document.getElementById('foco-nave-center');
+  const ring = document.getElementById('caverna-ring-fill');
+  if (!nave || !state || !state.pom) return;
+  const rodando = state.pom.rodando;
+  const fase    = state.pom.fase;
+  if (rodando && fase === 'foco') {
+    nave.classList.remove('pausado');
+    if (ring) ring.setAttribute('stroke', '#3B82F6');
+  } else if (rodando && fase === 'pausa') {
+    nave.classList.remove('pausado');
+    if (ring) ring.setAttribute('stroke', '#A78BFA');
+  } else {
+    nave.classList.add('pausado');
+  }
+}
+
+// =============================================
+// CANVAS DE ESTRELAS PULSANDO COM O TIMER
+// =============================================
+(function initFocoCanvas() {
+  function setup() {
+    const canvas = document.getElementById('foco-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W = canvas.width = Math.min(430, window.innerWidth);
+    let H = canvas.height = window.innerHeight;
+    const stars = Array.from({length: 130}, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.6 + 0.3,
+      speed: Math.random() * 0.35 + 0.05,
+      alpha: Math.random() * 0.65 + 0.2,
+      phase: Math.random() * Math.PI * 2
+    }));
+    let frame = 0;
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      frame++;
+      const running = window.state && window.state.pom && window.state.pom.rodando;
+      stars.forEach(s => {
+        const pulse = running
+          ? (Math.sin(frame * 0.04 + s.phase) * 0.35 + 0.65)
+          : 0.3;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(160,200,255,${s.alpha * pulse})`;
+        ctx.fill();
+        if (running) {
+          s.y -= s.speed;
+          if (s.y < 0) { s.y = H; s.x = Math.random() * W; }
+        }
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+    window.addEventListener('resize', () => {
+      W = canvas.width = Math.min(430, window.innerWidth);
+      H = canvas.height = window.innerHeight;
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
+  else setup();
+})();
+
+// =============================================
+// HOOKS: ciclo completo + sessão completa
+// =============================================
+window.addEventListener('load', function() {
+  renderFocoXP();
+
+  // Patch togglePomodoro
+  const _origTP = window.togglePomodoro;
+  window.togglePomodoro = function() {
+    if (typeof _origTP === 'function') _origTP();
+    setTimeout(_atualizarNaveCenter, 80);
+  };
+
+  // Patch resetarPomodoro
+  const _origReset = window.resetarPomodoro;
+  window.resetarPomodoro = function() {
+    if (typeof _origReset === 'function') _origReset();
+    setTimeout(_atualizarNaveCenter, 80);
+  };
+
+  // Patch pularFase
+  const _origPular = window.pularFase;
+  window.pularFase = function() {
+    if (typeof _origPular === 'function') _origPular();
+    setTimeout(_atualizarNaveCenter, 80);
+  };
+
+  // Hook na função que é chamada quando sessão completa
+  // O app original usa: state.pom.sessoes++ e depois salvar()
+  // Vamos observar mudança no elemento cav-sessoes via MutationObserver
+  const elSessoes = document.getElementById('cav-sessoes');
+  if (elSessoes) {
+    let lastSessoes = parseInt(elSessoes.textContent || '0');
+    const obs = new MutationObserver(() => {
+      const cur = parseInt(elSessoes.textContent || '0');
+      if (cur > lastSessoes) {
+        _focoSessoes += (cur - lastSessoes);
+        _adicionarXP(10 * (cur - lastSessoes));
+        _salvarFocoData();
+        setTimeout(_atualizarNaveCenter, 100);
+      }
+      lastSessoes = cur;
+    });
+    obs.observe(elSessoes, { childList: true, characterData: true, subtree: true });
+  }
+
+  // Hook no elemento cav-ciclos para detectar ciclo completo
+  const elCiclos = document.getElementById('cav-ciclos');
+  if (elCiclos) {
+    let lastCiclos = parseInt(elCiclos.textContent || '0');
+    const obs2 = new MutationObserver(() => {
+      const cur = parseInt(elCiclos.textContent || '0');
+      if (cur > lastCiclos) {
+        const diff = cur - lastCiclos;
+        for (let i = 0; i < diff; i++) {
+          _focoCiclos++;
+          _adicionarXP(50);
+          _salvarFocoData();
+          setTimeout(() => _mostrarCelebracao(50), 300 * i);
+        }
+      }
+      lastCiclos = cur;
+    });
+    obs2.observe(elCiclos, { childList: true, characterData: true, subtree: true });
+  }
+});
+
 </script>
 
 <div class="apelido-overlay" id="apelido-overlay">
