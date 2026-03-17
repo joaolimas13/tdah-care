@@ -467,73 +467,61 @@ textarea { resize: none; height: 80px; }
 .admin-stat-val{font-size:0.95rem;font-weight:800;color:#1565C0;}
 .admin-stat-lbl{font-size:0.6rem;color:#90A4AE;}
 
-/* ====== MODO NEUROPLASTICIDADE ====== */
-#page-caverna { background: #05080F; min-height: 100vh; padding: 0; padding-bottom: 85px; color: #E0F0FF; position: relative; overflow-x: hidden; }
-#foco-canvas { display: none; }
+/* ====== MODO FOCO ESPACIAL ====== */
+#page-caverna { background: #020818; min-height: 100vh; padding: 0; padding-bottom: 85px; color: #E0E0FF; position: relative; overflow-x: hidden; }
+#foco-canvas { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; height: 100%; pointer-events: none; z-index: 0; }
 #foco-page-inner { position: relative; z-index: 1; padding: 20px; padding-bottom: 20px; }
 .foco-header { text-align: center; margin-bottom: 14px; }
-.foco-header h2 { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, #38BDF8, #818CF8, #34D399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 2px; }
+.foco-header h2 { font-size: 1.35rem; font-weight: 900; background: linear-gradient(135deg, #60A5FA, #A78BFA, #F472B6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 2px; }
 .foco-header p { font-size: 0.75rem; color: #3D5070; }
-.foco-xp-bar-wrap { background: rgba(255,255,255,0.03); border: 1px solid rgba(56,189,248,0.2); border-radius: 16px; padding: 10px 14px; margin-bottom: 12px; }
+.foco-xp-bar-wrap { background: rgba(255,255,255,0.04); border: 1px solid rgba(96,165,250,0.18); border-radius: 16px; padding: 10px 14px; margin-bottom: 12px; }
 .foco-xp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.foco-nivel-badge { font-size: 0.7rem; font-weight: 800; color: #38BDF8; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); padding: 3px 10px; border-radius: 20px; }
+.foco-nivel-badge { font-size: 0.7rem; font-weight: 800; color: #60A5FA; background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.25); padding: 3px 10px; border-radius: 20px; }
 .foco-xp-text { font-size: 0.65rem; color: #3D5070; }
-.foco-xp-bar { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; position: relative; }
-.foco-xp-fill { height: 100%; background: linear-gradient(to right, #0EA5E9, #6366F1, #10B981); border-radius: 4px; transition: width 0.8s ease; position: relative; }
-.foco-xp-fill::after { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent); animation: shimmer-xp 2s infinite; }
-@keyframes shimmer-xp { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-.foco-fisiologia { text-align: center; font-size: 0.75rem; color: #4B6080; font-style: italic; margin-bottom: 12px; min-height: 18px; transition: opacity 0.5s; padding: 0 10px; }
+.foco-xp-bar { height: 7px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.foco-xp-fill { height: 100%; background: linear-gradient(to right, #3B82F6, #8B5CF6, #EC4899); border-radius: 4px; transition: width 0.7s ease; }
+.foco-planeta-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; font-size: 0.72rem; color: #3D5070; }
+.foco-planeta-atual { font-size: 1.8rem; filter: drop-shadow(0 0 8px rgba(96,165,250,0.7)); animation: planeta-float 3s ease-in-out infinite; }
+@keyframes planeta-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+.foco-nave-row { font-size: 1.1rem; animation: nave-fly 2s ease-in-out infinite; }
+@keyframes nave-fly { 0%,100%{transform:translateX(0) rotate(-8deg)} 50%{transform:translateX(5px) rotate(4deg)} }
 .foco-status-badge { display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; margin-bottom: 14px; }
-.status-foco { background: rgba(129,140,248,0.15); color: #818CF8; border: 1px solid rgba(129,140,248,0.3); }
-.status-pausa { background: rgba(52,211,153,0.15); color: #34D399; border: 1px solid rgba(52,211,153,0.3); }
-.status-idle { background: rgba(107,114,128,0.12); color: #6B7280; border: 1px solid rgba(107,114,128,0.25); }
-.foco-timer-wrap { display: flex; justify-content: center; margin-bottom: 20px; position: relative; }
+.foco-timer-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
 .foco-ring { position: relative; width: 210px; height: 210px; }
 .foco-ring svg { position: absolute; top: 0; left: 0; width: 210px; height: 210px; transform: rotate(-90deg); }
 .foco-ring-bg { fill: none; stroke: rgba(255,255,255,0.04); stroke-width: 10; }
 .foco-ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
 .foco-center { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.foco-nave-center { font-size: 2.2rem; margin-bottom: 2px; filter: drop-shadow(0 0 10px rgba(96,165,250,0.9)); animation: nave-pulse 1.5s ease-in-out infinite; transition: opacity 0.3s; }
+.foco-nave-center.pausado { animation: none; opacity: 0.35; filter: none; }
+@keyframes nave-pulse { 0%,100%{filter:drop-shadow(0 0 6px rgba(96,165,250,0.5))} 50%{filter:drop-shadow(0 0 18px rgba(96,165,250,1))} }
 .foco-time { font-size: 2.8rem; font-weight: 800; color: white; letter-spacing: -2px; line-height: 1; font-variant-numeric: tabular-nums; }
 .foco-phase { font-size: 0.68rem; color: #3D5070; margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; }
-.neuro-wrap { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-.neuro-svg { width: 80px; height: 80px; opacity: 0; transition: opacity 0.6s; position: absolute; top: 20px; }
-.neuro-svg.visivel { opacity: 1; }
-.neuro-nucleo { fill: rgba(99,102,241,0.3); stroke: #818CF8; stroke-width: 1.5; }
-.neuro-dendrito { fill: none; stroke: #38BDF8; stroke-width: 1.5; stroke-linecap: round; opacity: 0; transition: opacity 0.8s; }
-.neuro-axonio { fill: none; stroke: #10B981; stroke-width: 2; stroke-linecap: round; opacity: 0; transition: opacity 0.8s; }
-.neuro-mielina { fill: none; stroke: #F59E0B; stroke-width: 3.5; stroke-linecap: round; opacity: 0; stroke-dasharray: 8 4; transition: opacity 0.8s; }
-.neuro-pulso { animation: neuro-brilho 2.5s ease-in-out infinite; }
-@keyframes neuro-brilho { 0%,100%{filter:drop-shadow(0 0 3px rgba(99,102,241,0.4))} 50%{filter:drop-shadow(0 0 14px rgba(56,189,248,0.9))} }
-.neuro-ativo { animation: neuro-brilho-ativo 1.2s ease-in-out infinite; }
-@keyframes neuro-brilho-ativo { 0%,100%{filter:drop-shadow(0 0 6px rgba(99,102,241,0.6))} 50%{filter:drop-shadow(0 0 22px rgba(56,189,248,1))} }
-.neuro-estagio { text-align: center; font-size: 0.72rem; color: #4B6080; margin-bottom: 12px; }
-.neuro-estagio strong { color: #818CF8; }
 .foco-controls { display: flex; gap: 14px; justify-content: center; margin-bottom: 18px; }
 .foco-btn { width: 58px; height: 58px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-.foco-btn-main { width: 74px; height: 74px; font-size: 1.8rem; background: linear-gradient(135deg, #1D4ED8, #6366F1); color: white; box-shadow: 0 0 28px rgba(99,102,241,0.5); }
+.foco-btn-main { width: 74px; height: 74px; font-size: 1.8rem; background: linear-gradient(135deg, #1D4ED8, #7C3AED); color: white; box-shadow: 0 0 28px rgba(124,58,237,0.55); }
 .foco-btn-main:active { transform: scale(0.92); }
 .foco-btn-skip, .foco-btn-reset { background: rgba(255,255,255,0.04); color: #4B5563; border: 1px solid rgba(255,255,255,0.08); }
 .foco-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
 .foco-stat-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 12px 8px; text-align: center; }
-.foco-stat-box .v { font-size: 1.15rem; font-weight: 800; color: #38BDF8; display: block; }
+.foco-stat-box .v { font-size: 1.15rem; font-weight: 800; color: #60A5FA; display: block; }
 .foco-stat-box .l { font-size: 0.58rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 .foco-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
 .foco-card-title { font-size: 0.68rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
 .foco-session-row { display: flex; gap: 7px; flex-wrap: wrap; }
 .foco-dot { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; border: 2px solid rgba(255,255,255,0.07); color: #374151; }
-.foco-dot.completo { background: rgba(99,102,241,0.2); border-color: #6366F1; color: #818CF8; }
-.foco-dot.atual { background: rgba(56,189,248,0.25); border-color: #38BDF8; color: white; animation: pulse-dot 1.5s infinite; }
-@keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,0.4)} 50%{box-shadow:0 0 0 6px rgba(56,189,248,0)} }
+.foco-dot.completo { background: rgba(59,130,246,0.15); border-color: #3B82F6; color: #60A5FA; }
+.foco-dot.atual { background: rgba(124,58,237,0.3); border-color: #8B5CF6; color: white; animation: pulse-dot 1.5s infinite; }
 .foco-manual-row { display: flex; gap: 8px; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
 .foco-manual-row span { color: #4B5563; font-size: 0.75rem; flex: 1; }
 .foco-badges-row { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 4px; }
 .foco-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; border: 1px solid; opacity: 0.25; transition: all 0.3s; }
 .foco-badge.unlocked { opacity: 1; animation: badge-pop 0.5s ease; }
 @keyframes badge-pop { 0%{transform:scale(0.4)} 70%{transform:scale(1.25)} 100%{transform:scale(1)} }
-.foco-badge-azul { background: rgba(56,189,248,0.12); color: #38BDF8; border-color: rgba(56,189,248,0.25); }
-.foco-badge-roxo { background: rgba(99,102,241,0.12); color: #818CF8; border-color: rgba(99,102,241,0.25); }
+.foco-badge-azul { background: rgba(59,130,246,0.12); color: #60A5FA; border-color: rgba(59,130,246,0.25); }
+.foco-badge-roxo { background: rgba(139,92,246,0.12); color: #A78BFA; border-color: rgba(139,92,246,0.25); }
 .foco-badge-ouro { background: rgba(251,191,36,0.12); color: #FCD34D; border-color: rgba(251,191,36,0.25); }
-.foco-badge-verde { background: rgba(16,185,129,0.12); color: #34D399; border-color: rgba(16,185,129,0.25); }
+.foco-badge-verde { background: rgba(52,211,153,0.12); color: #34D399; border-color: rgba(52,211,153,0.25); }
 .foco-badge-rosa { background: rgba(244,114,182,0.12); color: #F472B6; border-color: rgba(244,114,182,0.25); }
 .pom-config-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
 .pom-config-title { font-size: 0.68rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
@@ -543,24 +531,24 @@ textarea { resize: none; height: 80px; }
 .pom-config-item input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #E0E0FF; border-radius: 10px; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; width: 100%; }
 .pom-config-sep { color: #374151; font-size: 1.2rem; font-weight: 700; margin-top: 16px; }
 .pom-config-btn { padding: 10px 14px; background: rgba(99,102,241,0.2); color: #818CF8; border: 1px solid rgba(99,102,241,0.35); border-radius: 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap; margin-top: 14px; }
-.celebracao-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 500; background: rgba(5,8,15,0.88); align-items: center; justify-content: center; flex-direction: column; }
+.celebracao-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 500; background: rgba(2,8,24,0.85); align-items: center; justify-content: center; flex-direction: column; }
 .celebracao-overlay.show { display: flex; }
-.celebracao-box { background: linear-gradient(135deg, rgba(8,12,30,0.99), rgba(15,10,40,0.99)); border: 1px solid rgba(99,102,241,0.4); border-radius: 28px; padding: 36px 28px; text-align: center; max-width: 320px; width: 90%; animation: celebrate-in 0.5s cubic-bezier(0.175,0.885,0.32,1.275); box-shadow: 0 0 60px rgba(99,102,241,0.35); }
+.celebracao-box { background: linear-gradient(135deg, rgba(10,16,40,0.99), rgba(25,15,55,0.99)); border: 1px solid rgba(139,92,246,0.4); border-radius: 28px; padding: 36px 28px; text-align: center; max-width: 320px; width: 90%; animation: celebrate-in 0.5s cubic-bezier(0.175,0.885,0.32,1.275); box-shadow: 0 0 60px rgba(139,92,246,0.35); }
 @keyframes celebrate-in { from{transform:scale(0.4);opacity:0} to{transform:scale(1);opacity:1} }
 .celebracao-emoji { font-size: 4rem; margin-bottom: 10px; display: block; animation: spin-once 0.6s ease; }
 @keyframes spin-once { from{transform:rotate(-180deg) scale(0)} to{transform:rotate(0) scale(1)} }
-.celebracao-titulo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, #38BDF8, #818CF8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+.celebracao-titulo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, #60A5FA, #A78BFA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
 .celebracao-xp { font-size: 2rem; font-weight: 900; color: #FCD34D; margin-bottom: 4px; }
 .celebracao-sub { font-size: 0.82rem; color: #6B7280; margin-bottom: 16px; line-height: 1.6; }
-.celebracao-prox-planeta { font-size: 1.1rem; margin-bottom: 18px; color: #818CF8; }
-.celebracao-btn { background: linear-gradient(135deg, #1D4ED8, #6366F1); color: white; border: none; border-radius: 14px; padding: 14px 32px; font-size: 1rem; font-weight: 800; cursor: pointer; }
+.celebracao-prox-planeta { font-size: 1.1rem; margin-bottom: 18px; color: #A78BFA; }
+.celebracao-btn { background: linear-gradient(135deg, #1D4ED8, #7C3AED); color: white; border: none; border-radius: 14px; padding: 14px 32px; font-size: 1rem; font-weight: 800; cursor: pointer; }
 .confetti-piece { position: fixed; width: 8px; height: 8px; border-radius: 2px; animation: confetti-fall 2.5s ease-in forwards; pointer-events: none; z-index: 501; }
 @keyframes confetti-fall { 0%{opacity:1;transform:translateY(-20px) rotate(0deg)} 100%{opacity:0;transform:translateY(800px) rotate(720deg)} }
 #page-caverna .page-footer { color: #1E2A3A; }
+
 .apelido-select-label{font-size:0.78rem;font-weight:700;color:#546E7A;text-align:left;display:block;margin:14px 0 6px;}
 .apelido-select{width:100%;border:2px solid #90CAF9;border-radius:12px;padding:12px 16px;font-size:0.92rem;color:#1A237E;outline:none;box-sizing:border-box;background:#F8FAFF;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231565C0' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer;}
 .apelido-select:focus{border-color:#1565C0;}
-
 </style>
 </head>
 <body>
@@ -807,100 +795,101 @@ textarea { resize: none; height: 80px; }
 </div>
 
 <div class="page" id="page-caverna">
-<canvas id="foco-canvas" style="display:none"></canvas>
+<canvas id="foco-canvas"></canvas>
 <div id="foco-page-inner">
+
   <div class="foco-header">
-    <h2>🧠 Modo Neuroplasticidade</h2>
-    <p id="caverna-subtitle">Pomodoro · Dopamina · Evolução Neural</p>
+    <h2>🚀 Modo Foco — Missão Espacial</h2>
+    <p id="caverna-subtitle">Pomodoro · XP · Planetas · Badges</p>
   </div>
+
   <div class="foco-xp-bar-wrap">
     <div class="foco-xp-row">
-      <span class="foco-nivel-badge" id="foco-nivel-badge">Sinapse Iniciante</span>
-      <span class="foco-xp-text" id="foco-xp-text">0 / 100 energia</span>
+      <span class="foco-nivel-badge" id="foco-nivel-badge">⭐ Nível 1 — Recruta</span>
+      <span class="foco-xp-text" id="foco-xp-text">0 / 100 XP</span>
     </div>
     <div class="foco-xp-bar"><div class="foco-xp-fill" id="foco-xp-fill" style="width:0%"></div></div>
   </div>
-  <div class="foco-fisiologia" id="foco-fisiologia">Pronto para ativar seu córtex pré-frontal?</div>
-  <div style="text-align:center">
+
+  <div class="foco-planeta-row">
+    <span class="foco-nave-row">🚀</span>
+    <span>Missão para</span>
+    <span class="foco-planeta-atual" id="foco-planeta-emoji">🌍</span>
+    <span id="foco-planeta-nome">Terra</span>
+  </div>
+
+  <div style="text-align:center;">
     <span class="foco-status-badge status-idle" id="caverna-status-badge">⏸ Aguardando início</span>
   </div>
+
+  <div class="pom-config-card">
+    <div class="pom-config-title">⚙️ Configurar tempo</div>
+    <div class="pom-config-row">
+      <div class="pom-config-item">
+        <label>🎯 Foco (min)</label>
+        <input type="number" id="pom-foco-input" value="20" min="1" max="90" onchange="aplicarConfigPom()">
+      </div>
+      <div class="pom-config-sep">/</div>
+      <div class="pom-config-item">
+        <label>☕ Pausa (min)</label>
+        <input type="number" id="pom-pausa-input" value="5" min="1" max="30" onchange="aplicarConfigPom()">
+      </div>
+      <button class="pom-config-btn" onclick="aplicarConfigPom()">✓ Aplicar</button>
+    </div>
+  </div>
+
   <div class="foco-timer-wrap">
     <div class="foco-ring">
       <svg viewBox="0 0 210 210">
         <circle class="foco-ring-bg" cx="105" cy="105" r="96"/>
         <circle class="foco-ring-fill" id="caverna-ring-fill" cx="105" cy="105" r="96"
-          stroke="#6366F1" stroke-dasharray="603.19" stroke-dashoffset="0"/>
+          stroke="#3B82F6" stroke-dasharray="603.19" stroke-dashoffset="0"/>
       </svg>
       <div class="foco-center">
-        <div class="neuro-wrap">
-          <svg class="neuro-svg visivel neuro-pulso" id="neuro-svg" viewBox="0 0 90 90">
-            <circle class="neuro-nucleo" id="neuro-nucleo" cx="45" cy="50" r="11"/>
-            <path class="neuro-dendrito" id="nd1" d="M45 39 Q38 24 28 16"/>
-            <path class="neuro-dendrito" id="nd2" d="M45 39 Q52 24 62 16"/>
-            <path class="neuro-dendrito" id="nd3" d="M36 45 Q20 40 10 36"/>
-            <path class="neuro-dendrito" id="nd4" d="M54 45 Q70 40 80 36"/>
-            <path class="neuro-dendrito" id="nd5" d="M40 39 Q30 20 24 12"/>
-            <path class="neuro-dendrito" id="nd6" d="M50 39 Q60 20 66 12"/>
-            <path class="neuro-axonio"   id="neuro-axonio"  d="M45 61 Q45 72 45 82"/>
-            <path class="neuro-mielina"  id="neuro-mielina" d="M45 61 Q45 72 45 82"/>
-            <circle class="neuro-dendrito" id="neuro-botao" cx="45" cy="85" r="4" style="stroke:#10B981;fill:rgba(16,185,129,0.25)"/>
-          </svg>
-        </div>
+        <div class="foco-nave-center pausado" id="foco-nave-center" style="display:none"></div>
         <div class="foco-time" id="caverna-time-display">20:00</div>
         <div class="foco-phase" id="caverna-phase-label">FOCO</div>
       </div>
     </div>
   </div>
-  <div class="neuro-estagio" id="neuro-estagio-label">🌱 <strong>Semente</strong> — Neurônio em repouso</div>
+
   <div class="foco-controls">
-    <button class="foco-btn foco-btn-reset" onclick="resetarPomodoro()" title="Reiniciar">↺</button>
+    <button class="foco-btn foco-btn-reset" onclick="resetarPomodoro()" title="Reiniciar">🔄</button>
     <button class="foco-btn foco-btn-main" id="caverna-play-btn" onclick="togglePomodoro()">▶</button>
     <button class="foco-btn foco-btn-skip" onclick="pularFase()" title="Pular fase">⏭</button>
   </div>
+
   <div class="foco-stats-grid">
     <div class="foco-stat-box"><span class="v" id="cav-sessoes">0</span><span class="l">Sessões</span></div>
     <div class="foco-stat-box"><span class="v" id="cav-foco-total">0min</span><span class="l">Foco hoje</span></div>
     <div class="foco-stat-box"><span class="v" id="cav-ciclos">0</span><span class="l">Ciclos</span></div>
   </div>
+
   <div class="foco-card">
-    <div class="foco-card-title">⚡ Disparos de dopamina — ciclo atual (4 = 1 ciclo)</div>
+    <div class="foco-card-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div>
     <div class="foco-session-row" id="session-dots"></div>
     <div class="foco-manual-row">
-      <span>Celular desligou? Ajuste as sessões</span>
-      <button onclick="removerSessaoManual()" style="background:rgba(239,68,68,0.1);color:#F87171;border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">−</button>
-      <button onclick="adicionarSessaoManual()" style="background:rgba(99,102,241,0.12);color:#818CF8;border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">+</button>
+      <span>Celular desligou? Ajuste as sessões:</span>
+      <button onclick="removerSessaoManual()" title="Remover 1 sessão" style="background:rgba(239,68,68,0.1);color:#F87171;border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">⏮</button>
+      <button onclick="adicionarSessaoManual()" title="Adicionar 1 sessão" style="background:rgba(99,102,241,0.12);color:#818CF8;border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">⏭</button>
     </div>
-    <p style="font-size:0.63rem;color:#2D3748;margin-top:6px;">+ adiciona 1 sessão de foco &nbsp;|&nbsp; − remove 1 sessão</p>
+    <p style="font-size:0.63rem;color:#2D3748;margin-top:6px;">⏭ adiciona 1 sessão de foco · ⏮ remove 1 sessão</p>
   </div>
+
   <div class="foco-card">
-    <div class="foco-card-title">🏆 Conquistas Neurais</div>
+    <div class="foco-card-title">🏅 Conquistas</div>
     <div class="foco-badges-row" id="foco-badges-row">
-      <span class="foco-badge foco-badge-azul"  id="badge-primeiro">⚡ 1ª Sinapse</span>
-      <span class="foco-badge foco-badge-roxo"  id="badge-ciclo1">🧠 Rede Ativa</span>
-      <span class="foco-badge foco-badge-verde" id="badge-ciclo5">💡 Fluxo Neural</span>
-      <span class="foco-badge foco-badge-ouro"  id="badge-ciclo10">🔬 Mielinizado</span>
-      <span class="foco-badge foco-badge-rosa"  id="badge-ciclo25">💎 Neuroplástico</span>
+      <span class="foco-badge foco-badge-azul" id="badge-primeiro">🚀 Decolagem</span>
+      <span class="foco-badge foco-badge-roxo" id="badge-ciclo1">🪐 Órbita</span>
+      <span class="foco-badge foco-badge-verde" id="badge-ciclo5">🌙 Lua</span>
+      <span class="foco-badge foco-badge-ouro" id="badge-ciclo10">⭐ Estrela</span>
+      <span class="foco-badge foco-badge-rosa" id="badge-ciclo25">🌌 Galáxia</span>
     </div>
   </div>
-  <div class="pom-config-card">
-    <div class="pom-config-title">⚙️ Configurar tempo</div>
-    <div class="pom-config-row">
-      <div class="pom-config-item">
-        <label>Foco (min)</label>
-        <input type="number" id="pom-foco-input" value="20" min="1" max="90" onchange="aplicarConfigPom()">
-      </div>
-      <div class="pom-config-sep"></div>
-      <div class="pom-config-item">
-        <label>Pausa (min)</label>
-        <input type="number" id="pom-pausa-input" value="5" min="1" max="30" onchange="aplicarConfigPom()">
-      </div>
-      <button class="pom-config-btn" onclick="aplicarConfigPom()">Aplicar</button>
-    </div>
-  </div>
+
   <div class="page-footer">produced by Jp</div>
 </div>
 </div>
-
 
 <div class="celebracao-overlay" id="celebracao-overlay">
   <div class="celebracao-box">
@@ -2420,273 +2409,743 @@ const PLANETAS_FOCO = [
   { emoji:'🌌', nome:'Galáxia',   min:80 },
 ];
 
-<script>
-// ── MOTOR NEUROPLASTICIDADE ──────────────────────────────────────────────────
-(function() {
-  'use strict';
+const NIVEIS_FOCO = [
+  { n:1, nome:'Recruta',    xp:0    },
+  { n:2, nome:'Explorador', xp:100  },
+  { n:3, nome:'Navegador',  xp:250  },
+  { n:4, nome:'Astronauta', xp:500  },
+  { n:5, nome:'Comandante', xp:900  },
+  { n:6, nome:'Almirante',  xp:1500 },
+  { n:7, nome:'Lendário',   xp:2500 },
+];
 
-  const NIVEIS_NEURO = [
-    { nome: 'Sinapse Iniciante', min: 0   },
-    { nome: 'Rede Ativada',      min: 50  },
-    { nome: 'Córtex Desperto',   min: 150 },
-    { nome: 'Estado de Flow',    min: 300 },
-    { nome: 'Mielinizado',       min: 500 },
-    { nome: 'Neuroplástico',     min: 800 },
-  ];
+const BADGES_FOCO = [
+  { id:'badge-primeiro', ciclos:0,  sessoes:1  },
+  { id:'badge-ciclo1',   ciclos:1,  sessoes:0  },
+  { id:'badge-ciclo5',   ciclos:5,  sessoes:0  },
+  { id:'badge-ciclo10',  ciclos:10, sessoes:0  },
+  { id:'badge-ciclo25',  ciclos:25, sessoes:0  },
+];
 
-  const FRASES_FOCO = [
-    'Dopamina fluindo — mantenha o foco!',
-    'Seu hipocampo está consolidando memória agora.',
-    'Córtex pré-frontal totalmente ativo.',
-    'Norepinefrina aumentando sua concentração.',
-    'Cada minuto cria novas conexões sinápticas.',
-    'Você está em estado de flow real.',
-    'Seu cérebro está formando memória de longo prazo.',
-    'A mielina está sendo produzida agora.',
-  ];
+let _focoXP         = parseInt(localStorage.getItem('foco_xp')||'0');
+let _focoCiclos     = parseInt(localStorage.getItem('foco_ciclos_totais')||'0');
+let _focoSessoes    = parseInt(localStorage.getItem('foco_sessoes_totais')||'0');
+let _focoBadges     = JSON.parse(localStorage.getItem('foco_badges')||'[]');
 
-  const FRASES_PAUSA = [
-    'Pausa ativa — consolidando o aprendizado.',
-    'Serotonina em alta. Respire fundo.',
-    'Seu cérebro processa em segundo plano.',
-    'Hidrate-se! O cérebro é 80% água.',
-    'Pausa = consolidação. Não pule!',
-  ];
+function _salvarFocoData() {
+  localStorage.setItem('foco_xp',          _focoXP);
+  localStorage.setItem('foco_ciclos_totais',_focoCiclos);
+  localStorage.setItem('foco_sessoes_totais',_focoSessoes);
+  localStorage.setItem('foco_badges',       JSON.stringify(_focoBadges));
+}
 
-  const FRASES_IDLE = [
-    'Pronto para ativar seu córtex pré-frontal?',
-    'Uma sessão de foco libera dopamina real.',
-    'Seu neurônio espera por você.',
-    'TDAH + Pomodoro = combinação poderosa.',
-  ];
+function _getNivel() {
+  let n = NIVEIS_FOCO[0];
+  for (const nv of NIVEIS_FOCO) { if (_focoXP >= nv.xp) n = nv; }
+  return n;
+}
 
-  const NEURO_ESTAGIOS = [
-    { sessoes: 0,  label: '🌱 <strong>Semente</strong> — Neurônio em repouso',       dendritos: [],                          axonio: false, mielina: false },
-    { sessoes: 1,  label: '⚡ <strong>Ativando</strong> — Dopamina fluindo',           dendritos: ['nd1','nd2'],               axonio: false, mielina: false },
-    { sessoes: 2,  label: '🔥 <strong>Aquecido</strong> — Memória de trabalho ativa', dendritos: ['nd1','nd2','nd3','nd4'],   axonio: true,  mielina: false },
-    { sessoes: 3,  label: '🧠 <strong>Em Fluxo</strong> — Estado de flow real',       dendritos: ['nd1','nd2','nd3','nd4','nd5','nd6'], axonio: true, mielina: false },
-    { sessoes: 4,  label: '💎 <strong>Mielinizado</strong> — Habilidade consolidada', dendritos: ['nd1','nd2','nd3','nd4','nd5','nd6'], axonio: true, mielina: true  },
-  ];
+function _getProxNivel() {
+  const cur = _getNivel();
+  return NIVEIS_FOCO.find(n => n.n === cur.n + 1) || null;
+}
 
-  const NEURO_XP_KEY = 'tdah_neuro_xp_v1';
+function _getPlaneta() {
+  let p = PLANETAS_FOCO[0];
+  for (const pl of PLANETAS_FOCO) { if (_focoCiclos >= pl.min) p = pl; }
+  return p;
+}
 
-  function carregarXP() {
-    try { return JSON.parse(localStorage.getItem(NEURO_XP_KEY)) || { xp: 0, nivel: 0, sessoes: 0, ciclos: 0 }; }
-    catch(e) { return { xp: 0, nivel: 0, sessoes: 0, ciclos: 0 }; }
+function _getProxPlaneta() {
+  return PLANETAS_FOCO.find(p => p.min > _focoCiclos) || null;
+}
+
+function renderFocoXP() {
+  const nivel   = _getNivel();
+  const prox    = _getProxNivel();
+  const proxP   = _getProxPlaneta();
+
+  const elBadge = document.getElementById('foco-nivel-badge');
+  if (elBadge) elBadge.textContent = `⭐ Nível ${nivel.n} — ${nivel.nome}`;
+
+  const elXpTxt = document.getElementById('foco-xp-text');
+  if (elXpTxt) {
+    elXpTxt.textContent = prox
+      ? `${_focoXP} / ${prox.xp} XP`
+      : `${_focoXP} XP — Máximo!`;
   }
 
-  function salvarXP(d) {
-    try { localStorage.setItem(NEURO_XP_KEY, JSON.stringify(d)); } catch(e) {}
-  }
+  const elFill = document.getElementById('foco-xp-fill');
+  if (elFill && prox) {
+    const pct = Math.min(100, ((_focoXP - nivel.xp) / (prox.xp - nivel.xp)) * 100);
+    elFill.style.width = pct + '%';
+  } else if (elFill) elFill.style.width = '100%';
 
-  function getNivelAtual(xp) {
-    let n = 0;
-    for (let i = NIVEIS_NEURO.length - 1; i >= 0; i--) {
-      if (xp >= NIVEIS_NEURO[i].min) { n = i; break; }
+  const elPE = document.getElementById('foco-planeta-emoji');
+  const elPN = document.getElementById('foco-planeta-nome');
+  if (elPE) elPE.textContent = proxP ? proxP.emoji : _getPlaneta().emoji;
+  if (elPN) elPN.textContent = proxP ? proxP.nome  : _getPlaneta().nome;
+
+  _renderBadges();
+  _syncFirebaseFoco();
+}
+
+function _renderBadges() {
+  for (const b of BADGES_FOCO) {
+    const el = document.getElementById(b.id);
+    if (!el) continue;
+    const ok = (b.ciclos > 0 && _focoCiclos >= b.ciclos) ||
+               (b.sessoes > 0 && _focoSessoes >= b.sessoes);
+    if (ok) {
+      if (!_focoBadges.includes(b.id)) { _focoBadges.push(b.id); _salvarFocoData(); }
+      el.classList.add('unlocked');
     }
-    return n;
   }
+}
 
-  function renderXP() {
-    const d = carregarXP();
-    const nIdx = getNivelAtual(d.xp);
-    const nivel = NIVEIS_NEURO[nIdx];
-    const proxIdx = Math.min(nIdx + 1, NIVEIS_NEURO.length - 1);
-    const proxMin = NIVEIS_NEURO[proxIdx].min;
-    const curMin  = nivel.min;
-    const pct = nIdx === NIVEIS_NEURO.length - 1 ? 100 : Math.round(((d.xp - curMin) / (proxMin - curMin)) * 100);
-
-    const elBadge = document.getElementById('foco-nivel-badge');
-    const elText  = document.getElementById('foco-xp-text');
-    const elFill  = document.getElementById('foco-xp-fill');
-    if (elBadge) elBadge.textContent = nivel.nome;
-    if (elText)  elText.textContent  = d.xp + ' energia neural';
-    if (elFill)  elFill.style.width  = pct + '%';
+function _adicionarXP(qtd) {
+  const nivAntes = _getNivel().n;
+  _focoXP += qtd;
+  _salvarFocoData();
+  if (_getNivel().n > nivAntes) {
+    showToast(`⬆️ Level UP! Nível ${_getNivel().n} — ${_getNivel().nome}!`);
   }
+  renderFocoXP();
+}
 
-  function adicionarXP(pts, sessoes, ciclos) {
-    const d = carregarXP();
-    d.xp += pts;
-    d.sessoes += sessoes || 0;
-    d.ciclos  += ciclos  || 0;
-    salvarXP(d);
-    renderXP();
+function fecharCelebracao() {
+  document.getElementById('celebracao-overlay').classList.remove('show');
+  document.querySelectorAll('.confetti-piece').forEach(c => c.remove());
+}
+
+function _mostrarCelebracao(xpGanho) {
+  const planeta = _getPlaneta();
+  const proxP   = _getProxPlaneta();
+  const el      = document.getElementById('celebracao-overlay');
+  document.getElementById('celeb-emoji').textContent = planeta.emoji;
+  document.getElementById('celeb-xp').textContent    = `+${xpGanho} XP`;
+  const ciclosParaProx = proxP ? proxP.min - _focoCiclos : 0;
+  document.getElementById('celeb-sub').innerHTML =
+    `Você completou <strong style="color:#60A5FA">${_focoCiclos}</strong> ciclo(s) no total.<br>` +
+    (proxP
+      ? `${ciclosParaProx} ciclo(s) para alcançar ${proxP.emoji} ${proxP.nome}!`
+      : '🌌 Você conquistou a galáxia!');
+  document.getElementById('celeb-planeta').textContent =
+    proxP ? `Próximo destino: ${proxP.emoji} ${proxP.nome}` : '🏆 Missão completa!';
+  el.classList.add('show');
+  _dispararConfetti();
+}
+
+function _dispararConfetti() {
+  const cores = ['#60A5FA','#A78BFA','#F472B6','#FCD34D','#34D399','#FB923C'];
+  for (let i = 0; i < 70; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `left:${Math.random()*100}vw;top:-10px;background:${cores[Math.floor(Math.random()*cores.length)]};animation-delay:${Math.random()*1.5}s;animation-duration:${1.5+Math.random()*1.5}s;transform:rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
   }
+}
 
-  // Neurônio: atualiza visual baseado em sessões do ciclo atual
-  function atualizarNeuro(sessNoCiclo, rodando) {
-    const total = Math.min(sessNoCiclo, NEURO_ESTAGIOS.length - 1);
-    const estagio = NEURO_ESTAGIOS[total];
-
-    // Dendritos
-    ['nd1','nd2','nd3','nd4','nd5','nd6'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.opacity = estagio.dendritos.includes(id) ? '1' : '0';
+function _syncFirebaseFoco() {
+  if (!window._fbReady || !window._sincronizarFirebase) return;
+  const apelido = getApelido ? getApelido() : null;
+  if (!apelido) return;
+  try {
+    window._sincronizarFirebase(apelido, {
+      psicologa:    getPsicologa(),
+      focoXP:       _focoXP,
+      focoNivel:    _getNivel().n,
+      focoCiclos:   _focoCiclos,
+      focoSessoes:  _focoSessoes,
+      focoBadges:   _focoBadges,
+      focoTotal:    state.pom.minFoco || 0,
+      diasDados:    Object.keys(state.dailyData || {}).length,
+      score:        Math.min(100, Math.round((_focoXP / 500) * 100)),
+      periodo:      new Date().toLocaleDateString('pt-BR'),
+      dailyData:    state.dailyData || {}
     });
+  } catch(e) {}
+}
 
-    // Axônio
-    const axEl = document.getElementById('neuro-axonio');
-    const botEl = document.getElementById('neuro-botao');
-    if (axEl)  axEl.style.opacity  = estagio.axonio ? '1' : '0';
-    if (botEl) botEl.style.opacity = estagio.axonio ? '1' : '0';
-
-    // Mielina
-    const mielEl = document.getElementById('neuro-mielina');
-    if (mielEl) mielEl.style.opacity = estagio.mielina ? '1' : '0';
-
-    // Classe de animação
-    const svgEl = document.getElementById('neuro-svg');
-    if (svgEl) {
-      svgEl.className = 'neuro-svg visivel ' + (rodando ? 'neuro-ativo' : 'neuro-pulso');
-    }
-
-    // Label do estágio
-    const lblEl = document.getElementById('neuro-estagio-label');
-    if (lblEl) lblEl.innerHTML = estagio.label;
+function _atualizarNaveCenter() {
+  const nave = document.getElementById('foco-nave-center');
+  const ring = document.getElementById('caverna-ring-fill');
+  if (!nave || !state || !state.pom) return;
+  const rodando = state.pom.rodando;
+  const fase    = state.pom.fase;
+  if (rodando && fase === 'foco') {
+    nave.classList.remove('pausado');
+    if (ring) ring.setAttribute('stroke', '#3B82F6');
+  } else if (rodando && fase === 'pausa') {
+    nave.classList.remove('pausado');
+    if (ring) ring.setAttribute('stroke', '#A78BFA');
+  } else {
+    nave.classList.add('pausado');
   }
+}
 
-  // Frase fisiológica rotativa
-  let _fraseTimer = null;
-  function setFrase(lista) {
-    clearInterval(_fraseTimer);
-    const el = document.getElementById('foco-fisiologia');
-    if (!el) return;
-    let idx = Math.floor(Math.random() * lista.length);
-    el.textContent = lista[idx];
-    _fraseTimer = setInterval(() => {
-      idx = (idx + 1) % lista.length;
-      el.style.opacity = '0';
-      setTimeout(() => { el.textContent = lista[idx]; el.style.opacity = '1'; }, 500);
-    }, 8000);
-  }
+// =============================================
+// CANVAS DE ESTRELAS PULSANDO COM O TIMER
+// =============================================
+(function initFocoCanvas() {
+  function setup() {
+    const canvas = document.getElementById('foco-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W = canvas.width  = Math.min(430, window.innerWidth);
+    let H = canvas.height = window.innerHeight;
 
-  // Observar estado do timer para atualizar neurônio e frases
-  function observar() {
-    const elSessoes = document.getElementById('cav-sessoes');
-    const elStatus  = document.getElementById('caverna-status-badge');
-    const elFase    = document.getElementById('caverna-phase-label');
+    // ── Stars ──────────────────────────────────────────────
+    const stars = Array.from({length: 140}, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.4 + 0.2,
+      speed: Math.random() * 0.4 + 0.08,
+      alpha: Math.random() * 0.6 + 0.2,
+      phase: Math.random() * Math.PI * 2
+    }));
 
-    // Atualização inicial
-    setTimeout(() => {
-      if (window.state && window.state.pom) {
-        atualizarNeuro(window.state.pom.sessNoCiclo || 0, window.state.pom.rodando || false);
-      }
-      setFrase(FRASES_IDLE);
-      renderXP();
-    }, 500);
-
-    // Observer no badge de status
-    if (elStatus) {
-      const obs = new MutationObserver(() => {
-        const txt = elStatus.textContent || '';
-        if (txt.includes('foco') || txt.includes('Foco')) setFrase(FRASES_FOCO);
-        else if (txt.includes('Pausa') || txt.includes('pausa')) setFrase(FRASES_PAUSA);
-        else setFrase(FRASES_IDLE);
-        if (window.state && window.state.pom) {
-          atualizarNeuro(window.state.pom.sessNoCiclo || 0, window.state.pom.rodando || false);
-        }
-      });
-      obs.observe(elStatus, { childList: true, characterData: true, subtree: true });
-    }
-
-    // Observer em sessões para XP e evolução do neurônio
-    if (elSessoes) {
-      let lastSess = parseInt(elSessoes.textContent || '0');
-      const obs2 = new MutationObserver(() => {
-        const cur = parseInt(elSessoes.textContent || '0');
-        if (cur > lastSess) {
-          adicionarXP(10 * (cur - lastSess), cur - lastSess, 0);
-          if (window.state && window.state.pom) {
-            atualizarNeuro(window.state.pom.sessNoCiclo || 0, window.state.pom.rodando || false);
-          }
-        }
-        lastSess = cur;
-      });
-      obs2.observe(elSessoes, { childList: true, characterData: true, subtree: true });
-    }
-
-    // Observer em ciclos para XP bônus e celebração
-    const elCiclos = document.getElementById('cav-ciclos');
-    if (elCiclos) {
-      let lastCiclos = parseInt(elCiclos.textContent || '0');
-      const obs3 = new MutationObserver(() => {
-        const cur = parseInt(elCiclos.textContent || '0');
-        if (cur > lastCiclos) {
-          const diff = cur - lastCiclos;
-          adicionarXP(50 * diff, 0, diff);
-          for (let i = 0; i < diff; i++) {
-            setTimeout(() => mostrarCelebracao(50), 300 * i);
-          }
-          atualizarNeuro(0, false);
-        }
-        lastCiclos = cur;
-      });
-      obs3.observe(elCiclos, { childList: true, characterData: true, subtree: true });
-    }
-  }
-
-  function mostrarCelebracao(xpGanho) {
-    const d = carregarXP();
-    const nIdx = getNivelAtual(d.xp);
-    const el = document.getElementById('celebracao-overlay');
-    if (!el) return;
-    const emojiEl  = document.getElementById('celeb-emoji');
-    const xpEl     = document.getElementById('celeb-xp');
-    const subEl    = document.getElementById('celeb-sub');
-    const proxEl   = document.getElementById('celeb-planeta');
-    if (emojiEl) emojiEl.textContent = '🧠';
-    if (xpEl)    xpEl.textContent    = '+' + xpGanho + ' Energia Neural';
-    if (subEl)   subEl.textContent   = 'Ciclo completo! Seu neurônio evoluiu!';
-    if (proxEl)  proxEl.textContent  = '→ ' + NIVEIS_NEURO[Math.min(nIdx+1, NIVEIS_NEURO.length-1)].nome;
-    el.classList.add('show');
-    lançarConfetti();
-  }
-
-  function lançarConfetti() {
-    const cores = ['#38BDF8','#818CF8','#34D399','#FCD34D','#F472B6'];
-    for (let i = 0; i < 30; i++) {
-      setTimeout(() => {
-        const el = document.createElement('div');
-        el.className = 'confetti-piece';
-        el.style.cssText = `left:${Math.random()*100}%;background:${cores[Math.floor(Math.random()*cores.length)]};transform:rotate(${Math.random()*360}deg);animation-delay:${Math.random()*0.5}s;`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 3000);
-      }, i * 50);
-    }
-  }
-
-  // Badges neurais
-  function atualizarBadges() {
-    const d = carregarXP();
-    const s = d.sessoes || 0;
-    const c = d.ciclos  || 0;
-    const mapa = {
-      'badge-primeiro': s >= 1,
-      'badge-ciclo1':   c >= 1,
-      'badge-ciclo5':   c >= 5,
-      'badge-ciclo10':  c >= 10,
-      'badge-ciclo25':  c >= 25,
+    // ── Rocket state ───────────────────────────────────────
+    const rocket = {
+      x: W / 2,
+      y: H + 80,       // starts off-screen bottom
+      angle: 0,        // radians, 0 = pointing up
+      scale: 1,
+      trail: [],
+      phase: 'idle',   // idle | launch | travel | arrive | orbit | pause
+      orbitAngle: 0,
+      orbitR: 48,
     };
-    Object.entries(mapa).forEach(([id, desbloqueado]) => {
-      const el = document.getElementById(id);
-      if (el) el.classList.toggle('unlocked', desbloqueado);
+
+    // ── Planet state ───────────────────────────────────────
+    const planetObj = {
+      x: W / 2,
+      y: -120,         // starts off-screen top
+      targetY: H * 0.22,
+      r: 38,
+      color: '#1D4ED8',
+      ringColor: '#3B82F6',
+      hasRing: false,
+      glowColor: 'rgba(59,130,246,0.35)',
+      entering: false,
+      leaving: false,
+      alpha: 0,
+    };
+
+    // Particle pool
+    const particles = [];
+
+    function spawnParticles(x, y, color, count, speed, life) {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd   = speed * (0.5 + Math.random());
+        particles.push({
+          x, y,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd,
+          life, maxLife: life,
+          color,
+          r: Math.random() * 3 + 1
+        });
+      }
+    }
+
+    // Planet definitions matching PLANETAS_FOCO
+    const PLANET_DEFS = [
+      { color:'#1565C0', ringColor:'#29B6F6', hasRing:false, glowColor:'rgba(21,101,192,0.4)',   craterColor:'rgba(0,0,0,0.15)'  }, // Terra
+      { color:'#9CA3AF', ringColor:'#D1D5DB', hasRing:false, glowColor:'rgba(156,163,175,0.35)', craterColor:'rgba(0,0,0,0.18)'  }, // Lua
+      { color:'#B91C1C', ringColor:'#EF4444', hasRing:false, glowColor:'rgba(185,28,28,0.4)',    craterColor:'rgba(0,0,0,0.2)'   }, // Marte
+      { color:'#78716C', ringColor:'#A8A29E', hasRing:false, glowColor:'rgba(120,113,108,0.35)', craterColor:'rgba(0,0,0,0.22)'  }, // Asteroide
+      { color:'#92400E', ringColor:'#D97706', hasRing:false, glowColor:'rgba(146,64,14,0.4)',    craterColor:'rgba(0,0,0,0.15)'  }, // Júpiter
+      { color:'#92400E', ringColor:'#FCD34D', hasRing:true,  glowColor:'rgba(251,191,36,0.35)',  craterColor:'rgba(0,0,0,0.12)'  }, // Saturno
+      { color:'#0E7490', ringColor:'#22D3EE', hasRing:true,  glowColor:'rgba(14,116,144,0.4)',   craterColor:'rgba(0,0,0,0.15)'  }, // Urano
+      { color:'#4C1D95', ringColor:'#8B5CF6', hasRing:false, glowColor:'rgba(76,29,149,0.45)',   craterColor:'rgba(0,0,0,0.1)'   }, // Galáxia
+    ];
+
+    let currentPlanetIdx = 0;
+    let frame = 0;
+    let launchProgress = 0;  // 0→1 during travel
+    let arrivalAnim    = 0;  // 0→1 celebration
+
+    function getPlanetDef() {
+      // sync with _focoCiclos
+      const cycles = parseInt(localStorage.getItem('foco_ciclos_totais') || '0');
+      const thresholds = [0,2,5,10,20,35,55,80];
+      let idx = 0;
+      for (let i = 0; i < thresholds.length; i++) {
+        if (cycles >= thresholds[i]) idx = i;
+      }
+      return { idx, def: PLANET_DEFS[idx] };
+    }
+
+    function applyPlanetDef(def) {
+      planetObj.color      = def.color;
+      planetObj.ringColor  = def.ringColor;
+      planetObj.hasRing    = def.hasRing;
+      planetObj.glowColor  = def.glowColor;
+    }
+
+    // ── Draw helpers ───────────────────────────────────────
+    function drawPlanet(px, py, pr, def, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+
+      // Glow
+      const grd = ctx.createRadialGradient(px, py, pr * 0.5, px, py, pr * 2.2);
+      grd.addColorStop(0, def.glowColor || 'rgba(59,130,246,0.3)');
+      grd.addColorStop(1, 'transparent');
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.arc(px, py, pr * 2.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Ring behind (if hasRing)
+      if (def.hasRing) {
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.scale(1, 0.28);
+        ctx.beginPath();
+        ctx.arc(0, 0, pr * 1.75, 0, Math.PI * 2);
+        ctx.strokeStyle = def.ringColor;
+        ctx.lineWidth = pr * 0.28;
+        ctx.globalAlpha = alpha * 0.5;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Planet body
+      const bodyGrd = ctx.createRadialGradient(px - pr*0.28, py - pr*0.28, pr*0.1, px, py, pr);
+      bodyGrd.addColorStop(0, lightenColor(def.color, 55));
+      bodyGrd.addColorStop(0.6, def.color);
+      bodyGrd.addColorStop(1, darkenColor(def.color, 40));
+      ctx.beginPath();
+      ctx.arc(px, py, pr, 0, Math.PI * 2);
+      ctx.fillStyle = bodyGrd;
+      ctx.globalAlpha = alpha;
+      ctx.fill();
+
+      // Craters / details
+      const craterPositions = [
+        {ox:-0.28, oy:-0.22, r:0.18}, {ox:0.22, oy:0.15, r:0.13},
+        {ox:-0.08, oy:0.32, r:0.1},  {ox:0.34, oy:-0.18, r:0.1}
+      ];
+      craterPositions.forEach(c => {
+        ctx.beginPath();
+        ctx.arc(px + c.ox*pr, py + c.oy*pr, c.r*pr, 0, Math.PI*2);
+        ctx.fillStyle = def.craterColor || 'rgba(0,0,0,0.15)';
+        ctx.globalAlpha = alpha * 0.7;
+        ctx.fill();
+      });
+
+      // Atmosphere sheen
+      const atmoGrd = ctx.createRadialGradient(px - pr*0.3, py - pr*0.3, 0, px, py, pr);
+      atmoGrd.addColorStop(0,   'rgba(255,255,255,0.18)');
+      atmoGrd.addColorStop(0.45,'rgba(255,255,255,0.04)');
+      atmoGrd.addColorStop(1,   'rgba(255,255,255,0)');
+      ctx.beginPath();
+      ctx.arc(px, py, pr, 0, Math.PI*2);
+      ctx.fillStyle = atmoGrd;
+      ctx.globalAlpha = alpha;
+      ctx.fill();
+
+      // Ring front (if hasRing)
+      if (def.hasRing) {
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.scale(1, 0.28);
+        ctx.beginPath();
+        ctx.arc(0, 0, pr * 1.75, Math.PI, Math.PI * 2);
+        ctx.strokeStyle = def.ringColor;
+        ctx.lineWidth = pr * 0.28;
+        ctx.globalAlpha = alpha * 0.85;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    function drawRocket(rx, ry, angle, scale, thrustOn) {
+      ctx.save();
+      ctx.translate(rx, ry);
+      ctx.rotate(angle);
+      ctx.scale(scale, scale);
+
+      const h = 28, w = 10;
+
+      // Exhaust flame
+      if (thrustOn) {
+        const flameLen = 20 + Math.sin(frame * 0.3) * 6;
+        const flGrd = ctx.createLinearGradient(0, h/2, 0, h/2 + flameLen);
+        flGrd.addColorStop(0,   'rgba(255,200,50,0.95)');
+        flGrd.addColorStop(0.4, 'rgba(255,100,20,0.7)');
+        flGrd.addColorStop(1,   'rgba(255,50,0,0)');
+        ctx.beginPath();
+        ctx.moveTo(-w*0.35, h*0.42);
+        ctx.quadraticCurveTo(0, h/2 + flameLen * 0.55, 0, h/2 + flameLen);
+        ctx.quadraticCurveTo(0, h/2 + flameLen * 0.55, w*0.35, h*0.42);
+        ctx.fillStyle = flGrd;
+        ctx.fill();
+
+        // Side flames
+        [-1,1].forEach(side => {
+          const sfl = flameLen * 0.55;
+          const sfGrd = ctx.createLinearGradient(0, h*0.38, 0, h*0.38 + sfl);
+          sfGrd.addColorStop(0,  'rgba(255,180,30,0.7)');
+          sfGrd.addColorStop(1,  'rgba(255,60,0,0)');
+          ctx.beginPath();
+          ctx.moveTo(side * w*0.22, h*0.38);
+          ctx.quadraticCurveTo(side * w*0.55, h*0.38 + sfl*0.5, side * w*0.38, h*0.38 + sfl);
+          ctx.fillStyle = sfGrd;
+          ctx.fill();
+        });
+      }
+
+      // Body
+      const bodyGrd = ctx.createLinearGradient(-w/2, 0, w/2, 0);
+      bodyGrd.addColorStop(0,   '#CBD5E1');
+      bodyGrd.addColorStop(0.35,'#F1F5F9');
+      bodyGrd.addColorStop(0.65,'#E2E8F0');
+      bodyGrd.addColorStop(1,   '#94A3B8');
+      ctx.beginPath();
+      ctx.moveTo(0, -h/2);                         // nose tip
+      ctx.bezierCurveTo(w*0.55, -h*0.15, w/2, h*0.25, w*0.45, h*0.42);
+      ctx.lineTo(-w*0.45, h*0.42);
+      ctx.bezierCurveTo(-w/2, h*0.25, -w*0.55, -h*0.15, 0, -h/2);
+      ctx.fillStyle = bodyGrd;
+      ctx.fill();
+
+      // Nose cone accent
+      const noseGrd = ctx.createLinearGradient(-w*0.3, -h/2, w*0.3, -h*0.1);
+      noseGrd.addColorStop(0, '#EF4444');
+      noseGrd.addColorStop(1, '#B91C1C');
+      ctx.beginPath();
+      ctx.moveTo(0, -h/2);
+      ctx.bezierCurveTo(w*0.3, -h*0.3, w*0.25, -h*0.05, 0, 0);
+      ctx.bezierCurveTo(-w*0.25, -h*0.05, -w*0.3, -h*0.3, 0, -h/2);
+      ctx.fillStyle = noseGrd;
+      ctx.fill();
+
+      // Window
+      ctx.beginPath();
+      ctx.arc(0, -h*0.05, w*0.22, 0, Math.PI*2);
+      ctx.fillStyle = '#1E3A5F';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(-w*0.06, -h*0.08, w*0.09, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(147,210,255,0.6)';
+      ctx.fill();
+
+      // Fins
+      [[-1,1],[1,-1]].forEach(([sx, dir]) => {
+        ctx.beginPath();
+        ctx.moveTo(sx * w*0.42, h*0.25);
+        ctx.lineTo(sx * w*0.9,  h*0.42);
+        ctx.lineTo(sx * w*0.42, h*0.42);
+        ctx.closePath();
+        ctx.fillStyle = '#EF4444';
+        ctx.fill();
+      });
+
+      // Engine nozzles
+      ctx.beginPath();
+      ctx.rect(-w*0.38, h*0.38, w*0.28, h*0.1);
+      ctx.rect( w*0.1,  h*0.38, w*0.28, h*0.1);
+      ctx.fillStyle = '#475569';
+      ctx.fill();
+
+      // Stripe
+      ctx.beginPath();
+      ctx.rect(-w*0.42, h*0.12, w*0.84, h*0.07);
+      ctx.fillStyle = '#3B82F6';
+      ctx.globalAlpha = 0.6;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      ctx.restore();
+    }
+
+    function lightenColor(hex, pct) {
+      let n = parseInt(hex.slice(1), 16);
+      let r = Math.min(255, (n>>16) + pct);
+      let g = Math.min(255, ((n>>8)&0xff) + pct);
+      let b = Math.min(255, (n&0xff) + pct);
+      return `rgb(${r},${g},${b})`;
+    }
+    function darkenColor(hex, pct) {
+      let n = parseInt(hex.slice(1), 16);
+      let r = Math.max(0, (n>>16) - pct);
+      let g = Math.max(0, ((n>>8)&0xff) - pct);
+      let b = Math.max(0, (n&0xff) - pct);
+      return `rgb(${r},${g},${b})`;
+    }
+
+    // ── Animation state machine ────────────────────────────
+    let lastPhase = 'idle';
+
+    function observeTimerState() {
+      // Watch for pom state changes
+      const playBtn = document.getElementById('caverna-play-btn');
+      if (playBtn) {
+        const mo = new MutationObserver(() => syncRocketPhase());
+        mo.observe(playBtn, { childList:true, characterData:true, subtree:true });
+      }
+    }
+
+    function syncRocketPhase() {
+      if (!window.state || !window.state.pom) return;
+      const pom = window.state.pom;
+      if (!pom.rodando) {
+        if (rocket.phase === 'travel' || rocket.phase === 'launch') {
+          rocket.phase = 'pause';
+        } else if (rocket.phase === 'idle') {
+          // stay idle
+        }
+      } else if (pom.fase === 'foco') {
+        if (rocket.phase === 'idle' || rocket.phase === 'pause') {
+          rocket.phase = 'launch';
+          launchProgress = 0;
+        } else if (rocket.phase === 'orbit') {
+          rocket.phase = 'launch';
+          launchProgress = 0;
+        }
+      } else if (pom.fase === 'pausa') {
+        if (rocket.phase === 'travel') {
+          rocket.phase = 'arrive';
+          arrivalAnim = 0;
+        }
+      }
+    }
+
+    // ── Main loop ──────────────────────────────────────────
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      frame++;
+
+      const running = window.state && window.state.pom && window.state.pom.rodando;
+      const fase    = window.state && window.state.pom && window.state.pom.fase;
+
+      // ── Stars ──────────────────────────────────────────
+      const starSpeed = running && fase === 'foco' ? 1 : (running ? 0.4 : 0.1);
+      stars.forEach(s => {
+        const pulse = running
+          ? (Math.sin(frame * 0.04 + s.phase) * 0.3 + 0.7)
+          : 0.3;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(160,205,255,${s.alpha * pulse})`;
+        ctx.fill();
+        s.y += s.speed * starSpeed;
+        if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
+      });
+
+      // ── Sync state ─────────────────────────────────────
+      if (running !== (lastPhase !== 'idle' && lastPhase !== 'pause')) {
+        syncRocketPhase();
+      }
+      lastPhase = rocket.phase;
+
+      // ── Planet visibility ──────────────────────────────
+      const { idx: pidx, def: pdef } = getPlanetDef();
+      if (pidx !== currentPlanetIdx) {
+        // Planet changed — trigger transition
+        currentPlanetIdx = pidx;
+        applyPlanetDef(pdef);
+        planetObj.y      = -120;
+        planetObj.alpha  = 0;
+        planetObj.entering = true;
+      }
+      applyPlanetDef(pdef);
+
+      // Target planet Y based on rocket phase
+      const showPlanet = ['arrive','orbit','pause'].includes(rocket.phase);
+
+      if (showPlanet || planetObj.alpha > 0) {
+        // Smoothly move planet to target
+        const tgtY = showPlanet ? H * 0.2 : -120;
+        const tgtA = showPlanet ? 1 : 0;
+        planetObj.y     += (tgtY - planetObj.y) * 0.04;
+        planetObj.alpha += (tgtA - planetObj.alpha) * 0.05;
+        if (planetObj.alpha > 0.01) {
+          drawPlanet(W/2, planetObj.y, planetObj.r, pdef, planetObj.alpha);
+        }
+      }
+
+      // ── Rocket physics ─────────────────────────────────
+      switch (rocket.phase) {
+
+        case 'idle':
+          rocket.x = W / 2;
+          rocket.y = H * 0.68;
+          rocket.angle = 0;
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, false);
+          // Small idle bob
+          rocket.y += Math.sin(frame * 0.025) * 0.8;
+          break;
+
+        case 'launch': {
+          launchProgress = Math.min(1, launchProgress + 0.008);
+          const ease = 1 - Math.pow(1 - launchProgress, 3);
+          rocket.x = W / 2 + Math.sin(launchProgress * Math.PI * 2) * 8 * (1 - launchProgress);
+          rocket.y = H * 0.68 - ease * (H * 0.68 - H * 0.5);
+          rocket.angle = Math.sin(launchProgress * Math.PI) * 0.12;
+
+          // Thrust particles
+          if (frame % 2 === 0) {
+            spawnParticles(rocket.x, rocket.y + 16, '#FCD34D', 3, 1.2, 18);
+          }
+
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, true);
+
+          if (launchProgress >= 1) rocket.phase = 'travel';
+          break;
+        }
+
+        case 'travel': {
+          // Rocket travels from bottom-half toward planet
+          if (!running) { rocket.phase = 'pause'; break; }
+
+          // Calculate progress from pom timer
+          let travelPct = 0;
+          if (window.state && window.state.pom) {
+            const pom  = window.state.pom;
+            const total = (pom.minFoco || 20) * 60;
+            const rem   = pom.seg || 0;
+            travelPct   = Math.max(0, Math.min(1, 1 - (rem / total)));
+          }
+
+          // Y: from H*0.5 → H*0.35
+          rocket.y = H * 0.5 - travelPct * (H * 0.5 - H * 0.35);
+          rocket.x = W/2 + Math.sin(frame * 0.018) * 14;
+          rocket.angle = Math.cos(frame * 0.018) * 0.1;
+
+          // Trail
+          rocket.trail.push({ x: rocket.x, y: rocket.y + 14, life: 22 });
+          if (rocket.trail.length > 28) rocket.trail.shift();
+
+          // Draw trail
+          rocket.trail.forEach((t, i) => {
+            const a = (i / rocket.trail.length) * 0.55;
+            const r = 3 * (i / rocket.trail.length);
+            ctx.beginPath();
+            ctx.arc(t.x, t.y, r, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(255,160,40,${a})`;
+            ctx.fill();
+            t.life--;
+          });
+          rocket.trail = rocket.trail.filter(t => t.life > 0);
+
+          if (frame % 3 === 0) {
+            spawnParticles(rocket.x, rocket.y + 14, '#FB923C', 2, 0.8, 14);
+          }
+
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, true);
+          break;
+        }
+
+        case 'arrive': {
+          arrivalAnim = Math.min(1, arrivalAnim + 0.022);
+          const ease  = 1 - Math.pow(1 - arrivalAnim, 3);
+
+          // Decelerate into planet orbit position
+          const targetX = W/2 + Math.cos(arrivalAnim * Math.PI * 2) * rocket.orbitR;
+          const targetY = planetObj.y + rocket.orbitR + planetObj.r + 5;
+          rocket.x += (targetX - rocket.x) * 0.06;
+          rocket.y += (targetY - rocket.y) * 0.06;
+          rocket.angle = Math.sin(arrivalAnim * Math.PI * 4) * 0.3 * (1 - arrivalAnim);
+
+          // Celebration burst
+          if (arrivalAnim > 0.45 && arrivalAnim < 0.5) {
+            spawnParticles(rocket.x, rocket.y, '#FCD34D', 20, 3, 35);
+            spawnParticles(rocket.x, rocket.y, '#60A5FA', 15, 2.5, 30);
+            spawnParticles(rocket.x, rocket.y, '#F472B6', 12, 2, 28);
+          }
+
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, arrivalAnim < 0.7);
+
+          if (arrivalAnim >= 1) {
+            rocket.phase = 'orbit';
+            rocket.orbitAngle = 0;
+          }
+          break;
+        }
+
+        case 'orbit': {
+          rocket.orbitAngle += 0.018;
+          rocket.x = W/2 + Math.cos(rocket.orbitAngle) * rocket.orbitR;
+          rocket.y = planetObj.y + (planetObj.r + 20) + Math.sin(rocket.orbitAngle) * rocket.orbitR * 0.38;
+          rocket.angle = rocket.orbitAngle + Math.PI / 2;
+
+          // Orbit trail
+          rocket.trail.push({ x: rocket.x, y: rocket.y, life: 20 });
+          if (rocket.trail.length > 20) rocket.trail.shift();
+          rocket.trail.forEach((t, i) => {
+            ctx.beginPath();
+            ctx.arc(t.x, t.y, 1.5 * (i / rocket.trail.length), 0, Math.PI*2);
+            ctx.fillStyle = `rgba(96,165,250,${0.3 * i / rocket.trail.length})`;
+            ctx.fill();
+          });
+          rocket.trail = rocket.trail.filter(t => t.life-- > 0);
+
+          drawRocket(rocket.x, rocket.y, rocket.angle, 0.85, false);
+
+          if (running && window.state.pom.fase === 'foco') {
+            rocket.phase = 'launch';
+            launchProgress = 0;
+            rocket.trail = [];
+          }
+          break;
+        }
+
+        case 'pause': {
+          rocket.y += (H * 0.55 - rocket.y) * 0.03;
+          rocket.x += (W/2 - rocket.x) * 0.03;
+          rocket.angle *= 0.95;
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, false);
+
+          if (running) {
+            rocket.phase = 'launch';
+            launchProgress = 0;
+          }
+          break;
+        }
+      }
+
+      // ── Particles ──────────────────────────────────────
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx; p.y += p.vy;
+        p.vy += 0.06;  // gravity
+        p.life--;
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
+        const a = p.life / p.maxLife;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * a, 0, Math.PI*2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = a * 0.9;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    observeTimerState();
+    tick();
+
+    window.addEventListener('resize', () => {
+      W = canvas.width  = Math.min(430, window.innerWidth);
+      H = canvas.height = window.innerHeight;
+      stars.forEach(s => { s.x = Math.random() * W; s.y = Math.random() * H; });
     });
   }
 
-  // Expor globalmente funções que o app original chama
-  window.renderFocoXP = function() { renderXP(); atualizarBadges(); };
-  window._mostrarCelebracao = mostrarCelebracao;
-  window._atualizarNaveCenter = function() {
-    if (window.state && window.state.pom) {
-      atualizarNeuro(window.state.pom.sessNoCiclo || 0, window.state.pom.rodando || false);
-    }
-  };
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', observar);
-  else observar();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
+  else setup();
 })();
-</script>
 
+// =============================================
+// HOOKS: ciclo completo + sessão completa
 // =============================================
 window.addEventListener('load', function() {
   renderFocoXP();
@@ -2791,3 +3250,7 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
+
+
+
+
