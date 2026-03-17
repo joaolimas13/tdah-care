@@ -466,6 +466,488 @@ textarea { resize: none; height: 80px; }
 .admin-stat{text-align:center;background:#F8FAFF;border-radius:10px;padding:8px 4px;}
 .admin-stat-val{font-size:0.95rem;font-weight:800;color:#1565C0;}
 .admin-stat-lbl{font-size:0.6rem;color:#90A4AE;}
+
+/* ── Página base ── */
+#page-foco {
+  background: #060614;
+  min-height: 100vh;
+  padding: 0 0 90px;
+  color: #E0E0FF;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Canvas de estrelas (fundo) ── */
+#foco-starfield {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ── Conteúdo acima das estrelas ── */
+#page-foco > *:not(#foco-starfield) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Header interno ── */
+.foco-header {
+  text-align: center;
+  padding: 18px 20px 4px;
+}
+.foco-header h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #A78BFA, #60A5FA, #34D399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2px;
+  letter-spacing: -0.5px;
+}
+
+/* ── Badge de status ── */
+.foco-status-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.foco-status-idle   { background: rgba(107,114,128,0.15); color: #9CA3AF; border: 1px solid rgba(107,114,128,0.3); }
+.foco-status-foco   { background: rgba(167,139,250,0.15); color: #A78BFA; border: 1px solid rgba(167,139,250,0.3); }
+.foco-status-pausa  { background: rgba(96,165,250,0.15);  color: #60A5FA; border: 1px solid rgba(96,165,250,0.3);  }
+
+/* ── XP bar ── */
+.foco-xp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px 10px;
+}
+.foco-xp-label {
+  font-size: 0.68rem;
+  color: #A78BFA;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.foco-xp-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(167,139,250,0.15);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.foco-xp-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #7C3AED, #A78BFA);
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.foco-level-badge {
+  font-size: 0.7rem;
+  color: #FAD36B;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* ── Nave + anel ── */
+.foco-ship-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 8px;
+  position: relative;
+}
+.foco-ring {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+.foco-ring svg.ring-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 200px; height: 200px;
+  transform: rotate(-90deg);
+}
+.foco-ring-bg   { fill: none; stroke: rgba(167,139,250,0.12); stroke-width: 10; }
+.foco-ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
+
+/* Partículas orbitais */
+.foco-particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #A78BFA;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+/* Nave SVG central */
+.foco-ship-center {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.foco-ship-svg {
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 8px rgba(167,139,250,0.4));
+}
+.foco-ship-svg.boosting {
+  transform: scale(1.08) translateY(-3px);
+  filter: drop-shadow(0 0 16px rgba(167,139,250,0.8));
+}
+.foco-time-display {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: white;
+  letter-spacing: -2px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-top: 6px;
+}
+.foco-phase-label {
+  font-size: 0.65rem;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+}
+
+/* ── Planeta destino ── */
+.foco-planet-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 20px 6px;
+}
+.foco-planet-icon {
+  font-size: 1.8rem;
+  transition: transform 0.4s;
+}
+.foco-planet-icon.arrived {
+  animation: foco-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes foco-bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4) rotate(20deg); }
+  70%  { transform: scale(0.9) rotate(-5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.foco-planet-info {
+  text-align: left;
+}
+.foco-planet-name {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #E0E0FF;
+}
+.foco-planet-sub {
+  font-size: 0.68rem;
+  color: #6B7280;
+}
+.foco-mission-prog {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  max-width: 80px;
+}
+.foco-mission-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #34D399, #60A5FA);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* ── Controles ── */
+.foco-controls {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin: 4px 0 14px;
+}
+.foco-btn {
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.foco-btn:active { transform: scale(0.93); }
+.foco-btn-main {
+  width: 72px; height: 72px;
+  font-size: 1.8rem;
+  background: linear-gradient(135deg, #7C3AED, #4F46E5);
+  color: white;
+  box-shadow: 0 0 28px rgba(124,58,237,0.45);
+}
+.foco-btn-main.pausado {
+  background: linear-gradient(135deg, #1D4ED8, #2563EB);
+  box-shadow: 0 0 28px rgba(29,78,216,0.4);
+}
+.foco-btn-sm {
+  width: 52px; height: 52px;
+  font-size: 1.2rem;
+  background: rgba(30,30,58,0.8);
+  color: #9CA3AF;
+  border: 1px solid #2D2D4E;
+}
+
+/* ── Config pomodoro ── */
+.foco-config-card {
+  background: rgba(20,20,40,0.7);
+  border: 1px solid rgba(167,139,250,0.15);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin: 0 16px 12px;
+}
+.foco-config-title {
+  font-size: 0.7rem;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.foco-config-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.foco-config-item {
+  flex: 1;
+  text-align: center;
+}
+.foco-config-item label {
+  font-size: 0.65rem;
+  color: #9CA3AF;
+  display: block;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.foco-config-item input {
+  background: rgba(20,20,40,0.8);
+  border: 1px solid #3D3D6E;
+  color: #E0E0FF;
+  border-radius: 10px;
+  padding: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+}
+.foco-config-sep {
+  color: #4B5563;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 14px;
+}
+.foco-apply-btn {
+  padding: 8px 14px;
+  background: rgba(124,58,237,0.3);
+  color: #A78BFA;
+  border: 1px solid #7C3AED;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 12px;
+  white-space: nowrap;
+}
+
+/* ── Stats grid ── */
+.foco-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin: 0 16px 12px;
+}
+.foco-stat-box {
+  background: rgba(20,20,40,0.6);
+  border: 1px solid #2D2D4E;
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+}
+.foco-stat-box .sv {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #A78BFA;
+  display: block;
+}
+.foco-stat-box .sl {
+  font-size: 0.6rem;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* ── Sessões do ciclo ── */
+.foco-cycle-card {
+  background: rgba(20,20,40,0.6);
+  border: 1px solid #2D2D4E;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 0 16px 12px;
+}
+.foco-cycle-title {
+  font-size: 0.68rem;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.foco-dot-row {
+  display: flex;
+  gap: 8px;
+}
+.foco-dot {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 2px solid #2D2D4E;
+  color: #4B5563;
+  transition: all 0.3s;
+}
+.foco-dot.done    { background: rgba(124,58,237,0.2); border-color: #7C3AED; color: #A78BFA; }
+.foco-dot.current { background: rgba(124,58,237,0.4); border-color: #A78BFA; color: white; animation: foco-pulse-dot 1.5s infinite; }
+@keyframes foco-pulse-dot {
+  0%,100% { box-shadow: 0 0 0 0 rgba(167,139,250,0.4); }
+  50%     { box-shadow: 0 0 0 6px rgba(167,139,250,0); }
+}
+
+/* Ajuste manual */
+.foco-manual-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #2D2D4E;
+}
+.foco-manual-row span {
+  color: #9CA3AF;
+  font-size: 0.75rem;
+  flex: 1;
+}
+.foco-adj-btn {
+  background: rgba(239,68,68,0.15);
+  color: #F87171;
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.foco-adj-btn.add {
+  background: rgba(124,58,237,0.25);
+  color: #A78BFA;
+  border-color: #7C3AED;
+}
+
+/* ── Badges / Conquistas ── */
+.foco-badges-card {
+  background: rgba(20,20,40,0.6);
+  border: 1px solid #2D2D4E;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 0 16px 12px;
+}
+.foco-badges-title {
+  font-size: 0.68rem;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.foco-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.foco-badge-item {
+  text-align: center;
+  position: relative;
+}
+.foco-badge-icon {
+  font-size: 1.5rem;
+  display: block;
+  filter: grayscale(1) opacity(0.25);
+  transition: all 0.4s;
+}
+.foco-badge-icon.unlocked {
+  filter: none;
+  animation: foco-badge-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes foco-badge-pop {
+  0%   { transform: scale(0); }
+  60%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.foco-badge-lbl {
+  font-size: 0.55rem;
+  color: #6B7280;
+  margin-top: 2px;
+  line-height: 1.2;
+}
+.foco-badge-lbl.unlocked { color: #A78BFA; }
+
+/* ── Celebração de ciclo ── */
+.foco-celebration {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+}
+.foco-celebration.show { display: flex; }
+.foco-celeb-content {
+  text-align: center;
+  animation: foco-celeb-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes foco-celeb-in {
+  from { transform: scale(0) translateY(40px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+.foco-celeb-emoji { font-size: 4rem; display: block; margin-bottom: 8px; }
+.foco-celeb-title { font-size: 1.4rem; font-weight: 900; color: white; }
+.foco-celeb-sub   { font-size: 0.85rem; color: #A78BFA; margin-top: 4px; }
+.foco-celeb-xp    { font-size: 1.1rem; font-weight: 800; color: #FAD36B; margin-top: 6px; }
+
+/* Confetti de partículas */
+.foco-confetti-particle {
+  position: fixed;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 998;
+}
+
+/* ── Footer ── */
+#page-foco .page-footer { color: #2D2D4E; }
+
+/* NAV button cor espacial */
+.nav-btn.foco-nav { background: linear-gradient(135deg, #0D0D1A, #1A0A40); color: #C4B5FD; }
+.nav-btn.foco-nav.active { color: #A78BFA; }
 </style>
 </head>
 <body>
@@ -711,53 +1193,158 @@ textarea { resize: none; height: 80px; }
   <div class="page-footer">produced by Jp</div>
 </div>
 
-<div class="page" id="page-caverna">
-  <div class="caverna-header"><h2>🏔️ Modo Caverna</h2><p id="caverna-subtitle">Pomodoro 20min foco / 5min pausa</p></div>
-  <div style="text-align:center;"><span class="caverna-status-badge status-idle" id="caverna-status-badge">⏸ Aguardando início</span></div>
+<canvas id="foco-starfield"></canvas>
 
-  <div class="pom-config-card">
-    <div class="pom-config-title">⚙️ Configurar tempo</div>
-    <div class="pom-config-row">
-      <div class="pom-config-item">
+<div class="page" id="page-foco">
+
+  <!-- Header -->
+  <div class="foco-header">
+    <h2>🚀 Modo Foco</h2>
+    <div><span class="foco-status-badge foco-status-idle" id="foco-status-badge">⏸ Aguardando decolagem</span></div>
+  </div>
+
+  <!-- XP Bar -->
+  <div class="foco-xp-row">
+    <span class="foco-xp-label" id="foco-nivel-label">Nv.1 Piloto</span>
+    <div class="foco-xp-track">
+      <div class="foco-xp-fill" id="foco-xp-fill" style="width:0%"></div>
+    </div>
+    <span class="foco-level-badge" id="foco-xp-label">0 XP</span>
+  </div>
+
+  <!-- Planeta destino -->
+  <div class="foco-planet-row">
+    <div class="foco-planet-icon" id="foco-planet-icon">🌍</div>
+    <div class="foco-planet-info">
+      <div class="foco-planet-name" id="foco-planet-name">Terra (Início)</div>
+      <div class="foco-planet-sub" id="foco-planet-sub">Missão: Decolar</div>
+    </div>
+    <div class="foco-mission-prog">
+      <div class="foco-mission-fill" id="foco-mission-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Timer + Nave -->
+  <div class="foco-ship-wrap">
+    <div class="foco-ring" id="foco-ring-wrap">
+
+      <!-- SVG do anel de progresso -->
+      <svg class="ring-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle class="foco-ring-bg"   cx="100" cy="100" r="88"/>
+        <circle class="foco-ring-fill" id="foco-ring-fill" cx="100" cy="100" r="88"
+                stroke="#A78BFA"
+                stroke-dasharray="552.92"
+                stroke-dashoffset="0"/>
+      </svg>
+
+      <!-- Partículas orbitais (geradas por JS) -->
+
+      <!-- Centro: Nave + tempo -->
+      <div class="foco-ship-center">
+        <svg class="foco-ship-svg" id="foco-ship-svg" width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <!-- Nave espacial estilizada (SVG path) -->
+          <defs>
+            <linearGradient id="shipBody" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C4B5FD"/>
+              <stop offset="100%" stop-color="#7C3AED"/>
+            </linearGradient>
+            <linearGradient id="shipEngine" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#60A5FA"/>
+              <stop offset="100%" stop-color="#1D4ED8"/>
+            </linearGradient>
+            <radialGradient id="thruster" cx="50%" cy="0%" r="80%">
+              <stop offset="0%" stop-color="#FDE68A" stop-opacity="1"/>
+              <stop offset="60%" stop-color="#F97316" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- Chamas do propulsor (ficam abaixo da nave) -->
+          <g id="ship-thrust" opacity="0" transform="translate(32,52)">
+            <ellipse rx="8" ry="14" fill="url(#thruster)"/>
+            <ellipse rx="4" ry="8" cy="4" fill="#FDE68A" opacity="0.6"/>
+          </g>
+          <!-- Asas -->
+          <path d="M16 36 L8 52 L20 44 Z" fill="#5B21B6" opacity="0.85"/>
+          <path d="M48 36 L56 52 L44 44 Z" fill="#5B21B6" opacity="0.85"/>
+          <!-- Corpo principal -->
+          <path d="M32 4 C44 14 48 28 46 42 L32 48 L18 42 C16 28 20 14 32 4Z" fill="url(#shipBody)"/>
+          <!-- Janela -->
+          <circle cx="32" cy="22" r="7" fill="#0D0D1A" opacity="0.8"/>
+          <circle cx="32" cy="22" r="5" fill="#93C5FD" opacity="0.6"/>
+          <circle cx="30" cy="20" r="2" fill="white" opacity="0.5"/>
+          <!-- Detalhes do corpo -->
+          <path d="M26 34 L38 34" stroke="#C4B5FD" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <path d="M28 38 L36 38" stroke="#C4B5FD" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+          <!-- Luzes de navegação -->
+          <circle cx="18" cy="42" r="2.5" fill="#34D399" id="ship-light-l"/>
+          <circle cx="46" cy="42" r="2.5" fill="#F87171" id="ship-light-r"/>
+        </svg>
+        <div class="foco-time-display" id="foco-time-display">20:00</div>
+        <div class="foco-phase-label" id="foco-phase-label">FOCO</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Controles -->
+  <div class="foco-controls">
+    <button class="foco-btn foco-btn-sm" onclick="focoReset()" title="Reiniciar">🔄</button>
+    <button class="foco-btn foco-btn-main" id="foco-play-btn" onclick="focoToggle()">▶</button>
+    <button class="foco-btn foco-btn-sm" onclick="focoPularFase()" title="Pular fase">⏭</button>
+  </div>
+
+  <!-- Config Pomodoro -->
+  <div class="foco-config-card">
+    <div class="foco-config-title">⚙️ Configurar tempo da missão</div>
+    <div class="foco-config-row">
+      <div class="foco-config-item">
         <label>🎯 Foco (min)</label>
-        <input type="number" id="pom-foco-input" value="20" min="1" max="90" onchange="aplicarConfigPom()">
+        <input type="number" id="foco-input-min" value="20" min="1" max="90" onchange="focoAplicarConfig()">
       </div>
-      <div class="pom-config-sep">/</div>
-      <div class="pom-config-item">
+      <div class="foco-config-sep">/</div>
+      <div class="foco-config-item">
         <label>☕ Pausa (min)</label>
-        <input type="number" id="pom-pausa-input" value="5" min="1" max="30" onchange="aplicarConfigPom()">
+        <input type="number" id="foco-input-pausa" value="5" min="1" max="30" onchange="focoAplicarConfig()">
       </div>
-      <button class="pom-config-btn" onclick="aplicarConfigPom()">✓ Aplicar</button>
+      <button class="foco-apply-btn" onclick="focoAplicarConfig()">✓ Aplicar</button>
     </div>
   </div>
-  <div class="caverna-timer-wrap">
-    <div class="caverna-ring">
-      <svg viewBox="0 0 220 220"><circle class="caverna-ring-bg" cx="110" cy="110" r="96"/><circle class="caverna-ring-fill" id="caverna-ring-fill" cx="110" cy="110" r="96" stroke="#A78BFA" stroke-dasharray="603.19" stroke-dashoffset="0"/></svg>
-      <div class="caverna-center"><div class="caverna-time" id="caverna-time-display">20:00</div><div class="caverna-phase" id="caverna-phase-label">FOCO</div></div>
+
+  <!-- Stats -->
+  <div class="foco-stats-grid">
+    <div class="foco-stat-box"><span class="sv" id="foco-st-sessoes">0</span><span class="sl">Sessões</span></div>
+    <div class="foco-stat-box"><span class="sv" id="foco-st-foco">0min</span><span class="sl">Foco hoje</span></div>
+    <div class="foco-stat-box"><span class="sv" id="foco-st-ciclos">0</span><span class="sl">Ciclos</span></div>
+  </div>
+
+  <!-- Ciclo atual -->
+  <div class="foco-cycle-card">
+    <div class="foco-cycle-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div>
+    <div class="foco-dot-row" id="foco-dot-row"></div>
+    <div class="foco-manual-row">
+      <span>Celular desligou? Ajuste aqui:</span>
+      <button class="foco-adj-btn" onclick="focoRemoverSessao()">⏮</button>
+      <button class="foco-adj-btn add" onclick="focoAdicionarSessao()">⏭</button>
+    </div>
+    <p style="font-size:0.65rem;color:#4B5563;margin-top:6px;">⏭ +1 sessão · ⏮ -1 sessão</p>
+  </div>
+
+  <!-- Conquistas -->
+  <div class="foco-badges-card">
+    <div class="foco-badges-title">🏅 Conquistas da missão</div>
+    <div class="foco-badges-grid" id="foco-badges-grid">
+      <!-- Preenchido por JS -->
     </div>
   </div>
-  <div class="caverna-controls">
-    <button class="caverna-btn caverna-btn-reset" onclick="resetarPomodoro()" title="Reiniciar">🔄</button>
-    <button class="caverna-btn caverna-btn-main" id="caverna-play-btn" onclick="togglePomodoro()">▶</button>
-    <button class="caverna-btn caverna-btn-skip" onclick="pularFase()" title="Pular fase">⏭</button>
-  </div>
-  <div class="caverna-stats-grid">
-    <div class="caverna-stat-box"><span class="v" id="cav-sessoes">0</span><span class="l">Sessões</span></div>
-    <div class="caverna-stat-box"><span class="v" id="cav-foco-total">0min</span><span class="l">Foco hoje</span></div>
-    <div class="caverna-stat-box"><span class="v" id="cav-ciclos">0</span><span class="l">Ciclos</span></div>
-  </div>
-  <div class="caverna-card-dark">
-    <div class="caverna-card-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div>
-    <div class="session-dot-row" id="session-dots"></div>
-    <div class="ciclos-manual-row" style="margin-top:14px;padding-top:12px;border-top:1px solid #2D2D4E;">
-      <span style="color:#9CA3AF;font-size:0.78rem;flex:1;">Celular desligou? Ajuste as sessões:</span>
-      <button onclick="removerSessaoManual()" title="Remover 1 sessão" style="background:rgba(239,68,68,0.15);color:#F87171;border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:8px 14px;font-size:1rem;font-weight:700;cursor:pointer;">⏮</button>
-      <button onclick="adicionarSessaoManual()" title="Adicionar 1 sessão" style="background:rgba(124,58,237,0.25);color:#A78BFA;border:1px solid #7C3AED;border-radius:10px;padding:8px 14px;font-size:1rem;font-weight:700;cursor:pointer;">⏭</button>
-    </div>
-    <p style="font-size:0.68rem;color:#4B5563;margin-top:8px;">⏭ adiciona 1 sessão de 20min · ⏮ remove 1 sessão</p>
-  </div>
+
   <div class="page-footer">produced by Jp</div>
 </div>
+
+<!-- Celebração overlay (fora da page para garantir z-index) -->
+<div class="foco-celebration" id="foco-celebration">
+  <div class="foco-celeb-content">
+    <span class="foco-celeb-emoji" id="foco-celeb-emoji">🚀</span>
+    <div class="foco-celeb-title" id="foco-celeb-title">Ciclo completo!</div>
 
 <div class="page" id="page-info">
   <div class="section-title">📚 Informações</div>
@@ -934,7 +1521,7 @@ textarea { resize: none; height: 80px; }
   <button class="nav-btn" onclick="navigate('sono',this)"><span class="icon">😴</span><span>Sono</span></button>
   <button class="nav-btn" onclick="navigate('metas',this)"><span class="icon">🎯</span><span>Metas</span></button>
   <button class="nav-btn" onclick="navigate('calendario',this)"><span class="icon">🗓️</span><span>Histórico</span></button>
-  <button class="nav-btn caverna-nav" onclick="navigate('caverna',this)"><span class="icon">🏔️</span><span>Caverna</span></button>
+  <button class="nav-btn foco-nav" onclick="navigate('foco',this)"><span class="icon">🚀</span><span>Foco</span></button>
   <button class="nav-btn" onclick="navigate('info',this)"><span class="icon">📚</span><span>Info</span></button>
 </div>
 
@@ -1208,7 +1795,7 @@ function toggleTimerPasso() {
 function finalizarProtocolo() {
   document.getElementById('reativar-modal').classList.remove('show');
   resetarReativar();
-  navigate('caverna', document.querySelector('.caverna-nav'));
+  navigate('foco', document.querySelector('.foco-nav'));
   showToast('Modo Caverna ativado!');
 }
 
@@ -2175,6 +2762,766 @@ function testarWhatsAppPsicologa() {
 init();
 carregarConfigPom();
 verificarApelido();
+
+// ╔════════════════════════════════════════════════════╗
+// ║  MODO FOCO — Sistema completo                      ║
+// ╚════════════════════════════════════════════════════╝
+
+const FOCO_CIRC = 2 * Math.PI * 88; // 552.92
+
+// ─── CONSTANTES DO JOGO ───────────────────────────────
+const FOCO_NIVEIS = [
+  { nome: 'Piloto',       xpMax: 100,  cor: '#9CA3AF' },
+  { nome: 'Explorador',   xpMax: 250,  cor: '#60A5FA' },
+  { nome: 'Navegador',    xpMax: 500,  cor: '#34D399' },
+  { nome: 'Cosmonauta',   xpMax: 900,  cor: '#A78BFA' },
+  { nome: 'Almirante',    xpMax: 1500, cor: '#FAD36B' },
+  { nome: 'Lendário',     xpMax: 9999, cor: '#F87171' },
+];
+
+const FOCO_PLANETAS = [
+  { icon:'🌍', nome:'Terra',    sub:'Origem da missão',    ciclosMin:0  },
+  { icon:'🌙', nome:'Lua',      sub:'Primeiro salto',      ciclosMin:1  },
+  { icon:'♂️',  nome:'Marte',    sub:'Planeta vermelho',    ciclosMin:3  },
+  { icon:'💫', nome:'Cinturão', sub:'Campo de asteróides', ciclosMin:6  },
+  { icon:'♃',  nome:'Júpiter',  sub:'Gigante gasoso',      ciclosMin:10 },
+  { icon:'🪐', nome:'Saturno',  sub:'Anéis majestosos',    ciclosMin:15 },
+  { icon:'⭐', nome:'Estrela',  sub:'Destino final',       ciclosMin:25 },
+];
+
+const FOCO_BADGES_DEF = [
+  { id:'b_primeiro',  icon:'🚀', lbl:'Decolagem',    cond: s => s.sessoesTotais >= 1        },
+  { id:'b_ciclo1',    icon:'🌙', lbl:'Lunático',     cond: s => s.ciclosTotais >= 1         },
+  { id:'b_hora',      icon:'⏱️', lbl:'1h de Foco',   cond: s => s.minFocoTotal >= 60        },
+  { id:'b_ciclo5',    icon:'♂️',  lbl:'Marciano',     cond: s => s.ciclosTotais >= 5         },
+  { id:'b_maratonas', icon:'🏃', lbl:'Maratonista',  cond: s => s.sessoesTotais >= 20       },
+  { id:'b_tres_horas',icon:'🔥', lbl:'3h de Foco',   cond: s => s.minFocoTotal >= 180       },
+  { id:'b_ciclo10',   icon:'🪐', lbl:'Saturno',      cond: s => s.ciclosTotais >= 10        },
+  { id:'b_lendario',  icon:'⭐', lbl:'Lendário',     cond: s => s.nivel >= 5                },
+  { id:'b_streak5',   icon:'🔥', lbl:'5 dias 🔥',    cond: s => s.streakDias >= 5           },
+  { id:'b_madrugada', icon:'🌃', lbl:'Madrugada',    cond: s => s.focouNoite               },
+];
+
+// ─── ESTADO LOCAL DO FOCO ────────────────────────────
+let focoState = {
+  rodando: false,
+  fase: 'foco',   // 'foco' | 'pausa'
+  seg: 0,
+  timer: null,
+  config: { foco: 20*60, pausa: 5*60 },
+  // stats do dia (lidas de state.pom)
+  sessoes: 0,
+  ciclos: 0,
+  sessNoCiclo: 0,
+  minFoco: 0,
+  // stats acumuladas (localStorage)
+  xp: 0,
+  nivel: 0,
+  sessoesTotais: 0,
+  ciclosTotais: 0,
+  minFocoTotal: 0,
+  badgesUnlocked: [],
+  streakDias: 0,
+  focouNoite: false,
+  lastFocoDate: null,
+};
+
+let focoParticles = []; // partículas orbitais DOM
+
+// ─── INIT ─────────────────────────────────────────────
+function focoInit() {
+  focoCarregarPersistente();
+  focoCarregarConfigSalva();
+  focoSincronizarComPom();
+  focoRenderUI();
+  focoRenderBadges();
+  focoIniciarStarfield();
+  focoIniciarParticulas();
+}
+
+function focoCarregarPersistente() {
+  try {
+    const raw = localStorage.getItem('tdah_foco_xp');
+    if (raw) {
+      const d = JSON.parse(raw);
+      focoState.xp              = d.xp              || 0;
+      focoState.nivel           = d.nivel            || 0;
+      focoState.sessoesTotais   = d.sessoesTotais    || 0;
+      focoState.ciclosTotais    = d.ciclosTotais     || 0;
+      focoState.minFocoTotal    = d.minFocoTotal     || 0;
+      focoState.badgesUnlocked  = d.badgesUnlocked   || [];
+      focoState.streakDias      = d.streakDias       || 0;
+      focoState.focouNoite      = d.focouNoite       || false;
+      focoState.lastFocoDate    = d.lastFocoDate     || null;
+    }
+  } catch(e) {}
+}
+
+function focoSalvarPersistente() {
+  try {
+    localStorage.setItem('tdah_foco_xp', JSON.stringify({
+      xp: focoState.xp,
+      nivel: focoState.nivel,
+      sessoesTotais: focoState.sessoesTotais,
+      ciclosTotais: focoState.ciclosTotais,
+      minFocoTotal: focoState.minFocoTotal,
+      badgesUnlocked: focoState.badgesUnlocked,
+      streakDias: focoState.streakDias,
+      focouNoite: focoState.focouNoite,
+      lastFocoDate: focoState.lastFocoDate,
+    }));
+  } catch(e) {}
+}
+
+function focoCarregarConfigSalva() {
+  try {
+    const c = localStorage.getItem('tdah_pom_config');
+    if (c) {
+      const cfg = JSON.parse(c);
+      focoState.config.foco  = (cfg.foco  || 20) * 60;
+      focoState.config.pausa = (cfg.pausa || 5)  * 60;
+      document.getElementById('foco-input-min').value   = cfg.foco  || 20;
+      document.getElementById('foco-input-pausa').value = cfg.pausa || 5;
+    }
+  } catch(e) {}
+}
+
+// Sincroniza com state.pom (compartilhado com o resto do app)
+function focoSincronizarComPom() {
+  focoState.sessoes     = state.pom.sessoes     || 0;
+  focoState.ciclos      = state.pom.ciclos      || 0;
+  focoState.sessNoCiclo = state.pom.sessNoCiclo || 0;
+  focoState.minFoco     = state.pom.minFoco     || 0;
+  focoState.seg = focoState.fase === 'foco'
+    ? focoState.config.foco
+    : focoState.config.pausa;
+}
+
+// ─── CONTROLES PRINCIPAIS ─────────────────────────────
+function focoToggle() {
+  if (state.currentDate !== hojeISO()) {
+    showToast('⚠️ Modo Foco só para o dia atual');
+    return;
+  }
+  focoState.rodando ? focoPausar() : focoIniciar();
+}
+
+function focoIniciar() {
+  focoState.rodando = true;
+  if (!focoState.seg || focoState.seg <= 0) {
+    focoState.seg = focoState.fase === 'foco'
+      ? focoState.config.foco
+      : focoState.config.pausa;
+  }
+  document.getElementById('foco-play-btn').textContent = '⏸';
+  document.getElementById('foco-play-btn').classList.add('pausado');
+  document.getElementById('foco-ship-svg').classList.add('boosting');
+  focoAtivarThruster(true);
+  focoAtualizarUI();
+  focoState.timer = setInterval(focoTick, 1000);
+}
+
+function focoPausar() {
+  focoState.rodando = false;
+  clearInterval(focoState.timer);
+  document.getElementById('foco-play-btn').textContent = '▶';
+  document.getElementById('foco-play-btn').classList.remove('pausado');
+  document.getElementById('foco-ship-svg').classList.remove('boosting');
+  focoAtivarThruster(false);
+  focoAtualizarUI();
+  salvar();
+}
+
+function focoReset() {
+  if (state.currentDate !== hojeISO()) {
+    showToast('⚠️ Modo Foco só para o dia atual');
+    return;
+  }
+  clearInterval(focoState.timer);
+  focoState.rodando = false;
+  focoState.fase = 'foco';
+  focoState.seg  = focoState.config.foco;
+  document.getElementById('foco-play-btn').textContent = '▶';
+  document.getElementById('foco-play-btn').classList.remove('pausado');
+  document.getElementById('foco-ship-svg').classList.remove('boosting');
+  focoAtivarThruster(false);
+  focoAtualizarUI();
+  showToast('🔄 Timer reiniciado');
+  salvar();
+}
+
+function focoTick() {
+  focoState.seg--;
+  if (focoState.seg <= 0) {
+    focoConcluirFase();
+  } else {
+    focoAtualizarUI();
+  }
+}
+
+function focoConcluirFase() {
+  clearInterval(focoState.timer);
+  focoState.rodando = false;
+
+  const focoMin = focoState.config.foco / 60;
+
+  if (focoState.fase === 'foco') {
+    // Sessão concluída
+    focoState.sessoes++;
+    focoState.sessNoCiclo++;
+    focoState.minFoco += focoMin;
+
+    // Acumular globais
+    focoState.sessoesTotais++;
+    focoState.minFocoTotal += focoMin;
+
+    // Verificar noite
+    const h = new Date().getHours();
+    if (h >= 22 || h < 4) focoState.focouNoite = true;
+
+    // Streak
+    focoAtualizarStreak();
+
+    let cicloCompleto = false;
+    if (focoState.sessNoCiclo >= SESS_CICLO) {
+      focoState.ciclos++;
+      focoState.ciclosTotais++;
+      focoState.sessNoCiclo = 0;
+      cicloCompleto = true;
+    }
+
+    // XP
+    const xpGanho = cicloCompleto ? 150 : 30;
+    focoGanharXP(xpGanho, cicloCompleto);
+
+    // Sincronizar com state.pom
+    focoPomParaState();
+    salvar();
+
+    if (cicloCompleto) {
+      focoCelebrarCiclo();
+    } else {
+      showToast('✅ Sessão concluída! Hora da pausa!');
+      playBeep();
+    }
+
+    focoState.fase = 'pausa';
+    focoState.seg  = focoState.config.pausa;
+  } else {
+    focoState.fase = 'foco';
+    focoState.seg  = focoState.config.foco;
+    showToast('🎯 Pausa encerrada — hora de focar!');
+    playBeep();
+  }
+
+  document.getElementById('foco-play-btn').textContent = '▶';
+  document.getElementById('foco-play-btn').classList.remove('pausado');
+  document.getElementById('foco-ship-svg').classList.remove('boosting');
+  focoAtivarThruster(false);
+  focoVerificarBadges();
+  focoSalvarPersistente();
+  focoRenderUI();
+}
+
+function focoPularFase() {
+  if (state.currentDate !== hojeISO()) {
+    showToast('⚠️ Modo Foco só para hoje');
+    return;
+  }
+  clearInterval(focoState.timer);
+  focoState.rodando = false;
+  document.getElementById('foco-play-btn').textContent = '▶';
+  document.getElementById('foco-play-btn').classList.remove('pausado');
+  document.getElementById('foco-ship-svg').classList.remove('boosting');
+  focoAtivarThruster(false);
+
+  const focoMin = focoState.config.foco / 60;
+
+  if (focoState.fase === 'foco') {
+    focoState.sessoes++;
+    focoState.sessNoCiclo++;
+    focoState.minFoco += focoMin;
+    focoState.sessoesTotais++;
+    focoState.minFocoTotal += focoMin;
+
+    if (focoState.sessNoCiclo >= SESS_CICLO) {
+      focoState.ciclos++;
+      focoState.ciclosTotais++;
+      focoState.sessNoCiclo = 0;
+      focoGanharXP(150, true);
+      showToast('🏆 Ciclo completo! +150 XP');
+    } else {
+      focoGanharXP(30, false);
+      showToast('✅ +1 sessão! Hora de pausar.');
+    }
+    focoState.fase = 'pausa';
+    focoState.seg  = focoState.config.pausa;
+  } else {
+    focoState.fase = 'foco';
+    focoState.seg  = focoState.config.foco;
+    showToast('🎯 Pausa pulada — foco!');
+  }
+
+  focoPomParaState();
+  focoVerificarBadges();
+  focoSalvarPersistente();
+  focoRenderUI();
+  salvar();
+}
+
+// Ajuste manual
+function focoAdicionarSessao() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só para hoje'); return; }
+  focoState.sessoes++;
+  focoState.sessNoCiclo++;
+  focoState.minFoco += focoState.config.foco / 60;
+  focoState.sessoesTotais++;
+  focoState.minFocoTotal += focoState.config.foco / 60;
+
+  if (focoState.sessNoCiclo >= SESS_CICLO) {
+    focoState.ciclos++;
+    focoState.ciclosTotais++;
+    focoState.sessNoCiclo = 0;
+    showToast('🏆 Ciclo completo! +1 sessão adicionada.');
+  } else {
+    showToast('✅ +1 sessão adicionada');
+  }
+  focoGanharXP(30, false);
+  focoPomParaState();
+  focoVerificarBadges();
+  focoSalvarPersistente();
+  focoRenderUI();
+  salvar();
+}
+
+function focoRemoverSessao() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só para hoje'); return; }
+  if (focoState.sessoes <= 0) { showToast('⚠️ Nenhuma sessão para remover'); return; }
+  focoState.sessoes--;
+  focoState.minFoco = Math.max(0, focoState.minFoco - focoState.config.foco / 60);
+  if (focoState.sessNoCiclo > 0) {
+    focoState.sessNoCiclo--;
+  } else if (focoState.ciclos > 0) {
+    focoState.ciclos--;
+    focoState.sessNoCiclo = SESS_CICLO - 1;
+  }
+  focoPomParaState();
+  focoRenderUI();
+  salvar();
+  showToast('↩️ 1 sessão removida');
+}
+
+// ─── CONFIG ───────────────────────────────────────────
+function focoAplicarConfig() {
+  if (focoState.rodando) { showToast('⚠️ Pare o timer antes de alterar!'); return; }
+  const f = parseInt(document.getElementById('foco-input-min').value)   || 20;
+  const p = parseInt(document.getElementById('foco-input-pausa').value) || 5;
+  const fm = Math.min(90, Math.max(1, f));
+  const pm = Math.min(30, Math.max(1, p));
+  document.getElementById('foco-input-min').value   = fm;
+  document.getElementById('foco-input-pausa').value = pm;
+  focoState.config.foco  = fm * 60;
+  focoState.config.pausa = pm * 60;
+  focoState.seg = focoState.fase === 'foco' ? focoState.config.foco : focoState.config.pausa;
+  focoAtualizarUI();
+  showToast(`✅ ${fm}min foco / ${pm}min pausa`);
+  try { localStorage.setItem('tdah_pom_config', JSON.stringify({foco: fm, pausa: pm})); } catch(e) {}
+}
+
+// ─── XP / NÍVEL ───────────────────────────────────────
+function focoGanharXP(quantidade, ehCiclo) {
+  focoState.xp += quantidade;
+  const nivelAtual = focoState.nivel;
+  // Somar XP acumulado para verificar nível
+  let xpAcum = focoState.xp;
+  let novoNivel = 0;
+  for (let i = 0; i < FOCO_NIVEIS.length - 1; i++) {
+    if (xpAcum >= FOCO_NIVEIS[i].xpMax) {
+      novoNivel = i + 1;
+    }
+  }
+  if (novoNivel > nivelAtual) {
+    focoState.nivel = novoNivel;
+    setTimeout(() => {
+      showToast(`🎖️ Nível ${novoNivel+1} — ${FOCO_NIVEIS[novoNivel].nome}!`);
+    }, 600);
+  }
+  focoState.nivel = novoNivel;
+  focoRenderXP();
+}
+
+function focoRenderXP() {
+  const nv = FOCO_NIVEIS[focoState.nivel] || FOCO_NIVEIS[FOCO_NIVEIS.length - 1];
+  const xpPrevio = focoState.nivel > 0 ? FOCO_NIVEIS[focoState.nivel - 1].xpMax : 0;
+  const xpRange = nv.xpMax - xpPrevio;
+  const xpNestaNivel = focoState.xp - xpPrevio;
+  const pct = Math.min(100, Math.max(0, (xpNestaNivel / xpRange) * 100));
+
+  const nivelLabel = document.getElementById('foco-nivel-label');
+  const xpFill     = document.getElementById('foco-xp-fill');
+  const xpLabel    = document.getElementById('foco-xp-label');
+
+  if (nivelLabel) nivelLabel.textContent = `Nv.${focoState.nivel + 1} ${nv.nome}`;
+  if (xpFill)     xpFill.style.width = pct + '%';
+  if (xpLabel)    xpLabel.textContent = focoState.xp + ' XP';
+}
+
+// ─── PLANETA ──────────────────────────────────────────
+function focoRenderPlaneta(novoDesbloqueio) {
+  const ciclosTot = focoState.ciclosTotais;
+  let planetaAtual = FOCO_PLANETAS[0];
+  for (let i = FOCO_PLANETAS.length - 1; i >= 0; i--) {
+    if (ciclosTot >= FOCO_PLANETAS[i].ciclosMin) {
+      planetaAtual = FOCO_PLANETAS[i];
+      break;
+    }
+  }
+
+  // Próximo planeta
+  let proxIdx = FOCO_PLANETAS.findIndex(p => p === planetaAtual) + 1;
+  const proximo = FOCO_PLANETAS[proxIdx] || null;
+  const progresso = proximo
+    ? Math.round(((ciclosTot - planetaAtual.ciclosMin) / (proximo.ciclosMin - planetaAtual.ciclosMin)) * 100)
+    : 100;
+
+  const planetaIcon = document.getElementById('foco-planet-icon');
+  const planetaNome = document.getElementById('foco-planet-name');
+  const planetaSub  = document.getElementById('foco-planet-sub');
+  const missionFill = document.getElementById('foco-mission-fill');
+
+  if (planetaIcon) {
+    planetaIcon.textContent = planetaAtual.icon;
+    if (novoDesbloqueio) planetaIcon.classList.add('arrived');
+    setTimeout(() => planetaIcon && planetaIcon.classList.remove('arrived'), 600);
+  }
+  if (planetaNome) planetaNome.textContent = planetaAtual.nome;
+  if (planetaSub)  planetaSub.textContent  = proximo
+    ? `Próximo: ${proximo.icon} ${proximo.nome} (${progresso}%)`
+    : '🌟 Destino máximo atingido!';
+  if (missionFill) missionFill.style.width = progresso + '%';
+}
+
+// ─── BADGES ───────────────────────────────────────────
+function focoVerificarBadges() {
+  const stats = {
+    sessoesTotais: focoState.sessoesTotais,
+    ciclosTotais:  focoState.ciclosTotais,
+    minFocoTotal:  focoState.minFocoTotal,
+    nivel:         focoState.nivel,
+    streakDias:    focoState.streakDias,
+    focouNoite:    focoState.focouNoite,
+  };
+
+  FOCO_BADGES_DEF.forEach(badge => {
+    if (!focoState.badgesUnlocked.includes(badge.id) && badge.cond(stats)) {
+      focoState.badgesUnlocked.push(badge.id);
+      setTimeout(() => showToast(`🏅 Conquista: ${badge.lbl}!`), 800);
+      focoRenderBadges();
+    }
+  });
+}
+
+function focoRenderBadges() {
+  const grid = document.getElementById('foco-badges-grid');
+  if (!grid) return;
+  grid.innerHTML = FOCO_BADGES_DEF.map(b => {
+    const unlocked = focoState.badgesUnlocked.includes(b.id);
+    return `<div class="foco-badge-item" title="${b.lbl}">
+      <span class="foco-badge-icon ${unlocked ? 'unlocked' : ''}">${b.icon}</span>
+      <div class="foco-badge-lbl ${unlocked ? 'unlocked' : ''}">${b.lbl}</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── STREAK ───────────────────────────────────────────
+function focoAtualizarStreak() {
+  const hoje = hojeISO();
+  const ontem = (() => { const d = new Date(); d.setDate(d.getDate()-1); return hojeISO(d); })();
+  if (focoState.lastFocoDate === ontem) {
+    focoState.streakDias++;
+  } else if (focoState.lastFocoDate !== hoje) {
+    focoState.streakDias = 1;
+  }
+  focoState.lastFocoDate = hoje;
+}
+
+// ─── CELEBRAÇÃO DE CICLO ──────────────────────────────
+function focoCelebrarCiclo() {
+  playBeep();
+  setTimeout(playBeep, 300);
+  setTimeout(playBeep, 600);
+
+  // Verificar se desbloqueou planeta
+  const ciclosTot = focoState.ciclosTotais;
+  const novoPlaneta = FOCO_PLANETAS.find(p => p.ciclosMin === ciclosTot);
+
+  const celebracao = document.getElementById('foco-celebration');
+  const emoji      = document.getElementById('foco-celeb-emoji');
+  const titulo     = document.getElementById('foco-celeb-title');
+  const sub        = document.getElementById('foco-celeb-sub');
+  const xpEl       = document.getElementById('foco-celeb-xp');
+
+  if (novoPlaneta) {
+    if (emoji)  emoji.textContent  = novoPlaneta.icon;
+    if (titulo) titulo.textContent = `${novoPlaneta.nome} desbloqueado!`;
+    if (sub)    sub.textContent    = novoPlaneta.sub;
+    focoRenderPlaneta(true);
+  } else {
+    if (emoji)  emoji.textContent  = '🏆';
+    if (titulo) titulo.textContent = 'Ciclo completo!';
+    if (sub)    sub.textContent    = `Ciclo ${focoState.ciclosTotais} finalizado`;
+    focoRenderPlaneta(false);
+  }
+
+  if (xpEl) xpEl.textContent = '+150 XP';
+
+  if (celebracao) celebracao.classList.add('show');
+  focoLancarConfetti();
+
+  setTimeout(() => {
+    if (celebracao) celebracao.classList.remove('show');
+  }, 3000);
+}
+
+// Confetti
+function focoLancarConfetti() {
+  const cores = ['#A78BFA','#60A5FA','#34D399','#FAD36B','#F87171','#FB7185'];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'foco-confetti-particle';
+    el.style.background = cores[Math.floor(Math.random() * cores.length)];
+    el.style.left  = Math.random() * 100 + 'vw';
+    el.style.top   = '-10px';
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);
+    const duration = 1500 + Math.random() * 1500;
+    const targetY  = 60 + Math.random() * 60;
+    el.animate([
+      { top: '-10px', opacity: 1, transform: `rotate(0deg) scale(1)` },
+      { top: targetY + 'vh', opacity: 0, transform: `rotate(${360 + Math.random()*360}deg) scale(0.5)` }
+    ], { duration, easing: 'ease-in' }).onfinish = () => el.remove();
+  }
+}
+
+// ─── RENDER UI PRINCIPAL ──────────────────────────────
+function focoAtualizarUI() {
+  const seg    = focoState.seg >= 0 ? focoState.seg : 0;
+  const total  = focoState.fase === 'foco' ? focoState.config.foco : focoState.config.pausa;
+  const prog   = (total - seg) / total;
+
+  // Anel
+  const ringFill = document.getElementById('foco-ring-fill');
+  if (ringFill) {
+    ringFill.style.strokeDashoffset = FOCO_CIRC * (1 - prog);
+    ringFill.style.stroke = focoState.fase === 'foco' ? '#A78BFA' : '#60A5FA';
+  }
+
+  // Tempo
+  const mm = Math.floor(seg / 60);
+  const ss = Math.floor(seg % 60);
+  const timeEl = document.getElementById('foco-time-display');
+  if (timeEl) timeEl.textContent = pad(mm) + ':' + pad(ss);
+
+  // Fase
+  const phaseEl = document.getElementById('foco-phase-label');
+  if (phaseEl) phaseEl.textContent = focoState.fase === 'foco' ? 'FOCO' : 'PAUSA';
+
+  // Badge de status
+  const badge  = document.getElementById('foco-status-badge');
+  const isIdle = !focoState.rodando && seg === total;
+  if (badge) {
+    if (isIdle) {
+      badge.textContent  = '⏸ Aguardando decolagem';
+      badge.className    = 'foco-status-badge foco-status-idle';
+    } else if (focoState.fase === 'foco') {
+      badge.textContent  = focoState.rodando ? '🎯 Em órbita de foco' : '⏸ Foco pausado';
+      badge.className    = 'foco-status-badge foco-status-foco';
+    } else {
+      badge.textContent  = focoState.rodando ? '☕ Pausa no espaço' : '⏸ Pausa pausada';
+      badge.className    = 'foco-status-badge foco-status-pausa';
+    }
+  }
+}
+
+function focoRenderUI() {
+  focoAtualizarUI();
+  focoRenderStats();
+  focoRenderDots();
+  focoRenderXP();
+  focoRenderPlaneta(false);
+}
+
+function focoRenderStats() {
+  const minFoco = focoState.minFoco;
+  const st_s = document.getElementById('foco-st-sessoes');
+  const st_f = document.getElementById('foco-st-foco');
+  const st_c = document.getElementById('foco-st-ciclos');
+
+  if (st_s) st_s.textContent = focoState.sessoes;
+  if (st_f) st_f.textContent = minFoco >= 60
+    ? Math.floor(minFoco/60) + 'h' + (minFoco%60 > 0 ? minFoco%60 + 'm' : '')
+    : minFoco + 'min';
+  if (st_c) st_c.textContent = focoState.ciclos;
+}
+
+function focoRenderDots() {
+  const row = document.getElementById('foco-dot-row');
+  if (!row) return;
+  let html = '';
+  for (let i = 0; i < SESS_CICLO; i++) {
+    if (i < focoState.sessNoCiclo) {
+      html += `<div class="foco-dot done">✓</div>`;
+    } else if (i === focoState.sessNoCiclo && focoState.fase === 'foco' && focoState.rodando) {
+      html += `<div class="foco-dot current">${i+1}</div>`;
+    } else {
+      html += `<div class="foco-dot">${i+1}</div>`;
+    }
+  }
+  row.innerHTML = html;
+}
+
+// ─── SINCRONIZAR COM state.pom ────────────────────────
+function focoPomParaState() {
+  state.pom.sessoes     = focoState.sessoes;
+  state.pom.ciclos      = focoState.ciclos;
+  state.pom.sessNoCiclo = focoState.sessNoCiclo;
+  state.pom.minFoco     = focoState.minFoco;
+  state.pom.data        = hojeISO();
+}
+
+// Chamada pelo navigate() ao entrar na página
+function focoOnNavigate() {
+  focoSincronizarComPom();
+  focoRenderUI();
+  focoRenderBadges();
+}
+
+// ─── THRUSTER (chamas da nave) ────────────────────────
+function focoAtivarThruster(ativo) {
+  const thrust = document.getElementById('ship-thrust');
+  if (thrust) {
+    thrust.style.opacity = ativo ? '1' : '0';
+    if (ativo) {
+      thrust.animate([
+        { transform: 'scale(1) translateY(0)', opacity: 1 },
+        { transform: 'scale(1.15) translateY(2px)', opacity: 0.85 },
+        { transform: 'scale(0.95) translateY(0)', opacity: 1 },
+      ], { duration: 400, iterations: Infinity });
+    }
+  }
+}
+
+// ─── STARFIELD (canvas de estrelas) ──────────────────
+function focoIniciarStarfield() {
+  const canvas = document.getElementById('foco-starfield');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const stars = Array.from({length: 120}, () => ({
+    x: Math.random(),
+    y: Math.random(),
+    r: Math.random() * 1.5 + 0.3,
+    speed: Math.random() * 0.00015 + 0.00005,
+    brightness: Math.random(),
+    twinkleSpeed: Math.random() * 0.02 + 0.005,
+  }));
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    t += 1;
+    stars.forEach(s => {
+      const alpha = 0.3 + 0.7 * Math.abs(Math.sin(t * s.twinkleSpeed + s.brightness * Math.PI));
+      ctx.beginPath();
+      ctx.arc(s.x * canvas.width, s.y * canvas.height, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fill();
+
+      // Movimento suave
+      if (focoState.rodando && focoState.fase === 'foco') {
+        s.y += s.speed;
+        if (s.y > 1) { s.y = 0; s.x = Math.random(); }
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ─── PARTÍCULAS ORBITAIS ──────────────────────────────
+function focoIniciarParticulas() {
+  const wrap = document.getElementById('foco-ring-wrap');
+  if (!wrap) return;
+
+  const count = 6;
+  focoParticles = [];
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'foco-particle';
+    el.style.opacity = '0';
+    wrap.appendChild(el);
+    focoParticles.push({ el, angle: (360 / count) * i, speed: 0.6 + Math.random() * 0.4 });
+  }
+
+  function animateParticles() {
+    const cx = 100, cy = 100, r = 95; // centro e raio do anel
+    focoParticles.forEach(p => {
+      p.angle += p.speed * (focoState.rodando ? 1 : 0.1);
+      const rad   = (p.angle * Math.PI) / 180;
+      const x = cx + r * Math.cos(rad) - 2;
+      const y = cy + r * Math.sin(rad) - 2;
+      p.el.style.left    = x + 'px';
+      p.el.style.top     = y + 'px';
+      p.el.style.opacity = focoState.rodando && focoState.fase === 'foco' ? '0.7' : '0.15';
+      p.el.style.background = focoState.fase === 'pausa' ? '#60A5FA' : '#A78BFA';
+    });
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+}
+
+// ─── NAVIGATE OVERRIDE ────────────────────────────────
+// Guarda a função original e estende
+const _navigateOriginal = typeof navigate === 'function' ? navigate : null;
+function navigate(p, btn) {
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  btn.classList.add('active');
+
+  if (p === 'foco') {
+    focoOnNavigate();
+  }
+  if (p === 'calendario') {
+    renderCalendar(currentCalendarDate);
+    document.getElementById('daily-summary-card').style.display = 'none';
+  }
+}
+
+// ─── Compatibilidade: funções do app que usam pom ─────
+// Garantir que renderPom() na caverna antiga não quebre
+function renderPom() {
+  focoRenderStats();
+  focoRenderDots();
+}
+// getPomFoco/getPomPausa já existem no app original — sobrescrever para usar config do foco
+function getPomFoco()  { return focoState.config.foco; }
+function getPomPausa() { return focoState.config.pausa; }
+
+// ─── Inicializar quando o DOM estiver pronto ──────────
+document.addEventListener('DOMContentLoaded', function() {
+  focoInit();
+});
+// Fallback caso DOMContentLoaded já tenha disparado
+if (document.readyState !== 'loading') focoInit();
 verificarLembreteSexta();
 setTimeout(verificarLembreteBackup, 2000);
 renderHidrat(); 
@@ -2268,3 +3615,4 @@ window.addEventListener('load', function() {
 
 
 
+s
