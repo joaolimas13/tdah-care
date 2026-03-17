@@ -842,7 +842,7 @@ textarea { resize: none; height: 80px; }
           stroke="#3B82F6" stroke-dasharray="603.19" stroke-dashoffset="0"/>
       </svg>
       <div class="foco-center">
-        <div class="foco-nave-center pausado" id="foco-nave-center">🚀</div>
+        <div class="foco-nave-center pausado" id="foco-nave-center" style="display:none"></div>
         <div class="foco-time" id="caverna-time-display">20:00</div>
         <div class="foco-phase" id="caverna-phase-label">FOCO</div>
       </div>
@@ -2568,41 +2568,553 @@ function _atualizarNaveCenter() {
     const canvas = document.getElementById('foco-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let W = canvas.width = Math.min(430, window.innerWidth);
+    let W = canvas.width  = Math.min(430, window.innerWidth);
     let H = canvas.height = window.innerHeight;
-    const stars = Array.from({length: 130}, () => ({
+
+    // ── Stars ──────────────────────────────────────────────
+    const stars = Array.from({length: 140}, () => ({
       x: Math.random() * W, y: Math.random() * H,
-      r: Math.random() * 1.6 + 0.3,
-      speed: Math.random() * 0.35 + 0.05,
-      alpha: Math.random() * 0.65 + 0.2,
+      r: Math.random() * 1.4 + 0.2,
+      speed: Math.random() * 0.4 + 0.08,
+      alpha: Math.random() * 0.6 + 0.2,
       phase: Math.random() * Math.PI * 2
     }));
+
+    // ── Rocket state ───────────────────────────────────────
+    const rocket = {
+      x: W / 2,
+      y: H + 80,       // starts off-screen bottom
+      angle: 0,        // radians, 0 = pointing up
+      scale: 1,
+      trail: [],
+      phase: 'idle',   // idle | launch | travel | arrive | orbit | pause
+      orbitAngle: 0,
+      orbitR: 48,
+    };
+
+    // ── Planet state ───────────────────────────────────────
+    const planetObj = {
+      x: W / 2,
+      y: -120,         // starts off-screen top
+      targetY: H * 0.22,
+      r: 38,
+      color: '#1D4ED8',
+      ringColor: '#3B82F6',
+      hasRing: false,
+      glowColor: 'rgba(59,130,246,0.35)',
+      entering: false,
+      leaving: false,
+      alpha: 0,
+    };
+
+    // Particle pool
+    const particles = [];
+
+    function spawnParticles(x, y, color, count, speed, life) {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd   = speed * (0.5 + Math.random());
+        particles.push({
+          x, y,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd,
+          life, maxLife: life,
+          color,
+          r: Math.random() * 3 + 1
+        });
+      }
+    }
+
+    // Planet definitions matching PLANETAS_FOCO
+    const PLANET_DEFS = [
+      { color:'#1565C0', ringColor:'#29B6F6', hasRing:false, glowColor:'rgba(21,101,192,0.4)',   craterColor:'rgba(0,0,0,0.15)'  }, // Terra
+      { color:'#9CA3AF', ringColor:'#D1D5DB', hasRing:false, glowColor:'rgba(156,163,175,0.35)', craterColor:'rgba(0,0,0,0.18)'  }, // Lua
+      { color:'#B91C1C', ringColor:'#EF4444', hasRing:false, glowColor:'rgba(185,28,28,0.4)',    craterColor:'rgba(0,0,0,0.2)'   }, // Marte
+      { color:'#78716C', ringColor:'#A8A29E', hasRing:false, glowColor:'rgba(120,113,108,0.35)', craterColor:'rgba(0,0,0,0.22)'  }, // Asteroide
+      { color:'#92400E', ringColor:'#D97706', hasRing:false, glowColor:'rgba(146,64,14,0.4)',    craterColor:'rgba(0,0,0,0.15)'  }, // Júpiter
+      { color:'#92400E', ringColor:'#FCD34D', hasRing:true,  glowColor:'rgba(251,191,36,0.35)',  craterColor:'rgba(0,0,0,0.12)'  }, // Saturno
+      { color:'#0E7490', ringColor:'#22D3EE', hasRing:true,  glowColor:'rgba(14,116,144,0.4)',   craterColor:'rgba(0,0,0,0.15)'  }, // Urano
+      { color:'#4C1D95', ringColor:'#8B5CF6', hasRing:false, glowColor:'rgba(76,29,149,0.45)',   craterColor:'rgba(0,0,0,0.1)'   }, // Galáxia
+    ];
+
+    let currentPlanetIdx = 0;
     let frame = 0;
-    function draw() {
+    let launchProgress = 0;  // 0→1 during travel
+    let arrivalAnim    = 0;  // 0→1 celebration
+
+    function getPlanetDef() {
+      // sync with _focoCiclos
+      const cycles = parseInt(localStorage.getItem('foco_ciclos_totais') || '0');
+      const thresholds = [0,2,5,10,20,35,55,80];
+      let idx = 0;
+      for (let i = 0; i < thresholds.length; i++) {
+        if (cycles >= thresholds[i]) idx = i;
+      }
+      return { idx, def: PLANET_DEFS[idx] };
+    }
+
+    function applyPlanetDef(def) {
+      planetObj.color      = def.color;
+      planetObj.ringColor  = def.ringColor;
+      planetObj.hasRing    = def.hasRing;
+      planetObj.glowColor  = def.glowColor;
+    }
+
+    // ── Draw helpers ───────────────────────────────────────
+    function drawPlanet(px, py, pr, def, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+
+      // Glow
+      const grd = ctx.createRadialGradient(px, py, pr * 0.5, px, py, pr * 2.2);
+      grd.addColorStop(0, def.glowColor || 'rgba(59,130,246,0.3)');
+      grd.addColorStop(1, 'transparent');
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.arc(px, py, pr * 2.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Ring behind (if hasRing)
+      if (def.hasRing) {
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.scale(1, 0.28);
+        ctx.beginPath();
+        ctx.arc(0, 0, pr * 1.75, 0, Math.PI * 2);
+        ctx.strokeStyle = def.ringColor;
+        ctx.lineWidth = pr * 0.28;
+        ctx.globalAlpha = alpha * 0.5;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Planet body
+      const bodyGrd = ctx.createRadialGradient(px - pr*0.28, py - pr*0.28, pr*0.1, px, py, pr);
+      bodyGrd.addColorStop(0, lightenColor(def.color, 55));
+      bodyGrd.addColorStop(0.6, def.color);
+      bodyGrd.addColorStop(1, darkenColor(def.color, 40));
+      ctx.beginPath();
+      ctx.arc(px, py, pr, 0, Math.PI * 2);
+      ctx.fillStyle = bodyGrd;
+      ctx.globalAlpha = alpha;
+      ctx.fill();
+
+      // Craters / details
+      const craterPositions = [
+        {ox:-0.28, oy:-0.22, r:0.18}, {ox:0.22, oy:0.15, r:0.13},
+        {ox:-0.08, oy:0.32, r:0.1},  {ox:0.34, oy:-0.18, r:0.1}
+      ];
+      craterPositions.forEach(c => {
+        ctx.beginPath();
+        ctx.arc(px + c.ox*pr, py + c.oy*pr, c.r*pr, 0, Math.PI*2);
+        ctx.fillStyle = def.craterColor || 'rgba(0,0,0,0.15)';
+        ctx.globalAlpha = alpha * 0.7;
+        ctx.fill();
+      });
+
+      // Atmosphere sheen
+      const atmoGrd = ctx.createRadialGradient(px - pr*0.3, py - pr*0.3, 0, px, py, pr);
+      atmoGrd.addColorStop(0,   'rgba(255,255,255,0.18)');
+      atmoGrd.addColorStop(0.45,'rgba(255,255,255,0.04)');
+      atmoGrd.addColorStop(1,   'rgba(255,255,255,0)');
+      ctx.beginPath();
+      ctx.arc(px, py, pr, 0, Math.PI*2);
+      ctx.fillStyle = atmoGrd;
+      ctx.globalAlpha = alpha;
+      ctx.fill();
+
+      // Ring front (if hasRing)
+      if (def.hasRing) {
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.scale(1, 0.28);
+        ctx.beginPath();
+        ctx.arc(0, 0, pr * 1.75, Math.PI, Math.PI * 2);
+        ctx.strokeStyle = def.ringColor;
+        ctx.lineWidth = pr * 0.28;
+        ctx.globalAlpha = alpha * 0.85;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    function drawRocket(rx, ry, angle, scale, thrustOn) {
+      ctx.save();
+      ctx.translate(rx, ry);
+      ctx.rotate(angle);
+      ctx.scale(scale, scale);
+
+      const h = 28, w = 10;
+
+      // Exhaust flame
+      if (thrustOn) {
+        const flameLen = 20 + Math.sin(frame * 0.3) * 6;
+        const flGrd = ctx.createLinearGradient(0, h/2, 0, h/2 + flameLen);
+        flGrd.addColorStop(0,   'rgba(255,200,50,0.95)');
+        flGrd.addColorStop(0.4, 'rgba(255,100,20,0.7)');
+        flGrd.addColorStop(1,   'rgba(255,50,0,0)');
+        ctx.beginPath();
+        ctx.moveTo(-w*0.35, h*0.42);
+        ctx.quadraticCurveTo(0, h/2 + flameLen * 0.55, 0, h/2 + flameLen);
+        ctx.quadraticCurveTo(0, h/2 + flameLen * 0.55, w*0.35, h*0.42);
+        ctx.fillStyle = flGrd;
+        ctx.fill();
+
+        // Side flames
+        [-1,1].forEach(side => {
+          const sfl = flameLen * 0.55;
+          const sfGrd = ctx.createLinearGradient(0, h*0.38, 0, h*0.38 + sfl);
+          sfGrd.addColorStop(0,  'rgba(255,180,30,0.7)');
+          sfGrd.addColorStop(1,  'rgba(255,60,0,0)');
+          ctx.beginPath();
+          ctx.moveTo(side * w*0.22, h*0.38);
+          ctx.quadraticCurveTo(side * w*0.55, h*0.38 + sfl*0.5, side * w*0.38, h*0.38 + sfl);
+          ctx.fillStyle = sfGrd;
+          ctx.fill();
+        });
+      }
+
+      // Body
+      const bodyGrd = ctx.createLinearGradient(-w/2, 0, w/2, 0);
+      bodyGrd.addColorStop(0,   '#CBD5E1');
+      bodyGrd.addColorStop(0.35,'#F1F5F9');
+      bodyGrd.addColorStop(0.65,'#E2E8F0');
+      bodyGrd.addColorStop(1,   '#94A3B8');
+      ctx.beginPath();
+      ctx.moveTo(0, -h/2);                         // nose tip
+      ctx.bezierCurveTo(w*0.55, -h*0.15, w/2, h*0.25, w*0.45, h*0.42);
+      ctx.lineTo(-w*0.45, h*0.42);
+      ctx.bezierCurveTo(-w/2, h*0.25, -w*0.55, -h*0.15, 0, -h/2);
+      ctx.fillStyle = bodyGrd;
+      ctx.fill();
+
+      // Nose cone accent
+      const noseGrd = ctx.createLinearGradient(-w*0.3, -h/2, w*0.3, -h*0.1);
+      noseGrd.addColorStop(0, '#EF4444');
+      noseGrd.addColorStop(1, '#B91C1C');
+      ctx.beginPath();
+      ctx.moveTo(0, -h/2);
+      ctx.bezierCurveTo(w*0.3, -h*0.3, w*0.25, -h*0.05, 0, 0);
+      ctx.bezierCurveTo(-w*0.25, -h*0.05, -w*0.3, -h*0.3, 0, -h/2);
+      ctx.fillStyle = noseGrd;
+      ctx.fill();
+
+      // Window
+      ctx.beginPath();
+      ctx.arc(0, -h*0.05, w*0.22, 0, Math.PI*2);
+      ctx.fillStyle = '#1E3A5F';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(-w*0.06, -h*0.08, w*0.09, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(147,210,255,0.6)';
+      ctx.fill();
+
+      // Fins
+      [[-1,1],[1,-1]].forEach(([sx, dir]) => {
+        ctx.beginPath();
+        ctx.moveTo(sx * w*0.42, h*0.25);
+        ctx.lineTo(sx * w*0.9,  h*0.42);
+        ctx.lineTo(sx * w*0.42, h*0.42);
+        ctx.closePath();
+        ctx.fillStyle = '#EF4444';
+        ctx.fill();
+      });
+
+      // Engine nozzles
+      ctx.beginPath();
+      ctx.rect(-w*0.38, h*0.38, w*0.28, h*0.1);
+      ctx.rect( w*0.1,  h*0.38, w*0.28, h*0.1);
+      ctx.fillStyle = '#475569';
+      ctx.fill();
+
+      // Stripe
+      ctx.beginPath();
+      ctx.rect(-w*0.42, h*0.12, w*0.84, h*0.07);
+      ctx.fillStyle = '#3B82F6';
+      ctx.globalAlpha = 0.6;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      ctx.restore();
+    }
+
+    function lightenColor(hex, pct) {
+      let n = parseInt(hex.slice(1), 16);
+      let r = Math.min(255, (n>>16) + pct);
+      let g = Math.min(255, ((n>>8)&0xff) + pct);
+      let b = Math.min(255, (n&0xff) + pct);
+      return `rgb(${r},${g},${b})`;
+    }
+    function darkenColor(hex, pct) {
+      let n = parseInt(hex.slice(1), 16);
+      let r = Math.max(0, (n>>16) - pct);
+      let g = Math.max(0, ((n>>8)&0xff) - pct);
+      let b = Math.max(0, (n&0xff) - pct);
+      return `rgb(${r},${g},${b})`;
+    }
+
+    // ── Animation state machine ────────────────────────────
+    let lastPhase = 'idle';
+
+    function observeTimerState() {
+      // Watch for pom state changes
+      const playBtn = document.getElementById('caverna-play-btn');
+      if (playBtn) {
+        const mo = new MutationObserver(() => syncRocketPhase());
+        mo.observe(playBtn, { childList:true, characterData:true, subtree:true });
+      }
+    }
+
+    function syncRocketPhase() {
+      if (!window.state || !window.state.pom) return;
+      const pom = window.state.pom;
+      if (!pom.rodando) {
+        if (rocket.phase === 'travel' || rocket.phase === 'launch') {
+          rocket.phase = 'pause';
+        } else if (rocket.phase === 'idle') {
+          // stay idle
+        }
+      } else if (pom.fase === 'foco') {
+        if (rocket.phase === 'idle' || rocket.phase === 'pause') {
+          rocket.phase = 'launch';
+          launchProgress = 0;
+        } else if (rocket.phase === 'orbit') {
+          rocket.phase = 'launch';
+          launchProgress = 0;
+        }
+      } else if (pom.fase === 'pausa') {
+        if (rocket.phase === 'travel') {
+          rocket.phase = 'arrive';
+          arrivalAnim = 0;
+        }
+      }
+    }
+
+    // ── Main loop ──────────────────────────────────────────
+    function tick() {
       ctx.clearRect(0, 0, W, H);
       frame++;
+
       const running = window.state && window.state.pom && window.state.pom.rodando;
+      const fase    = window.state && window.state.pom && window.state.pom.fase;
+
+      // ── Stars ──────────────────────────────────────────
+      const starSpeed = running && fase === 'foco' ? 1 : (running ? 0.4 : 0.1);
       stars.forEach(s => {
         const pulse = running
-          ? (Math.sin(frame * 0.04 + s.phase) * 0.35 + 0.65)
+          ? (Math.sin(frame * 0.04 + s.phase) * 0.3 + 0.7)
           : 0.3;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(160,200,255,${s.alpha * pulse})`;
+        ctx.fillStyle = `rgba(160,205,255,${s.alpha * pulse})`;
         ctx.fill();
-        if (running) {
-          s.y -= s.speed;
-          if (s.y < 0) { s.y = H; s.x = Math.random() * W; }
-        }
+        s.y += s.speed * starSpeed;
+        if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
       });
-      requestAnimationFrame(draw);
+
+      // ── Sync state ─────────────────────────────────────
+      if (running !== (lastPhase !== 'idle' && lastPhase !== 'pause')) {
+        syncRocketPhase();
+      }
+      lastPhase = rocket.phase;
+
+      // ── Planet visibility ──────────────────────────────
+      const { idx: pidx, def: pdef } = getPlanetDef();
+      if (pidx !== currentPlanetIdx) {
+        // Planet changed — trigger transition
+        currentPlanetIdx = pidx;
+        applyPlanetDef(pdef);
+        planetObj.y      = -120;
+        planetObj.alpha  = 0;
+        planetObj.entering = true;
+      }
+      applyPlanetDef(pdef);
+
+      // Target planet Y based on rocket phase
+      const showPlanet = ['arrive','orbit','pause'].includes(rocket.phase);
+
+      if (showPlanet || planetObj.alpha > 0) {
+        // Smoothly move planet to target
+        const tgtY = showPlanet ? H * 0.2 : -120;
+        const tgtA = showPlanet ? 1 : 0;
+        planetObj.y     += (tgtY - planetObj.y) * 0.04;
+        planetObj.alpha += (tgtA - planetObj.alpha) * 0.05;
+        if (planetObj.alpha > 0.01) {
+          drawPlanet(W/2, planetObj.y, planetObj.r, pdef, planetObj.alpha);
+        }
+      }
+
+      // ── Rocket physics ─────────────────────────────────
+      switch (rocket.phase) {
+
+        case 'idle':
+          rocket.x = W / 2;
+          rocket.y = H * 0.68;
+          rocket.angle = 0;
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, false);
+          // Small idle bob
+          rocket.y += Math.sin(frame * 0.025) * 0.8;
+          break;
+
+        case 'launch': {
+          launchProgress = Math.min(1, launchProgress + 0.008);
+          const ease = 1 - Math.pow(1 - launchProgress, 3);
+          rocket.x = W / 2 + Math.sin(launchProgress * Math.PI * 2) * 8 * (1 - launchProgress);
+          rocket.y = H * 0.68 - ease * (H * 0.68 - H * 0.5);
+          rocket.angle = Math.sin(launchProgress * Math.PI) * 0.12;
+
+          // Thrust particles
+          if (frame % 2 === 0) {
+            spawnParticles(rocket.x, rocket.y + 16, '#FCD34D', 3, 1.2, 18);
+          }
+
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, true);
+
+          if (launchProgress >= 1) rocket.phase = 'travel';
+          break;
+        }
+
+        case 'travel': {
+          // Rocket travels from bottom-half toward planet
+          if (!running) { rocket.phase = 'pause'; break; }
+
+          // Calculate progress from pom timer
+          let travelPct = 0;
+          if (window.state && window.state.pom) {
+            const pom  = window.state.pom;
+            const total = (pom.minFoco || 20) * 60;
+            const rem   = pom.seg || 0;
+            travelPct   = Math.max(0, Math.min(1, 1 - (rem / total)));
+          }
+
+          // Y: from H*0.5 → H*0.35
+          rocket.y = H * 0.5 - travelPct * (H * 0.5 - H * 0.35);
+          rocket.x = W/2 + Math.sin(frame * 0.018) * 14;
+          rocket.angle = Math.cos(frame * 0.018) * 0.1;
+
+          // Trail
+          rocket.trail.push({ x: rocket.x, y: rocket.y + 14, life: 22 });
+          if (rocket.trail.length > 28) rocket.trail.shift();
+
+          // Draw trail
+          rocket.trail.forEach((t, i) => {
+            const a = (i / rocket.trail.length) * 0.55;
+            const r = 3 * (i / rocket.trail.length);
+            ctx.beginPath();
+            ctx.arc(t.x, t.y, r, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(255,160,40,${a})`;
+            ctx.fill();
+            t.life--;
+          });
+          rocket.trail = rocket.trail.filter(t => t.life > 0);
+
+          if (frame % 3 === 0) {
+            spawnParticles(rocket.x, rocket.y + 14, '#FB923C', 2, 0.8, 14);
+          }
+
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, true);
+          break;
+        }
+
+        case 'arrive': {
+          arrivalAnim = Math.min(1, arrivalAnim + 0.022);
+          const ease  = 1 - Math.pow(1 - arrivalAnim, 3);
+
+          // Decelerate into planet orbit position
+          const targetX = W/2 + Math.cos(arrivalAnim * Math.PI * 2) * rocket.orbitR;
+          const targetY = planetObj.y + rocket.orbitR + planetObj.r + 5;
+          rocket.x += (targetX - rocket.x) * 0.06;
+          rocket.y += (targetY - rocket.y) * 0.06;
+          rocket.angle = Math.sin(arrivalAnim * Math.PI * 4) * 0.3 * (1 - arrivalAnim);
+
+          // Celebration burst
+          if (arrivalAnim > 0.45 && arrivalAnim < 0.5) {
+            spawnParticles(rocket.x, rocket.y, '#FCD34D', 20, 3, 35);
+            spawnParticles(rocket.x, rocket.y, '#60A5FA', 15, 2.5, 30);
+            spawnParticles(rocket.x, rocket.y, '#F472B6', 12, 2, 28);
+          }
+
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, arrivalAnim < 0.7);
+
+          if (arrivalAnim >= 1) {
+            rocket.phase = 'orbit';
+            rocket.orbitAngle = 0;
+          }
+          break;
+        }
+
+        case 'orbit': {
+          rocket.orbitAngle += 0.018;
+          rocket.x = W/2 + Math.cos(rocket.orbitAngle) * rocket.orbitR;
+          rocket.y = planetObj.y + (planetObj.r + 20) + Math.sin(rocket.orbitAngle) * rocket.orbitR * 0.38;
+          rocket.angle = rocket.orbitAngle + Math.PI / 2;
+
+          // Orbit trail
+          rocket.trail.push({ x: rocket.x, y: rocket.y, life: 20 });
+          if (rocket.trail.length > 20) rocket.trail.shift();
+          rocket.trail.forEach((t, i) => {
+            ctx.beginPath();
+            ctx.arc(t.x, t.y, 1.5 * (i / rocket.trail.length), 0, Math.PI*2);
+            ctx.fillStyle = `rgba(96,165,250,${0.3 * i / rocket.trail.length})`;
+            ctx.fill();
+          });
+          rocket.trail = rocket.trail.filter(t => t.life-- > 0);
+
+          drawRocket(rocket.x, rocket.y, rocket.angle, 0.85, false);
+
+          if (running && window.state.pom.fase === 'foco') {
+            rocket.phase = 'launch';
+            launchProgress = 0;
+            rocket.trail = [];
+          }
+          break;
+        }
+
+        case 'pause': {
+          rocket.y += (H * 0.55 - rocket.y) * 0.03;
+          rocket.x += (W/2 - rocket.x) * 0.03;
+          rocket.angle *= 0.95;
+          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, false);
+
+          if (running) {
+            rocket.phase = 'launch';
+            launchProgress = 0;
+          }
+          break;
+        }
+      }
+
+      // ── Particles ──────────────────────────────────────
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx; p.y += p.vy;
+        p.vy += 0.06;  // gravity
+        p.life--;
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
+        const a = p.life / p.maxLife;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * a, 0, Math.PI*2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = a * 0.9;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      requestAnimationFrame(tick);
     }
-    draw();
+
+    observeTimerState();
+    tick();
+
     window.addEventListener('resize', () => {
-      W = canvas.width = Math.min(430, window.innerWidth);
+      W = canvas.width  = Math.min(430, window.innerWidth);
       H = canvas.height = window.innerHeight;
+      stars.forEach(s => { s.x = Math.random() * W; s.y = Math.random() * H; });
     });
   }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
   else setup();
 })();
