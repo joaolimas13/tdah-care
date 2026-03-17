@@ -146,409 +146,140 @@ textarea { resize: none; height: 80px; }
 .btn-danger { background: transparent; border: 2px solid #EF5350; color: #EF5350; border-radius: 12px; padding: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
 .page-footer { text-align: center; font-size: 0.68rem; color: #B0BEC5; letter-spacing: 0.5px; padding: 8px 0 4px; font-style: italic; }
 #page-caverna .page-footer { color: #3D3D5E; }
-/* foco espacial CSS injected below */
-.caverna-header { text-align: center; margin-bottom: 24px; }
-.caverna-header h2 { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #A78BFA, #60A5FA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 4px; }
-.caverna-header p { font-size: 0.8rem; color: #6B7280; }
-.caverna-status-badge { display: block; padding: 6px 16px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; margin-bottom: 24px; text-align: center; }
-.status-foco { background: rgba(167,139,250,0.15); color: #A78BFA; border: 1px solid rgba(167,139,250,0.3); }
-.status-pausa { background: rgba(96,165,250,0.15); color: #60A5FA; border: 1px solid rgba(96,165,250,0.3); }
-.status-idle { background: rgba(107,114,128,0.15); color: #9CA3AF; border: 1px solid rgba(107,114,128,0.3); }
-.caverna-timer-wrap { display: flex; justify-content: center; margin-bottom: 32px; }
-.caverna-ring { position: relative; width: 220px; height: 220px; }
-.caverna-ring svg { position: absolute; top: 0; left: 0; width: 220px; height: 220px; transform: rotate(-90deg); }
-.caverna-ring-bg { fill: none; stroke: #1E1E3A; stroke-width: 12; }
-.caverna-ring-fill { fill: none; stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
-.caverna-center { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.caverna-time { font-size: 3.2rem; font-weight: 800; color: white; letter-spacing: -2px; line-height: 1; font-variant-numeric: tabular-nums; }
-.caverna-phase { font-size: 0.75rem; color: #6B7280; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
-.caverna-controls { display: flex; gap: 16px; justify-content: center; margin-bottom: 28px; }
-.caverna-btn { width: 64px; height: 64px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.6rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-.caverna-btn-main { width: 80px; height: 80px; font-size: 2rem; background: linear-gradient(135deg, #7C3AED, #4F46E5); color: white; box-shadow: 0 0 30px rgba(124,58,237,0.4); }
-.caverna-btn-skip, .caverna-btn-reset { background: rgba(30,30,58,0.8); color: #9CA3AF; border: 1px solid #2D2D4E; }
-.caverna-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.caverna-stat-box { background: rgba(30,30,58,0.6); border: 1px solid #2D2D4E; border-radius: 14px; padding: 14px 10px; text-align: center; }
-.caverna-stat-box .v { font-size: 1.3rem; font-weight: 800; color: #A78BFA; display: block; }
-.caverna-stat-box .l { font-size: 0.62rem; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-.caverna-card-dark { background: rgba(20,20,40,0.8); border: 1px solid #2D2D4E; border-radius: 14px; padding: 16px; margin-bottom: 16px; }
-.caverna-card-title { font-size: 0.78rem; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-.session-dot-row { display: flex; gap: 8px; }
-.session-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; border: 2px solid #2D2D4E; color: #4B5563; }
-.session-dot.completo { background: rgba(124,58,237,0.2); border-color: #7C3AED; color: #A78BFA; }
-.session-dot.atual { background: rgba(124,58,237,0.4); border-color: #A78BFA; color: white; animation: pulse-dot 1.5s infinite; }
-@keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 0 rgba(167,139,250,0.4)} 50%{box-shadow:0 0 0 6px rgba(167,139,250,0)} }
-.ciclos-manual-row { display: flex; gap: 8px; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid #2D2D4E; }
-.ciclos-manual-row input { width: 70px; flex: none; background: rgba(30,30,58,0.8); border: 1px solid #3D3D6E; color: #E0E0FF; border-radius: 10px; padding: 10px 12px; font-size: 0.95rem; }
-.ciclos-manual-row span { color: #9CA3AF; font-size: 0.82rem; flex: 1; }
-.ciclos-manual-row button { background: rgba(124,58,237,0.4); color: #A78BFA; border: 1px solid #7C3AED; border-radius: 10px; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
-.relatorio-btn { background: linear-gradient(135deg, #1565C0, #29B6F6); color: white; border: none; border-radius: 14px; padding: 16px; width: 100%; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(21,101,192,0.3); }
-.relatorio-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: flex-end; justify-content: center; }
-.relatorio-modal.show { display: flex; }
-.relatorio-content { background: white; border-radius: 24px 24px 0 0; padding: 24px; width: 100%; max-width: 430px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
-@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.relatorio-title { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-.relatorio-date { font-size: 0.8rem; color: var(--text-light); margin-bottom: 20px; }
-.rel-section { background: #F8FAFF; border-radius: 14px; padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--primary); }
-.rel-section h3 { font-size: 0.9rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
-.rel-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #EEF2F7; font-size: 0.85rem; }
-.rel-row:last-child { border-bottom: none; }
-.rel-row .rl { color: var(--text-light); }
-.rel-row .rv { font-weight: 700; color: var(--text); }
-.rel-avaliacao { background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 14px; padding: 20px; text-align: center; color: white; margin-bottom: 12px; }
-.rel-nota { font-size: 2.8rem; font-weight: 800; }
-.rel-nota-label { font-size: 0.85rem; opacity: 0.9; }
-.rel-close-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 8px; }
-.rel-clinico { background: white; border-radius: 14px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.rel-clinico-header { background: linear-gradient(135deg, #0D47A1, #1565C0); color: white; padding: 16px 20px; }
-.rel-clinico-header h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
-.rel-clinico-header p { font-size: 0.75rem; opacity: 0.8; }
-.rel-clinico-body { padding: 16px 20px; }
-.rel-clinico-body .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #EEF2F7; font-size: 0.85rem; align-items: center; }
-.rel-clinico-body .row:last-child { border-bottom: none; }
-.rel-clinico-body .row .lbl { color: var(--text-light); flex: 1; }
-.rel-clinico-body .row .val { font-weight: 700; color: var(--text); }
-.rel-clinico-body .row .status { font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; margin-left: 8px; }
-.status-norm { background: #E8F5E9; color: #2E7D32; }
-.status-atenc { background: #FFF8E1; color: #F57F17; }
-.status-criti { background: #FFEBEE; color: #C62828; }
-.rel-parecer { background: #F0F7FF; border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0; padding: 14px 16px; margin-top: 12px; font-size: 0.84rem; color: #37474F; line-height: 1.6; }
-.rel-parecer strong { color: var(--primary-dark); }
-.calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.calendar-nav button { background: none; border: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; padding: 5px; }
-.calendar-nav h3 { font-size: 1rem; color: var(--text); text-transform: capitalize; }
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
-.calendar-day-header { font-size: 0.68rem; color: var(--text-light); text-transform: uppercase; padding-bottom: 8px; }
-.calendar-day { padding: 6px 2px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: #F8FAFF; color: var(--text); min-height: 44px; }
-.calendar-day.inactive { color: #B0BEC5; cursor: default; background: transparent; }
-.calendar-day.today { border: 2px solid var(--primary); background: #EEF2FF; }
-.calendar-day.selected { background: var(--primary); color: white; }
-.calendar-day:not(.inactive):not(.selected):hover { background: #DBEAFE; }
-.calendar-day-metrics { font-size: 0.6rem; line-height: 1.3; margin-top: 2px; }
-.calendar-day-metrics span { display: block; }
-.m-ok { color: #2E7D32; }
-.m-warn { color: #F57F17; }
-.m-bad { color: #C62828; }
-.calendar-day.selected .calendar-day-metrics span { color: rgba(255,255,255,0.85); }
-.daily-sum-card { background: white; border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
-.backup-fab { position: fixed; bottom: 90px; right: 16px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #1565C0, #29B6F6); border: none; color: white; font-size: 1.3rem; cursor: pointer; box-shadow: 0 4px 16px rgba(21,101,192,0.4); z-index: 90; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s; }
-.backup-fab:hover { transform: scale(1.1); }
-.backup-ping { position: absolute; top: -3px; right: -3px; width: 14px; height: 14px; background: #EF5350; border-radius: 50%; border: 2px solid white; display: none; }
-.backup-ping.show { display: block; animation: pulse-ping 1.5s infinite; }
-@keyframes pulse-ping { 0%,100%{box-shadow:0 0 0 0 rgba(239,83,80,0.4)} 50%{box-shadow:0 0 0 6px rgba(239,83,80,0)} }
-.backup-modal { display: none; position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.7); z-index: 200; align-items: flex-end; justify-content: center; }
-.backup-modal.show { display: flex; }
-.backup-content { background: white; border-radius: 24px 24px 0 0; width: 100%; max-width: 430px; max-height: 92vh; overflow-y: auto; animation: slideUp 0.3s ease; }
-.backup-header { background: linear-gradient(135deg, #0D47A1, #1565C0); color: white; padding: 20px 24px 16px; border-radius: 24px 24px 0 0; position: sticky; top: 0; z-index: 1; }
-.backup-header h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 2px; }
-.backup-header p { font-size: 0.78rem; opacity: 0.8; }
-.backup-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
-.backup-body { padding: 20px; }
-.backup-section { background: #F8FAFF; border-radius: 16px; padding: 18px; margin-bottom: 14px; border: 1px solid #E3EAF2; }
-.backup-section-title { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 700; color: #1A237E; margin-bottom: 6px; }
-.backup-section-desc { font-size: 0.78rem; color: #546E7A; margin-bottom: 14px; line-height: 1.5; }
-.backup-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-.backup-stat { background: white; border-radius: 10px; padding: 10px 8px; text-align: center; border: 1px solid #E3EAF2; }
-.backup-stat .bv { font-size: 1.1rem; font-weight: 800; color: #1565C0; }
-.backup-stat .bl { font-size: 0.62rem; color: #546E7A; margin-top: 2px; }
-.backup-btn-row { display: flex; gap: 8px; }
-.bkp-btn { flex: 1; padding: 12px 8px; border: none; border-radius: 12px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; transition: all 0.2s; }
-.bkp-btn .bicon { font-size: 1.3rem; }
-.bkp-btn-primary { background: linear-gradient(135deg, #1565C0, #1976D2); color: white; }
-.bkp-btn-warn { background: linear-gradient(135deg, #E65100, #F57F17); color: white; }
-.bkp-btn-neutral { background: #EEF2FF; color: #1A237E; border: 1px solid #C5CAE9; }
-.bkp-btn:active { transform: scale(0.97); }
-.backup-last-info { background: #E8F5E9; border-radius: 10px; padding: 10px 14px; font-size: 0.78rem; color: #1B5E20; display: flex; align-items: center; gap: 8px; margin-top: 10px; }
-.backup-last-info.warn { background: #FFF8E1; color: #5D4037; }
-.backup-last-info.none { background: #F5F5F5; color: #757575; }
-.import-drop-area { border: 2px dashed #90CAF9; border-radius: 12px; padding: 24px; text-align: center; background: #F0F7FF; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; }
-.import-drop-area:hover, .import-drop-area.dragover { border-color: #1565C0; background: #E3F2FD; }
-.import-drop-area .drop-icon { font-size: 2rem; margin-bottom: 8px; }
-.import-drop-area p { font-size: 0.82rem; color: #546E7A; }
-.import-preview { background: #E8F5E9; border: 1px solid #A5D6A7; border-radius: 12px; padding: 14px; margin-bottom: 10px; display: none; }
-.import-preview h4 { font-size: 0.85rem; font-weight: 700; color: #2E7D32; margin-bottom: 8px; }
-.import-preview .ip-row { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 3px 0; }
-.backup-divider { height: 1px; background: #EEF2F7; margin: 4px 0 14px; }
-.backup-progress { height: 4px; background: #E3EAF2; border-radius: 2px; overflow: hidden; margin: 10px 0; display: none; }
-.backup-progress.show { display: block; }
-.backup-progress-fill { height: 100%; background: linear-gradient(to right, #1565C0, #29B6F6); border-radius: 2px; transition: width 0.3s; }
-.auto-backup-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
-.toggle-switch { width: 46px; height: 26px; background: #CFD8DC; border-radius: 13px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
-.toggle-switch.on { background: #1565C0; }
-.toggle-switch::after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
-.toggle-switch.on::after { left: 23px; }
-.compartilhar-modal { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.85); z-index:300; align-items:flex-end; justify-content:center; }
-.compartilhar-modal.show { display:flex; }
-.compartilhar-content { background:white; border-radius:24px 24px 0 0; width:100%; max-width:430px; max-height:95vh; overflow-y:auto; animation:slideUp 0.3s ease; }
-.compartilhar-header { background:linear-gradient(135deg,#1B5E20,#2E7D32); color:white; padding:20px 24px 16px; border-radius:24px 24px 0 0; position:sticky; top:0; z-index:1; }
-.compartilhar-header h2 { font-size:1.15rem; font-weight:800; margin-bottom:2px; }
-.compartilhar-header p { font-size:0.78rem; opacity:0.85; }
-.comp-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.2); border:none; color:white; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; }
-.compartilhar-body { padding:20px; }
-.comp-tabs { display:flex; gap:8px; margin-bottom:20px; }
-.comp-tab { flex:1; padding:10px 6px; border:2px solid #E3EAF2; border-radius:12px; background:white; font-size:0.75rem; font-weight:700; cursor:pointer; text-align:center; transition:all 0.2s; color:#546E7A; }
-.comp-tab.active { background:#1B5E20; color:white; border-color:#1B5E20; }
-.wrapped-card { background:linear-gradient(135deg,#0D1B0A,#1A3A14,#0A2010); border-radius:20px; padding:24px; margin-bottom:16px; border:1px solid rgba(67,160,71,0.3); position:relative; overflow:hidden; }
-.wrapped-card::before { content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; border-radius:50%; background:radial-gradient(circle,rgba(67,160,71,0.2),transparent 70%); }
-.wrapped-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
-.wrapped-titulo { font-size:0.72rem; color:#81C784; text-transform:uppercase; letter-spacing:1px; font-weight:700; }
-.wrapped-periodo { font-size:0.68rem; color:#4CAF50; text-align:right; }
-.wrapped-score { text-align:center; margin-bottom:20px; }
-.wrapped-score-num { font-size:3.5rem; font-weight:900; background:linear-gradient(135deg,#69F0AE,#00E676); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; }
-.wrapped-score-label { font-size:0.72rem; color:#81C784; margin-top:4px; letter-spacing:1px; text-transform:uppercase; }
-.wrapped-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
-.wrapped-item { background:rgba(255,255,255,0.06); border-radius:12px; padding:12px; border:1px solid rgba(67,160,71,0.2); }
-.wrapped-item .wi-val { font-size:1.3rem; font-weight:800; color:#E8F5E9; }
-.wrapped-item .wi-label { font-size:0.65rem; color:#81C784; margin-top:2px; }
-.wrapped-item .wi-bar { height:4px; background:rgba(255,255,255,0.1); border-radius:2px; margin-top:6px; overflow:hidden; }
-.wrapped-item .wi-bar-fill { height:100%; background:linear-gradient(to right,#43A047,#69F0AE); border-radius:2px; }
-.wrapped-destaque { background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.2); border-radius:12px; padding:12px 14px; margin-bottom:16px; }
-.wrapped-destaque .wd-label { font-size:0.68rem; color:#FFD54F; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
-.wrapped-destaque .wd-val { font-size:0.88rem; color:#FFF9C4; font-weight:700; }
-.wrapped-footer { text-align:center; font-size:0.65rem; color:#388E3C; letter-spacing:0.5px; }
-.texto-formatado { background:#F8FAFF; border:2px solid #E3EAF2; border-radius:14px; padding:16px; font-size:0.82rem; color:#37474F; line-height:1.8; font-family:monospace; margin-bottom:16px; white-space:pre-wrap; }
-.comp-acoes { display:flex; flex-direction:column; gap:10px; }
-.comp-acao-btn { width:100%; padding:14px; border:none; border-radius:12px; font-size:0.9rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s; }
-.comp-acao-btn:active { transform:scale(0.98); }
-.btn-whatsapp { background:linear-gradient(135deg,#128C7E,#25D366); color:white; }
-.btn-copiar { background:#EEF2FF; color:#1A237E; border:1px solid #C5CAE9; }
-.btn-pdf { background:linear-gradient(135deg,#C62828,#EF5350); color:white; }
-.reativar-btn { width: 100%; padding: 16px; border: none; border-radius: 16px; background: linear-gradient(135deg, #E65100, #FF6D00); color: white; font-size: 1rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(230,81,0,0.35); transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; }
-.reativar-btn::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%); animation: pulse-glow 2.5s ease-in-out infinite; }
-@keyframes pulse-glow { 0%,100%{opacity:0.4;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.1)} }
-.reativar-btn:active { transform: scale(0.98); }
-.reativar-modal { display: none; position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.85); z-index: 300; align-items: flex-end; justify-content: center; }
-.reativar-modal.show { display: flex; }
-.reativar-content { background: #0D0D1A; border-radius: 24px 24px 0 0; width: 100%; max-width: 430px; max-height: 95vh; overflow-y: auto; animation: slideUp 0.3s ease; border-top: 2px solid rgba(255,109,0,0.4); }
-.reativar-top { background: linear-gradient(135deg, #1A0A00, #2D1200); padding: 20px 24px 16px; border-radius: 24px 24px 0 0; position: sticky; top: 0; z-index: 1; }
-.reativar-top h2 { font-size: 1.2rem; font-weight: 800; color: #FF6D00; margin-bottom: 2px; }
-.reativar-top p { font-size: 0.78rem; color: #9CA3AF; }
-.reativar-close { position: absolute; top: 16px; right: 16px; background: rgba(255,109,0,0.2); border: 1px solid rgba(255,109,0,0.3); color: #FF6D00; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
-.reativar-body { padding: 20px; }
-.nivel-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.nivel-card { background: rgba(30,30,50,0.8); border: 2px solid #2D2D4E; border-radius: 14px; padding: 16px 10px; text-align: center; cursor: pointer; transition: all 0.2s; }
-.nivel-card:hover { border-color: #FF6D00; background: rgba(255,109,0,0.1); }
-.nivel-card.selected { border-color: #FF6D00; background: rgba(255,109,0,0.15); }
-.nivel-card .nivel-emoji { font-size: 1.8rem; margin-bottom: 6px; display: block; }
-.nivel-card .nivel-nome { font-size: 0.72rem; font-weight: 700; color: #E0E0FF; }
-.nivel-card .nivel-desc { font-size: 0.62rem; color: #6B7280; margin-top: 3px; line-height: 1.3; }
-.protocolo-wrap { display: none; }
-.protocolo-wrap.show { display: block; }
-.passo-card { background: rgba(20,20,40,0.9); border: 1px solid #2D2D4E; border-radius: 18px; padding: 24px; text-align: center; margin-bottom: 16px; }
-.passo-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
-.passo-titulo { font-size: 1.1rem; font-weight: 800; color: #E0E0FF; margin-bottom: 8px; }
-.passo-desc { font-size: 0.85rem; color: #9CA3AF; line-height: 1.6; margin-bottom: 20px; }
-.passo-timer-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
-.passo-ring { position: relative; width: 120px; height: 120px; }
-.passo-ring svg { position: absolute; top:0;left:0;width:120px;height:120px;transform:rotate(-90deg); }
-.passo-ring-bg { fill: none; stroke: #1E1E3A; stroke-width: 8; }
-.passo-ring-fill { fill: none; stroke: #FF6D00; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
-.passo-center { position: absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center; }
-.passo-time { font-size: 1.8rem; font-weight: 800; color: white; letter-spacing: -1px; }
-.passo-time-label { font-size: 0.6rem; color: #6B7280; text-transform: uppercase; letter-spacing: 1px; }
-.breath-circle { width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(255,109,0,0.6), rgba(255,109,0,0.1)); border: 2px solid rgba(255,109,0,0.5); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #FF6D00; font-weight: 700; text-align: center; transition: transform 0.1s; }
-.breath-circle.inhale { animation: breath-in 4s ease-in-out forwards; }
-.breath-circle.hold { animation: none; transform: scale(1.4); }
-.breath-circle.exhale { animation: breath-out 8s ease-in-out forwards; }
-@keyframes breath-in { from{transform:scale(1)} to{transform:scale(1.4)} }
-@keyframes breath-out { from{transform:scale(1.4)} to{transform:scale(1)} }
-.passo-btn-row { display: flex; gap: 10px; }
-.passo-btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-.passo-btn-next { background: linear-gradient(135deg, #E65100, #FF6D00); color: white; }
-.passo-btn-play { background: linear-gradient(135deg, #1B5E20, #43A047); color: white; font-size: 0.95rem; }
-.passo-btn-play.tocando { background: linear-gradient(135deg, #6A1B9A, #9C27B0); }
-.rel-subtabs { display:flex; gap:8px; margin-bottom:20px; }
-.rel-subtab { flex:1; padding:12px 8px; border-radius:14px; border:2px solid #E3EAF2; background:white; font-size:0.82rem; font-weight:700; cursor:pointer; text-align:center; transition:all 0.2s; color:#546E7A; }
-.rel-subtab.active { color:white; border-color:transparent; }
-.rel-subtab.diario.active { background:linear-gradient(135deg,#1565C0,#29B6F6); }
-.rel-subtab.mensal.active { background:linear-gradient(135deg,#0D47A1,#1565C0); }
-.clinico-wrap { background:white; border-radius:16px; overflow:hidden; box-shadow:0 2px 16px rgba(21,101,192,0.12); margin-bottom:14px; }
-.clinico-topo { background:linear-gradient(135deg,#0D47A1,#1565C0); color:white; padding:20px; }
-.clinico-topo .ct-titulo { font-size:1rem; font-weight:800; margin-bottom:2px; }
-.clinico-topo .ct-sub { font-size:0.75rem; opacity:0.85; margin-bottom:12px; }
-.clinico-topo .ct-meta { display:flex; gap:10px; }
-.ct-meta-item { background:rgba(255,255,255,0.15); border-radius:10px; padding:8px 12px; flex:1; text-align:center; }
-.ct-meta-item .ctm-val { font-size:1.1rem; font-weight:800; }
-.ct-meta-item .ctm-lbl { font-size:0.62rem; opacity:0.85; margin-top:2px; }
-.clinico-secao { padding:16px 20px; border-bottom:1px solid #EEF2F7; }
-.clinico-secao:last-child { border-bottom:none; }
-.clinico-secao-titulo { font-size:0.72rem; font-weight:800; color:#1565C0; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
-.clinico-linha { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #F5F7FA; font-size:0.85rem; }
-.clinico-linha:last-child { border-bottom:none; }
-.clinico-linha .cl-lbl { color:#546E7A; flex:1; line-height:1.4; }
-.clinico-linha .cl-val { font-weight:700; color:#1A237E; margin-left:8px; }
-.clinico-linha .cl-badge { font-size:0.68rem; padding:3px 8px; border-radius:10px; font-weight:700; margin-left:6px; flex-shrink:0; }
-.cl-norm { background:#E8F5E9; color:#2E7D32; }
-.cl-atenc { background:#FFF8E1; color:#F57F17; }
-.cl-crit { background:#FFEBEE; color:#C62828; }
-.clinico-parecer { background:#F0F7FF; border-left:4px solid #1565C0; border-radius:0 14px 14px 0; padding:16px 18px; margin:14px 0; font-size:0.84rem; color:#37474F; line-height:1.7; }
-.clinico-parecer .cp-titulo { font-size:0.72rem; font-weight:800; color:#1565C0; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
-.clinico-grafico { display:flex; gap:4px; align-items:flex-end; height:60px; margin:12px 0; }
-.clinico-grafico-bar { flex:1; border-radius:4px 4px 0 0; min-height:4px; transition:height 0.5s; position:relative; }
-.clinico-aviso { background:#FFF8E1; border:1px solid #FFE082; border-radius:12px; padding:12px 14px; font-size:0.8rem; color:#5D4037; line-height:1.5; margin-top:10px; }
-.passo-btn-skip { background: rgba(30,30,50,0.8); color: #6B7280; border: 1px solid #2D2D4E; font-size: 0.8rem; }
-.passo-progresso { display: flex; gap: 6px; justify-content: center; margin-bottom: 20px; }
-.passo-dot { width: 8px; height: 8px; border-radius: 50%; background: #2D2D4E; transition: all 0.3s; }
-.passo-dot.done { background: #FF6D00; }
-.passo-dot.atual { background: #FF6D00; box-shadow: 0 0 8px rgba(255,109,0,0.6); transform: scale(1.3); }
-.protocolo-fim { text-align: center; padding: 20px 0; display: none; }
-.protocolo-fim.show { display: block; }
-.protocolo-fim .fim-emoji { font-size: 3.5rem; margin-bottom: 12px; display: block; animation: bounce-in 0.5s ease; }
-@keyframes bounce-in { 0%{transform:scale(0)} 60%{transform:scale(1.2)} 100%{transform:scale(1)} }
-.protocolo-fim h3 { font-size: 1.2rem; font-weight: 800; color: #E0E0FF; margin-bottom: 8px; }
-.protocolo-fim p { font-size: 0.85rem; color: #9CA3AF; margin-bottom: 20px; line-height: 1.6; }
-.fim-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #E65100, #FF6D00); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; }
-.pom-config-card { background: rgba(30,30,58,0.6); border: 1px solid #2D2D4E; border-radius: 14px; padding: 16px; margin-bottom: 16px; }
-.pom-config-title { font-size: 0.78rem; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-.pom-config-row { display: flex; gap: 10px; align-items: center; }
-.pom-config-item { flex: 1; text-align: center; }
-.pom-config-item label { font-size: 0.7rem; color: #9CA3AF; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-.pom-config-item input { background: rgba(20,20,40,0.8); border: 1px solid #3D3D6E; color: #E0E0FF; border-radius: 10px; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; width: 100%; }
-.pom-config-sep { color: #4B5563; font-size: 1.2rem; font-weight: 700; margin-top: 16px; }
-.pom-config-btn { padding: 10px 16px; background: rgba(124,58,237,0.3); color: #A78BFA; border: 1px solid #7C3AED; border-radius: 10px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap; margin-top: 14px; }
-.celular-home-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
-.celular-home-row input { width: 70px; flex: none; }
-.celular-home-row button { padding: 12px 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
-.hidrat-card{background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border-radius:16px;padding:14px 16px;margin-bottom:14px;}
-.hidrat-title{font-size:0.82rem;font-weight:700;color:#1565C0;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
-.hidrat-row{display:flex;align-items:center;gap:12px;}
-.hidrat-btn{background:#1565C0;color:white;border:none;border-radius:50%;width:42px;height:42px;font-size:1.3rem;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(21,101,192,0.3);}
-.hidrat-count{font-size:2rem;font-weight:800;color:#1565C0;min-width:32px;text-align:center;}
-.hidrat-meta{font-size:0.75rem;color:#1565C0;opacity:0.8;}
-.hidrat-copos{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
-.hidrat-copo{font-size:1.1rem;opacity:0.3;transition:opacity 0.2s;}
-.hidrat-copo.cheio{opacity:1;}
-.streak-banner{background:linear-gradient(135deg,#FF6F00,#FFB300);border-radius:14px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;color:white;}
-.streak-flame{font-size:2rem;}
-.streak-info{flex:1;}
-.streak-num{font-size:1.5rem;font-weight:900;line-height:1;}
-.streak-label{font-size:0.72rem;opacity:0.9;}
-.widget-resumo{background:white;border-radius:16px;padding:14px 16px;margin-bottom:14px;border:2px solid #E3F2FD;}
-.widget-title{font-size:0.78rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
-.widget-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.widget-item{text-align:center;}
-.widget-icon{font-size:1.2rem;}
-.widget-val{font-size:0.85rem;font-weight:700;color:var(--text);}
-.widget-lbl{font-size:0.62rem;color:var(--text-light);}
-.widget-score{text-align:center;margin-top:10px;padding-top:10px;border-top:1px solid #E3F2FD;}
-.widget-score-num{font-size:1.6rem;font-weight:900;color:#1565C0;}
-.widget-score-lbl{font-size:0.7rem;color:var(--text-light);}
-.chart-container{background:white;border-radius:16px;padding:16px;margin-bottom:14px;}
-.chart-title{font-size:0.82rem;font-weight:700;color:var(--text);margin-bottom:14px;}
-.chart-bars{display:flex;align-items:flex-end;gap:6px;height:80px;}
-.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;}
-.chart-bar{width:100%;border-radius:6px 6px 0 0;min-height:4px;transition:height 0.4s ease;background:#BBDEFB;}
-.chart-bar-val{font-size:0.62rem;font-weight:700;color:var(--text-light);}
-.chart-bar-day{font-size:0.65rem;color:var(--text-light);}
-.chart-bar-today .chart-bar{background:linear-gradient(180deg,#1565C0,#29B6F6);}
-.chart-bar-today .chart-bar-day{color:#1565C0;font-weight:700;}
-.apelido-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,50,0.92);z-index:999;align-items:center;justify-content:center;pointer-events:none;}
-.apelido-overlay.show{display:flex;pointer-events:all;}
-.apelido-box{background:white;border-radius:24px;padding:32px 24px;max-width:340px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
-.apelido-logo{font-size:3rem;margin-bottom:8px;}
-.apelido-titulo{font-size:1.3rem;font-weight:900;color:#1565C0;margin-bottom:4px;}
-.apelido-sub{font-size:0.82rem;color:#546E7A;margin-bottom:20px;line-height:1.5;}
-.apelido-input{width:100%;border:2px solid #90CAF9;border-radius:12px;padding:12px 16px;font-size:1rem;color:#1A237E;outline:none;box-sizing:border-box;text-align:center;}
-.apelido-input:focus{border-color:#1565C0;}
-.apelido-btn{margin-top:14px;width:100%;background:linear-gradient(135deg,#1565C0,#29B6F6);color:white;border:none;border-radius:12px;padding:14px;font-size:1rem;font-weight:700;cursor:pointer;}
-.sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.7rem;padding:4px 10px;border-radius:20px;margin-top:8px;}
-.sync-ok{background:#E8F5E9;color:#2E7D32;}
-.sync-err{background:#FFEBEE;color:#C62828;}
-.sync-sending{background:#E3F2FD;color:#1565C0;}
-.admin-overlay{display:none;position:fixed;inset:0;background:#F0F4FF;z-index:9999;overflow-y:auto;padding:20px;box-sizing:border-box;pointer-events:none;}
-.admin-overlay.show{display:block !important;pointer-events:all;}
-.admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-.admin-titulo{font-size:1.2rem;font-weight:900;color:#1565C0;}
-.admin-close{background:#1565C0;color:white;border:none;border-radius:10px;padding:8px 16px;cursor:pointer;font-size:0.85rem;font-weight:700;}
-.admin-user-card{background:white;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(21,101,192,0.1);}
-.admin-user-name{font-size:1rem;font-weight:800;color:#1565C0;margin-bottom:2px;}
-.admin-user-meta{font-size:0.72rem;color:#90A4AE;margin-bottom:10px;}
-.admin-user-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.admin-stat{text-align:center;background:#F8FAFF;border-radius:10px;padding:8px 4px;}
-.admin-stat-val{font-size:0.95rem;font-weight:800;color:#1565C0;}
-.admin-stat-lbl{font-size:0.6rem;color:#90A4AE;}
-
-/* ====== MODO FOCO ESPACIAL ====== */
-#page-caverna { background: #020818; min-height: 100vh; padding: 0; padding-bottom: 85px; color: #E0E0FF; position: relative; overflow-x: hidden; }
-#foco-canvas { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; height: 100%; pointer-events: none; z-index: 0; }
-#foco-page-inner { position: relative; z-index: 1; padding: 20px; padding-bottom: 20px; }
-.foco-header { text-align: center; margin-bottom: 14px; }
-.foco-header h2 { font-size: 1.35rem; font-weight: 900; background: linear-gradient(135deg, #60A5FA, #A78BFA, #F472B6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 2px; }
-.foco-header p { font-size: 0.75rem; color: #3D5070; }
-.foco-xp-bar-wrap { background: rgba(255,255,255,0.04); border: 1px solid rgba(96,165,250,0.18); border-radius: 16px; padding: 10px 14px; margin-bottom: 12px; }
-.foco-xp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.foco-nivel-badge { font-size: 0.7rem; font-weight: 800; color: #60A5FA; background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.25); padding: 3px 10px; border-radius: 20px; }
-.foco-xp-text { font-size: 0.65rem; color: #3D5070; }
-.foco-xp-bar { height: 7px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
-.foco-xp-fill { height: 100%; background: linear-gradient(to right, #3B82F6, #8B5CF6, #EC4899); border-radius: 4px; transition: width 0.7s ease; }
-.foco-planeta-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; font-size: 0.72rem; color: #3D5070; }
-.foco-planeta-atual { font-size: 1.8rem; filter: drop-shadow(0 0 8px rgba(96,165,250,0.7)); animation: planeta-float 3s ease-in-out infinite; }
-@keyframes planeta-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-.foco-nave-row { font-size: 1.1rem; animation: nave-fly 2s ease-in-out infinite; }
-@keyframes nave-fly { 0%,100%{transform:translateX(0) rotate(-8deg)} 50%{transform:translateX(5px) rotate(4deg)} }
-.foco-status-badge { display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; margin-bottom: 14px; }
-.foco-timer-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
-.foco-ring { position: relative; width: 210px; height: 210px; }
-.foco-ring svg { position: absolute; top: 0; left: 0; width: 210px; height: 210px; transform: rotate(-90deg); }
-.foco-ring-bg { fill: none; stroke: rgba(255,255,255,0.04); stroke-width: 10; }
-.foco-ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
-.foco-center { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.foco-nave-center { font-size: 2.2rem; margin-bottom: 2px; filter: drop-shadow(0 0 10px rgba(96,165,250,0.9)); animation: nave-pulse 1.5s ease-in-out infinite; transition: opacity 0.3s; }
-.foco-nave-center.pausado { animation: none; opacity: 0.35; filter: none; }
-@keyframes nave-pulse { 0%,100%{filter:drop-shadow(0 0 6px rgba(96,165,250,0.5))} 50%{filter:drop-shadow(0 0 18px rgba(96,165,250,1))} }
-.foco-time { font-size: 2.8rem; font-weight: 800; color: white; letter-spacing: -2px; line-height: 1; font-variant-numeric: tabular-nums; }
-.foco-phase { font-size: 0.68rem; color: #3D5070; margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; }
-.foco-controls { display: flex; gap: 14px; justify-content: center; margin-bottom: 18px; }
-.foco-btn { width: 58px; height: 58px; border-radius: 50%; border: none; cursor: pointer; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-.foco-btn-main { width: 74px; height: 74px; font-size: 1.8rem; background: linear-gradient(135deg, #1D4ED8, #7C3AED); color: white; box-shadow: 0 0 28px rgba(124,58,237,0.55); }
-.foco-btn-main:active { transform: scale(0.92); }
-.foco-btn-skip, .foco-btn-reset { background: rgba(255,255,255,0.04); color: #4B5563; border: 1px solid rgba(255,255,255,0.08); }
-.foco-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.foco-stat-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 12px 8px; text-align: center; }
-.foco-stat-box .v { font-size: 1.15rem; font-weight: 800; color: #60A5FA; display: block; }
-.foco-stat-box .l { font-size: 0.58rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-.foco-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
-.foco-card-title { font-size: 0.68rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
-.foco-session-row { display: flex; gap: 7px; flex-wrap: wrap; }
-.foco-dot { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; border: 2px solid rgba(255,255,255,0.07); color: #374151; }
-.foco-dot.completo { background: rgba(59,130,246,0.15); border-color: #3B82F6; color: #60A5FA; }
-.foco-dot.atual { background: rgba(124,58,237,0.3); border-color: #8B5CF6; color: white; animation: pulse-dot 1.5s infinite; }
-.foco-manual-row { display: flex; gap: 8px; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
-.foco-manual-row span { color: #4B5563; font-size: 0.75rem; flex: 1; }
-.foco-badges-row { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 4px; }
-.foco-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; border: 1px solid; opacity: 0.25; transition: all 0.3s; }
-.foco-badge.unlocked { opacity: 1; animation: badge-pop 0.5s ease; }
-@keyframes badge-pop { 0%{transform:scale(0.4)} 70%{transform:scale(1.25)} 100%{transform:scale(1)} }
-.foco-badge-azul { background: rgba(59,130,246,0.12); color: #60A5FA; border-color: rgba(59,130,246,0.25); }
-.foco-badge-roxo { background: rgba(139,92,246,0.12); color: #A78BFA; border-color: rgba(139,92,246,0.25); }
-.foco-badge-ouro { background: rgba(251,191,36,0.12); color: #FCD34D; border-color: rgba(251,191,36,0.25); }
-.foco-badge-verde { background: rgba(52,211,153,0.12); color: #34D399; border-color: rgba(52,211,153,0.25); }
-.foco-badge-rosa { background: rgba(244,114,182,0.12); color: #F472B6; border-color: rgba(244,114,182,0.25); }
-.pom-config-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
-.pom-config-title { font-size: 0.68rem; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
-.pom-config-row { display: flex; gap: 10px; align-items: center; }
-.pom-config-item { flex: 1; text-align: center; }
-.pom-config-item label { font-size: 0.65rem; color: #4B5563; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-.pom-config-item input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #E0E0FF; border-radius: 10px; padding: 10px; font-size: 1rem; font-weight: 700; text-align: center; width: 100%; }
-.pom-config-sep { color: #374151; font-size: 1.2rem; font-weight: 700; margin-top: 16px; }
-.pom-config-btn { padding: 10px 14px; background: rgba(99,102,241,0.2); color: #818CF8; border: 1px solid rgba(99,102,241,0.35); border-radius: 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap; margin-top: 14px; }
-.celebracao-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 500; background: rgba(2,8,24,0.85); align-items: center; justify-content: center; flex-direction: column; }
-.celebracao-overlay.show { display: flex; }
-.celebracao-box { background: linear-gradient(135deg, rgba(10,16,40,0.99), rgba(25,15,55,0.99)); border: 1px solid rgba(139,92,246,0.4); border-radius: 28px; padding: 36px 28px; text-align: center; max-width: 320px; width: 90%; animation: celebrate-in 0.5s cubic-bezier(0.175,0.885,0.32,1.275); box-shadow: 0 0 60px rgba(139,92,246,0.35); }
-@keyframes celebrate-in { from{transform:scale(0.4);opacity:0} to{transform:scale(1);opacity:1} }
-.celebracao-emoji { font-size: 4rem; margin-bottom: 10px; display: block; animation: spin-once 0.6s ease; }
-@keyframes spin-once { from{transform:rotate(-180deg) scale(0)} to{transform:rotate(0) scale(1)} }
-.celebracao-titulo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, #60A5FA, #A78BFA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
-.celebracao-xp { font-size: 2rem; font-weight: 900; color: #FCD34D; margin-bottom: 4px; }
-.celebracao-sub { font-size: 0.82rem; color: #6B7280; margin-bottom: 16px; line-height: 1.6; }
-.celebracao-prox-planeta { font-size: 1.1rem; margin-bottom: 18px; color: #A78BFA; }
-.celebracao-btn { background: linear-gradient(135deg, #1D4ED8, #7C3AED); color: white; border: none; border-radius: 14px; padding: 14px 32px; font-size: 1rem; font-weight: 800; cursor: pointer; }
-.confetti-piece { position: fixed; width: 8px; height: 8px; border-radius: 2px; animation: confetti-fall 2.5s ease-in forwards; pointer-events: none; z-index: 501; }
-@keyframes confetti-fall { 0%{opacity:1;transform:translateY(-20px) rotate(0deg)} 100%{opacity:0;transform:translateY(800px) rotate(720deg)} }
-#page-caverna .page-footer { color: #1E2A3A; }
-
-.apelido-select-label{font-size:0.78rem;font-weight:700;color:#546E7A;text-align:left;display:block;margin:14px 0 6px;}
-.apelido-select{width:100%;border:2px solid #90CAF9;border-radius:12px;padding:12px 16px;font-size:0.92rem;color:#1A237E;outline:none;box-sizing:border-box;background:#F8FAFF;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231565C0' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer;}
-.apelido-select:focus{border-color:#1565C0;}
+/* ===== MODO FOCO NEURAL ===== */
+#nrl-app {
+  position: relative;
+  overflow: hidden;
+}
+.nrl-hd {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid #E3EAF2;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nrl-hd-left { display: flex; align-items: center; gap: 10px; }
+.nrl-hd-icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: #E1F5EE; display: flex; align-items: center; justify-content: center;
+}
+.nrl-hd-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.nrl-hd-sub { font-size: 11px; color: var(--text-light); margin-top: 1px; }
+.nrl-lvl-badge {
+  background: #E6F1FB; color: #0C447C;
+  font-size: 11px; font-weight: 500;
+  padding: 4px 10px; border-radius: 20px;
+  border: 1px solid #B5D4F4;
+}
+.nrl-xp-section { padding: 10px 18px 0; }
+.nrl-xp-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.nrl-xp-lbl { font-size: 11px; color: var(--text-light); }
+.nrl-xp-val { font-size: 11px; font-weight: 500; color: var(--text); }
+.nrl-xp-track { height: 5px; background: #E3EAF2; border-radius: 3px; overflow: hidden; }
+.nrl-xp-fill { height: 100%; border-radius: 3px; background: #1D9E75; transition: width 0.6s cubic-bezier(0.22,1,0.36,1); }
+.nrl-neuron-wrap { padding: 14px 18px 8px; display: flex; justify-content: center; }
+#nrl-neuronCanvas { display: block; }
+.nrl-wave-section {
+  margin: 0 18px 10px;
+  background: #F8FAFF;
+  border-radius: 12px; padding: 9px 13px;
+  border: 1px solid #E3EAF2;
+}
+.nrl-wave-lbl { font-size: 10px; color: var(--text-light); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+.nrl-wave-row { display: flex; align-items: center; gap: 10px; }
+.nrl-wave-name { font-size: 12px; font-weight: 500; color: var(--text); min-width: 90px; }
+.nrl-wave-track { flex: 1; height: 4px; background: #E3EAF2; border-radius: 2px; overflow: hidden; }
+.nrl-wave-fill { height: 100%; border-radius: 2px; transition: width 1.2s ease, background 1.2s ease; }
+.nrl-wave-desc { font-size: 11px; color: var(--text-light); min-width: 82px; text-align: right; }
+.nrl-phase-pill-wrap { padding: 0 18px; margin-bottom: 8px; display: flex; justify-content: center; }
+.nrl-phase-pill {
+  font-size: 11px; font-weight: 500;
+  padding: 4px 14px; border-radius: 20px;
+  transition: background 0.4s, color 0.4s;
+}
+.nrl-phase-pill.focus { background: #E1F5EE; color: #0F6E56; border: 1px solid #9FE1CB; }
+.nrl-phase-pill.rest  { background: #E6F1FB; color: #0C447C; border: 1px solid #B5D4F4; }
+.nrl-timer-section { padding: 4px 18px 0; text-align: center; }
+.nrl-timer-display {
+  font-size: 48px; font-weight: 500;
+  color: var(--text);
+  letter-spacing: -2px; line-height: 1;
+  margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.nrl-physio-box {
+  margin: 8px 18px;
+  background: #F8FAFF;
+  border-radius: 12px; padding: 9px 13px;
+  border: 1px solid #E3EAF2; min-height: 48px;
+}
+.nrl-physio-title { font-size: 10px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.nrl-physio-text { font-size: 12px; color: var(--text); line-height: 1.55; }
+.nrl-pom-dots { display: flex; justify-content: center; gap: 6px; margin: 8px 0 6px; }
+.nrl-pom-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  border: 1.5px solid #B0BEC5;
+  background: #E3EAF2;
+  transition: background 0.3s, border-color 0.3s;
+}
+.nrl-pom-dot.done   { background: #1D9E75; border-color: #1D9E75; }
+.nrl-pom-dot.active { background: #5DCAA5; border-color: #0F6E56; }
+.nrl-controls { padding: 0 18px 12px; display: flex; gap: 7px; align-items: center; }
+.nrl-btn-main {
+  flex: 1; padding: 11px;
+  background: #1D9E75; color: #E1F5EE;
+  border: none; border-radius: 12px;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: opacity 0.15s;
+}
+.nrl-btn-main:hover { opacity: 0.85; }
+.nrl-btn-nav {
+  padding: 11px 13px;
+  background: #F8FAFF;
+  border: 1px solid #E3EAF2;
+  border-radius: 12px;
+  color: var(--text-light);
+  font-size: 16px; cursor: pointer;
+  transition: background 0.15s; line-height: 1;
+}
+.nrl-btn-nav:hover { background: #E3EAF2; color: var(--text); }
+.nrl-cfg-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px 10px; cursor: pointer;
+}
+.nrl-cfg-lbl { font-size: 11px; color: var(--text-light); display: flex; align-items: center; gap: 5px; }
+.nrl-cfg-arrow { font-size: 10px; transition: transform 0.2s; }
+.nrl-cfg-arrow.open { transform: rotate(180deg); }
+.nrl-cfg-panel { overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
+.nrl-cfg-panel.open { max-height: 200px; }
+.nrl-cfg-inner { padding: 0 18px 14px; }
+.nrl-cfg-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+.nrl-cfg-item { flex: 1; }
+.nrl-cfg-item-lbl { font-size: 11px; color: var(--text-light); margin-bottom: 5px; }
+.nrl-cfg-item-val { font-size: 13px; font-weight: 500; color: var(--text); text-align: center; margin-bottom: 4px; }
+.nrl-cfg-item input[type=range] { width: 100%; }
+.nrl-cfg-divider { height: 1px; background: #E3EAF2; margin-bottom: 12px; }
+.nrl-stats-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 7px; padding: 0 18px 14px;
+}
+.nrl-stat-box {
+  background: #F8FAFF; border: 1px solid #E3EAF2;
+  border-radius: 12px; padding: 9px 10px; text-align: center;
+}
+.nrl-stat-n { font-size: 17px; font-weight: 500; color: var(--text); }
+.nrl-stat-l { font-size: 10px; color: var(--text-light); margin-top: 2px; }
+.nrl-lvl-up {
+  display: none; position: absolute; inset: 0;
+  background: rgba(15,110,86,0.93);
+  border-radius: var(--radius);
+  flex-direction: column; align-items: center; justify-content: center; z-index: 20;
+}
+.nrl-lvl-up.show { display: flex; }
+.nrl-lvl-up-title { font-size: 20px; font-weight: 600; color: #E1F5EE; margin-bottom: 5px; }
+.nrl-lvl-up-sub { font-size: 13px; color: #9FE1CB; margin-bottom: 18px; text-align: center; padding: 0 24px; line-height: 1.5; }
+.nrl-btn-continue {
+  padding: 10px 28px; background: #E1F5EE; color: #0F6E56;
+  border: none; border-radius: 12px; font-size: 13px; font-weight: 500; cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -795,101 +526,105 @@ textarea { resize: none; height: 80px; }
 </div>
 
 <div class="page" id="page-caverna">
-<canvas id="foco-canvas"></canvas>
-<div id="foco-page-inner">
-
-  <div class="foco-header">
-    <h2>🚀 Modo Foco — Missão Espacial</h2>
-    <p id="caverna-subtitle">Pomodoro · XP · Planetas · Badges</p>
-  </div>
-
-  <div class="foco-xp-bar-wrap">
-    <div class="foco-xp-row">
-      <span class="foco-nivel-badge" id="foco-nivel-badge">⭐ Nível 1 — Recruta</span>
-      <span class="foco-xp-text" id="foco-xp-text">0 / 100 XP</span>
-    </div>
-    <div class="foco-xp-bar"><div class="foco-xp-fill" id="foco-xp-fill" style="width:0%"></div></div>
-  </div>
-
-  <div class="foco-planeta-row">
-    <span class="foco-nave-row">🚀</span>
-    <span>Missão para</span>
-    <span class="foco-planeta-atual" id="foco-planeta-emoji">🌍</span>
-    <span id="foco-planeta-nome">Terra</span>
-  </div>
-
-  <div style="text-align:center;">
-    <span class="foco-status-badge status-idle" id="caverna-status-badge">⏸ Aguardando início</span>
-  </div>
-
-  <div class="pom-config-card">
-    <div class="pom-config-title">⚙️ Configurar tempo</div>
-    <div class="pom-config-row">
-      <div class="pom-config-item">
-        <label>🎯 Foco (min)</label>
-        <input type="number" id="pom-foco-input" value="20" min="1" max="90" onchange="aplicarConfigPom()">
+<div id="nrl-app">
+  <div class="nrl-hd">
+    <div class="nrl-hd-left">
+      <div class="nrl-hd-icon">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="4" fill="#0F6E56"/>
+          <line x1="10" y1="1" x2="10" y2="4" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="10" y1="16" x2="10" y2="19" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="1" y1="10" x2="4" y2="10" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="16" y1="10" x2="19" y2="10" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="3.5" y1="3.5" x2="5.7" y2="5.7" stroke="#5DCAA5" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="14.3" y1="14.3" x2="16.5" y2="16.5" stroke="#5DCAA5" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="16.5" y1="3.5" x2="14.3" y2="5.7" stroke="#5DCAA5" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="5.7" y1="14.3" x2="3.5" y2="16.5" stroke="#5DCAA5" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
       </div>
-      <div class="pom-config-sep">/</div>
-      <div class="pom-config-item">
-        <label>☕ Pausa (min)</label>
-        <input type="number" id="pom-pausa-input" value="5" min="1" max="30" onchange="aplicarConfigPom()">
-      </div>
-      <button class="pom-config-btn" onclick="aplicarConfigPom()">✓ Aplicar</button>
-    </div>
-  </div>
-
-  <div class="foco-timer-wrap">
-    <div class="foco-ring">
-      <svg viewBox="0 0 210 210">
-        <circle class="foco-ring-bg" cx="105" cy="105" r="96"/>
-        <circle class="foco-ring-fill" id="caverna-ring-fill" cx="105" cy="105" r="96"
-          stroke="#3B82F6" stroke-dasharray="603.19" stroke-dashoffset="0"/>
-      </svg>
-      <div class="foco-center">
-        <div class="foco-nave-center pausado" id="foco-nave-center" style="display:none"></div>
-        <div class="foco-time" id="caverna-time-display">20:00</div>
-        <div class="foco-phase" id="caverna-phase-label">FOCO</div>
+      <div>
+        <div class="nrl-hd-title">Modo Foco Neural</div>
+        <div class="nrl-hd-sub" id="nrl-pomSubtitle">Pomodoro · Sessão 1 de 4</div>
       </div>
     </div>
+    <div class="nrl-lvl-badge" id="nrl-lvlBadge">Nível 1</div>
   </div>
-
-  <div class="foco-controls">
-    <button class="foco-btn foco-btn-reset" onclick="resetarPomodoro()" title="Reiniciar">🔄</button>
-    <button class="foco-btn foco-btn-main" id="caverna-play-btn" onclick="togglePomodoro()">▶</button>
-    <button class="foco-btn foco-btn-skip" onclick="pularFase()" title="Pular fase">⏭</button>
-  </div>
-
-  <div class="foco-stats-grid">
-    <div class="foco-stat-box"><span class="v" id="cav-sessoes">0</span><span class="l">Sessões</span></div>
-    <div class="foco-stat-box"><span class="v" id="cav-foco-total">0min</span><span class="l">Foco hoje</span></div>
-    <div class="foco-stat-box"><span class="v" id="cav-ciclos">0</span><span class="l">Ciclos</span></div>
-  </div>
-
-  <div class="foco-card">
-    <div class="foco-card-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div>
-    <div class="foco-session-row" id="session-dots"></div>
-    <div class="foco-manual-row">
-      <span>Celular desligou? Ajuste as sessões:</span>
-      <button onclick="removerSessaoManual()" title="Remover 1 sessão" style="background:rgba(239,68,68,0.1);color:#F87171;border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">⏮</button>
-      <button onclick="adicionarSessaoManual()" title="Adicionar 1 sessão" style="background:rgba(99,102,241,0.12);color:#818CF8;border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">⏭</button>
+  <div class="nrl-xp-section">
+    <div class="nrl-xp-row">
+      <span class="nrl-xp-lbl" id="nrl-xpLbl">XP: 0 / 100</span>
+      <span class="nrl-xp-val" id="nrl-statSessions">0 sessões</span>
     </div>
-    <p style="font-size:0.63rem;color:#2D3748;margin-top:6px;">⏭ adiciona 1 sessão de foco · ⏮ remove 1 sessão</p>
+    <div class="nrl-xp-track"><div class="nrl-xp-fill" id="nrl-xpFill" style="width:0%"></div></div>
   </div>
-
-  <div class="foco-card">
-    <div class="foco-card-title">🏅 Conquistas</div>
-    <div class="foco-badges-row" id="foco-badges-row">
-      <span class="foco-badge foco-badge-azul" id="badge-primeiro">🚀 Decolagem</span>
-      <span class="foco-badge foco-badge-roxo" id="badge-ciclo1">🪐 Órbita</span>
-      <span class="foco-badge foco-badge-verde" id="badge-ciclo5">🌙 Lua</span>
-      <span class="foco-badge foco-badge-ouro" id="badge-ciclo10">⭐ Estrela</span>
-      <span class="foco-badge foco-badge-rosa" id="badge-ciclo25">🌌 Galáxia</span>
+  <div class="nrl-neuron-wrap">
+    <canvas id="nrl-neuronCanvas" width="320" height="155"></canvas>
+  </div>
+  <div class="nrl-wave-section">
+    <div class="nrl-wave-lbl">Ondas cerebrais</div>
+    <div class="nrl-wave-row">
+      <span class="nrl-wave-name" id="nrl-waveLabel">Beta</span>
+      <div class="nrl-wave-track"><div class="nrl-wave-fill" id="nrl-waveFill" style="width:15%;background:#E24B4A;"></div></div>
+      <span class="nrl-wave-desc" id="nrl-waveDesc">Mente dispersa</span>
     </div>
   </div>
-
-  <div class="page-footer">produced by Jp</div>
+  <div class="nrl-phase-pill-wrap">
+    <div class="nrl-phase-pill focus" id="nrl-phasePill">Concentração</div>
+  </div>
+  <div class="nrl-timer-section">
+    <div class="nrl-timer-display" id="nrl-timerDisplay">25:00</div>
+  </div>
+  <div class="nrl-physio-box">
+    <div class="nrl-physio-title">O que está acontecendo no seu cérebro</div>
+    <div class="nrl-physio-text" id="nrl-physioText">Pronto para começar. Ao iniciar, o córtex pré-frontal entra em modo de controle executivo.</div>
+  </div>
+  <div class="nrl-pom-dots" id="nrl-pomDots"></div>
+  <div class="nrl-controls">
+    <button class="nrl-btn-nav" onclick="nrlPrevSession()" title="Sessão anterior">&#9664;</button>
+    <button class="nrl-btn-main" id="nrl-btnMain" onclick="nrlToggleTimer()">Iniciar</button>
+    <button class="nrl-btn-nav" onclick="nrlNextSession()" title="Pular sessão">&#9654;</button>
+  </div>
+  <div class="nrl-cfg-toggle" onclick="nrlToggleCfg()">
+    <span class="nrl-cfg-lbl">⚙ Ajustar pomodoro</span>
+    <span class="nrl-cfg-arrow" id="nrl-cfgArrow">&#9650;</span>
+  </div>
+  <div class="nrl-cfg-panel" id="nrl-cfgPanel">
+    <div class="nrl-cfg-inner">
+      <div class="nrl-cfg-divider"></div>
+      <div class="nrl-cfg-row">
+        <div class="nrl-cfg-item">
+          <div class="nrl-cfg-item-lbl">Concentração</div>
+          <div class="nrl-cfg-item-val" id="nrl-cfgFocusVal">25 min</div>
+          <input type="range" min="5" max="90" step="5" value="25" id="nrl-sliderFocus" oninput="nrlCfgChange()">
+        </div>
+        <div class="nrl-cfg-item">
+          <div class="nrl-cfg-item-lbl">Descanso curto</div>
+          <div class="nrl-cfg-item-val" id="nrl-cfgShortVal">5 min</div>
+          <input type="range" min="3" max="20" step="1" value="5" id="nrl-sliderShort" oninput="nrlCfgChange()">
+        </div>
+        <div class="nrl-cfg-item">
+          <div class="nrl-cfg-item-lbl">Descanso longo</div>
+          <div class="nrl-cfg-item-val" id="nrl-cfgLongVal">15 min</div>
+          <input type="range" min="10" max="40" step="5" value="15" id="nrl-sliderLong" oninput="nrlCfgChange()">
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-light);">A cada 4 sessões de foco, um descanso longo é concedido.</div>
+    </div>
+  </div>
+  <div class="nrl-stats-row">
+    <div class="nrl-stat-box"><div class="nrl-stat-n" id="nrl-statXP">0</div><div class="nrl-stat-l">XP total</div></div>
+    <div class="nrl-stat-box"><div class="nrl-stat-n" id="nrl-statMins">0</div><div class="nrl-stat-l">min focados</div></div>
+    <div class="nrl-stat-box"><div class="nrl-stat-n" id="nrl-statSyn">0</div><div class="nrl-stat-l">sinapses</div></div>
+  </div>
+  <div class="nrl-lvl-up" id="nrl-lvlUp">
+    <div style="font-size:44px;margin-bottom:12px">&#9889;</div>
+    <div class="nrl-lvl-up-title" id="nrl-lvlUpTitle">Nível 2!</div>
+    <div class="nrl-lvl-up-sub" id="nrl-lvlUpSub">Novo dendrito cresceu.</div>
+    <button class="nrl-btn-continue" onclick="nrlCloseLvl()">Continuar</button>
+  </div>
 </div>
+<div class="page-footer">produced by Jp</div>
 </div>
+
 
 <div class="celebracao-overlay" id="celebracao-overlay">
   <div class="celebracao-box">
@@ -1891,7 +1626,7 @@ function gerarRelatorioDiarioInline() {
   }, 50);
 }
 
-// ========== BACKUP ==========
+// 
 let _importData = null;
 function abrirBackup() { atualizarStatsBackup(); document.getElementById('backup-modal').classList.add('show'); document.getElementById('backup-ping').classList.remove('show'); }
 function fecharBackupModal(e) { if(e.target.id==='backup-modal') document.getElementById('backup-modal').classList.remove('show'); }
@@ -2588,630 +2323,318 @@ function _atualizarNaveCenter() {
 // =============================================
 // CANVAS DE ESTRELAS PULSANDO COM O TIMER
 // =============================================
-(function initFocoCanvas() {
-  function setup() {
-    const canvas = document.getElementById('foco-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let W = canvas.width  = Math.min(430, window.innerWidth);
-    let H = canvas.height = window.innerHeight;
-
-    // ── Stars ──────────────────────────────────────────────
-    const stars = Array.from({length: 140}, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      r: Math.random() * 1.4 + 0.2,
-      speed: Math.random() * 0.4 + 0.08,
-      alpha: Math.random() * 0.6 + 0.2,
-      phase: Math.random() * Math.PI * 2
-    }));
-
-    // ── Rocket state ───────────────────────────────────────
-    const rocket = {
-      x: W / 2,
-      y: H + 80,       // starts off-screen bottom
-      angle: 0,        // radians, 0 = pointing up
-      scale: 1,
-      trail: [],
-      phase: 'idle',   // idle | launch | travel | arrive | orbit | pause
-      orbitAngle: 0,
-      orbitR: 48,
-    };
-
-    // ── Planet state ───────────────────────────────────────
-    const planetObj = {
-      x: W / 2,
-      y: -120,         // starts off-screen top
-      targetY: H * 0.22,
-      r: 38,
-      color: '#1D4ED8',
-      ringColor: '#3B82F6',
-      hasRing: false,
-      glowColor: 'rgba(59,130,246,0.35)',
-      entering: false,
-      leaving: false,
-      alpha: 0,
-    };
-
-    // Particle pool
-    const particles = [];
-
-    function spawnParticles(x, y, color, count, speed, life) {
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const spd   = speed * (0.5 + Math.random());
-        particles.push({
-          x, y,
-          vx: Math.cos(angle) * spd,
-          vy: Math.sin(angle) * spd,
-          life, maxLife: life,
-          color,
-          r: Math.random() * 3 + 1
-        });
-      }
-    }
-
-    // Planet definitions matching PLANETAS_FOCO
-    const PLANET_DEFS = [
-      { color:'#1565C0', ringColor:'#29B6F6', hasRing:false, glowColor:'rgba(21,101,192,0.4)',   craterColor:'rgba(0,0,0,0.15)'  }, // Terra
-      { color:'#9CA3AF', ringColor:'#D1D5DB', hasRing:false, glowColor:'rgba(156,163,175,0.35)', craterColor:'rgba(0,0,0,0.18)'  }, // Lua
-      { color:'#B91C1C', ringColor:'#EF4444', hasRing:false, glowColor:'rgba(185,28,28,0.4)',    craterColor:'rgba(0,0,0,0.2)'   }, // Marte
-      { color:'#78716C', ringColor:'#A8A29E', hasRing:false, glowColor:'rgba(120,113,108,0.35)', craterColor:'rgba(0,0,0,0.22)'  }, // Asteroide
-      { color:'#92400E', ringColor:'#D97706', hasRing:false, glowColor:'rgba(146,64,14,0.4)',    craterColor:'rgba(0,0,0,0.15)'  }, // Júpiter
-      { color:'#92400E', ringColor:'#FCD34D', hasRing:true,  glowColor:'rgba(251,191,36,0.35)',  craterColor:'rgba(0,0,0,0.12)'  }, // Saturno
-      { color:'#0E7490', ringColor:'#22D3EE', hasRing:true,  glowColor:'rgba(14,116,144,0.4)',   craterColor:'rgba(0,0,0,0.15)'  }, // Urano
-      { color:'#4C1D95', ringColor:'#8B5CF6', hasRing:false, glowColor:'rgba(76,29,149,0.45)',   craterColor:'rgba(0,0,0,0.1)'   }, // Galáxia
-    ];
-
-    let currentPlanetIdx = 0;
-    let frame = 0;
-    let launchProgress = 0;  // 0→1 during travel
-    let arrivalAnim    = 0;  // 0→1 celebration
-
-    function getPlanetDef() {
-      // sync with _focoCiclos
-      const cycles = parseInt(localStorage.getItem('foco_ciclos_totais') || '0');
-      const thresholds = [0,2,5,10,20,35,55,80];
-      let idx = 0;
-      for (let i = 0; i < thresholds.length; i++) {
-        if (cycles >= thresholds[i]) idx = i;
-      }
-      return { idx, def: PLANET_DEFS[idx] };
-    }
-
-    function applyPlanetDef(def) {
-      planetObj.color      = def.color;
-      planetObj.ringColor  = def.ringColor;
-      planetObj.hasRing    = def.hasRing;
-      planetObj.glowColor  = def.glowColor;
-    }
-
-    // ── Draw helpers ───────────────────────────────────────
-    function drawPlanet(px, py, pr, def, alpha) {
-      ctx.save();
-      ctx.globalAlpha = alpha;
-
-      // Glow
-      const grd = ctx.createRadialGradient(px, py, pr * 0.5, px, py, pr * 2.2);
-      grd.addColorStop(0, def.glowColor || 'rgba(59,130,246,0.3)');
-      grd.addColorStop(1, 'transparent');
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(px, py, pr * 2.2, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Ring behind (if hasRing)
-      if (def.hasRing) {
-        ctx.save();
-        ctx.translate(px, py);
-        ctx.scale(1, 0.28);
-        ctx.beginPath();
-        ctx.arc(0, 0, pr * 1.75, 0, Math.PI * 2);
-        ctx.strokeStyle = def.ringColor;
-        ctx.lineWidth = pr * 0.28;
-        ctx.globalAlpha = alpha * 0.5;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // Planet body
-      const bodyGrd = ctx.createRadialGradient(px - pr*0.28, py - pr*0.28, pr*0.1, px, py, pr);
-      bodyGrd.addColorStop(0, lightenColor(def.color, 55));
-      bodyGrd.addColorStop(0.6, def.color);
-      bodyGrd.addColorStop(1, darkenColor(def.color, 40));
-      ctx.beginPath();
-      ctx.arc(px, py, pr, 0, Math.PI * 2);
-      ctx.fillStyle = bodyGrd;
-      ctx.globalAlpha = alpha;
-      ctx.fill();
-
-      // Craters / details
-      const craterPositions = [
-        {ox:-0.28, oy:-0.22, r:0.18}, {ox:0.22, oy:0.15, r:0.13},
-        {ox:-0.08, oy:0.32, r:0.1},  {ox:0.34, oy:-0.18, r:0.1}
-      ];
-      craterPositions.forEach(c => {
-        ctx.beginPath();
-        ctx.arc(px + c.ox*pr, py + c.oy*pr, c.r*pr, 0, Math.PI*2);
-        ctx.fillStyle = def.craterColor || 'rgba(0,0,0,0.15)';
-        ctx.globalAlpha = alpha * 0.7;
-        ctx.fill();
-      });
-
-      // Atmosphere sheen
-      const atmoGrd = ctx.createRadialGradient(px - pr*0.3, py - pr*0.3, 0, px, py, pr);
-      atmoGrd.addColorStop(0,   'rgba(255,255,255,0.18)');
-      atmoGrd.addColorStop(0.45,'rgba(255,255,255,0.04)');
-      atmoGrd.addColorStop(1,   'rgba(255,255,255,0)');
-      ctx.beginPath();
-      ctx.arc(px, py, pr, 0, Math.PI*2);
-      ctx.fillStyle = atmoGrd;
-      ctx.globalAlpha = alpha;
-      ctx.fill();
-
-      // Ring front (if hasRing)
-      if (def.hasRing) {
-        ctx.save();
-        ctx.translate(px, py);
-        ctx.scale(1, 0.28);
-        ctx.beginPath();
-        ctx.arc(0, 0, pr * 1.75, Math.PI, Math.PI * 2);
-        ctx.strokeStyle = def.ringColor;
-        ctx.lineWidth = pr * 0.28;
-        ctx.globalAlpha = alpha * 0.85;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      ctx.restore();
-    }
-
-    function drawRocket(rx, ry, angle, scale, thrustOn) {
-      ctx.save();
-      ctx.translate(rx, ry);
-      ctx.rotate(angle);
-      ctx.scale(scale, scale);
-
-      const h = 28, w = 10;
-
-      // Exhaust flame
-      if (thrustOn) {
-        const flameLen = 20 + Math.sin(frame * 0.3) * 6;
-        const flGrd = ctx.createLinearGradient(0, h/2, 0, h/2 + flameLen);
-        flGrd.addColorStop(0,   'rgba(255,200,50,0.95)');
-        flGrd.addColorStop(0.4, 'rgba(255,100,20,0.7)');
-        flGrd.addColorStop(1,   'rgba(255,50,0,0)');
-        ctx.beginPath();
-        ctx.moveTo(-w*0.35, h*0.42);
-        ctx.quadraticCurveTo(0, h/2 + flameLen * 0.55, 0, h/2 + flameLen);
-        ctx.quadraticCurveTo(0, h/2 + flameLen * 0.55, w*0.35, h*0.42);
-        ctx.fillStyle = flGrd;
-        ctx.fill();
-
-        // Side flames
-        [-1,1].forEach(side => {
-          const sfl = flameLen * 0.55;
-          const sfGrd = ctx.createLinearGradient(0, h*0.38, 0, h*0.38 + sfl);
-          sfGrd.addColorStop(0,  'rgba(255,180,30,0.7)');
-          sfGrd.addColorStop(1,  'rgba(255,60,0,0)');
-          ctx.beginPath();
-          ctx.moveTo(side * w*0.22, h*0.38);
-          ctx.quadraticCurveTo(side * w*0.55, h*0.38 + sfl*0.5, side * w*0.38, h*0.38 + sfl);
-          ctx.fillStyle = sfGrd;
-          ctx.fill();
-        });
-      }
-
-      // Body
-      const bodyGrd = ctx.createLinearGradient(-w/2, 0, w/2, 0);
-      bodyGrd.addColorStop(0,   '#CBD5E1');
-      bodyGrd.addColorStop(0.35,'#F1F5F9');
-      bodyGrd.addColorStop(0.65,'#E2E8F0');
-      bodyGrd.addColorStop(1,   '#94A3B8');
-      ctx.beginPath();
-      ctx.moveTo(0, -h/2);                         // nose tip
-      ctx.bezierCurveTo(w*0.55, -h*0.15, w/2, h*0.25, w*0.45, h*0.42);
-      ctx.lineTo(-w*0.45, h*0.42);
-      ctx.bezierCurveTo(-w/2, h*0.25, -w*0.55, -h*0.15, 0, -h/2);
-      ctx.fillStyle = bodyGrd;
-      ctx.fill();
-
-      // Nose cone accent
-      const noseGrd = ctx.createLinearGradient(-w*0.3, -h/2, w*0.3, -h*0.1);
-      noseGrd.addColorStop(0, '#EF4444');
-      noseGrd.addColorStop(1, '#B91C1C');
-      ctx.beginPath();
-      ctx.moveTo(0, -h/2);
-      ctx.bezierCurveTo(w*0.3, -h*0.3, w*0.25, -h*0.05, 0, 0);
-      ctx.bezierCurveTo(-w*0.25, -h*0.05, -w*0.3, -h*0.3, 0, -h/2);
-      ctx.fillStyle = noseGrd;
-      ctx.fill();
-
-      // Window
-      ctx.beginPath();
-      ctx.arc(0, -h*0.05, w*0.22, 0, Math.PI*2);
-      ctx.fillStyle = '#1E3A5F';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(-w*0.06, -h*0.08, w*0.09, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(147,210,255,0.6)';
-      ctx.fill();
-
-      // Fins
-      [[-1,1],[1,-1]].forEach(([sx, dir]) => {
-        ctx.beginPath();
-        ctx.moveTo(sx * w*0.42, h*0.25);
-        ctx.lineTo(sx * w*0.9,  h*0.42);
-        ctx.lineTo(sx * w*0.42, h*0.42);
-        ctx.closePath();
-        ctx.fillStyle = '#EF4444';
-        ctx.fill();
-      });
-
-      // Engine nozzles
-      ctx.beginPath();
-      ctx.rect(-w*0.38, h*0.38, w*0.28, h*0.1);
-      ctx.rect( w*0.1,  h*0.38, w*0.28, h*0.1);
-      ctx.fillStyle = '#475569';
-      ctx.fill();
-
-      // Stripe
-      ctx.beginPath();
-      ctx.rect(-w*0.42, h*0.12, w*0.84, h*0.07);
-      ctx.fillStyle = '#3B82F6';
-      ctx.globalAlpha = 0.6;
-      ctx.fill();
-      ctx.globalAlpha = 1;
-
-      ctx.restore();
-    }
-
-    function lightenColor(hex, pct) {
-      let n = parseInt(hex.slice(1), 16);
-      let r = Math.min(255, (n>>16) + pct);
-      let g = Math.min(255, ((n>>8)&0xff) + pct);
-      let b = Math.min(255, (n&0xff) + pct);
-      return `rgb(${r},${g},${b})`;
-    }
-    function darkenColor(hex, pct) {
-      let n = parseInt(hex.slice(1), 16);
-      let r = Math.max(0, (n>>16) - pct);
-      let g = Math.max(0, ((n>>8)&0xff) - pct);
-      let b = Math.max(0, (n&0xff) - pct);
-      return `rgb(${r},${g},${b})`;
-    }
-
-    // ── Animation state machine ────────────────────────────
-    let lastPhase = 'idle';
-
-    function observeTimerState() {
-      // Watch for pom state changes
-      const playBtn = document.getElementById('caverna-play-btn');
-      if (playBtn) {
-        const mo = new MutationObserver(() => syncRocketPhase());
-        mo.observe(playBtn, { childList:true, characterData:true, subtree:true });
-      }
-    }
-
-    function syncRocketPhase() {
-      if (!window.state || !window.state.pom) return;
-      const pom = window.state.pom;
-      if (!pom.rodando) {
-        if (rocket.phase === 'travel' || rocket.phase === 'launch') {
-          rocket.phase = 'pause';
-        } else if (rocket.phase === 'idle') {
-          // stay idle
-        }
-      } else if (pom.fase === 'foco') {
-        if (rocket.phase === 'idle' || rocket.phase === 'pause') {
-          rocket.phase = 'launch';
-          launchProgress = 0;
-        } else if (rocket.phase === 'orbit') {
-          rocket.phase = 'launch';
-          launchProgress = 0;
-        }
-      } else if (pom.fase === 'pausa') {
-        if (rocket.phase === 'travel') {
-          rocket.phase = 'arrive';
-          arrivalAnim = 0;
-        }
-      }
-    }
-
-    // ── Main loop ──────────────────────────────────────────
-    function tick() {
-      ctx.clearRect(0, 0, W, H);
-      frame++;
-
-      const running = window.state && window.state.pom && window.state.pom.rodando;
-      const fase    = window.state && window.state.pom && window.state.pom.fase;
-
-      // ── Stars ──────────────────────────────────────────
-      const starSpeed = running && fase === 'foco' ? 1 : (running ? 0.4 : 0.1);
-      stars.forEach(s => {
-        const pulse = running
-          ? (Math.sin(frame * 0.04 + s.phase) * 0.3 + 0.7)
-          : 0.3;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(160,205,255,${s.alpha * pulse})`;
-        ctx.fill();
-        s.y += s.speed * starSpeed;
-        if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
-      });
-
-      // ── Sync state ─────────────────────────────────────
-      if (running !== (lastPhase !== 'idle' && lastPhase !== 'pause')) {
-        syncRocketPhase();
-      }
-      lastPhase = rocket.phase;
-
-      // ── Planet visibility ──────────────────────────────
-      const { idx: pidx, def: pdef } = getPlanetDef();
-      if (pidx !== currentPlanetIdx) {
-        // Planet changed — trigger transition
-        currentPlanetIdx = pidx;
-        applyPlanetDef(pdef);
-        planetObj.y      = -120;
-        planetObj.alpha  = 0;
-        planetObj.entering = true;
-      }
-      applyPlanetDef(pdef);
-
-      // Target planet Y based on rocket phase
-      const showPlanet = ['arrive','orbit','pause'].includes(rocket.phase);
-
-      if (showPlanet || planetObj.alpha > 0) {
-        // Smoothly move planet to target
-        const tgtY = showPlanet ? H * 0.2 : -120;
-        const tgtA = showPlanet ? 1 : 0;
-        planetObj.y     += (tgtY - planetObj.y) * 0.04;
-        planetObj.alpha += (tgtA - planetObj.alpha) * 0.05;
-        if (planetObj.alpha > 0.01) {
-          drawPlanet(W/2, planetObj.y, planetObj.r, pdef, planetObj.alpha);
-        }
-      }
-
-      // ── Rocket physics ─────────────────────────────────
-      switch (rocket.phase) {
-
-        case 'idle':
-          rocket.x = W / 2;
-          rocket.y = H * 0.68;
-          rocket.angle = 0;
-          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, false);
-          // Small idle bob
-          rocket.y += Math.sin(frame * 0.025) * 0.8;
-          break;
-
-        case 'launch': {
-          launchProgress = Math.min(1, launchProgress + 0.008);
-          const ease = 1 - Math.pow(1 - launchProgress, 3);
-          rocket.x = W / 2 + Math.sin(launchProgress * Math.PI * 2) * 8 * (1 - launchProgress);
-          rocket.y = H * 0.68 - ease * (H * 0.68 - H * 0.5);
-          rocket.angle = Math.sin(launchProgress * Math.PI) * 0.12;
-
-          // Thrust particles
-          if (frame % 2 === 0) {
-            spawnParticles(rocket.x, rocket.y + 16, '#FCD34D', 3, 1.2, 18);
-          }
-
-          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, true);
-
-          if (launchProgress >= 1) rocket.phase = 'travel';
-          break;
-        }
-
-        case 'travel': {
-          // Rocket travels from bottom-half toward planet
-          if (!running) { rocket.phase = 'pause'; break; }
-
-          // Calculate progress from pom timer
-          let travelPct = 0;
-          if (window.state && window.state.pom) {
-            const pom  = window.state.pom;
-            const total = (pom.minFoco || 20) * 60;
-            const rem   = pom.seg || 0;
-            travelPct   = Math.max(0, Math.min(1, 1 - (rem / total)));
-          }
-
-          // Y: from H*0.5 → H*0.35
-          rocket.y = H * 0.5 - travelPct * (H * 0.5 - H * 0.35);
-          rocket.x = W/2 + Math.sin(frame * 0.018) * 14;
-          rocket.angle = Math.cos(frame * 0.018) * 0.1;
-
-          // Trail
-          rocket.trail.push({ x: rocket.x, y: rocket.y + 14, life: 22 });
-          if (rocket.trail.length > 28) rocket.trail.shift();
-
-          // Draw trail
-          rocket.trail.forEach((t, i) => {
-            const a = (i / rocket.trail.length) * 0.55;
-            const r = 3 * (i / rocket.trail.length);
-            ctx.beginPath();
-            ctx.arc(t.x, t.y, r, 0, Math.PI*2);
-            ctx.fillStyle = `rgba(255,160,40,${a})`;
-            ctx.fill();
-            t.life--;
-          });
-          rocket.trail = rocket.trail.filter(t => t.life > 0);
-
-          if (frame % 3 === 0) {
-            spawnParticles(rocket.x, rocket.y + 14, '#FB923C', 2, 0.8, 14);
-          }
-
-          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, true);
-          break;
-        }
-
-        case 'arrive': {
-          arrivalAnim = Math.min(1, arrivalAnim + 0.022);
-          const ease  = 1 - Math.pow(1 - arrivalAnim, 3);
-
-          // Decelerate into planet orbit position
-          const targetX = W/2 + Math.cos(arrivalAnim * Math.PI * 2) * rocket.orbitR;
-          const targetY = planetObj.y + rocket.orbitR + planetObj.r + 5;
-          rocket.x += (targetX - rocket.x) * 0.06;
-          rocket.y += (targetY - rocket.y) * 0.06;
-          rocket.angle = Math.sin(arrivalAnim * Math.PI * 4) * 0.3 * (1 - arrivalAnim);
-
-          // Celebration burst
-          if (arrivalAnim > 0.45 && arrivalAnim < 0.5) {
-            spawnParticles(rocket.x, rocket.y, '#FCD34D', 20, 3, 35);
-            spawnParticles(rocket.x, rocket.y, '#60A5FA', 15, 2.5, 30);
-            spawnParticles(rocket.x, rocket.y, '#F472B6', 12, 2, 28);
-          }
-
-          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, arrivalAnim < 0.7);
-
-          if (arrivalAnim >= 1) {
-            rocket.phase = 'orbit';
-            rocket.orbitAngle = 0;
-          }
-          break;
-        }
-
-        case 'orbit': {
-          rocket.orbitAngle += 0.018;
-          rocket.x = W/2 + Math.cos(rocket.orbitAngle) * rocket.orbitR;
-          rocket.y = planetObj.y + (planetObj.r + 20) + Math.sin(rocket.orbitAngle) * rocket.orbitR * 0.38;
-          rocket.angle = rocket.orbitAngle + Math.PI / 2;
-
-          // Orbit trail
-          rocket.trail.push({ x: rocket.x, y: rocket.y, life: 20 });
-          if (rocket.trail.length > 20) rocket.trail.shift();
-          rocket.trail.forEach((t, i) => {
-            ctx.beginPath();
-            ctx.arc(t.x, t.y, 1.5 * (i / rocket.trail.length), 0, Math.PI*2);
-            ctx.fillStyle = `rgba(96,165,250,${0.3 * i / rocket.trail.length})`;
-            ctx.fill();
-          });
-          rocket.trail = rocket.trail.filter(t => t.life-- > 0);
-
-          drawRocket(rocket.x, rocket.y, rocket.angle, 0.85, false);
-
-          if (running && window.state.pom.fase === 'foco') {
-            rocket.phase = 'launch';
-            launchProgress = 0;
-            rocket.trail = [];
-          }
-          break;
-        }
-
-        case 'pause': {
-          rocket.y += (H * 0.55 - rocket.y) * 0.03;
-          rocket.x += (W/2 - rocket.x) * 0.03;
-          rocket.angle *= 0.95;
-          drawRocket(rocket.x, rocket.y, rocket.angle, 1.0, false);
-
-          if (running) {
-            rocket.phase = 'launch';
-            launchProgress = 0;
-          }
-          break;
-        }
-      }
-
-      // ── Particles ──────────────────────────────────────
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.vx; p.y += p.vy;
-        p.vy += 0.06;  // gravity
-        p.life--;
-        if (p.life <= 0) { particles.splice(i, 1); continue; }
-        const a = p.life / p.maxLife;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * a, 0, Math.PI*2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = a * 0.9;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    observeTimerState();
-    tick();
-
-    window.addEventListener('resize', () => {
-      W = canvas.width  = Math.min(430, window.innerWidth);
-      H = canvas.height = window.innerHeight;
-      stars.forEach(s => { s.x = Math.random() * W; s.y = Math.random() * H; });
-    });
+// ===== MODO FOCO NEURAL — JS =====
+(function nrlInit() {
+  const NRL_LEVELS = [
+    { name:'Nível 1', label:'Neurônio em repouso',  xpReq:100,  syn:0,  color:'#888780' },
+    { name:'Nível 2', label:'Primeiro dendrito',    xpReq:250,  syn:2,  color:'#639922' },
+    { name:'Nível 3', label:'Axônio emergindo',     xpReq:500,  syn:4,  color:'#1D9E75' },
+    { name:'Nível 4', label:'Bainha de mielina',    xpReq:900,  syn:6,  color:'#185FA5' },
+    { name:'Nível 5', label:'Rede neural completa', xpReq:1500, syn:10, color:'#534AB7' },
+    { name:'Nível 6', label:'Plasticidade máxima',  xpReq:9999, syn:16, color:'#993556' },
+  ];
+  const NRL_LVL_MSGS = ['','Seu primeiro dendrito cresceu!','O axônio começou a se formar.','Mielina acelera a condução em até 100x.','Sua rede neural está expandindo.','Córtex pré-frontal em plena capacidade!'];
+  const NRL_PHYSIO = {
+    focus:[
+      {t:0.0,text:'O córtex pré-frontal assume o controle executivo. A noradrenalina começa a aumentar, preparando o cérebro para selecionar o foco.'},
+      {t:0.2,text:'Ondas Alpha se estabilizam. A rede de modo padrão (DMN) é inibida — seu cérebro para de divagar e direciona recursos para a tarefa.'},
+      {t:0.45,text:'Dopamina e acetilcolina sobem. Os dendritos fortalecem conexões sinápticas — isso é literalmente aprendizado acontecendo em tempo real.'},
+      {t:0.7,text:'Estado Theta: atenção sustentada ativa o hipocampo. Memórias de curto prazo são consolidadas. Seu neurônio está em expansão máxima.'},
+      {t:0.88,text:'Flow profundo. O córtex pré-frontal e o estriado sincronizam. Sensação de esforço reduz — sinal de eficiência neural elevada.'},
+    ],
+    rest:[
+      {t:0.0,text:'A rede de modo padrão (DMN) reativa. O cérebro processa o que foi aprendido — não descanse com a tela!'},
+      {t:0.4,text:'O hipocampo consolida memórias de curto para longo prazo. Este intervalo é tão importante quanto o estudo em si.'},
+      {t:0.75,text:'Adenosina é parcialmente eliminada. Você voltará com mais capacidade de atenção.'},
+    ],
+    restLong:[
+      {t:0.0,text:'Descanso longo ativado. O cérebro elimina resíduos metabólicos via sistema glinfático.'},
+      {t:0.35,text:'Serotonina sobe gradualmente. Humor e motivação se reequilibram para o próximo ciclo.'},
+      {t:0.65,text:'Recuperação quase completa. Córtex pré-frontal reestabelece plena capacidade.'},
+    ],
+  };
+
+  // Estado salvo no state global do app
+  function loadNrlState() {
+    try {
+      const raw = localStorage.getItem('tdah_nrl');
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return { xp:0, lvlIdx:0, totalSessions:0, totalMins:0, totalSyn:0, focusMins:25, shortMins:5, longMins:15 };
+  }
+  function saveNrlState(s) {
+    try { localStorage.setItem('tdah_nrl', JSON.stringify(s)); } catch(e) {}
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
-  else setup();
+  let nrl = loadNrlState();
+  let nrlPomCycle = 4;
+  let nrlSessionIdx = 0;
+  let nrlSecsLeft = 0, nrlRunning = false, nrlInterval = null;
+  let nrlProgress = 0;
+  let nrlSparkAngle = null, nrlSparkT = 0;
+  let nrlRaf = null;
+  let nrlCfgOpen = false;
+
+  function nrlSessionType(idx) {
+    const pos = idx % (nrlPomCycle * 2);
+    if (pos % 2 === 0) return 'focus';
+    return Math.floor(pos/2)+1 === nrlPomCycle ? 'long' : 'short';
+  }
+  function nrlSessionDur(idx) {
+    const t = nrlSessionType(idx);
+    if (t==='focus') return nrl.focusMins*60;
+    if (t==='short') return nrl.shortMins*60;
+    return nrl.longMins*60;
+  }
+  function nrlFocusNum() {
+    let n=0; for(let i=0;i<nrlSessionIdx;i++) if(nrlSessionType(i)==='focus') n++;
+    return n+1;
+  }
+
+  const nrlCanvas = document.getElementById('nrl-neuronCanvas');
+  const nrlCtx = nrlCanvas ? nrlCanvas.getContext('2d') : null;
+
+  function nrlHa(hex,a){
+    const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  function nrlDrawNeuron() {
+    if (!nrlCtx) return;
+    nrlCtx.clearRect(0,0,320,155);
+    const lvl = NRL_LEVELS[nrl.lvlIdx];
+    const c = lvl.color;
+    const cx=148, cy=77, bodyR=20+nrl.lvlIdx*2;
+    const isFocus = nrlSessionType(nrlSessionIdx)==='focus';
+    const pulse = nrlRunning&&isFocus ? Math.sin(Date.now()/350)*2 : 0;
+    const nDend = lvl.syn;
+    nrlCtx.lineCap='round';
+    for(let i=0;i<nDend;i++){
+      const a=(Math.PI*1.35*(i/(Math.max(nDend-1,1))))-Math.PI*0.675+Math.PI;
+      const len=36+i*3.5;
+      const ex=cx+Math.cos(a)*len, ey=cy+Math.sin(a)*len;
+      const alpha=nrlRunning&&isFocus ? 0.6+0.2*Math.sin(Date.now()/400+i) : 0.5;
+      nrlCtx.beginPath(); nrlCtx.strokeStyle=nrlHa(c,alpha); nrlCtx.lineWidth=1.8;
+      nrlCtx.moveTo(cx+Math.cos(a)*bodyR,cy+Math.sin(a)*bodyR); nrlCtx.lineTo(ex,ey); nrlCtx.stroke();
+      nrlCtx.beginPath(); nrlCtx.fillStyle=nrlHa(c,alpha*0.7);
+      nrlCtx.arc(ex,ey,2.5,0,Math.PI*2); nrlCtx.fill();
+    }
+    if(nrl.lvlIdx>=1){
+      const axLen=55+nrl.lvlIdx*8;
+      const axSx=cx+bodyR, axEx=cx+bodyR+axLen;
+      nrlCtx.beginPath(); nrlCtx.strokeStyle=nrlHa(c,0.75); nrlCtx.lineWidth=nrl.lvlIdx>=3?3:2;
+      nrlCtx.moveTo(axSx,cy); nrlCtx.lineTo(axEx,cy); nrlCtx.stroke();
+      if(nrl.lvlIdx>=3){
+        const segs=4, sl=axLen/(segs*2.2);
+        for(let i=0;i<segs;i++){
+          const sx=axSx+sl*(i*2.2+0.25), ex=axSx+sl*(i*2.2+1.15);
+          nrlCtx.beginPath(); nrlCtx.strokeStyle=nrlHa('#EF9F27',0.65); nrlCtx.lineWidth=6; nrlCtx.lineCap='round';
+          nrlCtx.moveTo(sx,cy); nrlCtx.lineTo(ex,cy); nrlCtx.stroke();
+        }
+      }
+      nrlCtx.beginPath(); nrlCtx.fillStyle=nrlHa(c,0.8);
+      nrlCtx.arc(axEx,cy,4.5,0,Math.PI*2); nrlCtx.fill();
+    }
+    if(nrlSparkAngle!==null){
+      const axLen=55+nrl.lvlIdx*8;
+      const sx=cx+Math.cos(nrlSparkAngle)*(bodyR+nrlSparkT*(axLen*0.7));
+      const sy=cy+Math.sin(nrlSparkAngle)*(bodyR+nrlSparkT*8);
+      const sr=5*(1-nrlSparkT*0.4);
+      nrlCtx.beginPath(); nrlCtx.fillStyle=nrlHa('#FAC775',Math.max(0,1-nrlSparkT));
+      nrlCtx.arc(sx,sy,sr,0,Math.PI*2); nrlCtx.fill();
+    }
+    const pr=bodyR+pulse;
+    nrlCtx.beginPath(); nrlCtx.strokeStyle=nrlHa(c,0.15); nrlCtx.lineWidth=6;
+    nrlCtx.arc(cx,cy,pr+5,0,Math.PI*2); nrlCtx.stroke();
+    nrlCtx.beginPath(); nrlCtx.fillStyle=nrlHa(c,nrlRunning&&isFocus?0.9:0.75);
+    nrlCtx.arc(cx,cy,pr,0,Math.PI*2); nrlCtx.fill();
+    nrlCtx.beginPath(); nrlCtx.fillStyle=nrlHa('#fff',0.28);
+    nrlCtx.arc(cx-3,cy-3,pr*0.33,0,Math.PI*2); nrlCtx.fill();
+    nrlCtx.font="11px 'Segoe UI',sans-serif";
+    nrlCtx.fillStyle=nrlHa('#5F5E5A',0.85);
+    nrlCtx.textAlign='center';
+    nrlCtx.fillText(lvl.label, cx+(55+nrl.lvlIdx*8)/2+bodyR/2, 148);
+  }
+
+  function nrlLoop(){
+    nrlDrawNeuron();
+    if(nrlSparkAngle!==null){ nrlSparkT+=0.035; if(nrlSparkT>1){nrlSparkAngle=null;nrlSparkT=0;} }
+    nrlRaf=requestAnimationFrame(nrlLoop);
+  }
+
+  function nrlUpdateWave(){
+    const t=nrlSessionType(nrlSessionIdx);
+    const wl=document.getElementById('nrl-waveLabel');
+    const wf=document.getElementById('nrl-waveFill');
+    const wd=document.getElementById('nrl-waveDesc');
+    const pill=document.getElementById('nrl-phasePill');
+    if(!wl) return;
+    if(t==='focus'){
+      pill.className='nrl-phase-pill focus'; pill.textContent='Concentração';
+      if(nrlProgress<0.2){wl.textContent='Beta';wf.style.width='18%';wf.style.background='#E24B4A';wd.textContent='Iniciando foco';}
+      else if(nrlProgress<0.5){wl.textContent='Alpha';wf.style.width='50%';wf.style.background='#BA7517';wd.textContent='Atenção emergindo';}
+      else if(nrlProgress<0.8){wl.textContent='Theta';wf.style.width='78%';wf.style.background='#185FA5';wd.textContent='Foco sustentado';}
+      else{wl.textContent='Flow';wf.style.width='100%';wf.style.background='#0F6E56';wd.textContent='Estado ideal';}
+    } else {
+      pill.className='nrl-phase-pill rest'; pill.textContent=t==='long'?'Descanso longo':'Descanso curto';
+      wl.textContent='Delta/Theta';wf.style.width='40%';wf.style.background='#534AB7';wd.textContent='Consolidação';
+    }
+  }
+
+  function nrlGetPhysioText(){
+    const t=nrlSessionType(nrlSessionIdx);
+    const arr=t==='focus'?NRL_PHYSIO.focus:t==='long'?NRL_PHYSIO.restLong:NRL_PHYSIO.rest;
+    let chosen=arr[0];
+    for(const e of arr){ if(nrlProgress>=e.t) chosen=e; }
+    return chosen.text;
+  }
+
+  function nrlBuildDots(){
+    const wrap=document.getElementById('nrl-pomDots'); if(!wrap) return;
+    wrap.innerHTML='';
+    for(let i=0;i<nrlPomCycle*2;i++){
+      const d=document.createElement('div');
+      d.className='nrl-pom-dot'+(i<nrlSessionIdx?' done':i===nrlSessionIdx?' active':'');
+      wrap.appendChild(d);
+    }
+  }
+
+  function nrlFmt(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+
+  function nrlResetToSession(idx){
+    clearInterval(nrlInterval); nrlRunning=false;
+    nrlSessionIdx=Math.max(0,Math.min(idx,nrlPomCycle*2-1));
+    nrlSecsLeft=nrlSessionDur(nrlSessionIdx); nrlProgress=0;
+    const btn=document.getElementById('nrl-btnMain');
+    const td=document.getElementById('nrl-timerDisplay');
+    if(btn) btn.textContent='Iniciar';
+    if(td) td.textContent=nrlFmt(nrlSecsLeft);
+    const t=nrlSessionType(nrlSessionIdx);
+    const fn=nrlFocusNum();
+    const sub=document.getElementById('nrl-pomSubtitle');
+    if(sub) sub.textContent=t==='focus'?`Pomodoro · Foco ${fn} de ${nrlPomCycle}`:t==='long'?'Pomodoro · Descanso longo':'Pomodoro · Descanso curto';
+    nrlBuildDots(); nrlUpdateWave();
+    const pt=document.getElementById('nrl-physioText');
+    if(pt) pt.textContent=nrlGetPhysioText();
+  }
+
+  window.nrlToggleTimer = function(){
+    if(nrlRunning){
+      clearInterval(nrlInterval); nrlRunning=false;
+      const btn=document.getElementById('nrl-btnMain'); if(btn) btn.textContent='Continuar';
+      const pt=document.getElementById('nrl-physioText');
+      if(pt) pt.textContent='Pausado. Tente retomar logo — interrupções reduzem a eficiência da mielina.';
+    } else {
+      nrlRunning=true;
+      const btn=document.getElementById('nrl-btnMain'); if(btn) btn.textContent='Pausar';
+      nrlInterval=setInterval(nrlTick,1000);
+    }
+  };
+
+  function nrlTick(){
+    if(!nrlRunning) return;
+    nrlSecsLeft=Math.max(0,nrlSecsLeft-1);
+    const dur=nrlSessionDur(nrlSessionIdx);
+    nrlProgress=1-nrlSecsLeft/dur;
+    const td=document.getElementById('nrl-timerDisplay');
+    if(td) td.textContent=nrlFmt(nrlSecsLeft);
+    nrlUpdateWave();
+    if(nrlSecsLeft%25===0) { const pt=document.getElementById('nrl-physioText'); if(pt) pt.textContent=nrlGetPhysioText(); }
+    if(nrlSecsLeft%30===0&&nrlSecsLeft>0) nrlFireSpark();
+    if(nrlSecsLeft<=0) nrlSessionEnd();
+  }
+
+  function nrlSessionEnd(){
+    clearInterval(nrlInterval); nrlRunning=false;
+    nrlPlayBeep();
+    const t=nrlSessionType(nrlSessionIdx);
+    if(t==='focus'){
+      const dur=nrl.focusMins;
+      const gained=Math.round(dur*1.5);
+      nrl.xp+=gained; nrl.totalSessions++; nrl.totalMins+=dur;
+      nrl.totalSyn+=NRL_LEVELS[nrl.lvlIdx].syn;
+      nrlFireSpark(); nrlFireSpark();
+      nrlUpdateXP(); saveNrlState(nrl);
+      if(!nrlCheckLvlUp()) showToast('+'+gained+' XP · Sessão neural concluída!');
+    } else {
+      showToast(t==='long'?'Descanso longo completo!':'Descansou! Hora de focar.');
+    }
+    const next=(nrlSessionIdx+1)%(nrlPomCycle*2);
+    setTimeout(()=>nrlResetToSession(next),1800);
+  }
+
+  window.nrlPrevSession = function(){ nrlResetToSession(nrlSessionIdx-1); };
+  window.nrlNextSession = function(){ nrlResetToSession(nrlSessionIdx+1); };
+
+  function nrlFireSpark(){ nrlSparkAngle=Math.PI+Math.random()*Math.PI; nrlSparkT=0; }
+
+  function nrlPlayBeep(){
+    try {
+      const ac=new(window.AudioContext||window.webkitAudioContext)();
+      [[523,0],[659,0.18],[784,0.36]].forEach(([freq,when])=>{
+        const o=ac.createOscillator(),g=ac.createGain();
+        o.connect(g);g.connect(ac.destination);
+        o.frequency.value=freq;o.type='sine';
+        g.gain.setValueAtTime(0,ac.currentTime+when);
+        g.gain.linearRampToValueAtTime(0.18,ac.currentTime+when+0.05);
+        g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+when+0.4);
+        o.start(ac.currentTime+when);o.stop(ac.currentTime+when+0.45);
+      });
+    }catch(e){}
+  }
+
+  function nrlUpdateXP(){
+    const cumPrev=NRL_LEVELS.slice(0,nrl.lvlIdx).reduce((a,l)=>a+l.xpReq,0);
+    const xpInLvl=nrl.xp-cumPrev;
+    const req=NRL_LEVELS[nrl.lvlIdx].xpReq;
+    const pct=Math.min(100,Math.round((xpInLvl/req)*100));
+    const xf=document.getElementById('nrl-xpFill'); if(xf) xf.style.width=pct+'%';
+    const xl=document.getElementById('nrl-xpLbl'); if(xl) xl.textContent='XP: '+xpInLvl+' / '+req;
+    const ss=document.getElementById('nrl-statSessions'); if(ss) ss.textContent=nrl.totalSessions+(nrl.totalSessions===1?' sessão':' sessões');
+    const lb=document.getElementById('nrl-lvlBadge'); if(lb) lb.textContent=NRL_LEVELS[nrl.lvlIdx].name;
+    const sx=document.getElementById('nrl-statXP'); if(sx) sx.textContent=nrl.xp;
+    const sm=document.getElementById('nrl-statMins'); if(sm) sm.textContent=nrl.totalMins;
+    const sn=document.getElementById('nrl-statSyn'); if(sn) sn.textContent=nrl.totalSyn;
+  }
+
+  function nrlCheckLvlUp(){
+    const cum=NRL_LEVELS.slice(0,nrl.lvlIdx+1).reduce((a,l)=>a+l.xpReq,0);
+    if(nrl.xp>=cum&&nrl.lvlIdx<NRL_LEVELS.length-1){
+      nrl.lvlIdx++;
+      saveNrlState(nrl);
+      const ut=document.getElementById('nrl-lvlUpTitle'); if(ut) ut.textContent=NRL_LEVELS[nrl.lvlIdx].name+' desbloqueado!';
+      const us=document.getElementById('nrl-lvlUpSub'); if(us) us.textContent=NRL_LVL_MSGS[nrl.lvlIdx];
+      const lu=document.getElementById('nrl-lvlUp'); if(lu) lu.classList.add('show');
+      nrlFireSpark(); return true;
+    }
+    return false;
+  }
+
+  window.nrlCloseLvl = function(){ const lu=document.getElementById('nrl-lvlUp'); if(lu) lu.classList.remove('show'); };
+
+  window.nrlCfgChange = function(){
+    nrl.focusMins=parseInt(document.getElementById('nrl-sliderFocus').value);
+    nrl.shortMins=parseInt(document.getElementById('nrl-sliderShort').value);
+    nrl.longMins=parseInt(document.getElementById('nrl-sliderLong').value);
+    const fv=document.getElementById('nrl-cfgFocusVal'); if(fv) fv.textContent=nrl.focusMins+' min';
+    const sv=document.getElementById('nrl-cfgShortVal'); if(sv) sv.textContent=nrl.shortMins+' min';
+    const lv=document.getElementById('nrl-cfgLongVal'); if(lv) lv.textContent=nrl.longMins+' min';
+    saveNrlState(nrl);
+    if(!nrlRunning) nrlResetToSession(nrlSessionIdx);
+  };
+
+  window.nrlToggleCfg = function(){
+    nrlCfgOpen=!nrlCfgOpen;
+    const p=document.getElementById('nrl-cfgPanel'); if(p) p.classList.toggle('open',nrlCfgOpen);
+    const a=document.getElementById('nrl-cfgArrow'); if(a) a.classList.toggle('open',nrlCfgOpen);
+  };
+
+  // Init
+  nrlUpdateXP();
+  nrlResetToSession(0);
+  nrlLoop();
 })();
 
-// =============================================
-// HOOKS: ciclo completo + sessão completa
-// =============================================
-window.addEventListener('load', function() {
-  renderFocoXP();
-
-  // Patch togglePomodoro
-  const _origTP = window.togglePomodoro;
-  window.togglePomodoro = function() {
-    if (typeof _origTP === 'function') _origTP();
-    setTimeout(_atualizarNaveCenter, 80);
-  };
-
-  // Patch resetarPomodoro
-  const _origReset = window.resetarPomodoro;
-  window.resetarPomodoro = function() {
-    if (typeof _origReset === 'function') _origReset();
-    setTimeout(_atualizarNaveCenter, 80);
-  };
-
-  // Patch pularFase
-  const _origPular = window.pularFase;
-  window.pularFase = function() {
-    if (typeof _origPular === 'function') _origPular();
-    setTimeout(_atualizarNaveCenter, 80);
-  };
-
-  // Hook na função que é chamada quando sessão completa
-  // O app original usa: state.pom.sessoes++ e depois salvar()
-  // Vamos observar mudança no elemento cav-sessoes via MutationObserver
-  const elSessoes = document.getElementById('cav-sessoes');
-  if (elSessoes) {
-    let lastSessoes = parseInt(elSessoes.textContent || '0');
-    const obs = new MutationObserver(() => {
-      const cur = parseInt(elSessoes.textContent || '0');
-      if (cur > lastSessoes) {
-        _focoSessoes += (cur - lastSessoes);
-        _adicionarXP(10 * (cur - lastSessoes));
-        _salvarFocoData();
-        setTimeout(_atualizarNaveCenter, 100);
-      }
-      lastSessoes = cur;
-    });
-    obs.observe(elSessoes, { childList: true, characterData: true, subtree: true });
-  }
-
-  // Hook no elemento cav-ciclos para detectar ciclo completo
-  const elCiclos = document.getElementById('cav-ciclos');
-  if (elCiclos) {
-    let lastCiclos = parseInt(elCiclos.textContent || '0');
-    const obs2 = new MutationObserver(() => {
-      const cur = parseInt(elCiclos.textContent || '0');
-      if (cur > lastCiclos) {
-        const diff = cur - lastCiclos;
-        for (let i = 0; i < diff; i++) {
-          _focoCiclos++;
-          _adicionarXP(50);
-          _salvarFocoData();
-          setTimeout(() => _mostrarCelebracao(50), 300 * i);
-        }
-      }
-      lastCiclos = cur;
-    });
-    obs2.observe(elCiclos, { childList: true, characterData: true, subtree: true });
-  }
-});
-
-</script>
 
 <div class="apelido-overlay" id="apelido-overlay">
   <div class="apelido-box">
