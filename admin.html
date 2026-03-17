@@ -2,98 +2,107 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel da Psicóloga - CleanTdah</title>
+    <title>Painel Admin — CleanTdah</title>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-:root{--primary:#0D47A1;--primary-light:#1565C0;--primary-mid:#1976D2;--accent:#29B6F6;--accent-light:#E3F2FD;--bg:#F0F4F8;--surface:#FFFFFF;--border:#E3EAF2;--text:#1A237E;--text-secondary:#546E7A;--text-light:#90A4AE;--shadow-sm:0 1px 4px rgba(13,71,161,0.08);--shadow:0 4px 16px rgba(13,71,161,0.10);--shadow-lg:0 8px 32px rgba(13,71,161,0.14);--radius:16px;--radius-sm:10px;}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--primary:#0D47A1;--primary-light:#1565C0;--accent-light:#E3F2FD;--bg:#F0F4F8;--surface:#fff;--border:#E3EAF2;--text:#1A237E;--text-2:#546E7A;--text-3:#90A4AE;--shadow-sm:0 1px 4px rgba(13,71,161,.08);--shadow:0 4px 16px rgba(13,71,161,.10);--shadow-lg:0 8px 32px rgba(13,71,161,.14);--r:16px;--r-sm:10px;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter','Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-.admin-topbar{background:linear-gradient(135deg,#0A2472,#0D47A1,#1565C0);padding:0 28px;height:66px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(10,36,114,0.3);position:sticky;top:0;z-index:100;}
-.topbar-left{display:flex;align-items:center;gap:12px;}
-.topbar-logo{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;border:1px solid rgba(255,255,255,0.2);}
-.topbar-title{color:white;font-size:1rem;font-weight:700;}.topbar-sub{color:rgba(255,255,255,0.55);font-size:0.7rem;margin-top:1px;}
-.topbar-right{display:flex;gap:8px;align-items:center;}
-.senha-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0A2472 0%,#0D47A1 50%,#1565C0 100%);display:flex;align-items:center;justify-content:center;z-index:999;}
-.senha-box{background:white;border-radius:24px;padding:40px 34px;max-width:380px;width:90%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.3);}
-.senha-logo{font-size:3rem;margin-bottom:10px;}.senha-titulo{font-size:1.4rem;font-weight:800;color:var(--primary);margin-bottom:4px;}
-.senha-psico-tag{background:var(--accent-light);border:1px solid #BBDEFB;border-radius:20px;padding:5px 14px;font-size:0.76rem;font-weight:700;color:var(--primary-light);display:inline-block;margin:8px 0 14px;}
-.senha-sub{font-size:0.82rem;color:var(--text-secondary);margin-bottom:20px;line-height:1.5;}
-.senha-input{width:100%;border:2px solid var(--border);border-radius:12px;padding:13px 16px;font-size:1.1rem;color:var(--text);outline:none;font-family:inherit;text-align:center;letter-spacing:4px;margin-bottom:12px;transition:border 0.2s;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+/* SENHA OVERLAY */
+.senha-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0A2472,#0D47A1,#1565C0);display:flex;align-items:center;justify-content:center;z-index:999;}
+.senha-box{background:#fff;border-radius:24px;padding:40px 34px;max-width:380px;width:90%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.3);}
+.senha-logo{font-size:3rem;margin-bottom:10px;}
+.senha-titulo{font-size:1.4rem;font-weight:800;color:var(--primary);margin-bottom:4px;}
+.senha-psico-tag{background:var(--accent-light);border:1px solid #BBDEFB;border-radius:20px;padding:5px 14px;font-size:.76rem;font-weight:700;color:var(--primary-light);display:inline-block;margin:8px 0 14px;}
+.senha-sub{font-size:.82rem;color:var(--text-2);margin-bottom:20px;line-height:1.5;}
+.senha-input{width:100%;border:2px solid var(--border);border-radius:12px;padding:13px 16px;font-size:1.1rem;color:var(--text);outline:none;font-family:inherit;text-align:center;letter-spacing:4px;margin-bottom:12px;transition:border .2s;}
 .senha-input:focus{border-color:var(--primary-light);}
-.senha-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary-mid));color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 4px 14px rgba(13,71,161,0.3);}
-.senha-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,71,161,0.4);}
-.senha-erro{color:#C62828;font-size:0.8rem;margin-top:10px;display:none;}
-.senha-shake{animation:shake 0.4s ease;}
+.senha-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),#1976D2);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(13,71,161,.3);transition:all .2s;}
+.senha-btn:hover{transform:translateY(-1px);}
+.senha-erro{color:#C62828;font-size:.8rem;margin-top:10px;display:none;}
+.senha-shake{animation:shake .4s ease;}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+/* TOPBAR */
+.admin-topbar{background:linear-gradient(135deg,#0A2472,#0D47A1,#1565C0);padding:0 28px;height:66px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(10,36,114,.3);position:sticky;top:0;z-index:100;}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-logo{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;border:1px solid rgba(255,255,255,.2);}
+.topbar-title{color:#fff;font-size:1rem;font-weight:700;}.topbar-sub{color:rgba(255,255,255,.55);font-size:.7rem;margin-top:1px;}
+.topbar-right{display:flex;gap:8px;}
+/* CONTAINER */
 .container{max-width:1000px;margin:0 auto;padding:28px 20px 60px;}
+/* KPI */
 .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:24px;}
-.kpi-card{background:var(--surface);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+.kpi-card{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--border);display:flex;align-items:center;gap:14px;}
 .kpi-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
 .kpi-icon-blue{background:#E3F2FD;}.kpi-icon-green{background:#E8F5E9;}.kpi-icon-purple{background:#EDE7F6;}
-.kpi-value{font-size:1.9rem;font-weight:800;color:var(--text);line-height:1;}.kpi-label{font-size:0.68rem;color:var(--text-secondary);margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;}
-.btn{padding:9px 16px;border:none;border-radius:var(--radius-sm);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;transition:all 0.18s;}
-.btn:hover{transform:translateY(-1px);}
-.btn-light{background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.25);}
-.btn-light:hover{background:rgba(255,255,255,0.25);}
+.kpi-value{font-size:1.9rem;font-weight:800;color:var(--text);line-height:1;}.kpi-label{font-size:.68rem;color:var(--text-2);margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
+/* BUTTONS */
+.btn{padding:9px 16px;border:none;border-radius:var(--r-sm);font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;transition:all .18s;}
+.btn-topbar{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);}
+.btn-topbar:hover{background:rgba(255,255,255,.25);}
 .btn-csv{background:#FFF8E1;color:#E65100;border:1px solid #FFE082;}
-.btn-pdf{background:linear-gradient(135deg,#B71C1C,#C62828);color:white;}
-.btn-remover{background:#FFEBEE;color:#B71C1C;border:1px solid #FFCDD2;border-radius:10px;padding:9px 16px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:14px;transition:all 0.18s;}
+.btn-pdf{background:linear-gradient(135deg,#B71C1C,#C62828);color:#fff;}
+.btn-remover{background:#FFEBEE;color:#B71C1C;border:1px solid #FFCDD2;border-radius:var(--r-sm);padding:9px 16px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:14px;transition:all .18s;}
 .btn-remover:hover{background:#FFCDD2;}
-.section-label{font-size:0.7rem;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+/* SECTION */
+.section-label{font-size:.7rem;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
 .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
-details{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;transition:box-shadow 0.2s,border-color 0.2s;}
+/* PATIENT CARDS */
+details{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow-sm);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;transition:box-shadow .2s,border-color .2s;}
 details:hover{box-shadow:var(--shadow);}details[open]{box-shadow:var(--shadow-lg);border-color:#BBDEFB;}
-summary{padding:16px 20px;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;user-select:none;transition:background 0.15s;}
+summary{padding:16px 20px;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;user-select:none;transition:background .15s;}
 summary::-webkit-details-marker{display:none;}summary:hover{background:#FAFCFF;}
 .sum-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0;}
-.pat-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;font-weight:800;flex-shrink:0;}
-.pat-name{font-size:0.95rem;font-weight:700;color:var(--text);}.pat-meta{font-size:0.7rem;color:var(--text-secondary);margin-top:2px;}
+.pat-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#29B6F6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;font-weight:800;flex-shrink:0;}
+.pat-name{font-size:.95rem;font-weight:700;color:var(--text);}.pat-meta{font-size:.7rem;color:var(--text-2);margin-top:2px;}
 .sum-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.score-pill{padding:5px 13px;border-radius:20px;font-size:0.76rem;font-weight:800;color:white;}
-.sync-ago{font-size:0.68rem;color:var(--text-light);}.chevron{font-size:0.75rem;color:var(--text-light);transition:transform 0.25s;display:inline-block;}
+.score-pill{padding:5px 13px;border-radius:20px;font-size:.76rem;font-weight:800;color:#fff;}
+.chevron{font-size:.75rem;color:var(--text-3);transition:transform .25s;display:inline-block;}
 details[open] .chevron{transform:rotate(180deg);}
 .conteudo-card{padding:0 20px 20px;}
-.analise-auto{background:linear-gradient(135deg,#E3F2FD,#EDE7F6);border-radius:var(--radius-sm);padding:12px 16px;font-size:0.82rem;color:var(--primary);font-style:italic;margin-bottom:16px;border-left:3px solid var(--primary-mid);}
+.analise-auto{background:linear-gradient(135deg,#E3F2FD,#EDE7F6);border-radius:var(--r-sm);padding:12px 16px;font-size:.82rem;color:var(--primary);font-style:italic;margin-bottom:16px;border-left:3px solid #1976D2;}
 .dados-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px;}
-.dado-item{background:var(--bg);border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border);}
-.dado-item strong{display:block;font-size:0.62rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+.dado-item{background:var(--bg);border-radius:var(--r-sm);padding:12px;border:1px solid var(--border);}
+.dado-item strong{display:block;font-size:.62rem;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
 .dado-item span{font-size:1.05rem;font-weight:700;color:var(--text);}
-.tab-nav{display:flex;gap:4px;margin-bottom:14px;background:var(--bg);border-radius:var(--radius-sm);padding:4px;}
-.tab-btn{flex:1;background:none;border:none;padding:9px 10px;font-size:0.78rem;font-weight:600;color:var(--text-secondary);cursor:pointer;border-radius:8px;font-family:inherit;transition:all 0.18s;}
+.tab-nav{display:flex;gap:4px;margin-bottom:14px;background:var(--bg);border-radius:var(--r-sm);padding:4px;}
+.tab-btn{flex:1;background:none;border:none;padding:9px 10px;font-size:.78rem;font-weight:600;color:var(--text-2);cursor:pointer;border-radius:8px;font-family:inherit;transition:all .18s;}
 .tab-btn.active{background:var(--surface);color:var(--primary);box-shadow:var(--shadow-sm);}
 .tab-content{display:none;}.tab-content.active{display:block;}
-.periodo-filtro{background:var(--bg);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.periodo-filtro label{font-size:0.74rem;font-weight:700;color:var(--primary);}
-.periodo-filtro input[type="date"]{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:0.78rem;font-family:inherit;color:var(--text);background:var(--surface);outline:none;}
-.periodo-filtro input[type="date"]:focus{border-color:var(--primary-mid);}
-.periodo-filtro button{background:var(--primary);color:white;border:none;border-radius:8px;padding:7px 12px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:inherit;}
+.periodo-filtro{background:var(--bg);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.periodo-filtro label{font-size:.74rem;font-weight:700;color:var(--primary);}
+.periodo-filtro input[type="date"]{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:.78rem;font-family:inherit;color:var(--text);background:var(--surface);outline:none;}
+.periodo-filtro input[type="date"]:focus{border-color:#1976D2;}
+.periodo-filtro button{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:.76rem;font-weight:600;cursor:pointer;font-family:inherit;}
 .pshort{background:var(--accent-light)!important;color:var(--primary-light)!important;border:1px solid #BBDEFB!important;}
-.hist-item{border-bottom:1px dashed var(--border);padding:10px 0;font-size:0.82rem;}
-.hist-item:last-child{border-bottom:none;}.hist-data{font-weight:700;color:var(--primary-mid);margin-bottom:3px;font-size:0.78rem;}
-.hist-linha{color:var(--text-secondary);line-height:1.7;}.hist-linha span{font-weight:600;color:var(--text);}
-.clinico-wrap{background:white;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:12px;border:1px solid var(--border);}
-.clinico-topo{background:linear-gradient(135deg,#0D47A1,#1565C0);color:white;padding:16px 20px;}
-.clinico-topo .ct-titulo{font-size:0.95rem;font-weight:800;margin-bottom:2px;}.clinico-topo .ct-sub{font-size:0.75rem;opacity:0.85;margin-bottom:10px;}
-.ct-meta{display:flex;gap:10px;}.ct-meta-item{background:rgba(255,255,255,0.15);border-radius:10px;padding:8px 12px;flex:1;text-align:center;}
-.ct-meta-item .ctm-val{font-size:1.1rem;font-weight:800;}.ct-meta-item .ctm-lbl{font-size:0.62rem;opacity:0.85;margin-top:2px;}
+.hist-item{border-bottom:1px dashed var(--border);padding:10px 0;font-size:.82rem;}
+.hist-item:last-child{border-bottom:none;}.hist-data{font-weight:700;color:#1976D2;margin-bottom:3px;font-size:.78rem;}
+.hist-linha{color:var(--text-2);line-height:1.7;}.hist-linha span{font-weight:600;color:var(--text);}
+.clinico-wrap{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:12px;border:1px solid var(--border);}
+.clinico-topo{background:linear-gradient(135deg,#0D47A1,#1565C0);color:#fff;padding:16px 20px;}
+.clinico-topo .ct-titulo{font-size:.95rem;font-weight:800;margin-bottom:2px;}.clinico-topo .ct-sub{font-size:.75rem;opacity:.85;margin-bottom:10px;}
+.ct-meta{display:flex;gap:10px;}.ct-meta-item{background:rgba(255,255,255,.15);border-radius:10px;padding:8px 12px;flex:1;text-align:center;}
+.ct-meta-item .ctm-val{font-size:1.1rem;font-weight:800;}.ct-meta-item .ctm-lbl{font-size:.62rem;opacity:.85;margin-top:2px;}
 .clinico-secao{padding:14px 18px;border-bottom:1px solid var(--border);}.clinico-secao:last-child{border-bottom:none;}
-.clinico-secao-titulo{font-size:0.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
-.clinico-linha{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F5F7FA;font-size:0.85rem;}
-.clinico-linha:last-child{border-bottom:none;}.clinico-linha .cl-lbl{color:var(--text-secondary);flex:1;}
+.clinico-secao-titulo{font-size:.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+.clinico-linha{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F5F7FA;font-size:.85rem;}
+.clinico-linha:last-child{border-bottom:none;}.clinico-linha .cl-lbl{color:var(--text-2);flex:1;}
 .clinico-linha .cl-val{font-weight:700;color:var(--text);margin-left:8px;}
-.clinico-linha .cl-badge{font-size:0.68rem;padding:3px 8px;border-radius:10px;font-weight:700;margin-left:6px;flex-shrink:0;}
+.clinico-linha .cl-badge{font-size:.68rem;padding:3px 8px;border-radius:10px;font-weight:700;margin-left:6px;flex-shrink:0;}
 .clinico-grafico{display:flex;gap:4px;align-items:flex-end;height:60px;margin:10px 0;}
 .clinico-grafico-bar{flex:1;border-radius:4px 4px 0 0;min-height:4px;}
-.clinico-parecer{background:#F0F7FF;border-left:4px solid var(--primary-light);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 16px;margin:10px 0;font-size:0.84rem;color:#37474F;line-height:1.7;}
-.clinico-aviso{background:#FFF8E1;border:1px solid #FFE082;border-radius:var(--radius-sm);padding:10px 14px;font-size:0.8rem;color:#5D4037;line-height:1.5;margin-top:10px;}
+.clinico-parecer{background:#F0F7FF;border-left:4px solid #1565C0;border-radius:0 var(--r-sm) var(--r-sm) 0;padding:14px 16px;margin:10px 0;font-size:.84rem;color:#37474F;line-height:1.7;}
+.clinico-aviso{background:#FFF8E1;border:1px solid #FFE082;border-radius:var(--r-sm);padding:10px 14px;font-size:.8rem;color:#5D4037;line-height:1.5;margin-top:10px;}
 .cl-norm{background:#E8F5E9;color:#2E7D32;}.cl-atenc{background:#FFF8E1;color:#F57F17;}.cl-crit{background:#FFEBEE;color:#C62828;}
-.loading-state{display:flex;align-items:center;justify-content:center;gap:12px;padding:48px;color:var(--text-secondary);font-size:0.9rem;}
-.spinner{width:22px;height:22px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;}
+.score-badge{padding:4px 14px;border-radius:20px;font-size:.85em;font-weight:800;color:#fff;}
+.loading-state{display:flex;align-items:center;justify-content:center;gap:12px;padding:48px;color:var(--text-2);font-size:.9rem;}
+.spinner{width:22px;height:22px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty-state{text-align:center;padding:60px 20px;color:var(--text-secondary);}.empty-icon{font-size:3rem;margin-bottom:12px;opacity:0.4;}
-@media(max-width:600px){.admin-topbar{padding:0 14px;height:58px;}.container{padding:16px 12px 60px;}.kpi-row{grid-template-columns:1fr 1fr;}.sync-ago{display:none;}.topbar-right .btn-csv,.topbar-right .btn-pdf{display:none;}}
-    </style>
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-2);}.empty-icon{font-size:3rem;margin-bottom:12px;opacity:.4;}
+@media(max-width:600px){.admin-topbar{padding:0 14px;height:58px;}.container{padding:16px 12px 60px;}.kpi-row{grid-template-columns:1fr 1fr;}}
+</style>
 </head>
 <body>
 
@@ -102,7 +111,7 @@ details[open] .chevron{transform:rotate(180deg);}
     <div class="senha-logo">🧠</div>
     <div class="senha-titulo">Área Clínica</div>
     <div class="senha-psico-tag" id="psico-tag" style="display:none;"></div>
-    <div class="senha-sub">Digite sua senha para acessar o painel de acompanhamento dos seus pacientes.</div>
+    <div class="senha-sub">Digite sua senha para acessar o painel de acompanhamento.</div>
     <input class="senha-input" id="admin-senha-input" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')verificarSenhaAdmin()">
     <button class="senha-btn" onclick="verificarSenhaAdmin()">Acessar Painel →</button>
     <div class="senha-erro" id="senha-erro">Senha incorreta. Tente novamente.</div>
@@ -118,7 +127,7 @@ details[open] .chevron{transform:rotate(180deg);}
     </div>
   </div>
   <div class="topbar-right">
-    <button class="btn btn-light" id="btn-atualizar">🔄 Atualizar</button>
+    <button class="btn btn-topbar" id="btn-atualizar">🔄 Atualizar</button>
     <button class="btn btn-csv" id="btn-csv">📊 CSV</button>
     <button class="btn btn-pdf" onclick="imprimirRelatorioAdmin()">📄 PDF</button>
   </div>
@@ -140,502 +149,796 @@ details[open] .chevron{transform:rotate(180deg);}
     </div>
   </div>
   <div class="section-label">Pacientes Registrados</div>
-  <div id="lista-relatorios">
-    <p style="text-align:center;">Carregando...</p>
-  </div>
+  <div id="lista-relatorios"></div>
 </div>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-// ===== CONFIGURAÇÕES =====
-const senhaCorreta = "psico2024";
-
-// ===== FILTRO POR PSICÓLOGA (via URL ?key=) =====
-const _URL_KEY = new URLSearchParams(window.location.search).get('key') || '';
-const _PSICO_NOMES = {
-    dra_raiza:    'Dra. Raiza Oliveira',
-    dr_gabriel:   'Dr. Gabriel Gomes',
-    dra_caroline: 'Dra. Caroline Guerra'
-};
-
-// Atualiza tag de psicóloga na tela de login
-if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
-    const tag = document.getElementById('psico-tag');
-    if (tag) { tag.textContent = '👩‍⚕️ ' + _PSICO_NOMES[_URL_KEY]; tag.style.display = 'inline-block'; }
-}
-
-// ===== FIREBASE — inicializado UMA vez, antes de qualquer uso =====
-const firebaseConfig = {
-    apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
-    authDomain: "cleantdah.firebaseapp.com",
-    projectId: "cleantdah",
-    storageBucket: "cleantdah.firebasestorage.app",
-    messagingSenderId: "553813989536",
-    appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-let dadosGlobais = [];
-
-// ===== AUTENTICAÇÃO =====
-function verificarSenhaAdmin() {
-    const inp  = document.getElementById('admin-senha-input');
-    const erro = document.getElementById('senha-erro');
-    const val  = inp ? inp.value.trim() : '';
-
-    if (val === senhaCorreta) {
-        document.getElementById('senha-overlay').style.display = 'none';
+    // ===== SENHA =====
+    const senhaCorreta = "psico2024";
+    const senhaDigitada = prompt("Bem-vinda ao Painel Admin.\nDigite a senha para acessar:");
+    if (senhaDigitada === senhaCorreta) {
         document.getElementById('conteudo-principal').style.display = 'block';
-        document.getElementById('admin-topbar').style.display = 'flex';
-
-        // Atualiza título do topbar com nome da psicóloga
-        if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
-            const ttl = document.getElementById('topbar-title');
-            if (ttl) ttl.textContent = 'Painel — ' + _PSICO_NOMES[_URL_KEY];
-        }
-
-        buscarRelatorios();
     } else {
-        if (erro) erro.style.display = 'block';
-        const box = document.querySelector('.senha-box');
-        if (box) { box.classList.add('senha-shake'); setTimeout(() => box.classList.remove('senha-shake'), 400); }
-        if (inp)  { inp.value = ''; inp.focus(); }
-    }
-}
-
-// ===== UTILITÁRIOS =====
-function pad(n) { return String(n).padStart(2, '0'); }
-function hojeISO(date) {
-    date = date || new Date();
-    return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
-}
-
-// ===== GERAÇÃO DO RELATÓRIO CLÍNICO =====
-function gerarRelatorioClinico(dailyData, periodoIni, periodoFim) {
-    if (!dailyData || typeof dailyData !== 'object') {
-        return '<div class="clinico-aviso">Nenhum dado diário sincronizado para este paciente ainda.</div>';
+        document.body.innerHTML = "<h1 style='text-align:center;color:red;margin-top:50px;'>Acesso Negado.</h1>";
+        throw new Error("Senha incorreta.");
     }
 
-    const dataIniObj = periodoIni ? new Date(periodoIni + 'T00:00:00') : new Date(new Date().setDate(new Date().getDate() - 29));
-    const dataFimObj = periodoFim ? new Date(periodoFim + 'T00:00:00') : new Date();
-    const daysN = Math.round((dataFimObj - dataIniObj) / (1000 * 60 * 60 * 24)) + 1;
+    // ===== FIREBASE =====
+    const firebaseConfig = {
+        apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
+        authDomain: "cleantdah.firebaseapp.com",
+        projectId: "cleantdah",
+        storageBucket: "cleantdah.firebasestorage.app",
+        messagingSenderId: "553813989536",
+        appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    let sonoTotal = 0, sonoN = 0, sonoAbaixo7 = 0, metasConcl = 0, metasTotal = 0,
-        focoTotal = 0, focoN = 0, celularTotal = 0, celularN = 0, remedioN = 0,
-        leituraTotal = 0, leituraN = 0, diasDados = 0;
-    const sonoSeries = [], focoSeries = [];
+    let dadosGlobais = [];
 
-    for (let i = daysN - 1; i >= 0; i--) {
-        const d = new Date(dataFimObj); d.setDate(dataFimObj.getDate() - i);
-        const iso = hojeISO(d); const dd = dailyData[iso];
-        if (!dd) { sonoSeries.push(null); focoSeries.push(0); continue; }
-        diasDados++;
-        if (dd.sono && dd.sono.length > 0) {
-            const h = dd.sono[0].horas; sonoTotal += h; sonoN++;
-            if (h < 7) sonoAbaixo7++;
-            sonoSeries.push(h);
-        } else { sonoSeries.push(null); }
-        const allMetas = [...(dd.metas || []), ...(dd.metasFixas || [])];
-        if (allMetas.length > 0) { metasConcl += allMetas.filter(m => m.done).length; metasTotal += allMetas.length; }
-        if (dd.pom && dd.pom.minFoco > 0) { focoTotal += dd.pom.minFoco; focoN++; focoSeries.push(dd.pom.minFoco); }
-        else focoSeries.push(0);
-        if (dd.celular) { celularTotal += dd.celular.horas * 60 + dd.celular.minutos; celularN++; }
-        if (dd.remedio) remedioN++;
-        if (dd.leitura) { leituraTotal += dd.leitura.paginas; leituraN++; }
-    }
+    // ===== FUNÇÕES DO RELATÓRIO CLÍNICO (copiadas do app) =====
+    function pad(n) { return String(n).padStart(2,'0'); }
+    function hojeISO(date) { date = date || new Date(); return date.getFullYear()+'-'+pad(date.getMonth()+1)+'-'+pad(date.getDate()); }
 
-    if (diasDados === 0) return '<div class="clinico-aviso">📋 Nenhum dado registrado neste período.</div>';
-
-    const avgSono = sonoN > 0 ? (sonoTotal / sonoN) : null;
-    const pctMetas = metasTotal > 0 ? Math.round((metasConcl / metasTotal) * 100) : null;
-    const avgFoco = focoN > 0 ? Math.round(focoTotal / focoN) : null;
-    const avgCelular = celularN > 0 ? Math.round(celularTotal / celularN) : null;
-    const pctRemedio = Math.round((remedioN / diasDados) * 100);
-
-    let scoreTotal = 0, scoreMax = 0;
-    if (avgSono !== null) { scoreMax += 30; scoreTotal += avgSono >= 7 ? 30 : avgSono >= 6 ? 18 : avgSono >= 5 ? 8 : 2; }
-    if (pctMetas !== null) { scoreMax += 30; scoreTotal += Math.round((pctMetas / 100) * 30); }
-    if (avgFoco !== null) { scoreMax += 25; scoreTotal += Math.min(25, Math.round((avgFoco / 60) * 25)); }
-    if (avgCelular !== null) { scoreMax += 15; scoreTotal += avgCelular <= 120 ? 15 : avgCelular <= 240 ? 10 : avgCelular <= 360 ? 5 : 0; }
-    const scoreGeral = scoreMax > 0 ? Math.round((scoreTotal / scoreMax) * 100) : 0;
-    const scoreCor = scoreGeral >= 75 ? '#2E7D32' : scoreGeral >= 50 ? '#F57F17' : '#C62828';
-    const scoreLabel = scoreGeral >= 75 ? 'Boa adesão ao tratamento' : scoreGeral >= 50 ? 'Adesão moderada' : 'Adesão baixa — requer atenção';
-
-    const sonoMax = Math.max(...sonoSeries.filter(v => v !== null), 9);
-    const focoMax = Math.max(...focoSeries, 60);
-    const grafSono = sonoSeries.slice(-14).map(v => {
-        const h = Math.round((v || 0) / sonoMax * 100);
-        const cor = !v ? '#EEF2F7' : v >= 7 ? '#43A047' : v >= 6 ? '#FFA726' : '#EF5350';
-        return `<div class="clinico-grafico-bar" style="height:${Math.max(4, h)}%;background:${cor};flex:1;" title="${v ? v + 'h' : '—'}"></div>`;
-    }).join('');
-    const grafFoco = focoSeries.slice(-14).map(v => {
-        const h = Math.round((v / focoMax) * 100);
-        const cor = v >= 60 ? '#7C3AED' : v >= 30 ? '#A78BFA' : '#E3E3E3';
-        return `<div class="clinico-grafico-bar" style="height:${Math.max(4, h)}%;background:${cor};flex:1;" title="${v ? v + 'min' : '—'}"></div>`;
-    }).join('');
-
-    function row(lbl, val, badge, badgeTxt) {
-        return `<div class="clinico-linha"><span class="cl-lbl">${lbl}</span><span class="cl-val">${val}</span><span class="cl-badge ${badge}">${badgeTxt}</span></div>`;
-    }
-    function parecerSono() {
-        if (!avgSono) return 'Dados de sono insuficientes para análise.';
-        let txt = `Média de ${avgSono.toFixed(1)}h/noite. `;
-        if (avgSono >= 8) txt += 'Padrão de sono <strong>dentro dos parâmetros ideais</strong> (7–9h).';
-        else if (avgSono >= 7) txt += 'Sono <strong>limítrofe ao adequado</strong>.';
-        else if (avgSono >= 6) txt += 'Sono <strong>abaixo do recomendado</strong>. Privação crônica leve agrava desatenção.';
-        else txt += 'Sono <strong>significativamente abaixo do limiar terapêutico</strong>.';
-        if (sonoAbaixo7 > 0) txt += ` <strong>${sonoAbaixo7} noites abaixo de 7h</strong> no período.`;
-        return txt;
-    }
-    function parecerMetas() {
-        if (pctMetas === null) return 'Dados de metas insuficientes.';
-        let txt = `Taxa de conclusão: <strong>${pctMetas}%</strong> (${metasConcl}/${metasTotal}). `;
-        if (pctMetas >= 80) txt += '<strong>Desempenho satisfatório</strong>.';
-        else if (pctMetas >= 60) txt += 'Desempenho <strong>moderado</strong>.';
-        else if (pctMetas >= 40) txt += 'Desempenho <strong>abaixo do esperado</strong>.';
-        else txt += '<strong>Dificuldade persistente</strong> na execução de planejamento.';
-        return txt;
-    }
-    function parecerFoco() {
-        if (!avgFoco) return 'Nenhuma sessão de foco registrada.';
-        const totalH = Math.floor(focoTotal / 60), totalM = focoTotal % 60;
-        let txt = `Total de <strong>${totalH > 0 ? totalH + 'h ' : ''}${totalM > 0 ? totalM + 'min' : ''}de foco</strong> em ${focoN} dias. Média de ${avgFoco}min/dia. `;
-        if (avgFoco >= 60) txt += 'Volume de foco <strong>adequado</strong>.';
-        else if (avgFoco >= 30) txt += 'Volume de foco <strong>moderado</strong>.';
-        else txt += 'Volume de foco <strong>baixo</strong>.';
-        return txt;
-    }
-    function parecerTela() {
-        if (!avgCelular) return 'Tempo de tela não monitorado.';
-        const h = Math.floor(avgCelular / 60), m = avgCelular % 60;
-        let txt = `Média de <strong>${h}h${m > 0 ? m + 'min' : ''}/dia</strong>. `;
-        if (avgCelular <= 120) txt += '<strong>Controle adequado</strong>.';
-        else if (avgCelular <= 240) txt += 'Uso <strong>moderado a elevado</strong>.';
-        else txt += '<strong>Uso elevado</strong>. Correlaciona negativamente com atenção sustentada.';
-        return txt;
-    }
-
-    const fmtD = d => d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    const fmtM = d => d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-
-    return `
-    <div style="font-size:0.72em;color:#90A4AE;text-align:right;margin-bottom:8px;">
-        📅 ${fmtD(dataIniObj)} a ${fmtD(dataFimObj)}
-    </div>
-    <div class="clinico-wrap">
-        <div class="clinico-topo">
-            <div class="ct-titulo">📋 Relatório Clínico de Acompanhamento</div>
-            <div class="ct-sub">CleanTdah · ${fmtM(dataFimObj)} · ${diasDados} dias com registro</div>
-            <div class="ct-meta">
-                <div class="ct-meta-item"><div class="ctm-val" style="color:${scoreCor};">${scoreGeral}</div><div class="ctm-lbl">Score /100</div></div>
-                <div class="ct-meta-item"><div class="ctm-val">${diasDados}</div><div class="ctm-lbl">Dias registrados</div></div>
-                <div class="ct-meta-item"><div class="ctm-val">${pctRemedio}%</div><div class="ctm-lbl">Uso do remédio</div></div>
-            </div>
-        </div>
-        <div class="clinico-secao">
-            <div class="clinico-secao-titulo">📊 Indicadores do Período</div>
-            ${avgSono !== null ? row('Média de sono/noite', avgSono.toFixed(1) + 'h', avgSono >= 7 ? 'cl-norm' : avgSono >= 6 ? 'cl-atenc' : 'cl-crit', avgSono >= 7 ? 'Adequado' : avgSono >= 6 ? 'Atenção' : 'Crítico') : ''}
-            ${pctMetas !== null ? row('Taxa de conclusão de metas', pctMetas + '% (' + metasConcl + '/' + metasTotal + ')', pctMetas >= 70 ? 'cl-norm' : pctMetas >= 50 ? 'cl-atenc' : 'cl-crit', pctMetas >= 70 ? 'Adequada' : pctMetas >= 50 ? 'Moderada' : 'Baixa') : ''}
-            ${avgFoco !== null ? row('Média de foco diário', avgFoco + 'min/dia', avgFoco >= 40 ? 'cl-norm' : avgFoco >= 20 ? 'cl-atenc' : 'cl-crit', avgFoco >= 40 ? 'Adequado' : avgFoco >= 20 ? 'Moderado' : 'Baixo') : ''}
-            ${avgCelular !== null ? row('Média de tempo de tela', Math.floor(avgCelular / 60) + 'h' + (avgCelular % 60 > 0 ? avgCelular % 60 + 'min' : '') + '/dia', avgCelular <= 180 ? 'cl-norm' : avgCelular <= 300 ? 'cl-atenc' : 'cl-crit', avgCelular <= 180 ? 'Controlado' : avgCelular <= 300 ? 'Moderado' : 'Elevado') : ''}
-            ${remedioN > 0 ? row('Registro de medicação', remedioN + '/' + diasDados + ' dias', pctRemedio >= 80 ? 'cl-norm' : pctRemedio >= 60 ? 'cl-atenc' : 'cl-crit', pctRemedio >= 80 ? 'Frequente' : pctRemedio >= 60 ? 'Moderado' : 'Baixo') : ''}
-            ${leituraN > 0 ? row('Leitura acumulada', leituraTotal + ' páginas em ' + leituraN + ' dias', 'cl-norm', 'Registrada') : ''}
-        </div>
-    </div>
-    ${sonoN > 0 ? `
-    <div class="clinico-wrap">
-        <div class="clinico-secao">
-            <div class="clinico-secao-titulo">😴 Evolução do Sono — últimas 2 semanas</div>
-            <div class="clinico-grafico">${grafSono}</div>
-            <div style="display:flex;gap:12px;font-size:0.65em;color:#90A4AE;margin-top:4px;">
-                <span>🟢 ≥7h adequado</span><span>🟠 6-7h atenção</span><span>🔴 &lt;6h crítico</span>
-            </div>
-            <div style="height:1px;background:#EEF2F7;margin:12px 0;"></div>
-            <div class="clinico-secao-titulo">🏔️ Foco diário — últimas 2 semanas</div>
-            <div class="clinico-grafico">${grafFoco}</div>
-            <div style="font-size:0.65em;color:#90A4AE;margin-top:4px;">🟣 ≥60min adequado · 🔵 30-60min moderado</div>
-        </div>
-    </div>` : ''}
-    <div class="clinico-wrap">
-        <div class="clinico-secao">
-            <div class="clinico-secao-titulo">📝 Análise Clínica Detalhada</div>
-            <div style="margin-bottom:12px;">
-                <div style="font-size:0.78em;font-weight:700;color:#1565C0;margin-bottom:5px;">😴 Sono e Recuperação Neurológica</div>
-                <div style="font-size:0.83em;color:#37474F;line-height:1.7;">${parecerSono()}</div>
-            </div>
-            <div style="margin-bottom:12px;">
-                <div style="font-size:0.78em;font-weight:700;color:#2E7D32;margin-bottom:5px;">🎯 Função Executiva e Planejamento</div>
-                <div style="font-size:0.83em;color:#37474F;line-height:1.7;">${parecerMetas()}</div>
-            </div>
-            <div style="margin-bottom:12px;">
-                <div style="font-size:0.78em;font-weight:700;color:#7C3AED;margin-bottom:5px;">🏔️ Atenção Sustentada e Foco</div>
-                <div style="font-size:0.83em;color:#37474F;line-height:1.7;">${parecerFoco()}</div>
-            </div>
-            ${avgCelular !== null ? `
-            <div>
-                <div style="font-size:0.78em;font-weight:700;color:#F57F17;margin-bottom:5px;">📱 Regulação do Uso de Tecnologia</div>
-                <div style="font-size:0.83em;color:#37474F;line-height:1.7;">${parecerTela()}</div>
-            </div>` : ''}
-        </div>
-    </div>
-    <div class="clinico-wrap">
-        <div class="clinico-secao">
-            <div class="clinico-secao-titulo">⭐ Avaliação Geral do Período</div>
-            <div style="display:flex;align-items:center;gap:14px;padding:6px 0;">
-                <div style="width:56px;height:56px;border-radius:50%;background:${scoreCor};display:flex;align-items:center;justify-content:center;color:white;font-size:1.2em;font-weight:900;flex-shrink:0;">${scoreGeral}</div>
-                <div>
-                    <div style="font-size:0.88em;font-weight:700;color:#1A237E;">${scoreLabel}</div>
-                    <div style="font-size:0.75em;color:#546E7A;margin-top:3px;">Score baseado em sono, metas, foco e tempo de tela</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="clinico-aviso">⚠️ <strong>Importante:</strong> Relatório gerado automaticamente a partir de dados autodeclarados. Não substitui avaliação clínica profissional.</div>`;
-}
-
-function gerarHistoricoHTML(dailyData) {
-    if (!dailyData || typeof dailyData !== 'object') return '<p style="color:#90A4AE;font-size:0.85em;">Nenhum histórico disponível.</p>';
-    const dias = Object.keys(dailyData).sort().reverse();
-    if (dias.length === 0) return '<p style="color:#90A4AE;font-size:0.85em;">Nenhum histórico disponível.</p>';
-
-    return dias.slice(0, 30).map(data => {
-        const info = dailyData[data];
-        const sonoTxt = (info.sono && info.sono[0]) ? info.sono[0].horas + 'h' : '—';
-        const focoTxt = (info.pom && info.pom.minFoco > 0) ? info.pom.minFoco + 'min' : '0min';
-        const celTxt = info.celular ? (info.celular.horas + 'h ' + info.celular.minutos + 'min') : '—';
-        const aguaTxt = info.copos ? (info.copos * 250) + 'ml' : '0ml';
-        const remedioTxt = (info.remedio && info.remedio.horaRegistro) ? '✅' : '❌';
-        let metasConc = 0, metasTot = 0;
-        if (info.metas) { metasTot += info.metas.length; metasConc += info.metas.filter(m => m.done).length; }
-        if (info.metasFixas) { metasTot += info.metasFixas.length; metasConc += info.metasFixas.filter(m => m.done).length; }
-        const metasPct = metasTot > 0 ? Math.round((metasConc / metasTot) * 100) : null;
-        const metasCor = metasPct === null ? '#90A4AE' : metasPct >= 70 ? '#2E7D32' : metasPct >= 40 ? '#F57F17' : '#C62828';
-
-        return `<div class="hist-item">
-            <div class="hist-data">📅 ${data}</div>
-            <div class="hist-linha">😴 Sono: <span>${sonoTxt}</span> &nbsp;|&nbsp; 🏔️ Foco: <span>${focoTxt}</span> &nbsp;|&nbsp; 💧 Água: <span>${aguaTxt}</span></div>
-            <div class="hist-linha">📱 Tela: <span>${celTxt}</span> &nbsp;|&nbsp; 💊 Remédio: <span>${remedioTxt}</span> &nbsp;|&nbsp; 🎯 Metas: <span style="color:${metasCor};">${metasConc}/${metasTot}${metasPct !== null ? ' (' + metasPct + '%)' : ''}</span></div>
-        </div>`;
-    }).join('');
-}
-
-function gerarAnalise(dados) {
-    let analise = '';
-    if (dados.score >= 70) analise += '✅ Excelente desempenho geral. ';
-    else if (dados.score >= 40) analise += '⚠️ Desempenho moderado. ';
-    else analise += '❌ Score baixo — requer atenção. ';
-    if (dados.sonoMedia && dados.sonoMedia < 6) analise += '💤 Privação de sono detectada. ';
-    if (dados.metasPct && dados.metasPct >= 80) analise += '🎯 Ótima adesão às metas. ';
-    return analise || 'Poucos dados para análise completa.';
-}
-
-// ===== BUSCAR PACIENTES NO FIREBASE =====
-async function buscarRelatorios() {
-    const divLista = document.getElementById('lista-relatorios');
-    divLista.innerHTML = '<div class="loading-state"><div class="spinner"></div>Carregando pacientes...</div>';
-    dadosGlobais = [];
-    let totalScore = 0, qtdPacientes = 0;
-
-    try {
-        const querySnapshot = await db.collection("usuarios").get();
-        divLista.innerHTML = "";
-
-        if (querySnapshot.empty) {
-            divLista.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><p>Nenhum paciente encontrado.</p></div>';
-            document.getElementById('total-pacientes').innerText = "0";
-            document.getElementById('score-medio').innerText = "0";
-            return;
+    function gerarRelatorioClinico(dailyData, periodoIni, periodoFim) {
+        if (!dailyData || typeof dailyData !== 'object') {
+            return '<div class="clinico-aviso">Nenhum dado diário sincronizado para este paciente ainda.</div>';
         }
 
-        querySnapshot.forEach((documento) => {
-            const dados = documento.data();
-            const id = documento.id;
+        const dataIniObj = periodoIni ? new Date(periodoIni + 'T00:00:00') : new Date(new Date().setDate(new Date().getDate()-29));
+        const dataFimObj = periodoFim ? new Date(periodoFim + 'T00:00:00') : new Date();
+        const daysN = Math.round((dataFimObj - dataIniObj) / (1000*60*60*24)) + 1;
 
-            // Filtrar por psicóloga
-            if (_URL_KEY && dados.psicologa && dados.psicologa !== _URL_KEY) return;
+        let sonoTotal=0,sonoN=0,sonoAbaixo7=0,metasConcl=0,metasTotal=0,
+            focoTotal=0,focoN=0,celularTotal=0,celularN=0,remedioN=0,
+            leituraTotal=0,leituraN=0,diasDados=0;
+        const sonoSeries=[], focoSeries=[];
 
-            dadosGlobais.push({ id, ...dados });
-            qtdPacientes++;
-            totalScore += Number(dados.score) || 0;
+        for(let i=daysN-1;i>=0;i--){
+            const d = new Date(dataFimObj); d.setDate(dataFimObj.getDate()-i);
+            const iso = hojeISO(d); const dd = dailyData[iso];
+            if(!dd){ sonoSeries.push(null); focoSeries.push(0); continue; }
+            diasDados++;
+            if(dd.sono&&dd.sono.length>0){
+                const h=dd.sono[0].horas; sonoTotal+=h; sonoN++;
+                if(h<7) sonoAbaixo7++;
+                sonoSeries.push(h);
+            } else { sonoSeries.push(null); }
+            const allMetas=[...(dd.metas||[]),...(dd.metasFixas||[])];
+            if(allMetas.length>0){ metasConcl+=allMetas.filter(m=>m.done).length; metasTotal+=allMetas.length; }
+            if(dd.pom&&dd.pom.minFoco>0){ focoTotal+=dd.pom.minFoco; focoN++; focoSeries.push(dd.pom.minFoco); }
+            else focoSeries.push(0);
+            if(dd.celular){ celularTotal+=dd.celular.horas*60+dd.celular.minutos; celularN++; }
+            if(dd.remedio) remedioN++;
+            if(dd.leitura){ leituraTotal+=dd.leitura.paginas; leituraN++; }
+        }
 
-            const scoreCor = (dados.score || 0) >= 70 ? '#2E7D32' : (dados.score || 0) >= 40 ? '#F57F17' : '#C62828';
-            const uid = id.replace(/[^a-z0-9]/g, '_');
-            const dtEnvio = dados.ultimoEnvio ? new Date(dados.ultimoEnvio).toLocaleString('pt-BR') : '—';
+        if(diasDados===0) return '<div class="clinico-aviso">📋 Nenhum dado registrado neste período.</div>';
 
-            const hoje = new Date();
-            const iniDefault = new Date(); iniDefault.setDate(hoje.getDate() - 29);
+        const avgSono = sonoN>0?(sonoTotal/sonoN):null;
+        const pctMetas = metasTotal>0?Math.round((metasConcl/metasTotal)*100):null;
+        const avgFoco = focoN>0?Math.round(focoTotal/focoN):null;
+        const avgCelular = celularN>0?Math.round(celularTotal/celularN):null;
+        const pctRemedio = Math.round((remedioN/diasDados)*100);
 
-            const cartaoHTML = `
-            <details id="details-${uid}">
-                <summary>
-                  <div class="sum-left">
-                    <div class="pat-avatar">${(dados.apelido || '?')[0].toUpperCase()}</div>
-                    <div>
-                      <div class="pat-name">${dados.apelido || id}</div>
-                      <div class="pat-meta">Última sync: ${dtEnvio}</div>
-                    </div>
-                  </div>
-                  <div class="sum-right">
-                    <span class="score-pill" style="background:${scoreCor};">Score ${dados.score || 0}</span>
-                    <span class="sync-ago">${dados.diasDados || 0}d registrados</span>
-                    <span class="chevron">▼</span>
-                  </div>
-                </summary>
-                <div class="conteudo-card">
-                    <div class="analise-auto">${gerarAnalise(dados)}</div>
-                    <div class="dados-grid">
-                        <div class="dado-item"><strong>Último envio</strong><span style="font-size:0.85em;color:#546E7A;">${dtEnvio}</span></div>
-                        <div class="dado-item"><strong>Score semanal</strong><span style="color:${scoreCor};">${dados.score || 0}</span></div>
-                        <div class="dado-item"><strong>Dias registrados</strong><span>${dados.diasDados || 0}</span></div>
-                        <div class="dado-item"><strong>Sono médio</strong><span>${dados.sonoMedia ? dados.sonoMedia + 'h' : '—'}</span></div>
-                        <div class="dado-item"><strong>Metas</strong><span>${dados.metasPct != null ? dados.metasPct + '%' : '—'}</span></div>
-                        <div class="dado-item"><strong>Foco total</strong><span>${dados.focoTotal ? dados.focoTotal + 'min' : '—'}</span></div>
-                    </div>
+        let scoreTotal=0, scoreMax=0;
+        if(avgSono!==null){scoreMax+=30; scoreTotal+=avgSono>=7?30:avgSono>=6?18:avgSono>=5?8:2;}
+        if(pctMetas!==null){scoreMax+=30; scoreTotal+=Math.round((pctMetas/100)*30);}
+        if(avgFoco!==null){scoreMax+=25; scoreTotal+=Math.min(25,Math.round((avgFoco/60)*25));}
+        if(avgCelular!==null){scoreMax+=15; scoreTotal+=avgCelular<=120?15:avgCelular<=240?10:avgCelular<=360?5:0;}
+        const scoreGeral = scoreMax>0?Math.round((scoreTotal/scoreMax)*100):0;
+        const scoreCor = scoreGeral>=75?'#2E7D32':scoreGeral>=50?'#F57F17':'#C62828';
+        const scoreLabel = scoreGeral>=75?'Boa adesão ao tratamento':scoreGeral>=50?'Adesão moderada':'Adesão baixa — requer atenção';
 
-                    <div class="tab-nav">
-                        <button class="tab-btn active" onclick="switchTab('${uid}','relatorio')">📊 Relatório Clínico</button>
-                        <button class="tab-btn" onclick="switchTab('${uid}','historico')">📅 Histórico Diário</button>
-                    </div>
+        const sonoMax = Math.max(...sonoSeries.filter(v=>v!==null), 9);
+        const focoMax = Math.max(...focoSeries, 60);
+        const grafSono = sonoSeries.slice(-14).map(v => {
+            const h = Math.round((v||0)/sonoMax*100);
+            const cor = !v?'#EEF2F7':v>=7?'#43A047':v>=6?'#FFA726':'#EF5350';
+            return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};flex:1;" title="${v?v+'h':'—'}"></div>`;
+        }).join('');
+        const grafFoco = focoSeries.slice(-14).map(v => {
+            const h = Math.round((v/focoMax)*100);
+            const cor = v>=60?'#7C3AED':v>=30?'#A78BFA':'#E3E3E3';
+            return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};flex:1;" title="${v?v+'min':'—'}"></div>`;
+        }).join('');
 
-                    <div class="periodo-filtro" id="filtro-${uid}">
-                        <label>Período:</label>
-                        <input type="date" id="ini-${uid}" value="${hojeISO(iniDefault)}">
-                        <span style="font-size:0.8em;color:#546E7A;">até</span>
-                        <input type="date" id="fim-${uid}" value="${hojeISO(hoje)}">
-                        <button onclick="atualizarRelatorio('${uid}')">🔄 Gerar</button>
-                        <button onclick="setP('${uid}',7)" class="pshort">7d</button>
-                        <button onclick="setP('${uid}',15)" class="pshort">15d</button>
-                        <button onclick="setP('${uid}',30)" class="pshort">30d</button>
-                    </div>
+        function row(lbl,val,badge,badgeTxt){
+            return `<div class="clinico-linha"><span class="cl-lbl">${lbl}</span><span class="cl-val">${val}</span><span class="cl-badge ${badge}">${badgeTxt}</span></div>`;
+        }
+        function parecerSono(){
+            if(!avgSono) return 'Dados de sono insuficientes para análise.';
+            let txt=`Média de ${avgSono.toFixed(1)}h/noite. `;
+            if(avgSono>=8) txt+='Padrão de sono <strong>dentro dos parâmetros ideais</strong> (7–9h).';
+            else if(avgSono>=7) txt+='Sono <strong>limítrofe ao adequado</strong>.';
+            else if(avgSono>=6) txt+='Sono <strong>abaixo do recomendado</strong>. Privação crônica leve agrava desatenção.';
+            else txt+='Sono <strong>significativamente abaixo do limiar terapêutico</strong>.';
+            if(sonoAbaixo7>0) txt+=` <strong>${sonoAbaixo7} noites abaixo de 7h</strong> no período.`;
+            return txt;
+        }
+        function parecerMetas(){
+            if(pctMetas===null) return 'Dados de metas insuficientes.';
+            let txt=`Taxa de conclusão: <strong>${pctMetas}%</strong> (${metasConcl}/${metasTotal}). `;
+            if(pctMetas>=80) txt+='<strong>Desempenho satisfatório</strong>.';
+            else if(pctMetas>=60) txt+='Desempenho <strong>moderado</strong>.';
+            else if(pctMetas>=40) txt+='Desempenho <strong>abaixo do esperado</strong>.';
+            else txt+='<strong>Dificuldade persistente</strong> na execução de planejamento.';
+            return txt;
+        }
+        function parecerFoco(){
+            if(!avgFoco) return 'Nenhuma sessão de foco registrada.';
+            const totalH=Math.floor(focoTotal/60), totalM=focoTotal%60;
+            let txt=`Total de <strong>${totalH>0?totalH+'h ':''}${totalM>0?totalM+'min':''}de foco</strong> em ${focoN} dias. Média de ${avgFoco}min/dia. `;
+            if(avgFoco>=60) txt+='Volume de foco <strong>adequado</strong>.';
+            else if(avgFoco>=30) txt+='Volume de foco <strong>moderado</strong>.';
+            else txt+='Volume de foco <strong>baixo</strong>.';
+            return txt;
+        }
+        function parecerTela(){
+            if(!avgCelular) return 'Tempo de tela não monitorado.';
+            const h=Math.floor(avgCelular/60), m=avgCelular%60;
+            let txt=`Média de <strong>${h}h${m>0?m+'min':''}/dia</strong>. `;
+            if(avgCelular<=120) txt+='<strong>Controle adequado</strong>.';
+            else if(avgCelular<=240) txt+='Uso <strong>moderado a elevado</strong>.';
+            else txt+='<strong>Uso elevado</strong>. Correlaciona negativamente com atenção sustentada.';
+            return txt;
+        }
 
-                    <div class="tab-content active" id="tab-relatorio-${uid}">
-                        ${gerarRelatorioClinico(dados.dailyData, hojeISO(iniDefault), hojeISO(hoje))}
-                    </div>
-                    <div class="tab-content" id="tab-historico-${uid}">
-                        <div style="max-height:400px;overflow-y:auto;padding:4px;">
-                            ${gerarHistoricoHTML(dados.dailyData)}
-                        </div>
-                    </div>
+        const fmtD = d => d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
+        const fmtM = d => d.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
 
-                    <button class="btn-remover" onclick="deletarPaciente('${id}')">🗑️ Remover Paciente</button>
+        return `
+        <div style="font-size:0.72em;color:#90A4AE;text-align:right;margin-bottom:8px;">
+            📅 ${fmtD(dataIniObj)} a ${fmtD(dataFimObj)}
+        </div>
+        <div class="clinico-wrap">
+            <div class="clinico-topo">
+                <div class="ct-titulo">📋 Relatório Clínico de Acompanhamento</div>
+                <div class="ct-sub">TDAH Care · ${fmtM(dataFimObj)} · ${diasDados} dias com registro</div>
+                <div class="ct-meta">
+                    <div class="ct-meta-item"><div class="ctm-val" style="color:${scoreCor};">${scoreGeral}</div><div class="ctm-lbl">Score /100</div></div>
+                    <div class="ct-meta-item"><div class="ctm-val">${diasDados}</div><div class="ctm-lbl">Dias registrados</div></div>
+                    <div class="ct-meta-item"><div class="ctm-val">${pctRemedio}%</div><div class="ctm-lbl">Uso do remédio</div></div>
                 </div>
-            </details>`;
+            </div>
+            <div class="clinico-secao">
+                <div class="clinico-secao-titulo">📊 Indicadores do Período</div>
+                ${avgSono!==null?row('Média de sono/noite', avgSono.toFixed(1)+'h', avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit', avgSono>=7?'Adequado':avgSono>=6?'Atenção':'Crítico'):''}
+                ${pctMetas!==null?row('Taxa de conclusão de metas', pctMetas+'% ('+metasConcl+'/'+metasTotal+')', pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit', pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
+                ${avgFoco!==null?row('Média de foco diário', avgFoco+'min/dia', avgFoco>=40?'cl-norm':avgFoco>=20?'cl-atenc':'cl-crit', avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}
+                ${avgCelular!==null?row('Média de tempo de tela', Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia', avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit', avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
+                ${remedioN>0?row('Registro de medicação', remedioN+'/'+diasDados+' dias', pctRemedio>=80?'cl-norm':pctRemedio>=60?'cl-atenc':'cl-crit', pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo'):''}
+                ${leituraN>0?row('Leitura acumulada', leituraTotal+' páginas em '+leituraN+' dias', 'cl-norm', 'Registrada'):''}
+            </div>
+        </div>
+        ${sonoN>0?`
+        <div class="clinico-wrap">
+            <div class="clinico-secao">
+                <div class="clinico-secao-titulo">😴 Evolução do Sono — últimas 2 semanas</div>
+                <div class="clinico-grafico">${grafSono}</div>
+                <div style="display:flex;gap:12px;font-size:0.65em;color:#90A4AE;margin-top:4px;">
+                    <span>🟢 ≥7h adequado</span><span>🟠 6-7h atenção</span><span>🔴 &lt;6h crítico</span>
+                </div>
+                <div style="height:1px;background:#EEF2F7;margin:12px 0;"></div>
+                <div class="clinico-secao-titulo">🏔️ Foco diário — últimas 2 semanas</div>
+                <div class="clinico-grafico">${grafFoco}</div>
+                <div style="font-size:0.65em;color:#90A4AE;margin-top:4px;">🟣 ≥60min adequado · 🔵 30-60min moderado</div>
+            </div>
+        </div>`:''}
+        <div class="clinico-wrap">
+            <div class="clinico-secao">
+                <div class="clinico-secao-titulo">📝 Análise Clínica Detalhada</div>
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:0.78em;font-weight:700;color:#1565C0;margin-bottom:5px;">😴 Sono e Recuperação Neurológica</div>
+                    <div style="font-size:0.83em;color:#37474F;line-height:1.7;">${parecerSono()}</div>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:0.78em;font-weight:700;color:#2E7D32;margin-bottom:5px;">🎯 Função Executiva e Planejamento</div>
+                    <div style="font-size:0.83em;color:#37474F;line-height:1.7;">${parecerMetas()}</div>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:0.78em;font-weight:700;color:#7C3AED;margin-bottom:5px;">🏔️ Atenção Sustentada e Foco</div>
+                    <div style="font-size:0.83em;color:#37474F;line-height:1.7;">${parecerFoco()}</div>
+                </div>
+                ${avgCelular!==null?`
+                <div>
+                    <div style="font-size:0.78em;font-weight:700;color:#F57F17;margin-bottom:5px;">📱 Regulação do Uso de Tecnologia</div>
+                    <div style="font-size:0.83em;color:#37474F;line-height:1.7;">${parecerTela()}</div>
+                </div>`:''}
+            </div>
+        </div>
+        <div class="clinico-wrap">
+            <div class="clinico-secao">
+                <div class="clinico-secao-titulo">⭐ Avaliação Geral do Período</div>
+                <div style="display:flex;align-items:center;gap:14px;padding:6px 0;">
+                    <div style="width:56px;height:56px;border-radius:50%;background:${scoreCor};display:flex;align-items:center;justify-content:center;color:white;font-size:1.2em;font-weight:900;flex-shrink:0;">${scoreGeral}</div>
+                    <div>
+                        <div style="font-size:0.88em;font-weight:700;color:#1A237E;">${scoreLabel}</div>
+                        <div style="font-size:0.75em;color:#546E7A;margin-top:3px;">Score baseado em sono, metas, foco e tempo de tela</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clinico-aviso">⚠️ <strong>Importante:</strong> Relatório gerado automaticamente a partir de dados autodeclarados. Não substitui avaliação clínica profissional.</div>`;
+    }
 
-            divLista.innerHTML += cartaoHTML;
+    function gerarHistoricoHTML(dailyData) {
+        if (!dailyData || typeof dailyData !== 'object') return '<p style="color:#90A4AE;font-size:0.85em;">Nenhum histórico disponível.</p>';
+        const dias = Object.keys(dailyData).sort().reverse();
+        if (dias.length === 0) return '<p style="color:#90A4AE;font-size:0.85em;">Nenhum histórico disponível.</p>';
+
+        return dias.slice(0, 30).map(data => {
+            const info = dailyData[data];
+            const sonoTxt = (info.sono && info.sono[0]) ? info.sono[0].horas + 'h' : '—';
+            const focoTxt = (info.pom && info.pom.minFoco > 0) ? info.pom.minFoco + 'min' : '0min';
+            const celTxt = info.celular ? (info.celular.horas + 'h ' + info.celular.minutos + 'min') : '—';
+            const aguaTxt = info.copos ? (info.copos * 250) + 'ml' : '0ml';
+            const remedioTxt = (info.remedio && info.remedio.horaRegistro) ? '✅' : '❌';
+            let metasConc = 0, metasTot = 0;
+            if(info.metas) { metasTot+=info.metas.length; metasConc+=info.metas.filter(m=>m.done).length; }
+            if(info.metasFixas) { metasTot+=info.metasFixas.length; metasConc+=info.metasFixas.filter(m=>m.done).length; }
+            const metasPct = metasTot > 0 ? Math.round((metasConc/metasTot)*100) : null;
+            const metasCor = metasPct===null?'#90A4AE':metasPct>=70?'#2E7D32':metasPct>=40?'#F57F17':'#C62828';
+
+            return `<div class="hist-item">
+                <div class="hist-data">📅 ${data}</div>
+                <div class="hist-linha">😴 Sono: <span>${sonoTxt}</span> &nbsp;|&nbsp; 🏔️ Foco: <span>${focoTxt}</span> &nbsp;|&nbsp; 💧 Água: <span>${aguaTxt}</span></div>
+                <div class="hist-linha">📱 Tela: <span>${celTxt}</span> &nbsp;|&nbsp; 💊 Remédio: <span>${remedioTxt}</span> &nbsp;|&nbsp; 🎯 Metas: <span style="color:${metasCor};">${metasConc}/${metasTot}${metasPct!==null?' ('+metasPct+'%)':''}</span></div>
+            </div>`;
+        }).join('');
+    }
+
+    function gerarAnalise(dados) {
+        let analise = '';
+        if (dados.score >= 70) analise += '✅ Excelente desempenho geral. ';
+        else if (dados.score >= 40) analise += '⚠️ Desempenho moderado. ';
+        else analise += '❌ Score baixo — requer atenção. ';
+        if (dados.sonoMedia && dados.sonoMedia < 6) analise += '💤 Privação de sono detectada. ';
+        if (dados.metasPct && dados.metasPct >= 80) analise += '🎯 Ótima adesão às metas. ';
+        return analise || 'Poucos dados para análise completa.';
+    }
+
+    // ===== BUSCAR DADOS =====
+    async function buscarRelatorios() {
+        const divLista = document.getElementById('lista-relatorios');
+        divLista.innerHTML = "<p style='text-align:center;padding:30px;'>🔄 Carregando dados...</p>";
+        dadosGlobais = [];
+        let totalScore = 0, qtdPacientes = 0;
+
+        try {
+            const querySnapshot = await db.collection("usuarios").get();
+            divLista.innerHTML = "";
+
+            if (querySnapshot.empty) {
+                divLista.innerHTML = "<p style='text-align:center;padding:30px;color:#90A4AE;'>Nenhum paciente encontrado.</p>";
+                document.getElementById('total-pacientes').innerText = "0";
+                document.getElementById('score-medio').innerText = "0";
+                return;
+            }
+
+            querySnapshot.forEach((documento) => {
+                const dados = documento.data();
+                const id = documento.id;
+                dadosGlobais.push({ id, ...dados });
+                qtdPacientes++;
+                totalScore += Number(dados.score) || 0;
+
+                const scoreCor = (dados.score||0)>=70?'#2E7D32':(dados.score||0)>=40?'#F57F17':'#C62828';
+                const uid = id.replace(/[^a-z0-9]/g,'_');
+                const dtEnvio = dados.ultimoEnvio ? new Date(dados.ultimoEnvio).toLocaleString('pt-BR') : '—';
+
+                // Datas padrão para o período
+                const hoje = new Date();
+                const iniDefault = new Date(); iniDefault.setDate(hoje.getDate()-29);
+
+                const cartaoHTML = `
+                <details id="details-${uid}">
+                    <summary>
+                        <span>👤 ${dados.apelido || id}</span>
+                        <span class="score-badge" style="background:${scoreCor};">Score: ${dados.score||0}</span>
+                    </summary>
+                    <div class="conteudo-card">
+                        <div class="analise-auto">${gerarAnalise(dados)}</div>
+                        <div class="dados-grid">
+                            <div class="dado-item"><strong>Último envio</strong><span style="font-size:0.85em;color:#546E7A;">${dtEnvio}</span></div>
+                            <div class="dado-item"><strong>Score semanal</strong><span style="color:${scoreCor};">${dados.score||0}</span></div>
+                            <div class="dado-item"><strong>Dias registrados</strong><span>${dados.diasDados||0}</span></div>
+                            <div class="dado-item"><strong>Sono médio</strong><span>${dados.sonoMedia ? dados.sonoMedia+'h' : '—'}</span></div>
+                            <div class="dado-item"><strong>Metas</strong><span>${dados.metasPct!=null ? dados.metasPct+'%' : '—'}</span></div>
+                            <div class="dado-item"><strong>Foco total</strong><span>${dados.focoTotal ? dados.focoTotal+'min' : '—'}</span></div>
+                        </div>
+
+                        <div class="tab-nav">
+                            <button class="tab-btn active" onclick="switchTab('${uid}','relatorio')">📊 Relatório Clínico</button>
+                            <button class="tab-btn" onclick="switchTab('${uid}','historico')">📅 Histórico Diário</button>
+                        </div>
+
+                        <div class="periodo-filtro" id="filtro-${uid}">
+                            <label>Período:</label>
+                            <input type="date" id="ini-${uid}" value="${hojeISO(iniDefault)}">
+                            <span style="font-size:0.8em;color:#546E7A;">até</span>
+                            <input type="date" id="fim-${uid}" value="${hojeISO(hoje)}">
+                            <button onclick="atualizarRelatorio('${uid}')">🔄 Gerar</button>
+                            <button onclick="setP('${uid}',7)" style="background:#EEF2FF;color:#1565C0;padding:6px 10px;font-size:0.78em;">7d</button>
+                            <button onclick="setP('${uid}',15)" style="background:#EEF2FF;color:#1565C0;padding:6px 10px;font-size:0.78em;">15d</button>
+                            <button onclick="setP('${uid}',30)" style="background:#EEF2FF;color:#1565C0;padding:6px 10px;font-size:0.78em;">30d</button>
+                        </div>
+
+                        <div class="tab-content active" id="tab-relatorio-${uid}">
+                            ${gerarRelatorioClinico(dados.dailyData, hojeISO(iniDefault), hojeISO(hoje))}
+                        </div>
+                        <div class="tab-content" id="tab-historico-${uid}">
+                            <div style="max-height:400px;overflow-y:auto;padding:4px;">
+                                ${gerarHistoricoHTML(dados.dailyData)}
+                            </div>
+                        </div>
+
+                        <button class="btn-remover" onclick="deletarPaciente('${id}')">🗑️ Remover Paciente</button>
+                    </div>
+                </details>`;
+
+                divLista.innerHTML += cartaoHTML;
+            });
+
+            document.getElementById('total-pacientes').innerText = qtdPacientes;
+            document.getElementById('score-medio').innerText = (totalScore / qtdPacientes).toFixed(1);
+
+        } catch (erro) {
+            console.error("Erro:", erro);
+            divLista.innerHTML = `<p style="color:red;text-align:center;padding:20px;">Erro ao conectar com o Firebase: ${erro.message}</p>`;
+        }
+    }
+
+    function switchTab(uid, tab) {
+        const tabs = ['relatorio', 'historico'];
+        tabs.forEach(t => {
+            const el = document.getElementById('tab-'+t+'-'+uid);
+            const btn = document.querySelector(`#details-${uid} .tab-btn:nth-child(${tabs.indexOf(t)+1})`);
+            if(el) el.classList.toggle('active', t===tab);
         });
-
-        document.getElementById('total-pacientes').innerText = qtdPacientes;
-        document.getElementById('score-medio').innerText = qtdPacientes > 0 ? (totalScore / qtdPacientes).toFixed(1) : '0';
-
-    } catch (erro) {
-        console.error("Erro Firebase:", erro);
-        divLista.innerHTML = `<p style="color:red;text-align:center;padding:20px;">Erro ao conectar com o Firebase: ${erro.message}</p>`;
+        document.querySelectorAll(`#details-${uid} .tab-btn`).forEach((btn, i) => {
+            btn.classList.toggle('active', tabs[i]===tab);
+        });
+        // Mostrar filtro só no relatório
+        const filtro = document.getElementById('filtro-'+uid);
+        if(filtro) filtro.style.display = tab==='relatorio' ? 'flex' : 'none';
     }
-}
 
-// ===== TABS =====
-function switchTab(uid, tab) {
-    ['relatorio', 'historico'].forEach((t, i) => {
-        const el = document.getElementById('tab-' + t + '-' + uid);
-        if (el) el.classList.toggle('active', t === tab);
-    });
-    document.querySelectorAll(`#details-${uid} .tab-btn`).forEach((btn, i) => {
-        btn.classList.toggle('active', ['relatorio', 'historico'][i] === tab);
-    });
-    const filtro = document.getElementById('filtro-' + uid);
-    if (filtro) filtro.style.display = tab === 'relatorio' ? 'flex' : 'none';
-}
-
-function setP(uid, days) {
-    const fim = new Date();
-    const ini = new Date(); ini.setDate(fim.getDate() - (days - 1));
-    document.getElementById('ini-' + uid).value = hojeISO(ini);
-    document.getElementById('fim-' + uid).value = hojeISO(fim);
-    atualizarRelatorio(uid);
-}
-
-function atualizarRelatorio(uid) {
-    const ini = document.getElementById('ini-' + uid).value;
-    const fim = document.getElementById('fim-' + uid).value;
-    const paciente = dadosGlobais.find(p => p.id.replace(/[^a-z0-9]/g, '_') === uid);
-    if (!paciente) return;
-    const container = document.getElementById('tab-relatorio-' + uid);
-    if (container) container.innerHTML = gerarRelatorioClinico(paciente.dailyData, ini, fim);
-}
-
-// ===== REMOVER PACIENTE =====
-window.deletarPaciente = async function (id) {
-    if (!confirm("Tem certeza que deseja APAGAR os dados deste paciente? Essa ação não pode ser desfeita.")) return;
-    try {
-        await db.collection("usuarios").doc(id).delete();
-        alert("Paciente removido com sucesso!");
-        buscarRelatorios();
-    } catch (error) {
-        alert("Erro ao remover: " + error.message);
+    function setP(uid, days) {
+        const fim = new Date();
+        const ini = new Date(); ini.setDate(fim.getDate()-(days-1));
+        document.getElementById('ini-'+uid).value = hojeISO(ini);
+        document.getElementById('fim-'+uid).value = hojeISO(fim);
+        atualizarRelatorio(uid);
     }
-}
 
-// ===== IMPRIMIR PDF =====
-window.imprimirRelatorioAdmin = function () {
-    if (!dadosGlobais || dadosGlobais.length === 0) { alert("Não há dados para gerar o PDF."); return; }
+    function atualizarRelatorio(uid) {
+        const ini = document.getElementById('ini-'+uid).value;
+        const fim = document.getElementById('fim-'+uid).value;
+        // Buscar dailyData deste paciente
+        const paciente = dadosGlobais.find(p => {
+            const puid = p.id.replace(/[^a-z0-9]/g,'_');
+            return puid === uid;
+        });
+        if (!paciente) return;
+        const container = document.getElementById('tab-relatorio-'+uid);
+        if (container) container.innerHTML = gerarRelatorioClinico(paciente.dailyData, ini, fim);
+    }
+
+    window.deletarPaciente = async function(id) {
+        if (!confirm("Tem certeza que deseja APAGAR os dados deste paciente? Essa ação não pode ser desfeita.")) return;
+        try {
+            await db.collection("usuarios").doc(id).delete();
+            alert("Paciente removido com sucesso!");
+            buscarRelatorios();
+        } catch (error) {
+            alert("Erro ao remover: " + error.message);
+        }
+    }
+    window.imprimirRelatorioAdmin = function() {
+    if (!dadosGlobais || dadosGlobais.length === 0) {
+        alert("Não há dados para gerar o PDF.");
+        return;
+    }
+
+    // Calcula as datas (padrão: últimos 30 dias) igualzinho o app faz na tela
     const hoje = new Date();
-    const iniDefault = new Date(); iniDefault.setDate(hoje.getDate() - 29);
+    const iniDefault = new Date(); 
+    iniDefault.setDate(hoje.getDate() - 29);
     const strIni = hojeISO(iniDefault);
     const strFim = hojeISO(hoje);
 
-    let htmlPrint = "<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'><title>Relatório Clínico - CleanTdah</title><style>";
-    htmlPrint += `body{font-family:'Segoe UI',sans-serif;padding:20px;color:#333;}
-    h1{text-align:center;color:#2c3e50;margin-bottom:30px;}
-    .paciente-container{page-break-after:always;margin-bottom:40px;}
-    .paciente-header{font-size:20px;font-weight:bold;color:#1A237E;margin-bottom:15px;border-bottom:2px solid #1A237E;padding-bottom:5px;}
-    .clinico-wrap{background:white;border-radius:12px;overflow:hidden;border:1px solid #ddd;margin-bottom:12px;}
-    .clinico-secao{padding:14px 18px;border-bottom:1px solid #EEF2F7;}.clinico-secao:last-child{border-bottom:none;}
-    .clinico-secao-titulo{font-size:13px;font-weight:800;color:#1565C0;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
-    .clinico-linha{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F5F7FA;font-size:13px;}
-    .clinico-linha .cl-lbl{color:#546E7A;flex:1;}.clinico-linha .cl-val{font-weight:700;color:#1A237E;margin-left:8px;}
-    .clinico-linha .cl-badge{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:700;margin-left:6px;}
-    .clinico-grafico{display:flex;gap:4px;align-items:flex-end;height:60px;margin:10px 0;}
-    .clinico-grafico-bar{flex:1;border-radius:4px 4px 0 0;min-height:4px;}
-    .clinico-aviso{background:#FFF8E1;border:1px solid #FFE082;padding:10px 14px;font-size:12px;color:#5D4037;margin-top:10px;border-radius:8px;}
-    .clinico-topo{background:#1565C0;color:white;padding:16px 20px;}
-    .clinico-topo .ct-titulo{font-size:16px;font-weight:800;margin-bottom:2px;}.clinico-topo .ct-sub{font-size:12px;opacity:0.9;margin-bottom:10px;}
-    .ct-meta{display:flex;gap:10px;}.ct-meta-item{background:rgba(255,255,255,0.2);border-radius:10px;padding:8px 12px;flex:1;text-align:center;}
-    .ct-meta-item .ctm-val{font-size:18px;font-weight:800;}.ct-meta-item .ctm-lbl{font-size:10px;opacity:0.9;margin-top:2px;}
-    .cl-norm{background:#E8F5E9;color:#2E7D32;}.cl-atenc{background:#FFF8E1;color:#F57F17;}.cl-crit{background:#FFEBEE;color:#C62828;}
-    @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}.paciente-container{page-break-after:always;}.clinico-wrap{page-break-inside:avoid;}}`;
-    htmlPrint += "</style></head><body><h1>Relatório Clínico Consolidado — CleanTdah</h1>";
+    let htmlPrint = "<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'><title>Relatório Clínico Completo - CleanTdah</title>";
+    
+    // Injeta o CSS essencial para manter o layout do relatório na impressão do PDF
+    htmlPrint += "<style>";
+    htmlPrint += `
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; color: #333; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 30px; font-size: 24px; }
+        .paciente-container { page-break-after: always; margin-bottom: 40px; }
+        .paciente-header { font-size: 20px; font-weight: bold; color: #1A237E; margin-bottom: 15px; border-bottom: 2px solid #1A237E; padding-bottom: 5px; }
+
+        /* Estilos do Relatório Clínico */
+        .clinico-wrap { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #ddd; margin-bottom: 12px; }
+        .clinico-secao { padding: 14px 18px; border-bottom: 1px solid #EEF2F7; }
+        .clinico-secao:last-child { border-bottom: none; }
+        .clinico-secao-titulo { font-size: 13px; font-weight: 800; color: #1565C0; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+        .clinico-linha { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #F5F7FA; font-size: 13px; }
+        .clinico-linha .cl-lbl { color: #546E7A; flex: 1; }
+        .clinico-linha .cl-val { font-weight: 700; color: #1A237E; margin-left: 8px; }
+        .clinico-linha .cl-badge { font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 700; margin-left: 6px; flex-shrink: 0; }
+        .clinico-grafico { display: flex; gap: 4px; align-items: flex-end; height: 60px; margin: 10px 0; }
+        .clinico-grafico-bar { flex: 1; border-radius: 4px 4px 0 0; min-height: 4px; border: 1px solid rgba(0,0,0,0.1); }
+        .clinico-parecer { background: #F0F7FF; border-left: 4px solid #1565C0; padding: 14px 16px; margin: 10px 0; font-size: 13px; color: #37474F; line-height: 1.6; }
+        .clinico-aviso { background: #FFF8E1; border: 1px solid #FFE082; padding: 10px 14px; font-size: 12px; color: #5D4037; margin-top: 10px; border-radius: 8px; }
+        .clinico-topo { background: #1565C0; color: white; padding: 16px 20px; }
+        .clinico-topo .ct-titulo { font-size: 16px; font-weight: 800; margin-bottom: 2px; }
+        .clinico-topo .ct-sub { font-size: 12px; opacity: 0.9; margin-bottom: 10px; }
+        .ct-meta { display: flex; gap: 10px; }
+        .ct-meta-item { background: rgba(255,255,255,0.2); border-radius: 10px; padding: 8px 12px; flex: 1; text-align: center; border: 1px solid rgba(255,255,255,0.4); }
+        .ct-meta-item .ctm-val { font-size: 18px; font-weight: 800; }
+        .ct-meta-item .ctm-lbl { font-size: 10px; opacity: 0.9; margin-top: 2px; }
+        .cl-norm { background: #E8F5E9; color: #2E7D32; }
+        .cl-atenc { background: #FFF8E1; color: #F57F17; }
+        .cl-crit  { background: #FFEBEE; color: #C62828; }
+        
+        /* Força a impressão a exibir as cores e quebrar página por paciente */
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .paciente-container { page-break-after: always; }
+            .clinico-wrap { page-break-inside: avoid; }
+        }
+    `;
+    htmlPrint += "</style></head><body>";
+    
+    htmlPrint += "<h1>Relatório Clínico Consolidado</h1>";
+
+    // Puxa a análise completa de cada paciente
     dadosGlobais.forEach(p => {
         htmlPrint += "<div class='paciente-container'>";
         htmlPrint += "<div class='paciente-header'>👤 Paciente: " + (p.apelido || p.id) + "</div>";
-        htmlPrint += gerarRelatorioClinico(p.dailyData, strIni, strFim);
+        
+        // Chamamos a função que você já tem pronta no admin.html, injetando os dados do paciente
+        const relatorioCompleto = gerarRelatorioClinico(p.dailyData, strIni, strFim);
+        htmlPrint += relatorioCompleto;
+        
         htmlPrint += "</div>";
     });
+
     htmlPrint += "</body></html>";
+
+    // Abre a aba de impressão e joga o HTML lá
     const janelaPrint = window.open('', '', 'width=900,height=700');
     janelaPrint.document.write(htmlPrint);
     janelaPrint.document.close();
-    setTimeout(() => { janelaPrint.focus(); janelaPrint.print(); }, 500);
+    
+    // Aguarda meio segundo para as cores renderizarem e chama o "Salvar como PDF"
+    setTimeout(() => {
+        janelaPrint.focus();
+        janelaPrint.print();
+    }, 500);
 };
-
-// ===== EXPORTAR CSV =====
-document.getElementById('btn-csv').addEventListener('click', () => {
-    if (!dadosGlobais.length) { alert("Não há dados para exportar."); return; }
-    let csv = "ID,Apelido,Periodo,Score,FocoTotal,MediaSono,MetasPct,DiasRegistrados\n";
-    dadosGlobais.forEach(p => {
-        csv += `${p.id},${p.apelido || ''},${p.periodo || ''},${p.score || 0},${p.focoTotal || 0},${p.sonoMedia || ''},${p.metasPct || ''},${p.diasDados || 0}\n`;
+    document.getElementById('btn-csv').addEventListener('click', () => {
+        if (!dadosGlobais.length) { alert("Não há dados para exportar."); return; }
+        let csv = "ID,Apelido,Periodo,Score,FocoTotal,MediaSono,MetasPct,DiasRegistrados\n";
+        dadosGlobais.forEach(p => {
+            csv += `${p.id},${p.apelido||''},${p.periodo||''},${p.score||0},${p.focoTotal||0},${p.sonoMedia||''},${p.metasPct||''},${p.diasDados||0}\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "relatorio_pacientes_cleantdah.csv";
+        a.click();
     });
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "relatorio_pacientes_cleantdah.csv";
-    a.click();
-});
 
-document.getElementById('btn-atualizar').addEventListener('click', buscarRelatorios);
+    document.getElementById('btn-atualizar').addEventListener('click', buscarRelatorios);
+    buscarRelatorios();
+</script>
+</body>
+</html>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel da Psicóloga - CleanTdah</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: #f0f2f5; color: #333; }
+        h1 { color: #2c3e50; text-align: center; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .painel-resumo { display: flex; justify-content: space-around; background: #2980b9; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .resumo-item { text-align: center; }
+        .resumo-valor { font-size: 2em; font-weight: bold; }
+        .acoes-topo { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 20px; }
+        button { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-atualizar { background-color: #27ae60; color: white; }
+        .btn-csv { background-color: #f39c12; color: white; }
+        .btn-remover { background-color: #e74c3c; color: white; padding: 5px 10px; font-size: 0.9em; margin-top: 10px;}
+        button:hover { opacity: 0.8; }
+        details { background: white; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px; border-left: 5px solid #3498db; }
+        summary { font-size: 1.2em; font-weight: bold; color: #2c3e50; cursor: pointer; list-style: none; outline: none; }
+        summary::-webkit-details-marker { display: none; }
+        .conteudo-card { margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
+        .dados-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .dado-item { background: #f8f9fa; padding: 10px; border-radius: 5px; }
+        .analise-auto { background: #e8f8f5; padding: 10px; border-radius: 5px; border-left: 4px solid #1abc9c; font-style: italic; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="conteudo-principal" style="display: none;">
+        <h1>Painel de Acompanhamento - CleanTdah</h1>
+        
+        <div class="painel-resumo">
+            <div class="resumo-item">
+                <div class="resumo-valor" id="total-pacientes">0</div>
+                <div>Pacientes Registrados</div>
+            </div>
+            <div class="resumo-item">
+                <div class="resumo-valor" id="score-medio">0</div>
+                <div>Score Médio Geral</div>
+            </div>
+        </div>
+
+        <div class="acoes-topo">
+            <button class="btn-atualizar" id="btn-atualizar">🔄 Atualizar Dados</button>
+            <button class="btn-csv" id="btn-csv">📊 Exportar CSV</button>
+        </div>
+        
+        <div id="lista-relatorios">
+            <p style="text-align:center;">Carregando...</p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+
+        const _URL_KEY = new URLSearchParams(window.location.search).get('key') || '';
+        const _PSICO_NOMES = {dra_raiza:'Dra. Raiza Oliveira',dr_gabriel:'Dr. Gabriel Gomes',dra_caroline:'Dra. Caroline Guerra'};
+        const senhaCorreta = "psico2024";
+        // Show psico tag
+        if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
+          const tag = document.getElementById('psico-tag');
+          if (tag) { tag.textContent = '👩‍⚕️ ' + _PSICO_NOMES[_URL_KEY]; tag.style.display='inline-block'; }
+          const ttl = document.getElementById('topbar-title');
+          if (ttl) ttl.textContent = 'Painel — ' + _PSICO_NOMES[_URL_KEY];
+        }
+
+        function verificarSenhaAdmin() {
+          const inp  = document.getElementById('admin-senha-input');
+          const erro = document.getElementById('senha-erro');
+          const val  = inp ? inp.value.trim() : '';
+          if (val === senhaCorreta) {
+            document.getElementById('senha-overlay').style.display = 'none';
+            document.getElementById('conteudo-principal').style.display = 'block';
+            document.getElementById('admin-topbar').style.display = 'flex';
+            buscarRelatorios();
+          } else {
+            if (erro) erro.style.display = 'block';
+            const box = document.querySelector('.senha-box');
+            if (box) { box.classList.add('senha-shake'); setTimeout(()=>box.classList.remove('senha-shake'),400); }
+            if (inp) { inp.value=''; inp.focus(); }
+          }
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
+            authDomain: "cleantdah.firebaseapp.com",
+            projectId: "cleantdah",
+            storageBucket: "cleantdah.firebasestorage.app",
+            messagingSenderId: "553813989536",
+            appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let dadosGlobais = [];
+
+        function gerarAnalise(dados) {
+            let analise = "Análise automática: ";
+            let alertas = 0;
+
+            if (dados.score >= 70) {
+                analise += "✅ Excelente desempenho geral. ";
+            } else if (dados.score < 40) {
+                analise += "⚠️ Score geral baixo, precisa de atenção. ";
+                alertas++;
+            }
+
+            if (dados.sonoMedia && dados.sonoMedia < 6) {
+                analise += "💤 Privação de sono detectada. ";
+                alertas++;
+            }
+
+            if (alertas === 0 && dados.score > 0) {
+                analise += "Paciente mantendo bons hábitos na semana.";
+            } else if (dados.score === 0 || !dados.score) {
+                analise += "Poucos dados inseridos para uma análise completa.";
+            }
+            return analise;
+        }
+
+        async function buscarRelatorios() {
+            const divLista = document.getElementById('lista-relatorios');
+            divLista.innerHTML = "<p style='text-align:center;'>Atualizando dados do Firebase...</p>";
+            
+            dadosGlobais = []; 
+            let totalScore = 0;
+            let qtdPacientes = 0;
+
+            try {
+                const querySnapshot = await db.collection("usuarios").get();
+                divLista.innerHTML = ""; 
+
+                if(querySnapshot.empty) {
+                    divLista.innerHTML = "<p style='text-align:center;'>Nenhum paciente encontrado.</p>";
+                    document.getElementById('total-pacientes').innerText = "0";
+                    document.getElementById('score-medio').innerText = "0";
+                    return;
+                }
+
+                querySnapshot.forEach((documento) => {
+                    const dados = documento.data();
+                    const idDoDocumento = documento.id; 
+                    
+                    if (_URL_KEY && dados.psicologa && dados.psicologa !== _URL_KEY) return;
+                    dadosGlobais.push({ id: idDoDocumento, ...dados }); 
+
+                    qtdPacientes++;
+                    totalScore += Number(dados.score) || 0;
+
+                    const analiseTexto = gerarAnalise(dados);
+
+                    // --- INÍCIO DA GERAÇÃO DO RELATÓRIO DETALHADO ---
+
+                    let historicoHTML = "";
+                    if (dados.dailyData && typeof dados.dailyData === 'object') {
+                        const dias = Object.keys(dados.dailyData).sort().reverse(); 
+                        if (dias.length > 0) {
+                            historicoHTML += `<div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
+                                <strong style="color: #2c3e50;">📅 Histórico Diário Detalhado:</strong>
+                                <div style="max-height: 250px; overflow-y: auto; margin-top: 10px; padding-right: 5px;">`;
+                            
+                            dias.forEach(data => {
+                                const info = dados.dailyData[data];
+                                
+                                // Extração exata dos dados do TDAH Care
+                                const sonoTxt = (info.sono && info.sono[0]) ? info.sono[0].horas + 'h' : 'N/A';
+                                const focoTxt = (info.pom && info.pom.minFoco) ? info.pom.minFoco + 'm' : '0m';
+                                const celTxt = (info.celular) ? info.celular.horas + 'h ' + info.celular.minutos + 'm' : 'N/A';
+                                const aguaTxt = (info.copos) ? (info.copos * (info.copoMl || 250)) + 'ml' : '0ml';
+                                const remedioTxt = (info.remedio && info.remedio.horaRegistro) ? '✅' : '❌';
+                                
+                                let metasConc = 0; let metasTot = 0;
+                                if(info.metas) { metasTot += info.metas.length; metasConc += info.metas.filter(m=>m.done).length; }
+                                if(info.metasFixas) { metasTot += info.metasFixas.length; metasConc += info.metasFixas.filter(m=>m.done).length; }
+
+                                historicoHTML += `
+                                    <div style="border-bottom: 1px dashed #ccc; padding: 8px 0; font-size: 0.9em;">
+                                        <strong style="color: #2980b9;">${data}</strong><br>
+                                        • Sono: ${sonoTxt} | Foco: ${focoTxt} | Celular: ${celTxt}<br>
+                                        • Água: ${aguaTxt} | Metas: ${metasConc}/${metasTot} | Remédio: ${remedioTxt}
+                                    </div>`;
+                            });
+                            historicoHTML += `</div></div>`;
+                        }
+                    }
+
+                    let metasHTML = "";
+                    if (dados.metas && Array.isArray(dados.metas) && dados.metas.length > 0) {
+                        metasHTML += `<div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px;">
+                            <strong style="color: #2c3e50;">🎯 Metas de Hoje:</strong>
+                            <ul style="margin-top: 5px; padding-left: 20px; font-size: 0.9em; list-style: none;">`;
+                        dados.metas.forEach(meta => {
+                            const status = (meta.done) ? '✅' : '⏳';
+                            const nomeMeta = meta.texto || 'Meta';
+                            metasHTML += `<li>${status} ${nomeMeta}</li>`;
+                        });
+                        metasHTML += `</ul></div>`;
+                    }
+
+                    let remediosHTML = "";
+                    if (dados.remedio && dados.remedio.horaRegistro) {
+                        const dataStr = new Date(dados.remedio.horaRegistro).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                        remediosHTML += `<div style="margin-top: 10px; padding: 10px; background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px;">
+                            <strong style="color: #2e7d32;">💊 Medicação Atual:</strong> Registrada às ${dataStr}
+                        </div>`;
+                    }
+                    
+                    // --- FIM DA GERAÇÃO DO RELATÓRIO DETALHADO ---
+
+                    const cartaoHTML = `
+                        <details>
+                            <summary>
+                              <div class="sum-left">
+                                <div class="pat-avatar">${(dados.apelido||'?')[0].toUpperCase()}</div>
+                                <div><div class="pat-name">${dados.apelido||idDoDocumento}</div><div class="pat-meta">Última sync: ${dtEnvio}</div></div>
+                              </div>
+                              <div class="sum-right">
+                                <span class="score-pill" style="background:${scoreCor};">Score ${dados.score||0}</span>
+                                <span class="chevron">▼</span>
+                              </div>
+                            </summary>
+                            
+                            <div class="conteudo-card">
+                                <div class="analise-auto">${analiseTexto}</div>
+                                
+                                <div class="dados-grid">
+                                    <div class="dado-item"><strong>Período:</strong> ${dados.periodo || 'N/A'}</div>
+                                    <div class="dado-item"><strong>Score:</strong> ${dados.score || 0}</div>
+                                    <div class="dado-item"><strong>Média de Sono:</strong> ${dados.sonoMedia || 'N/A'} h</div>
+                                    <div class="dado-item"><strong>Foco Total:</strong> ${dados.focoTotal || 0}</div>
+                                    <div class="dado-item"><strong>Metas Cumpridas:</strong> ${dados.metasPct ? dados.metasPct + '%' : 'N/A'}</div>
+                                    <div class="dado-item"><strong>Dias Inseridos:</strong> ${dados.diasDados || 0}</div>
+                                </div>
+                                
+                                ${historicoHTML}
+                                ${metasHTML}
+                                ${remediosHTML}
+
+                                <button class="btn-remover" onclick="window.deletarPaciente('${idDoDocumento}')" style="margin-top: 15px;">🗑️ Remover Paciente</button>
+                            </div>
+                        </details>
+                    `;
+                    
+                    divLista.innerHTML += cartaoHTML;
+                });
+
+                document.getElementById('total-pacientes').innerText = qtdPacientes;
+        const _sete = new Date(); _sete.setDate(_sete.getDate()-7);
+        const _ativos = dadosGlobais.filter(p=>p.ultimoEnvio&&new Date(p.ultimoEnvio)>=_sete).length;
+        const _elAt = document.getElementById('kpi-ativos'); if(_elAt) _elAt.innerText=_ativos;
+                const media = qtdPacientes > 0 ? (totalScore/qtdPacientes).toFixed(1) : "0"; 
+                document.getElementById('score-medio').innerText = media;
+
+            } catch (erro) {
+                console.error("Erro: ", erro);
+                divLista.innerHTML = `<p style="color:red; text-align:center;">Erro ao conectar com o banco de dados.</p>`;
+            }
+        }
+
+        window.deletarPaciente = async function(id) {
+            const confirmacao = confirm("Tem certeza que deseja APAGAR os dados deste paciente? Essa ação não pode ser desfeita.");
+            if (confirmacao) {
+                try {
+                    await db.collection("usuarios").doc(id).delete();
+                    alert("Paciente removido com sucesso!");
+                    buscarRelatorios(); 
+                } catch (error) {
+                    alert("Erro ao remover: " + error.message);
+                }
+            }
+        }
+
+        document.getElementById('btn-csv').addEventListener('click', () => {
+            if (dadosGlobais.length === 0) {
+                alert("Não há dados para exportar.");
+                return;
+            }
+
+            let csvContent = "ID,Apelido,Periodo,Score,FocoTotal,MediaSono,MetasPct\n";
+
+            dadosGlobais.forEach(paciente => {
+                csvContent += `${paciente.id},${paciente.apelido || ''},${paciente.periodo || ''},${paciente.score || 0},${paciente.focoTotal || 0},${paciente.sonoMedia || ''},${paciente.metasPct || ''}\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "relatorio_pacientes_cleantdah.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        document.getElementById('btn-atualizar').addEventListener('click', () => {
+            buscarRelatorios();
+        });
+
 </script>
 </body>
 </html>
