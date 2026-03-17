@@ -475,11 +475,15 @@ textarea { resize: none; height: 80px; }
   color: #E0E0FF;
   position: relative;
   overflow: hidden;
+  display: none;
+}
+#page-foco.active {
+  display: block;
 }
 
 /* ── Canvas de estrelas (fundo) ── */
 #foco-starfield {
-  position: fixed;
+  position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none;
@@ -1193,9 +1197,9 @@ textarea { resize: none; height: 80px; }
   <div class="page-footer">produced by Jp</div>
 </div>
 
-<canvas id="foco-starfield"></canvas>
-
 <div class="page" id="page-foco">
+
+<canvas id="foco-starfield"></canvas>
 
   <!-- Header -->
   <div class="foco-header">
@@ -3594,8 +3598,3 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
-
-
-
-
-
