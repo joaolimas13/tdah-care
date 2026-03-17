@@ -8,99 +8,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel da Psicóloga - CleanTdah</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: #f0f2f5; color: #333; }
-        h1 { color: #2c3e50; text-align: center; margin-bottom: 20px; }
-        .container { max-width: 960px; margin: 0 auto; }
-        .painel-resumo { display: flex; justify-content: space-around; background: #2980b9; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .resumo-item { text-align: center; }
-        .resumo-valor { font-size: 2em; font-weight: bold; }
-        .acoes-topo { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 20px; }
-        button { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn-atualizar { background-color: #27ae60; color: white; }
-        .btn-csv { background-color: #f39c12; color: white; }
-        .btn-remover { background-color: #e74c3c; color: white; padding: 5px 10px; font-size: 0.9em; margin-top: 10px; }
-        button:hover { opacity: 0.8; }
-        details { background: white; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px; border-left: 5px solid #3498db; }
-        summary { font-size: 1.2em; font-weight: bold; color: #2c3e50; cursor: pointer; list-style: none; outline: none; display: flex; justify-content: space-between; align-items: center; }
-        summary::-webkit-details-marker { display: none; }
-        .conteudo-card { margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
-        .dados-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-        .dado-item { background: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.9em; }
-        .dado-item strong { display: block; color: #555; font-size: 0.8em; margin-bottom: 2px; }
-        .dado-item span { font-size: 1.1em; font-weight: 700; color: #1565C0; }
-        .analise-auto { background: #e8f8f5; padding: 12px; border-radius: 5px; border-left: 4px solid #1abc9c; font-style: italic; margin-bottom: 14px; font-size: 0.9em; }
-        .score-badge { padding: 4px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 800; color: white; }
-
-        /* Relatório Clínico */
-        .rel-secao { background: #F8FAFF; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border-left: 4px solid #1565C0; }
-        .rel-secao h3 { font-size: 0.9em; font-weight: 700; color: #1565C0; margin-bottom: 8px; }
-        .rel-linha { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #EEF2F7; font-size: 0.85em; }
-        .rel-linha:last-child { border-bottom: none; }
-        .rel-linha .lbl { color: #546E7A; }
-        .rel-linha .val { font-weight: 700; color: #1A237E; }
-        .cl-norm { background: #E8F5E9; color: #2E7D32; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; font-weight: 700; }
-        .cl-atenc { background: #FFF8E1; color: #F57F17; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; font-weight: 700; }
-        .cl-crit  { background: #FFEBEE; color: #C62828; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; font-weight: 700; }
-        .clinico-topo { background: linear-gradient(135deg,#0D47A1,#1565C0); color: white; padding: 16px 20px; border-radius: 12px 12px 0 0; margin-bottom: 0; }
-        .clinico-topo .ct-titulo { font-size: 0.95em; font-weight: 800; margin-bottom: 2px; }
-        .clinico-topo .ct-sub { font-size: 0.75em; opacity: 0.85; margin-bottom: 10px; }
-        .ct-meta { display: flex; gap: 10px; }
-        .ct-meta-item { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 12px; flex: 1; text-align: center; }
-        .ct-meta-item .ctm-val { font-size: 1.1em; font-weight: 800; }
-        .ct-meta-item .ctm-lbl { font-size: 0.62em; opacity: 0.85; margin-top: 2px; }
-        .clinico-wrap { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(21,101,192,0.12); margin-bottom: 12px; }
-        .clinico-secao { padding: 14px 18px; border-bottom: 1px solid #EEF2F7; }
-        .clinico-secao:last-child { border-bottom: none; }
-        .clinico-secao-titulo { font-size: 0.72em; font-weight: 800; color: #1565C0; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
-        .clinico-linha { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #F5F7FA; font-size: 0.85em; }
-        .clinico-linha:last-child { border-bottom: none; }
-        .clinico-linha .cl-lbl { color: #546E7A; flex: 1; }
-        .clinico-linha .cl-val { font-weight: 700; color: #1A237E; margin-left: 8px; }
-        .clinico-linha .cl-badge { font-size: 0.68em; padding: 3px 8px; border-radius: 10px; font-weight: 700; margin-left: 6px; flex-shrink: 0; }
-        .clinico-grafico { display: flex; gap: 4px; align-items: flex-end; height: 60px; margin: 10px 0; }
-        .clinico-grafico-bar { flex: 1; border-radius: 4px 4px 0 0; min-height: 4px; }
-        .clinico-parecer { background: #F0F7FF; border-left: 4px solid #1565C0; border-radius: 0 12px 12px 0; padding: 14px 16px; margin: 10px 0; font-size: 0.84em; color: #37474F; line-height: 1.7; }
-        .clinico-aviso { background: #FFF8E1; border: 1px solid #FFE082; border-radius: 10px; padding: 10px 14px; font-size: 0.8em; color: #5D4037; line-height: 1.5; margin-top: 10px; }
-        .periodo-filtro { background: #EEF2FF; border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .periodo-filtro label { font-size: 0.8em; color: #3949AB; font-weight: 700; }
-        .periodo-filtro input[type=date] { border: 1.5px solid #90CAF9; border-radius: 8px; padding: 6px 8px; font-size: 0.82em; }
-        .periodo-filtro button { background: #1565C0; color: white; border-radius: 8px; padding: 6px 14px; font-size: 0.8em; }
-        .tab-nav { display: flex; gap: 8px; margin-bottom: 14px; border-bottom: 2px solid #E3EAF2; padding-bottom: 8px; }
-        .tab-btn { background: none; border: none; padding: 8px 16px; font-size: 0.85em; font-weight: 700; color: #90A4AE; cursor: pointer; border-radius: 8px 8px 0 0; }
-        .tab-btn.active { background: #1565C0; color: white; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .hist-item { border-bottom: 1px dashed #E3EAF2; padding: 8px 0; font-size: 0.85em; }
-        .hist-item:last-child { border-bottom: none; }
-        .hist-data { font-weight: 700; color: #1565C0; margin-bottom: 3px; }
-        .hist-linha { color: #546E7A; }
-        .hist-linha span { font-weight: 600; color: #37474F; }
-    </style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{--primary:#0D47A1;--primary-light:#1565C0;--primary-mid:#1976D2;--accent:#29B6F6;--accent-light:#E3F2FD;--bg:#F0F4F8;--surface:#FFFFFF;--border:#E3EAF2;--text:#1A237E;--text-secondary:#546E7A;--text-light:#90A4AE;--shadow-sm:0 1px 4px rgba(13,71,161,0.08);--shadow:0 4px 16px rgba(13,71,161,0.10);--shadow-lg:0 8px 32px rgba(13,71,161,0.14);--radius:16px;--radius-sm:10px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter','Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.admin-topbar{background:linear-gradient(135deg,#0A2472,#0D47A1,#1565C0);padding:0 28px;height:66px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(10,36,114,0.3);position:sticky;top:0;z-index:100;}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-logo{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;border:1px solid rgba(255,255,255,0.2);}
+.topbar-title{color:white;font-size:1rem;font-weight:700;}.topbar-sub{color:rgba(255,255,255,0.55);font-size:0.7rem;margin-top:1px;}
+.topbar-right{display:flex;gap:8px;align-items:center;}
+.senha-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0A2472 0%,#0D47A1 50%,#1565C0 100%);display:flex;align-items:center;justify-content:center;z-index:999;}
+.senha-box{background:white;border-radius:24px;padding:40px 34px;max-width:380px;width:90%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.3);}
+.senha-logo{font-size:3rem;margin-bottom:10px;}.senha-titulo{font-size:1.4rem;font-weight:800;color:var(--primary);margin-bottom:4px;}
+.senha-psico-tag{background:var(--accent-light);border:1px solid #BBDEFB;border-radius:20px;padding:5px 14px;font-size:0.76rem;font-weight:700;color:var(--primary-light);display:inline-block;margin:8px 0 14px;}
+.senha-sub{font-size:0.82rem;color:var(--text-secondary);margin-bottom:20px;line-height:1.5;}
+.senha-input{width:100%;border:2px solid var(--border);border-radius:12px;padding:13px 16px;font-size:1.1rem;color:var(--text);outline:none;font-family:inherit;text-align:center;letter-spacing:4px;margin-bottom:12px;transition:border 0.2s;}
+.senha-input:focus{border-color:var(--primary-light);}
+.senha-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary-mid));color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 4px 14px rgba(13,71,161,0.3);}
+.senha-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,71,161,0.4);}
+.senha-erro{color:#C62828;font-size:0.8rem;margin-top:10px;display:none;}
+.senha-shake{animation:shake 0.4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.container{max-width:1000px;margin:0 auto;padding:28px 20px 60px;}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:24px;}
+.kpi-card{background:var(--surface);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+.kpi-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.kpi-icon-blue{background:#E3F2FD;}.kpi-icon-green{background:#E8F5E9;}.kpi-icon-purple{background:#EDE7F6;}
+.kpi-value{font-size:1.9rem;font-weight:800;color:var(--text);line-height:1;}.kpi-label{font-size:0.68rem;color:var(--text-secondary);margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;}
+.btn{padding:9px 16px;border:none;border-radius:var(--radius-sm);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;transition:all 0.18s;}
+.btn:hover{transform:translateY(-1px);}
+.btn-light{background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.25);}
+.btn-light:hover{background:rgba(255,255,255,0.25);}
+.btn-csv{background:#FFF8E1;color:#E65100;border:1px solid #FFE082;}
+.btn-pdf{background:linear-gradient(135deg,#B71C1C,#C62828);color:white;}
+.btn-remover{background:#FFEBEE;color:#B71C1C;border:1px solid #FFCDD2;border-radius:10px;padding:9px 16px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:14px;transition:all 0.18s;}
+.btn-remover:hover{background:#FFCDD2;}
+.section-label{font-size:0.7rem;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+details{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;transition:box-shadow 0.2s,border-color 0.2s;}
+details:hover{box-shadow:var(--shadow);}details[open]{box-shadow:var(--shadow-lg);border-color:#BBDEFB;}
+summary{padding:16px 20px;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;user-select:none;transition:background 0.15s;}
+summary::-webkit-details-marker{display:none;}summary:hover{background:#FAFCFF;}
+.sum-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0;}
+.pat-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;font-weight:800;flex-shrink:0;}
+.pat-name{font-size:0.95rem;font-weight:700;color:var(--text);}.pat-meta{font-size:0.7rem;color:var(--text-secondary);margin-top:2px;}
+.sum-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.score-pill{padding:5px 13px;border-radius:20px;font-size:0.76rem;font-weight:800;color:white;}
+.sync-ago{font-size:0.68rem;color:var(--text-light);}.chevron{font-size:0.75rem;color:var(--text-light);transition:transform 0.25s;display:inline-block;}
+details[open] .chevron{transform:rotate(180deg);}
+.conteudo-card{padding:0 20px 20px;}
+.analise-auto{background:linear-gradient(135deg,#E3F2FD,#EDE7F6);border-radius:var(--radius-sm);padding:12px 16px;font-size:0.82rem;color:var(--primary);font-style:italic;margin-bottom:16px;border-left:3px solid var(--primary-mid);}
+.dados-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px;}
+.dado-item{background:var(--bg);border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border);}
+.dado-item strong{display:block;font-size:0.62rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+.dado-item span{font-size:1.05rem;font-weight:700;color:var(--text);}
+.tab-nav{display:flex;gap:4px;margin-bottom:14px;background:var(--bg);border-radius:var(--radius-sm);padding:4px;}
+.tab-btn{flex:1;background:none;border:none;padding:9px 10px;font-size:0.78rem;font-weight:600;color:var(--text-secondary);cursor:pointer;border-radius:8px;font-family:inherit;transition:all 0.18s;}
+.tab-btn.active{background:var(--surface);color:var(--primary);box-shadow:var(--shadow-sm);}
+.tab-content{display:none;}.tab-content.active{display:block;}
+.periodo-filtro{background:var(--bg);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.periodo-filtro label{font-size:0.74rem;font-weight:700;color:var(--primary);}
+.periodo-filtro input[type="date"]{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:0.78rem;font-family:inherit;color:var(--text);background:var(--surface);outline:none;}
+.periodo-filtro input[type="date"]:focus{border-color:var(--primary-mid);}
+.periodo-filtro button{background:var(--primary);color:white;border:none;border-radius:8px;padding:7px 12px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:inherit;}
+.pshort{background:var(--accent-light)!important;color:var(--primary-light)!important;border:1px solid #BBDEFB!important;}
+.hist-item{border-bottom:1px dashed var(--border);padding:10px 0;font-size:0.82rem;}
+.hist-item:last-child{border-bottom:none;}.hist-data{font-weight:700;color:var(--primary-mid);margin-bottom:3px;font-size:0.78rem;}
+.hist-linha{color:var(--text-secondary);line-height:1.7;}.hist-linha span{font-weight:600;color:var(--text);}
+.clinico-wrap{background:white;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:12px;border:1px solid var(--border);}
+.clinico-topo{background:linear-gradient(135deg,#0D47A1,#1565C0);color:white;padding:16px 20px;}
+.clinico-topo .ct-titulo{font-size:0.95rem;font-weight:800;margin-bottom:2px;}.clinico-topo .ct-sub{font-size:0.75rem;opacity:0.85;margin-bottom:10px;}
+.ct-meta{display:flex;gap:10px;}.ct-meta-item{background:rgba(255,255,255,0.15);border-radius:10px;padding:8px 12px;flex:1;text-align:center;}
+.ct-meta-item .ctm-val{font-size:1.1rem;font-weight:800;}.ct-meta-item .ctm-lbl{font-size:0.62rem;opacity:0.85;margin-top:2px;}
+.clinico-secao{padding:14px 18px;border-bottom:1px solid var(--border);}.clinico-secao:last-child{border-bottom:none;}
+.clinico-secao-titulo{font-size:0.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
+.clinico-linha{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F5F7FA;font-size:0.85rem;}
+.clinico-linha:last-child{border-bottom:none;}.clinico-linha .cl-lbl{color:var(--text-secondary);flex:1;}
+.clinico-linha .cl-val{font-weight:700;color:var(--text);margin-left:8px;}
+.clinico-linha .cl-badge{font-size:0.68rem;padding:3px 8px;border-radius:10px;font-weight:700;margin-left:6px;flex-shrink:0;}
+.clinico-grafico{display:flex;gap:4px;align-items:flex-end;height:60px;margin:10px 0;}
+.clinico-grafico-bar{flex:1;border-radius:4px 4px 0 0;min-height:4px;}
+.clinico-parecer{background:#F0F7FF;border-left:4px solid var(--primary-light);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 16px;margin:10px 0;font-size:0.84rem;color:#37474F;line-height:1.7;}
+.clinico-aviso{background:#FFF8E1;border:1px solid #FFE082;border-radius:var(--radius-sm);padding:10px 14px;font-size:0.8rem;color:#5D4037;line-height:1.5;margin-top:10px;}
+.cl-norm{background:#E8F5E9;color:#2E7D32;}.cl-atenc{background:#FFF8E1;color:#F57F17;}.cl-crit{background:#FFEBEE;color:#C62828;}
+.score-badge{padding:4px 14px;border-radius:20px;font-size:0.85em;font-weight:800;color:white;}
+.loading-state{display:flex;align-items:center;justify-content:center;gap:12px;padding:48px;color:var(--text-secondary);font-size:0.9rem;}
+.spinner{width:22px;height:22px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-secondary);}.empty-icon{font-size:3rem;margin-bottom:12px;opacity:0.4;}
+@media(max-width:600px){.admin-topbar{padding:0 14px;height:58px;}.container{padding:16px 12px 60px;}.kpi-row{grid-template-columns:1fr 1fr;}.sync-ago{display:none;}.topbar-right .btn-csv,.topbar-right .btn-pdf{display:none;}}
+</style>
 </head>
 <body>
 
-<div class="container" id="conteudo-principal" style="display:none;">
-    <h1>🧠 Painel de Acompanhamento — CleanTdah</h1>
-    
-    <div class="painel-resumo">
-        <div class="resumo-item">
-            <div class="resumo-valor" id="total-pacientes">0</div>
-            <div>Pacientes Registrados</div>
-        </div>
-        <div class="resumo-item">
-            <div class="resumo-valor" id="score-medio">0</div>
-            <div>Score Médio Geral</div>
-        </div>
-    </div>
+<div class="senha-overlay" id="senha-overlay">
+  <div class="senha-box">
+    <div class="senha-logo">🧠</div>
+    <div class="senha-titulo">Área Clínica</div>
+    <div class="senha-psico-tag" id="psico-tag" style="display:none;"></div>
+    <div class="senha-sub">Digite sua senha para acessar o painel de acompanhamento dos seus pacientes.</div>
+    <input class="senha-input" id="admin-senha-input" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')verificarSenhaAdmin()">
+    <button class="senha-btn" onclick="verificarSenhaAdmin()">Acessar Painel →</button>
+    <div class="senha-erro" id="senha-erro">Senha incorreta. Tente novamente.</div>
+  </div>
+</div>
 
-    <div class="acoes-topo">
-    <button class="btn-atualizar" id="btn-atualizar">🔄 Atualizar Dados</button>
-    <button class="btn-csv" id="btn-csv">📊 Exportar CSV</button>
-    <button class="btn-pdf" onclick="imprimirRelatorioAdmin()" style="background-color: #c0392b; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">📄 Salvar PDF</button>
+<header class="admin-topbar" id="admin-topbar" style="display:none;">
+  <div class="topbar-left">
+    <div class="topbar-logo">🧠</div>
+    <div>
+      <div class="topbar-title" id="topbar-title">Painel de Acompanhamento</div>
+      <div class="topbar-sub">CleanTdah — Área Clínica</div>
     </div>
-    
-    <div id="lista-relatorios">
+  </div>
+  <div class="topbar-right">
+    <button class="btn btn-light" id="btn-atualizar">🔄 Atualizar</button>
+    <button class="btn btn-csv" id="btn-csv">📊 CSV</button>
+    <button class="btn btn-pdf" onclick="imprimirRelatorioAdmin()">📄 PDF</button>
+  </div>
+</header>
+
+<div class="container" id="conteudo-principal" style="display:none;">
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-icon-blue">👥</div>
+      <div><div class="kpi-value" id="total-pacientes">0</div><div class="kpi-label">Pacientes</div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-icon-green">📊</div>
+      <div><div class="kpi-value" id="score-medio">0</div><div class="kpi-label">Score Médio</div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-icon-purple">✅</div>
+      <div><div class="kpi-value" id="kpi-ativos">—</div><div class="kpi-label">Ativos (7d)</div></div>
+    </div>
+  </div>
+  <div class="section-label">Pacientes Registrados</div>
+  <div id="lista-relatorios">
         <p style="text-align:center;">Carregando...</p>
     </div>
 </div>
@@ -111,12 +155,30 @@
 <script>
     // ===== SENHA =====
     const senhaCorreta = "psico2024";
-    const senhaDigitada = prompt("Bem-vinda ao Painel Admin.\nDigite a senha para acessar:");
-    if (senhaDigitada === senhaCorreta) {
+
+    // Mostrar tag da psicóloga no overlay
+    if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
+      const tag = document.getElementById('psico-tag');
+      if (tag) { tag.textContent = '👩‍⚕️ ' + _PSICO_NOMES[_URL_KEY]; tag.style.display = 'inline-block'; }
+      const ttl = document.getElementById('topbar-title');
+      if (ttl) ttl.textContent = 'Painel — ' + _PSICO_NOMES[_URL_KEY];
+    }
+
+    function verificarSenhaAdmin() {
+      const inp  = document.getElementById('admin-senha-input');
+      const erro = document.getElementById('senha-erro');
+      const val  = inp ? inp.value.trim() : '';
+      if (val === senhaCorreta) {
+        document.getElementById('senha-overlay').style.display = 'none';
         document.getElementById('conteudo-principal').style.display = 'block';
-    } else {
-        document.body.innerHTML = "<h1 style='text-align:center;color:red;margin-top:50px;'>Acesso Negado.</h1>";
-        throw new Error("Senha incorreta.");
+        document.getElementById('admin-topbar').style.display = 'flex';
+        buscarRelatorios();
+      } else {
+        if (erro) erro.style.display = 'block';
+        const box = document.querySelector('.senha-box');
+        if (box) { box.classList.add('senha-shake'); setTimeout(()=>box.classList.remove('senha-shake'),400); }
+        if (inp)  { inp.value = ''; inp.focus(); }
+      }
     }
 
     // ===== FIREBASE =====
@@ -372,7 +434,7 @@
     // ===== BUSCAR DADOS =====
     async function buscarRelatorios() {
         const divLista = document.getElementById('lista-relatorios');
-        divLista.innerHTML = "<p style='text-align:center;padding:30px;'>🔄 Carregando dados...</p>";
+        divLista.innerHTML = '<div class="loading-state"><div class="spinner"></div>Carregando pacientes...</div>';
         dadosGlobais = [];
         let totalScore = 0, qtdPacientes = 0;
 
@@ -381,7 +443,7 @@
             divLista.innerHTML = "";
 
             if (querySnapshot.empty) {
-                divLista.innerHTML = "<p style='text-align:center;padding:30px;color:#90A4AE;'>Nenhum paciente encontrado.</p>";
+                divLista.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><p>Nenhum paciente encontrado para este profissional.</p></div>';
                 document.getElementById('total-pacientes').innerText = "0";
                 document.getElementById('score-medio').innerText = "0";
                 return;
@@ -407,8 +469,18 @@
                 const cartaoHTML = `
                 <details id="details-${uid}">
                     <summary>
-                        <span>👤 ${dados.apelido || id}</span>
-                        <span class="score-badge" style="background:${scoreCor};">Score: ${dados.score||0}</span>
+                      <div class="sum-left">
+                        <div class="pat-avatar">${(dados.apelido||'?')[0].toUpperCase()}</div>
+                        <div>
+                          <div class="pat-name">${dados.apelido || id}</div>
+                          <div class="pat-meta">Última sync: ${dtEnvio}</div>
+                        </div>
+                      </div>
+                      <div class="sum-right">
+                        <span class="score-pill" style="background:${scoreCor};">Score ${dados.score||0}</span>
+                        <span class="sync-ago">${dados.diasDados||0}d registrados</span>
+                        <span class="chevron">▼</span>
+                      </div>
                     </summary>
                     <div class="conteudo-card">
                         <div class="analise-auto">${gerarAnalise(dados)}</div>
@@ -432,9 +504,9 @@
                             <span style="font-size:0.8em;color:#546E7A;">até</span>
                             <input type="date" id="fim-${uid}" value="${hojeISO(hoje)}">
                             <button onclick="atualizarRelatorio('${uid}')">🔄 Gerar</button>
-                            <button onclick="setP('${uid}',7)" style="background:#EEF2FF;color:#1565C0;padding:6px 10px;font-size:0.78em;">7d</button>
-                            <button onclick="setP('${uid}',15)" style="background:#EEF2FF;color:#1565C0;padding:6px 10px;font-size:0.78em;">15d</button>
-                            <button onclick="setP('${uid}',30)" style="background:#EEF2FF;color:#1565C0;padding:6px 10px;font-size:0.78em;">30d</button>
+                            <button onclick="setP('${uid}',7)" class="pshort">7d</button>
+                            <button onclick="setP('${uid}',15)" class="pshort">15d</button>
+                            <button onclick="setP('${uid}',30)" class="pshort">30d</button>
                         </div>
 
                         <div class="tab-content active" id="tab-relatorio-${uid}">
@@ -605,7 +677,6 @@
     });
 
     document.getElementById('btn-atualizar').addEventListener('click', buscarRelatorios);
-    buscarRelatorios();
 </script>
 </body>
 </html>
