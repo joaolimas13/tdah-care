@@ -1870,6 +1870,7 @@ function navigate(p,btn) {
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active'); btn.classList.add('active');
   if(p==='calendario'){renderCalendar(currentCalendarDate);document.getElementById('daily-summary-card').style.display='none';}
+  if(p==='foco'){focoOnNavigate();}
 }
 function registrarRemedio() {
   if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra para o dia atual');return;}
@@ -3488,23 +3489,6 @@ function focoIniciarParticulas() {
   animateParticles();
 }
 
-// ─── NAVIGATE OVERRIDE ────────────────────────────────
-// Guarda a função original e estende
-const _navigateOriginal = typeof navigate === 'function' ? navigate : null;
-function navigate(p, btn) {
-  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
-  document.getElementById('page-' + p).classList.add('active');
-  btn.classList.add('active');
-
-  if (p === 'foco') {
-    focoOnNavigate();
-  }
-  if (p === 'calendario') {
-    renderCalendar(currentCalendarDate);
-    document.getElementById('daily-summary-card').style.display = 'none';
-  }
-}
 
 // ─── Compatibilidade: funções do app que usam pom ─────
 // Garantir que renderPom() na caverna antiga não quebre
@@ -3615,4 +3599,3 @@ window.addEventListener('load', function() {
 
 
 
-s
