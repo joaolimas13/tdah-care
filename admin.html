@@ -121,26 +121,28 @@
 
     // ===== FIREBASE =====
     const firebaseConfig = {
-    apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
-    authDomain: "cleantdah.firebaseapp.com",
-    projectId: "cleantdah",
-    storageBucket: "cleantdah.firebasestorage.app",
-    messagingSenderId: "553813989536",
-    appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
-};
-
-// ── FILTRO POR PSICÓLOGA ──────────────────────────────────
-const _URL_KEY = new URLSearchParams(window.location.search).get('key') || '';
-const _PSICO_NOMES = {
-  dra_raiza:    'Dra. Raiza Oliveira',
-  dr_gabriel:   'Dr. Gabriel Gomes',
-  dra_caroline: 'Dra. Caroline Guerra'
-};
-if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
-  document.querySelector('h1').textContent = '🧠 Painel — ' + _PSICO_NOMES[_URL_KEY];
-}
-// ─────────────────────────────────────────────────────────
+        apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
+        authDomain: "cleantdah.firebaseapp.com",
+        projectId: "cleantdah",
+        storageBucket: "cleantdah.firebasestorage.app",
+        messagingSenderId: "553813989536",
+        appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
+    };
     firebase.initializeApp(firebaseConfig);
+
+    // ── FILTRO POR PSICÓLOGA ──────────────────────────────
+    const _URL_KEY = new URLSearchParams(window.location.search).get('key') || '';
+    const _PSICO_NOMES = {
+      dra_raiza:    'Dra. Raiza Oliveira',
+      dr_gabriel:   'Dr. Gabriel Gomes',
+      dra_caroline: 'Dra. Caroline Guerra'
+    };
+    if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
+      const h1 = document.querySelector('h1');
+      if (h1) h1.textContent = '🧠 Painel — ' + _PSICO_NOMES[_URL_KEY];
+    }
+    // ─────────────────────────────────────────────────────
+
     const db = firebase.firestore();
 
     let dadosGlobais = [];
@@ -388,6 +390,8 @@ if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
             querySnapshot.forEach((documento) => {
                 const dados = documento.data();
                 const id = documento.id;
+                // Filtrar por psicóloga: se URL tem ?key=, só mostra pacientes daquela profissional
+                if (_URL_KEY && dados.psicologa !== _URL_KEY) return;
                 dadosGlobais.push({ id, ...dados });
                 qtdPacientes++;
                 totalScore += Number(dados.score) || 0;
@@ -728,7 +732,6 @@ if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
 
                 querySnapshot.forEach((documento) => {
                     const dados = documento.data();
-                    if (_URL_KEY && dados.psicologa !== _URL_KEY) return;
                     const idDoDocumento = documento.id; 
                     
                     dadosGlobais.push({ id: idDoDocumento, ...dados }); 
