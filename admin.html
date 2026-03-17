@@ -121,13 +121,25 @@
 
     // ===== FIREBASE =====
     const firebaseConfig = {
-        apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
-        authDomain: "cleantdah.firebaseapp.com",
-        projectId: "cleantdah",
-        storageBucket: "cleantdah.firebasestorage.app",
-        messagingSenderId: "553813989536",
-        appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
-    };
+    apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
+    authDomain: "cleantdah.firebaseapp.com",
+    projectId: "cleantdah",
+    storageBucket: "cleantdah.firebasestorage.app",
+    messagingSenderId: "553813989536",
+    appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
+};
+
+// ── FILTRO POR PSICÓLOGA ──────────────────────────────────
+const _URL_KEY = new URLSearchParams(window.location.search).get('key') || '';
+const _PSICO_NOMES = {
+  dra_raiza:    'Dra. Raiza Oliveira',
+  dr_gabriel:   'Dr. Gabriel Gomes',
+  dra_caroline: 'Dra. Caroline Guerra'
+};
+if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
+  document.querySelector('h1').textContent = '🧠 Painel — ' + _PSICO_NOMES[_URL_KEY];
+}
+// ─────────────────────────────────────────────────────────
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
@@ -716,6 +728,7 @@
 
                 querySnapshot.forEach((documento) => {
                     const dados = documento.data();
+                    if (_URL_KEY && dados.psicologa && dados.psicologa !== _URL_KEY) return;
                     const idDoDocumento = documento.id; 
                     
                     dadosGlobais.push({ id: idDoDocumento, ...dados }); 
