@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<meta name="description" content="Acompanhamento diÃ¡rio para TDAH">
+<meta name="description" content="Acompanhamento diário para TDAH">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TDAH Care</title>
 
@@ -17,7 +17,7 @@
 <link rel="apple-touch-icon" href="icon.png">
 
 <style>
-/* Manteremos o seu CSS exatamente igual, pois estÃ¡ excelente */
+/* Manteremos o seu CSS exatamente igual, pois está excelente */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --primary: #1565C0; --primary-light: #1976D2; --primary-dark: #0D47A1;
@@ -553,26 +553,26 @@ textarea { resize: none; height: 80px; }
 </head>
 <body>
 <div class="header">
-  <div onclick="handleTitleTap()"><h1>ðŸ§  TDAH Care</h1><span id="header-date"></span></div>
-  <div style="font-size:2rem;cursor:pointer;" onclick="handleAdminTap()">ðŸ‘¤</div>
+  <div onclick="handleTitleTap()"><h1>🧠 TDAH Care</h1><span id="header-date"></span></div>
+  <div style="font-size:2rem;cursor:pointer;" onclick="handleAdminTap()">👤</div>
 </div>
 
 <div class="page active" id="page-home">
-  <div class="greeting"><h2 id="greeting-text">OlÃ¡! ðŸ‘‹</h2><p>Acompanhe seu dia com TDAH</p></div>
+  <div class="greeting"><h2 id="greeting-text">Olá! 👋</h2><p>Acompanhe seu dia com TDAH</p></div>
   
   <div class="widget-resumo">
     <div class="widget-title">Resumo do dia</div>
     <div class="widget-grid">
-      <div class="widget-item"><div class="widget-icon">ðŸ˜´</div><div class="widget-val" id="wr-sono">â€”</div><div class="widget-lbl">Sono</div></div>
-      <div class="widget-item"><div class="widget-icon">ðŸŽ¯</div><div class="widget-val" id="wr-metas">0/0</div><div class="widget-lbl">Metas</div></div>
-      <div class="widget-item"><div class="widget-icon">ðŸ’§</div><div class="widget-val" id="wr-hidrat">0</div><div class="widget-lbl">Ãgua</div></div>
-      <div class="widget-item"><div class="widget-icon">ðŸ”ï¸</div><div class="widget-val" id="wr-pom">0</div><div class="widget-lbl">SessÃµes</div></div>
+      <div class="widget-item"><div class="widget-icon">😴</div><div class="widget-val" id="wr-sono">—</div><div class="widget-lbl">Sono</div></div>
+      <div class="widget-item"><div class="widget-icon">🎯</div><div class="widget-val" id="wr-metas">0/0</div><div class="widget-lbl">Metas</div></div>
+      <div class="widget-item"><div class="widget-icon">💧</div><div class="widget-val" id="wr-hidrat">0</div><div class="widget-lbl">Água</div></div>
+      <div class="widget-item"><div class="widget-icon">🏔️</div><div class="widget-val" id="wr-pom">0</div><div class="widget-lbl">Sessões</div></div>
     </div>
     <div class="widget-score"><div class="widget-score-num" id="wr-score">0<span style="font-size:1rem;color:#90CAF9;">/100</span></div><div class="widget-score-lbl">score parcial de hoje</div></div>
   </div>
   
   <div class="streak-banner" id="streak-banner" style="display:none;">
-    <div class="streak-flame">ðŸ”¥</div>
+    <div class="streak-flame">🔥</div>
     <div class="streak-info"><div class="streak-num" id="streak-num">0</div><div class="streak-label">dias consecutivos com metas</div></div>
   </div>
   
@@ -582,17 +582,17 @@ textarea { resize: none; height: 80px; }
   
   <div class="remedio-card">
     <div class="remedio-header">
-      <div><div class="remedio-title">ðŸ’Š Venvanse (Lisdexanfetamina)</div><div style="font-size:0.75rem;color:var(--text-light);">DuraÃ§Ã£o: 12 horas</div></div>
-      <span class="remedio-badge badge-inativo" id="remedio-badge">NÃ£o registrado</span>
+      <div><div class="remedio-title">💊 Venvanse (Lisdexanfetamina)</div><div style="font-size:0.75rem;color:var(--text-light);">Duração: 12 horas</div></div>
+      <span class="remedio-badge badge-inativo" id="remedio-badge">Não registrado</span>
     </div>
     <div id="remedio-sem-registro">
-      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Registre o horÃ¡rio que tomou o remÃ©dio:</p>
-      <div class="time-input-wrap"><input type="time" id="hora-remedio"><button onclick="registrarRemedio()">ðŸ’Š Tomei</button></div>
+      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Registre o horário que tomou o remédio:</p>
+      <div class="time-input-wrap"><input type="time" id="hora-remedio"><button onclick="registrarRemedio()">💊 Tomei</button></div>
     </div>
     <div id="remedio-com-registro" style="display:none;">
       <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:8px;">
-        <span style="color:var(--text-light);">Tomado Ã s <strong id="hora-tomada-display">â€”</strong></span>
-        <span style="color:var(--text-light);">Encerra Ã s <strong id="hora-encerra-display">â€”</strong></span>
+        <span style="color:var(--text-light);">Tomado às <strong id="hora-tomada-display">—</strong></span>
+        <span style="color:var(--text-light);">Encerra às <strong id="hora-encerra-display">—</strong></span>
       </div>
       <div class="remedio-progress-bar"><div class="remedio-progress-fill" id="remedio-fill" style="width:0%"></div></div>
       <div class="remedio-info-row"><span id="tempo-ativo-label">0h no organismo</span><span id="tempo-restante-label">12h restantes</span></div>
@@ -601,37 +601,37 @@ textarea { resize: none; height: 80px; }
         <div class="remedio-stat"><div class="val" id="tempo-restante-val">12h 00min</div><div class="lbl">Tempo restante</div></div>
       </div>
       <div class="remedio-fase-box" id="remedio-fase-box">
-        <div class="remedio-fase-titulo" id="remedio-fase-titulo">ðŸ“Š Fase atual</div>
+        <div class="remedio-fase-titulo" id="remedio-fase-titulo">📊 Fase atual</div>
         <div class="remedio-fase-desc" id="remedio-fase-desc">Calculando...</div>
       </div>
       <div class="aviso-encerrado" id="aviso-encerrado">
-        <h4>âš ï¸ Efeito do remÃ©dio encerrado</h4>
-        <p>O Venvanse completou suas 12h de aÃ§Ã£o. Ã‰ normal sentir cansaÃ§o, irritabilidade leve e retorno da fome.<br><br>ðŸ’¡ <strong>Dica:</strong> Evite tarefas de alto foco agora. Descanse e alimente-se bem.</p>
+        <h4>⚠️ Efeito do remédio encerrado</h4>
+        <p>O Venvanse completou suas 12h de ação. É normal sentir cansaço, irritabilidade leve e retorno da fome.<br><br>💡 <strong>Dica:</strong> Evite tarefas de alto foco agora. Descanse e alimente-se bem.</p>
       </div>
-      <button class="btn-danger" onclick="resetarRemedio()">ðŸ”„ Registrar nova dose</button>
+      <button class="btn-danger" onclick="resetarRemedio()">🔄 Registrar nova dose</button>
     </div>
   </div>
   
   <div class="card">
-    <div class="card-title">ðŸ“Š Progresso de hoje</div>
+    <div class="card-title">📊 Progresso de hoje</div>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    <div class="progress-info"><span id="progress-text">0 de 0 metas concluÃ­das</span><span id="progress-pct">0%</span></div>
+    <div class="progress-info"><span id="progress-text">0 de 0 metas concluídas</span><span id="progress-pct">0%</span></div>
   </div>
 
   <div id="lembrete-sexta" style="display:none;background:linear-gradient(135deg,#1B5E20,#2E7D32);border-radius:16px;padding:16px;margin-bottom:16px;color:white;">
-    <div style="font-size:0.9rem;font-weight:800;margin-bottom:4px;">ðŸ“… Ã‰ sexta-feira!</div>
-    <div style="font-size:0.78rem;opacity:0.9;margin-bottom:12px;">Hora de enviar seu progresso semanal para sua psicÃ³loga ðŸ§ </div>
-    <button onclick="enviarRelatorioCompletoWhatsApp()" style="width:100%;padding:10px;background:white;color:#1B5E20;border:none;border-radius:10px;font-size:0.85rem;font-weight:800;cursor:pointer;">ðŸ“¤ Gerar e Compartilhar Progresso</button>
+    <div style="font-size:0.9rem;font-weight:800;margin-bottom:4px;">📅 É sexta-feira!</div>
+    <div style="font-size:0.78rem;opacity:0.9;margin-bottom:12px;">Hora de enviar seu progresso semanal para sua psicóloga 🧠</div>
+    <button onclick="enviarRelatorioCompletoWhatsApp()" style="width:100%;padding:10px;background:white;color:#1B5E20;border:none;border-radius:10px;font-size:0.85rem;font-weight:800;cursor:pointer;">📤 Gerar e Compartilhar Progresso</button>
   </div>
 
-  <button id="btn-salvar-dia" onclick="salvarDiarioManual()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1565C0,#1976D2);color:white;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(21,101,192,0.3);">ðŸ’¾ Salvar e Sincronizar com a PsicÃ³loga</button>
+  <button id="btn-salvar-dia" onclick="salvarDiarioManual()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1565C0,#1976D2);color:white;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(21,101,192,0.3);">💾 Salvar e Sincronizar com a Psicóloga</button>
 
-  <button class="reativar-btn" onclick="abrirReativar()">âš¡ Reativar Foco</button>
+  <button class="reativar-btn" onclick="abrirReativar()">⚡ Reativar Foco</button>
 
   <div class="hidrat-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-      <div class="hidrat-title" style="margin-bottom:0;">ðŸ’§ HidrataÃ§Ã£o</div>
-      <button onclick="toggleHidratConfig()" style="background:none;border:none;font-size:0.72rem;color:#1565C0;cursor:pointer;opacity:0.8;">âš™ï¸ configurar</button>
+      <div class="hidrat-title" style="margin-bottom:0;">💧 Hidratação</div>
+      <button onclick="toggleHidratConfig()" style="background:none;border:none;font-size:0.72rem;color:#1565C0;cursor:pointer;opacity:0.8;">⚙️ configurar</button>
     </div>
     <div id="hidrat-config" style="display:none;background:rgba(255,255,255,0.6);border-radius:10px;padding:10px;margin-bottom:10px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
@@ -642,7 +642,7 @@ textarea { resize: none; height: 80px; }
         <span style="font-size:0.78rem;color:#1565C0;">ml</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <label style="font-size:0.78rem;color:#1565C0;font-weight:600;min-width:80px;">Meta diÃ¡ria:</label>
+        <label style="font-size:0.78rem;color:#1565C0;font-weight:600;min-width:80px;">Meta diária:</label>
         <input type="number" id="hidrat-meta-litros" min="0.5" max="5" step="0.5" placeholder="2.0"
           style="width:70px;border:1.5px solid #90CAF9;border-radius:8px;padding:4px 8px;font-size:0.85rem;text-align:center;"
           onchange="salvarConfigHidrat()">
@@ -650,7 +650,7 @@ textarea { resize: none; height: 80px; }
       </div>
     </div>
     <div class="hidrat-row">
-      <button class="hidrat-btn" onclick="remCopo()" style="background:#90CAF9;font-size:1.2rem;">âˆ’</button>
+      <button class="hidrat-btn" onclick="remCopo()" style="background:#90CAF9;font-size:1.2rem;">−</button>
       <div style="flex:1;text-align:center;">
         <div class="hidrat-count"><span id="hidrat-ml-total">0</span><span style="font-size:0.85rem;color:#1565C0;opacity:0.7;" id="hidrat-ml-meta"> / 2000ml</span></div>
         <div class="hidrat-meta" id="hidrat-copos-label">0 copos de 250ml</div>
@@ -664,127 +664,127 @@ textarea { resize: none; height: 80px; }
   </div>
   
   <div class="card">
-    <div class="card-title">ðŸ“± Tempo de tela hoje</div>
+    <div class="card-title">📱 Tempo de tela hoje</div>
     <div id="celular-home-display">
-      <p style="color:var(--text-light);font-size:0.82rem;margin-bottom:8px;">Quanto tempo vocÃª usou o celular hoje?</p>
+      <p style="color:var(--text-light);font-size:0.82rem;margin-bottom:8px;">Quanto tempo você usou o celular hoje?</p>
       <div class="celular-home-row">
         <input type="number" id="celular-horas" placeholder="0" min="0" max="24">
         <span style="color:var(--text-light);font-size:0.85rem;">h</span>
         <input type="number" id="celular-minutos" placeholder="0" min="0" max="59">
         <span style="color:var(--text-light);font-size:0.85rem;">min</span>
-        <button onclick="salvarCelular()">ðŸ’¾ Salvar</button>
+        <button onclick="salvarCelular()">💾 Salvar</button>
       </div>
     </div>
     <div id="celular-registrado-home" style="display:none;"></div>
   </div>
   
   <div class="card">
-    <div class="card-title">ðŸ“… Ãšltimo sono registrado</div>
+    <div class="card-title">📅 Último sono registrado</div>
     <div id="ultimo-sono-home"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:8px;">Nenhum registro ainda</p></div>
   </div>
   
-  <button onclick="debugAdmin()" style="background:#1565C0;color:white;border:none;border-radius:12px;padding:10px;width:100%;font-size:0.8rem;cursor:pointer;margin-bottom:8px;">ðŸ” Admin</button>
+  <button onclick="debugAdmin()" style="background:#1565C0;color:white;border:none;border-radius:12px;padding:10px;width:100%;font-size:0.8rem;cursor:pointer;margin-bottom:8px;">🔐 Admin</button>
   <div class="page-footer" style="padding:16px 0;">produced by Jp</div>
 </div>
 
 <div class="page" id="page-sono">
-  <div class="section-title">ðŸ˜´ Registrar Sono</div>
+  <div class="section-title">😴 Registrar Sono</div>
   <div class="card">
     <div class="sono-visual">
-      <div class="sono-circle"><span class="horas" id="sono-display">â€”</span><span class="label">de sono</span></div>
+      <div class="sono-circle"><span class="horas" id="sono-display">—</span><span class="label">de sono</span></div>
       <div class="sono-info">
         <p>Recomendado: <strong>7-9 horas</strong></p>
         <p style="font-size:0.8rem;color:var(--text-light);margin-top:6px;">Sono regular melhora foco e resposta ao medicamento.</p>
       </div>
     </div>
     <div class="form-group">
-      <label>â° Quantas horas dormiu?</label>
+      <label>⏰ Quantas horas dormiu?</label>
       <div class="hours-grid" id="hours-grid"></div>
       <div class="custom-hours"><input type="number" id="horas-custom" placeholder="Outro valor..." min="0" max="24" step="0.5" oninput="selecionarHoraCustom(this.value)"><span>horas</span></div>
     </div>
     <div class="form-group">
-      <label>ðŸ˜´ Qualidade do sono</label>
+      <label>😴 Qualidade do sono</label>
       <select id="sono-qualidade">
-        <option value="otima">ðŸ˜Š Ã“tima â€” Acordei muito descansado</option>
-        <option value="boa" selected>ðŸ™‚ Boa â€” Acordei bem</option>
-        <option value="regular">ðŸ˜ Regular â€” Cansado mas ok</option>
-        <option value="ruim">ðŸ˜” Ruim â€” Muito cansado</option>
-        <option value="pessima">ðŸ˜« PÃ©ssima â€” Mal consegui dormir</option>
+        <option value="otima">😊 Ótima — Acordei muito descansado</option>
+        <option value="boa" selected>🙂 Boa — Acordei bem</option>
+        <option value="regular">😐 Regular — Cansado mas ok</option>
+        <option value="ruim">😔 Ruim — Muito cansado</option>
+        <option value="pessima">😫 Péssima — Mal consegui dormir</option>
       </select>
     </div>
-    <div class="form-group"><label>ðŸ“ ObservaÃ§Ãµes (opcional)</label><textarea id="sono-obs" placeholder="Ex: Acordei vÃ¡rias vezes..."></textarea></div>
-    <button class="btn btn-primary" onclick="salvarSono()">ðŸ’¾ Salvar Registro</button>
+    <div class="form-group"><label>📝 Observações (opcional)</label><textarea id="sono-obs" placeholder="Ex: Acordei várias vezes..."></textarea></div>
+    <button class="btn btn-primary" onclick="salvarSono()">💾 Salvar Registro</button>
   </div>
-  <div class="card"><div class="card-title">ðŸ“… Ãšltimos registros</div><div id="historico-sono"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p></div></div>
+  <div class="card"><div class="card-title">📅 Últimos registros</div><div id="historico-sono"><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p></div></div>
   <div class="page-footer">produced by Jp</div>
 </div>
 
 <div class="page" id="page-metas">
-  <div class="section-title">ðŸŽ¯ Minhas Metas</div>
+  <div class="section-title">🎯 Minhas Metas</div>
   <div class="card">
-    <div class="card-title">âž• Nova meta</div>
+    <div class="card-title">➕ Nova meta</div>
     <div class="add-meta-row">
       <input type="text" id="nova-meta-input" placeholder="Ex: Estudar 1h, Meditar...">
       <select id="nova-meta-tipo">
-        <option value="diaria">ðŸ“… DiÃ¡ria</option>
-        <option value="fixa">ðŸ“Œ Fixa</option>
+        <option value="diaria">📅 Diária</option>
+        <option value="fixa">📌 Fixa</option>
       </select>
       <button onclick="adicionarMeta()">+</button>
     </div>
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
       <label style="font-size:0.78rem;margin-bottom:0;font-weight:500;color:var(--text-light);white-space:nowrap;">Prioridade:</label>
       <select id="nova-meta-prio" style="padding:6px 10px;font-size:0.78rem;border-radius:8px;border:2px solid #E3EAF2;background:#F8FAFF;flex:1;">
-        <option value="alta">ðŸ”´ Alta</option>
-        <option value="media" selected>ðŸŸ¡ MÃ©dia</option>
-        <option value="baixa">ðŸŸ¢ Baixa</option>
+        <option value="alta">🔴 Alta</option>
+        <option value="media" selected>🟡 Média</option>
+        <option value="baixa">🟢 Baixa</option>
       </select>
     </div>
-    <p style="font-size:0.75rem;color:var(--text-light);">ðŸ“Œ Fixas se repetem todo dia. ðŸ“… DiÃ¡rias somem Ã  meia-noite. Ordenadas por prioridade.</p>
+    <p style="font-size:0.75rem;color:var(--text-light);">📌 Fixas se repetem todo dia. 📅 Diárias somem à meia-noite. Ordenadas por prioridade.</p>
   </div>
   <div class="card">
-    <div class="card-title">ðŸ“‹ Metas de hoje</div>
+    <div class="card-title">📋 Metas de hoje</div>
     <div class="progress-bar" style="margin-bottom:8px;"><div class="progress-fill" id="meta-progress" style="width:0%"></div></div>
-    <div class="progress-info" style="margin-bottom:16px;"><span id="meta-info">0 concluÃ­das</span><span id="meta-pct">0%</span></div>
+    <div class="progress-info" style="margin-bottom:16px;"><span id="meta-info">0 concluídas</span><span id="meta-pct">0%</span></div>
     <div id="lista-metas"></div>
     <div class="divider"></div>
-    <button class="btn btn-outline" onclick="limparConcluidas()" style="margin-top:8px;">ðŸ—‘ï¸ Limpar diÃ¡rias concluÃ­das</button>
+    <button class="btn btn-outline" onclick="limparConcluidas()" style="margin-top:8px;">🗑️ Limpar diárias concluídas</button>
   </div>
   <div class="card">
-    <div class="card-title">ðŸ“š PÃ¡ginas lidas hoje</div>
+    <div class="card-title">📚 Páginas lidas hoje</div>
     <div id="leitura-form">
-      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Quantas pÃ¡ginas vocÃª leu hoje?</p>
+      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Quantas páginas você leu hoje?</p>
       <div class="leitura-row">
         <input type="number" id="paginas-input" placeholder="Ex: 30" min="0">
-        <button onclick="salvarLeitura()">ðŸ’¾ Salvar</button>
+        <button onclick="salvarLeitura()">💾 Salvar</button>
       </div>
     </div>
     <div id="leitura-registrada" style="display:none;"></div>
   </div>
-  <div class="card"><div class="card-title">ðŸ’¡ Dica</div>
-    <div style="background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:12px 16px;font-size:0.83rem;color:#5D4037;line-height:1.5;"><strong>TDAH e metas:</strong> Divida tarefas grandes em passos pequenos. Cada âœ… libera dopamina!</div>
+  <div class="card"><div class="card-title">💡 Dica</div>
+    <div style="background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:12px 16px;font-size:0.83rem;color:#5D4037;line-height:1.5;"><strong>TDAH e metas:</strong> Divida tarefas grandes em passos pequenos. Cada ✅ libera dopamina!</div>
   </div>
   <div class="page-footer">produced by Jp</div>
 </div>
 
 <div class="page" id="page-calendario">
-  <div class="section-title">ðŸ—“ï¸ HistÃ³rico DiÃ¡rio</div>
+  <div class="section-title">🗓️ Histórico Diário</div>
   <div class="card">
     <div class="calendar-nav">
-      <button onclick="changeMonth(-1)">â—€</button>
+      <button onclick="changeMonth(-1)">◀</button>
       <h3 id="current-month-year"></h3>
-      <button onclick="changeMonth(1)">â–¶</button>
+      <button onclick="changeMonth(1)">▶</button>
     </div>
     <div class="calendar-grid">
       <div class="calendar-day-header">Dom</div><div class="calendar-day-header">Seg</div>
       <div class="calendar-day-header">Ter</div><div class="calendar-day-header">Qua</div>
       <div class="calendar-day-header">Qui</div><div class="calendar-day-header">Sex</div>
-      <div class="calendar-day-header">SÃ¡b</div>
+      <div class="calendar-day-header">Sáb</div>
     </div>
     <div class="calendar-grid" id="calendar-grid-days"></div>
   </div>
   <div id="daily-summary-card" style="display:none;"></div>
   <div class="chart-container">
-    <div class="chart-title">ðŸ“Š Progresso dos Ãºltimos 7 dias</div>
+    <div class="chart-title">📊 Progresso dos últimos 7 dias</div>
     <div class="chart-bars" id="chart-semanal"></div>
     <div style="display:flex;justify-content:space-between;margin-top:4px;">
       <span style="font-size:0.65rem;color:var(--text-light);">0</span>
@@ -799,42 +799,42 @@ textarea { resize: none; height: 80px; }
 <div id="foco-page-inner">
 
   <div class="foco-header">
-    <h2>ðŸš€ Modo Foco â€” MissÃ£o Espacial</h2>
-    <p id="caverna-subtitle">Pomodoro Â· XP Â· Planetas Â· Badges</p>
+    <h2>🚀 Modo Foco — Missão Espacial</h2>
+    <p id="caverna-subtitle">Pomodoro · XP · Planetas · Badges</p>
   </div>
 
   <div class="foco-xp-bar-wrap">
     <div class="foco-xp-row">
-      <span class="foco-nivel-badge" id="foco-nivel-badge">â­ NÃ­vel 1 â€” Recruta</span>
+      <span class="foco-nivel-badge" id="foco-nivel-badge">⭐ Nível 1 — Recruta</span>
       <span class="foco-xp-text" id="foco-xp-text">0 / 100 XP</span>
     </div>
     <div class="foco-xp-bar"><div class="foco-xp-fill" id="foco-xp-fill" style="width:0%"></div></div>
   </div>
 
   <div class="foco-planeta-row">
-    <span class="foco-nave-row">ðŸš€</span>
-    <span>MissÃ£o para</span>
-    <span class="foco-planeta-atual" id="foco-planeta-emoji">ðŸŒ</span>
+    <span class="foco-nave-row">🚀</span>
+    <span>Missão para</span>
+    <span class="foco-planeta-atual" id="foco-planeta-emoji">🌍</span>
     <span id="foco-planeta-nome">Terra</span>
   </div>
 
   <div style="text-align:center;">
-    <span class="foco-status-badge status-idle" id="caverna-status-badge">â¸ Aguardando inÃ­cio</span>
+    <span class="foco-status-badge status-idle" id="caverna-status-badge">⏸ Aguardando início</span>
   </div>
 
   <div class="pom-config-card">
-    <div class="pom-config-title">âš™ï¸ Configurar tempo</div>
+    <div class="pom-config-title">⚙️ Configurar tempo</div>
     <div class="pom-config-row">
       <div class="pom-config-item">
-        <label>ðŸŽ¯ Foco (min)</label>
+        <label>🎯 Foco (min)</label>
         <input type="number" id="pom-foco-input" value="20" min="1" max="90" onchange="aplicarConfigPom()">
       </div>
       <div class="pom-config-sep">/</div>
       <div class="pom-config-item">
-        <label>â˜• Pausa (min)</label>
+        <label>☕ Pausa (min)</label>
         <input type="number" id="pom-pausa-input" value="5" min="1" max="30" onchange="aplicarConfigPom()">
       </div>
-      <button class="pom-config-btn" onclick="aplicarConfigPom()">âœ“ Aplicar</button>
+      <button class="pom-config-btn" onclick="aplicarConfigPom()">✓ Aplicar</button>
     </div>
   </div>
 
@@ -854,36 +854,36 @@ textarea { resize: none; height: 80px; }
   </div>
 
   <div class="foco-controls">
-    <button class="foco-btn foco-btn-reset" onclick="resetarPomodoro()" title="Reiniciar">ðŸ”„</button>
-    <button class="foco-btn foco-btn-main" id="caverna-play-btn" onclick="togglePomodoro()">â–¶</button>
-    <button class="foco-btn foco-btn-skip" onclick="pularFase()" title="Pular fase">â­</button>
+    <button class="foco-btn foco-btn-reset" onclick="resetarPomodoro()" title="Reiniciar">🔄</button>
+    <button class="foco-btn foco-btn-main" id="caverna-play-btn" onclick="togglePomodoro()">▶</button>
+    <button class="foco-btn foco-btn-skip" onclick="pularFase()" title="Pular fase">⏭</button>
   </div>
 
   <div class="foco-stats-grid">
-    <div class="foco-stat-box"><span class="v" id="cav-sessoes">0</span><span class="l">SessÃµes</span></div>
+    <div class="foco-stat-box"><span class="v" id="cav-sessoes">0</span><span class="l">Sessões</span></div>
     <div class="foco-stat-box"><span class="v" id="cav-foco-total">0min</span><span class="l">Foco hoje</span></div>
     <div class="foco-stat-box"><span class="v" id="cav-ciclos">0</span><span class="l">Ciclos</span></div>
   </div>
 
   <div class="foco-card">
-    <div class="foco-card-title">ðŸ”µ SessÃµes do ciclo atual (4 = 1 ciclo)</div>
+    <div class="foco-card-title">🔵 Sessões do ciclo atual (4 = 1 ciclo)</div>
     <div class="foco-session-row" id="session-dots"></div>
     <div class="foco-manual-row">
-      <span>Celular desligou? Ajuste as sessÃµes:</span>
-      <button onclick="removerSessaoManual()" title="Remover 1 sessÃ£o" style="background:rgba(239,68,68,0.1);color:#F87171;border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">â®</button>
-      <button onclick="adicionarSessaoManual()" title="Adicionar 1 sessÃ£o" style="background:rgba(99,102,241,0.12);color:#818CF8;border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">â­</button>
+      <span>Celular desligou? Ajuste as sessões:</span>
+      <button onclick="removerSessaoManual()" title="Remover 1 sessão" style="background:rgba(239,68,68,0.1);color:#F87171;border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">⏮</button>
+      <button onclick="adicionarSessaoManual()" title="Adicionar 1 sessão" style="background:rgba(99,102,241,0.12);color:#818CF8;border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:8px 12px;font-size:1rem;font-weight:700;cursor:pointer;">⏭</button>
     </div>
-    <p style="font-size:0.63rem;color:#2D3748;margin-top:6px;">â­ adiciona 1 sessÃ£o de foco Â· â® remove 1 sessÃ£o</p>
+    <p style="font-size:0.63rem;color:#2D3748;margin-top:6px;">⏭ adiciona 1 sessão de foco · ⏮ remove 1 sessão</p>
   </div>
 
   <div class="foco-card">
-    <div class="foco-card-title">ðŸ… Conquistas</div>
+    <div class="foco-card-title">🏅 Conquistas</div>
     <div class="foco-badges-row" id="foco-badges-row">
-      <span class="foco-badge foco-badge-azul" id="badge-primeiro">ðŸš€ Decolagem</span>
-      <span class="foco-badge foco-badge-roxo" id="badge-ciclo1">ðŸª Ã“rbita</span>
-      <span class="foco-badge foco-badge-verde" id="badge-ciclo5">ðŸŒ™ Lua</span>
-      <span class="foco-badge foco-badge-ouro" id="badge-ciclo10">â­ Estrela</span>
-      <span class="foco-badge foco-badge-rosa" id="badge-ciclo25">ðŸŒŒ GalÃ¡xia</span>
+      <span class="foco-badge foco-badge-azul" id="badge-primeiro">🚀 Decolagem</span>
+      <span class="foco-badge foco-badge-roxo" id="badge-ciclo1">🪐 Órbita</span>
+      <span class="foco-badge foco-badge-verde" id="badge-ciclo5">🌙 Lua</span>
+      <span class="foco-badge foco-badge-ouro" id="badge-ciclo10">⭐ Estrela</span>
+      <span class="foco-badge foco-badge-rosa" id="badge-ciclo25">🌌 Galáxia</span>
     </div>
   </div>
 
@@ -893,53 +893,53 @@ textarea { resize: none; height: 80px; }
 
 <div class="celebracao-overlay" id="celebracao-overlay">
   <div class="celebracao-box">
-    <span class="celebracao-emoji" id="celeb-emoji">ðŸŽ‰</span>
-    <div class="celebracao-titulo">Ciclo Completo! ðŸš€</div>
+    <span class="celebracao-emoji" id="celeb-emoji">🎉</span>
+    <div class="celebracao-titulo">Ciclo Completo! 🚀</div>
     <div class="celebracao-xp" id="celeb-xp">+50 XP</div>
-    <div class="celebracao-sub" id="celeb-sub">VocÃª completou mais um ciclo de foco!</div>
+    <div class="celebracao-sub" id="celeb-sub">Você completou mais um ciclo de foco!</div>
     <div class="celebracao-prox-planeta" id="celeb-planeta"></div>
-    <button class="celebracao-btn" onclick="fecharCelebracao()">Continuar MissÃ£o ðŸš€</button>
+    <button class="celebracao-btn" onclick="fecharCelebracao()">Continuar Missão 🚀</button>
   </div>
 </div>
 
 <div class="page" id="page-info">
-  <div class="section-title">ðŸ“š InformaÃ§Ãµes</div>
+  <div class="section-title">📚 Informações</div>
   <div class="info-tabs">
-    <button class="info-tab active" onclick="switchInfo('sono',this)">ðŸ˜´ Sono</button>
-    <button class="info-tab" onclick="switchInfo('eletrolitos',this)">ðŸ’§ EletrÃ³litos</button>
-    <button class="info-tab" onclick="switchInfo('remedio',this)">ðŸ’Š MedicaÃ§Ã£o</button>
-    <button class="info-tab" onclick="switchInfo('estrategias',this)">ðŸ§  EstratÃ©gias</button>
-    <button class="info-tab" onclick="switchInfo('relatorios',this)">ðŸ“Š RelatÃ³rios</button>
+    <button class="info-tab active" onclick="switchInfo('sono',this)">😴 Sono</button>
+    <button class="info-tab" onclick="switchInfo('eletrolitos',this)">💧 Eletrólitos</button>
+    <button class="info-tab" onclick="switchInfo('remedio',this)">💊 Medicação</button>
+    <button class="info-tab" onclick="switchInfo('estrategias',this)">🧠 Estratégias</button>
+    <button class="info-tab" onclick="switchInfo('relatorios',this)">📊 Relatórios</button>
   </div>
   <div class="info-content active" id="info-sono">
-    <div class="info-card"><h3>ðŸŒ™ Por que o sono Ã© crucial no TDAH?</h3><p>PrivaÃ§Ã£o de sono agrava desatenÃ§Ã£o, impulsividade e regulaÃ§Ã£o emocional â€” jÃ¡ comprometidas no TDAH.</p></div>
-    <div class="info-tip"><strong>âœ… RecomendaÃ§Ã£o:</strong> 7-9 horas com horÃ¡rios consistentes, mesmo nos fins de semana.</div>
-    <div class="info-card"><h3>ðŸ“± Higiene do sono</h3><p>Evite telas 1 hora antes de dormir. A luz azul inibe a melatonina. Crie rotina: banho morno, leitura leve, ambiente fresco.</p></div>
-    <div class="info-tip"><strong>âš ï¸ AtenÃ§Ã£o:</strong> Estimulantes tomados tarde dificultam o sono. Converse com seu mÃ©dico.</div>
+    <div class="info-card"><h3>🌙 Por que o sono é crucial no TDAH?</h3><p>Privação de sono agrava desatenção, impulsividade e regulação emocional — já comprometidas no TDAH.</p></div>
+    <div class="info-tip"><strong>✅ Recomendação:</strong> 7-9 horas com horários consistentes, mesmo nos fins de semana.</div>
+    <div class="info-card"><h3>📱 Higiene do sono</h3><p>Evite telas 1 hora antes de dormir. A luz azul inibe a melatonina. Crie rotina: banho morno, leitura leve, ambiente fresco.</p></div>
+    <div class="info-tip"><strong>⚠️ Atenção:</strong> Estimulantes tomados tarde dificultam o sono. Converse com seu médico.</div>
   </div>
   <div class="info-content" id="info-eletrolitos">
-    <div class="info-card"><h3>ðŸ’§ HidrataÃ§Ã£o e TDAH</h3><p>DesidrataÃ§Ã£o leve (1-2%) jÃ¡ impacta concentraÃ§Ã£o e memÃ³ria.</p></div>
-    <div class="info-tip"><strong>âœ… Meta:</strong> 2-3 litros de Ã¡gua por dia.</div>
-    <div class="info-card"><h3>ðŸ§‚ EletrÃ³litos importantes</h3><p><strong>MagnÃ©sio:</strong> Reduz hiperatividade, melhora sono.<br><br><strong>Zinco:</strong> Relacionado Ã  sÃ­ntese de dopamina.<br><br><strong>Ferro:</strong> DeficiÃªncia agrava TDAH.</p></div>
+    <div class="info-card"><h3>💧 Hidratação e TDAH</h3><p>Desidratação leve (1-2%) já impacta concentração e memória.</p></div>
+    <div class="info-tip"><strong>✅ Meta:</strong> 2-3 litros de água por dia.</div>
+    <div class="info-card"><h3>🧂 Eletrólitos importantes</h3><p><strong>Magnésio:</strong> Reduz hiperatividade, melhora sono.<br><br><strong>Zinco:</strong> Relacionado à síntese de dopamina.<br><br><strong>Ferro:</strong> Deficiência agrava TDAH.</p></div>
   </div>
   <div class="info-content" id="info-remedio">
-    <div class="info-card"><h3>ðŸ’Š Venvanse â€” Como funciona</h3><p>PrÃ³-fÃ¡rmaco ativado no organismo. InÃ­cio em 1-2h, pico entre 3-5h, duraÃ§Ã£o total de atÃ© 12h.</p></div>
-    <div class="info-tip"><strong>âœ… HorÃ¡rio ideal:</strong> Tome ao acordar. ConsistÃªncia maximiza o efeito terapÃªutico.</div>
+    <div class="info-card"><h3>💊 Venvanse — Como funciona</h3><p>Pró-fármaco ativado no organismo. Início em 1-2h, pico entre 3-5h, duração total de até 12h.</p></div>
+    <div class="info-tip"><strong>✅ Horário ideal:</strong> Tome ao acordar. Consistência maximiza o efeito terapêutico.</div>
   </div>
   <div class="info-content" id="info-estrategias">
-    <div class="info-card"><h3>â±ï¸ Modo Caverna â€” Pomodoro 20/5</h3><p>20min de foco + 5min de pausa. Para TDAH, sessÃµes mais curtas sÃ£o mais eficazes.</p></div>
-    <div class="info-card"><h3>ðŸ“ Body doubling</h3><p>Estudar na presenÃ§a de outra pessoa aumenta foco.</p></div>
+    <div class="info-card"><h3>⏱️ Modo Caverna — Pomodoro 20/5</h3><p>20min de foco + 5min de pausa. Para TDAH, sessões mais curtas são mais eficazes.</p></div>
+    <div class="info-card"><h3>📝 Body doubling</h3><p>Estudar na presença de outra pessoa aumenta foco.</p></div>
   </div>
   <div class="info-content" id="info-relatorios">
     <div class="rel-subtabs">
-      <button class="rel-subtab diario active" id="subtab-diario" onclick="switchRelSubtab('diario')">ðŸ“‹ RelatÃ³rio do Dia</button>
-      <button class="rel-subtab mensal" id="subtab-mensal" onclick="switchRelSubtab('mensal')">ðŸ“ˆ RelatÃ³rio Mensal</button>
+      <button class="rel-subtab diario active" id="subtab-diario" onclick="switchRelSubtab('diario')">📋 Relatório do Dia</button>
+      <button class="rel-subtab mensal" id="subtab-mensal" onclick="switchRelSubtab('mensal')">📈 Relatório Mensal</button>
     </div>
     <div id="relatorio-diario-inline">
       <div style="text-align:center;padding:20px 0 10px;">
-        <div style="font-size:2rem;margin-bottom:8px;">ðŸ“‹</div>
-        <div style="font-size:0.85rem;color:#546E7A;margin-bottom:16px;">AnÃ¡lise completa do seu dia atual</div>
-        <button onclick="gerarRelatorioDiarioInline()" style="background:linear-gradient(135deg,#1565C0,#29B6F6);color:white;border:none;border-radius:12px;padding:14px 24px;font-size:0.9rem;font-weight:700;cursor:pointer;width:100%;">ðŸ“Š Gerar RelatÃ³rio de Hoje</button>
+        <div style="font-size:2rem;margin-bottom:8px;">📋</div>
+        <div style="font-size:0.85rem;color:#546E7A;margin-bottom:16px;">Análise completa do seu dia atual</div>
+        <button onclick="gerarRelatorioDiarioInline()" style="background:linear-gradient(135deg,#1565C0,#29B6F6);color:white;border:none;border-radius:12px;padding:14px 24px;font-size:0.9rem;font-weight:700;cursor:pointer;width:100%;">📊 Gerar Relatório de Hoje</button>
       </div>
       <div id="relatorio-diario-conteudo"></div>
     </div>
@@ -972,60 +972,60 @@ textarea { resize: none; height: 80px; }
 
 <div class="relatorio-modal" id="relatorio-modal" onclick="fecharRelatorio(event)">
   <div class="relatorio-content">
-    <div class="relatorio-title">ðŸ“Š RelatÃ³rio do Dia</div>
+    <div class="relatorio-title">📊 Relatório do Dia</div>
     <div class="relatorio-date" id="relatorio-date"></div>
     <div id="relatorio-body"></div>
-    <button class="rel-close-btn" onclick="document.getElementById('relatorio-modal').classList.remove('show')">âœ• Fechar</button>
+    <button class="rel-close-btn" onclick="document.getElementById('relatorio-modal').classList.remove('show')">✕ Fechar</button>
   </div>
 </div>
 
 <div class="compartilhar-modal" id="compartilhar-modal" onclick="fecharCompartilharModal(event)">
   <div class="compartilhar-content">
     <div class="compartilhar-header" style="position:relative;">
-      <h2>ðŸ“¤ Progresso Semanal</h2>
-      <div style="font-size:0.78rem;color:rgba(255,255,255,0.8);margin-top:2px;">Ola, <strong id="comp-apelido-display">â€”</strong></div>
+      <h2>📤 Progresso Semanal</h2>
+      <div style="font-size:0.78rem;color:rgba(255,255,255,0.8);margin-top:2px;">Ola, <strong id="comp-apelido-display">—</strong></div>
       <div id="sync-status-badge" class="sync-badge sync-sending" style="display:none;margin-top:6px;"></div>
-      <p>Compartilhe sua evoluÃ§Ã£o com sua psicÃ³loga</p>
-      <button class="comp-close" onclick="document.getElementById('compartilhar-modal').classList.remove('show')">âœ•</button>
+      <p>Compartilhe sua evolução com sua psicóloga</p>
+      <button class="comp-close" onclick="document.getElementById('compartilhar-modal').classList.remove('show')">✕</button>
     </div>
     <div class="compartilhar-body">
       <div class="comp-tabs">
-        <button class="comp-tab active" onclick="switchCompTab('visual',this)">ðŸŽ¨ Visual</button>
-        <button class="comp-tab" onclick="switchCompTab('texto',this)">ðŸ’¬ Texto</button>
-        <button class="comp-tab" onclick="switchCompTab('pdf',this)">ðŸ“„ PDF</button>
+        <button class="comp-tab active" onclick="switchCompTab('visual',this)">🎨 Visual</button>
+        <button class="comp-tab" onclick="switchCompTab('texto',this)">💬 Texto</button>
+        <button class="comp-tab" onclick="switchCompTab('pdf',this)">📄 PDF</button>
       </div>
       <div id="comp-visual" class="comp-tab-content">
         <div class="wrapped-card" id="wrapped-card">
           <div class="wrapped-header">
-            <div><div class="wrapped-titulo">ðŸ“Š Progresso Semanal</div><div style="font-size:1rem;font-weight:800;color:#E8F5E9;margin-top:2px;" id="wc-nome">TDAH Care</div></div>
+            <div><div class="wrapped-titulo">📊 Progresso Semanal</div><div style="font-size:1rem;font-weight:800;color:#E8F5E9;margin-top:2px;" id="wc-nome">TDAH Care</div></div>
             <div class="wrapped-periodo" id="wc-periodo"></div>
           </div>
-          <div class="wrapped-score"><div class="wrapped-score-num" id="wc-score">â€”</div><div class="wrapped-score-label">score da semana</div></div>
+          <div class="wrapped-score"><div class="wrapped-score-num" id="wc-score">—</div><div class="wrapped-score-label">score da semana</div></div>
           <div class="wrapped-grid">
-            <div class="wrapped-item"><div class="wi-val" id="wc-sono">â€”</div><div class="wi-label">ðŸ˜´ MÃ©dia de sono</div><div class="wi-bar"><div class="wi-bar-fill" id="wc-sono-bar" style="width:0%"></div></div></div>
-            <div class="wrapped-item"><div class="wi-val" id="wc-metas">â€”</div><div class="wi-label">âœ… Metas concluÃ­das</div><div class="wi-bar"><div class="wi-bar-fill" id="wc-metas-bar" style="width:0%"></div></div></div>
-            <div class="wrapped-item"><div class="wi-val" id="wc-foco">â€”</div><div class="wi-label">ðŸ”ï¸ Tempo de foco</div><div class="wi-bar"><div class="wi-bar-fill" id="wc-foco-bar" style="width:0%"></div></div></div>
-            <div class="wrapped-item"><div class="wi-val" id="wc-tela">â€”</div><div class="wi-label">ðŸ“± MÃ©dia de tela</div><div class="wi-bar"><div class="wi-bar-fill" id="wc-tela-bar" style="width:0%"></div></div></div>
+            <div class="wrapped-item"><div class="wi-val" id="wc-sono">—</div><div class="wi-label">😴 Média de sono</div><div class="wi-bar"><div class="wi-bar-fill" id="wc-sono-bar" style="width:0%"></div></div></div>
+            <div class="wrapped-item"><div class="wi-val" id="wc-metas">—</div><div class="wi-label">✅ Metas concluídas</div><div class="wi-bar"><div class="wi-bar-fill" id="wc-metas-bar" style="width:0%"></div></div></div>
+            <div class="wrapped-item"><div class="wi-val" id="wc-foco">—</div><div class="wi-label">🏔️ Tempo de foco</div><div class="wi-bar"><div class="wi-bar-fill" id="wc-foco-bar" style="width:0%"></div></div></div>
+            <div class="wrapped-item"><div class="wi-val" id="wc-tela">—</div><div class="wi-label">📱 Média de tela</div><div class="wi-bar"><div class="wi-bar-fill" id="wc-tela-bar" style="width:0%"></div></div></div>
           </div>
-          <div class="wrapped-destaque" id="wc-destaque-wrap"><div class="wd-label">â­ Destaque da semana</div><div class="wd-val" id="wc-destaque">â€”</div></div>
-          <div class="wrapped-footer">gerado pelo TDAH Care â€¢ semana de acompanhamento</div>
+          <div class="wrapped-destaque" id="wc-destaque-wrap"><div class="wd-label">⭐ Destaque da semana</div><div class="wd-val" id="wc-destaque">—</div></div>
+          <div class="wrapped-footer">gerado pelo TDAH Care • semana de acompanhamento</div>
         </div>
-        <div class="comp-acoes"><button class="comp-acao-btn btn-whatsapp" onclick="compartilharWhatsApp()">ðŸ“± Enviar pelo WhatsApp</button><button class="comp-acao-btn btn-copiar" onclick="tirarPrintCard()">ðŸ“¸ Salvar como imagem</button></div>
+        <div class="comp-acoes"><button class="comp-acao-btn btn-whatsapp" onclick="compartilharWhatsApp()">📱 Enviar pelo WhatsApp</button><button class="comp-acao-btn btn-copiar" onclick="tirarPrintCard()">📸 Salvar como imagem</button></div>
       </div>
       <div id="comp-texto" class="comp-tab-content" style="display:none;">
         <div class="texto-formatado" id="texto-progresso"></div>
-        <div class="comp-acoes"><button class="comp-acao-btn btn-whatsapp" onclick="enviarTextoWhatsApp()">ðŸ“± Abrir no WhatsApp</button><button class="comp-acao-btn btn-copiar" onclick="copiarTexto()">ðŸ“‹ Copiar texto</button></div>
+        <div class="comp-acoes"><button class="comp-acao-btn btn-whatsapp" onclick="enviarTextoWhatsApp()">📱 Abrir no WhatsApp</button><button class="comp-acao-btn btn-copiar" onclick="copiarTexto()">📋 Copiar texto</button></div>
       </div>
       <div id="comp-pdf" class="comp-tab-content" style="display:none;">
         <div style="background:#F8FAFF;border-radius:14px;padding:20px;margin-bottom:16px;text-align:center;">
-          <div style="font-size:2.5rem;margin-bottom:12px;">ðŸ“„</div>
-          <div style="font-weight:700;color:#1A237E;margin-bottom:8px;">RelatÃ³rio ClÃ­nico Semanal</div>
+          <div style="font-size:2.5rem;margin-bottom:12px;">📄</div>
+          <div style="font-weight:700;color:#1A237E;margin-bottom:8px;">Relatório Clínico Semanal</div>
           <div style="font-size:0.82rem;color:#546E7A;line-height:1.6;margin-bottom:16px;">Gera um PDF formatado com dados da semana.</div>
           <div id="pdf-preview-info" style="background:#EEF2FF;border-radius:10px;padding:12px;font-size:0.8rem;text-align:left;"></div>
         </div>
        <div class="comp-acoes">
-  <button class="comp-acao-btn btn-whatsapp" onclick="compartilharPDFWhatsApp()">ðŸ“± Enviar PDF pelo WhatsApp</button>
-  <button class="comp-acao-btn btn-pdf" onclick="gerarPDFSemanal()">ðŸ“„ Apenas Baixar PDF</button>
+  <button class="comp-acao-btn btn-whatsapp" onclick="compartilharPDFWhatsApp()">📱 Enviar PDF pelo WhatsApp</button>
+  <button class="comp-acao-btn btn-pdf" onclick="gerarPDFSemanal()">📄 Apenas Baixar PDF</button>
 </div>
       </div>
     </div>
@@ -1035,36 +1035,36 @@ textarea { resize: none; height: 80px; }
 <div class="reativar-modal" id="reativar-modal" onclick="fecharReativarModal(event)">
   <div class="reativar-content">
     <div class="reativar-top" style="position:relative;">
-      <h2>âš¡ Reativar Foco</h2>
-      <p>Selecione como vocÃª estÃ¡ agora</p>
-      <button class="reativar-close" onclick="fecharReativarModal({target:{id:'reativar-modal'}})">âœ•</button>
+      <h2>⚡ Reativar Foco</h2>
+      <p>Selecione como você está agora</p>
+      <button class="reativar-close" onclick="fecharReativarModal({target:{id:'reativar-modal'}})">✕</button>
     </div>
     <div class="reativar-body">
       <div id="reativar-nivel-select">
         <div class="nivel-grid">
-          <div class="nivel-card" onclick="selecionarNivel(1,this)"><span class="nivel-emoji">ðŸ˜</span><div class="nivel-nome">Travado</div><div class="nivel-desc">DifÃ­cil focar mas consigo</div></div>
-          <div class="nivel-card" onclick="selecionarNivel(2,this)"><span class="nivel-emoji">ðŸ˜¶â€ðŸŒ«ï¸</span><div class="nivel-nome">CabeÃ§a Pesada</div><div class="nivel-desc">Tentei e nÃ£o consigo</div></div>
-          <div class="nivel-card" onclick="selecionarNivel(3,this)"><span class="nivel-emoji">ðŸ§±</span><div class="nivel-nome">Tela em Branco</div><div class="nivel-desc">Nem sei por onde comeÃ§ar</div></div>
+          <div class="nivel-card" onclick="selecionarNivel(1,this)"><span class="nivel-emoji">😐</span><div class="nivel-nome">Travado</div><div class="nivel-desc">Difícil focar mas consigo</div></div>
+          <div class="nivel-card" onclick="selecionarNivel(2,this)"><span class="nivel-emoji">😶‍🌫️</span><div class="nivel-nome">Cabeça Pesada</div><div class="nivel-desc">Tentei e não consigo</div></div>
+          <div class="nivel-card" onclick="selecionarNivel(3,this)"><span class="nivel-emoji">🧱</span><div class="nivel-nome">Tela em Branco</div><div class="nivel-desc">Nem sei por onde começar</div></div>
         </div>
       </div>
       <div class="protocolo-wrap" id="protocolo-wrap">
         <div class="passo-progresso" id="passo-progresso"></div>
         <div class="passo-card" id="passo-card">
-          <span class="passo-icon" id="passo-icon">ðŸ’§</span>
-          <div class="passo-titulo" id="passo-titulo">Beba Ã¡gua agora</div>
-          <div class="passo-desc" id="passo-desc">DesidrataÃ§Ã£o piora a concentraÃ§Ã£o. Levante e beba um copo d'Ã¡gua.</div>
+          <span class="passo-icon" id="passo-icon">💧</span>
+          <div class="passo-titulo" id="passo-titulo">Beba água agora</div>
+          <div class="passo-desc" id="passo-desc">Desidratação piora a concentração. Levante e beba um copo d'água.</div>
         </div>
         <div class="passo-btn-row">
           <button class="passo-btn passo-btn-skip" onclick="pularPasso()">Pular</button>
-          <button class="passo-btn passo-btn-play" id="passo-play-btn" onclick="toggleTimerPasso()" style="display:none;">â–¶ Iniciar</button>
-          <button class="passo-btn passo-btn-next" id="passo-next-btn" onclick="proximoPasso()">Feito âœ“</button>
+          <button class="passo-btn passo-btn-play" id="passo-play-btn" onclick="toggleTimerPasso()" style="display:none;">▶ Iniciar</button>
+          <button class="passo-btn passo-btn-next" id="passo-next-btn" onclick="proximoPasso()">Feito ✓</button>
         </div>
       </div>
       <div class="protocolo-fim" id="protocolo-fim">
-        <span class="fim-emoji">ðŸ§ âœ¨</span>
-        <h3>Protocolo concluÃ­do!</h3>
-        <p>VocÃª ativou seu sistema. Comece com 10 min de foco.</p>
-        <button class="fim-btn" onclick="finalizarProtocolo()">ðŸ”ï¸ Iniciar Modo Caverna</button>
+        <span class="fim-emoji">🧠✨</span>
+        <h3>Protocolo concluído!</h3>
+        <p>Você ativou seu sistema. Comece com 10 min de foco.</p>
+        <button class="fim-btn" onclick="finalizarProtocolo()">🏔️ Iniciar Modo Caverna</button>
       </div>
     </div>
   </div>
@@ -1073,31 +1073,31 @@ textarea { resize: none; height: 80px; }
 <div class="toast" id="toast"></div>
 
 <div class="nav">
-  <button class="nav-btn active" onclick="navigate('home',this)"><span class="icon">ðŸ </span><span>InÃ­cio</span></button>
-  <button class="nav-btn" onclick="navigate('sono',this)"><span class="icon">ðŸ˜´</span><span>Sono</span></button>
-  <button class="nav-btn" onclick="navigate('metas',this)"><span class="icon">ðŸŽ¯</span><span>Metas</span></button>
-  <button class="nav-btn" onclick="navigate('calendario',this)"><span class="icon">ðŸ—“ï¸</span><span>HistÃ³rico</span></button>
-  <button class="nav-btn foco-nav" onclick="navigate('caverna',this)"><span class="icon">ðŸš€</span><span>Foco</span></button>
-  <button class="nav-btn" onclick="navigate('info',this)"><span class="icon">ðŸ“š</span><span>Info</span></button>
+  <button class="nav-btn active" onclick="navigate('home',this)"><span class="icon">🏠</span><span>Início</span></button>
+  <button class="nav-btn" onclick="navigate('sono',this)"><span class="icon">😴</span><span>Sono</span></button>
+  <button class="nav-btn" onclick="navigate('metas',this)"><span class="icon">🎯</span><span>Metas</span></button>
+  <button class="nav-btn" onclick="navigate('calendario',this)"><span class="icon">🗓️</span><span>Histórico</span></button>
+  <button class="nav-btn foco-nav" onclick="navigate('caverna',this)"><span class="icon">🚀</span><span>Foco</span></button>
+  <button class="nav-btn" onclick="navigate('info',this)"><span class="icon">📚</span><span>Info</span></button>
 </div>
 
 <script>
 const DUR_REM = 12*60, POM_FOCO = 20*60, POM_PAUSA = 5*60, SESS_CICLO = 4;
 const CIRC = 2*Math.PI*96;
 const METAS_FIXAS_DEFAULT = [
-  {id:'f1', texto:'Tomar medicaÃ§Ã£o', done:false, tipo:'fixa'},
-  {id:'f2', texto:'Beber 2L de Ã¡gua', done:false, tipo:'fixa'},
-  {id:'f3', texto:'Fazer 30min de exercÃ­cio', done:false, tipo:'fixa'},
+  {id:'f1', texto:'Tomar medicação', done:false, tipo:'fixa'},
+  {id:'f2', texto:'Beber 2L de água', done:false, tipo:'fixa'},
+  {id:'f3', texto:'Fazer 30min de exercício', done:false, tipo:'fixa'},
   {id:'f4', texto:'Dormir antes das 23h', done:false, tipo:'fixa'},
 ];
 const FASES_REMEDIO = [
-  { min: 0,   max: 60,  titulo:'ðŸŒ… AbsorÃ§Ã£o (0â€“1h)', cor:'#1565C0', desc:'Sendo absorvido. Evite refeiÃ§Ãµes pesadas.' },
-  { min: 60,  max: 180, titulo:'ðŸ“ˆ InÃ­cio (1â€“3h)', cor:'#1976D2', desc:'AÃ§Ã£o iniciando. Normal boca seca.' },
-  { min: 180, max: 300, titulo:'ðŸš€ Pico (3â€“5h)', cor:'#00897B', desc:'Maior foco e controle de impulsos.' },
-  { min: 300, max: 480, titulo:'âš¡ Plena (5â€“8h)', cor:'#2E7D32', desc:'Foco sustentado. Alimente-se mesmo sem fome.' },
-  { min: 480, max: 600, titulo:'ðŸ“‰ DeclÃ­nio (8â€“10h)', cor:'#F57F17', desc:'AÃ§Ã£o diminuindo.' },
-  { min: 600, max: 720, titulo:'ðŸŒ™ Rebote (10â€“12h)', cor:'#E65100', desc:'Fim da aÃ§Ã£o. CansaÃ§o e irritabilidade sÃ£o normais.' },
-  { min: 720, max: Infinity, titulo:'â¹ï¸ Encerrado', cor:'#C62828', desc:'DuraÃ§Ã£o completa. Descanse.' },
+  { min: 0,   max: 60,  titulo:'🌅 Absorção (0–1h)', cor:'#1565C0', desc:'Sendo absorvido. Evite refeições pesadas.' },
+  { min: 60,  max: 180, titulo:'📈 Início (1–3h)', cor:'#1976D2', desc:'Ação iniciando. Normal boca seca.' },
+  { min: 180, max: 300, titulo:'🚀 Pico (3–5h)', cor:'#00897B', desc:'Maior foco e controle de impulsos.' },
+  { min: 300, max: 480, titulo:'⚡ Plena (5–8h)', cor:'#2E7D32', desc:'Foco sustentado. Alimente-se mesmo sem fome.' },
+  { min: 480, max: 600, titulo:'📉 Declínio (8–10h)', cor:'#F57F17', desc:'Ação diminuindo.' },
+  { min: 600, max: 720, titulo:'🌙 Rebote (10–12h)', cor:'#E65100', desc:'Fim da ação. Cansaço e irritabilidade são normais.' },
+  { min: 720, max: Infinity, titulo:'⏹️ Encerrado', cor:'#C62828', desc:'Duração completa. Descanse.' },
 ];
 let state = {
   dailyData: {}, currentDate: hojeISO(),
@@ -1116,7 +1116,7 @@ function pad(n) { return String(n).padStart(2,'0'); }
 function fmt(d) { if (!(d instanceof Date) || isNaN(d)) return '--:--'; return d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
 function showToast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 
-// --- FUNÃ‡Ã•ES FALTANTES IMPLEMENTADAS ---
+// --- FUNÇÕES FALTANTES IMPLEMENTADAS ---
 let adminClicks = 0;
 function handleTitleTap() { adminClicks++; if(adminClicks>=5){ adminClicks=0; abrirAdmin(); } }
 function handleAdminTap() { abrirAdmin(); }
@@ -1144,7 +1144,7 @@ function renderHidrat() {
   document.getElementById('hidrat-prog-fill').style.width = pct + '%';
   let html = '';
   for(let i=0; i<Math.ceil(metaMl/hidratConfig.copoMl); i++) {
-    html += `<span class="hidrat-copo ${i < (state.copos||0) ? 'cheio' : ''}">ðŸ’§</span>`;
+    html += `<span class="hidrat-copo ${i < (state.copos||0) ? 'cheio' : ''}">💧</span>`;
   }
   document.getElementById('hidrat-copos').innerHTML = html;
 }
@@ -1157,7 +1157,7 @@ function renderStreak() {
 }
 function updateWidget() {
   const s = state.sono[0];
-  document.getElementById('wr-sono').textContent = s ? s.horas + 'h' : 'â€”';
+  document.getElementById('wr-sono').textContent = s ? s.horas + 'h' : '—';
   const dn = state.metasFixas.filter(m=>m.done).length + state.metas.filter(m=>m.done).length;
   const tot = state.metasFixas.length + state.metas.length;
   document.getElementById('wr-metas').textContent = dn + '/' + tot;
@@ -1165,38 +1165,38 @@ function updateWidget() {
   document.getElementById('wr-pom').textContent = state.pom.sessoes || 0;
   document.getElementById('wr-score').innerHTML = `${dn*10}<span style="font-size:1rem;color:#90CAF9;">/100</span>`;
 }
-// --- LÃ“GICA DO REATIVAR FOCO (POR CONTEXTO E NÃVEL) ---
+// --- LÓGICA DO REATIVAR FOCO (POR CONTEXTO E NÍVEL) ---
 
-// Aqui estÃ£o armazenadas todas as suas trilhas especÃ­ficas:
+// Aqui estão armazenadas todas as suas trilhas específicas:
 const passosReativar = {
   casa: {
     baixa: [
-      { icon: 'ðŸ“', titulo: 'Esvaziar "RAM"', desc: 'Escreva em um papel ou no app as 3 distraÃ§Ãµes que estÃ£o "rodando em segundo plano" na sua mente agora.', timer: 0 },
-      { icon: 'ðŸ§Š', titulo: 'Ãgua Gelada', desc: 'Beba um copo grande de Ã¡gua bem gelada. O choque tÃ©rmico interno desperta o sistema de alerta.', timer: 0 },
-      { icon: 'ðŸ«', titulo: 'RespiraÃ§Ã£o Quadrada', desc: 'Inspira 4s, Segura 4s, Expira 4s, Segura 4s. FaÃ§a isso por 1 minuto.', timer: 60 },
-      { icon: 'ðŸƒ', titulo: 'Atividade FÃ­sica', desc: 'FaÃ§a 10 polichinelos ou 10 agachamentos rÃ¡pidos para bombear sangue para o cÃ©rebro.', timer: 0 },
-      { icon: 'ðŸŽ¯', titulo: 'AÃ§Ã£o Ãšnica', desc: 'Escolha uma tarefa minÃºscula e comece agora (ex: abrir o documento, lavar 1 prato).', timer: 0 }
+      { icon: '📝', titulo: 'Esvaziar "RAM"', desc: 'Escreva em um papel ou no app as 3 distrações que estão "rodando em segundo plano" na sua mente agora.', timer: 0 },
+      { icon: '🧊', titulo: 'Água Gelada', desc: 'Beba um copo grande de água bem gelada. O choque térmico interno desperta o sistema de alerta.', timer: 0 },
+      { icon: '🫁', titulo: 'Respiração Quadrada', desc: 'Inspira 4s, Segura 4s, Expira 4s, Segura 4s. Faça isso por 1 minuto.', timer: 60 },
+      { icon: '🏃', titulo: 'Atividade Física', desc: 'Faça 10 polichinelos ou 10 agachamentos rápidos para bombear sangue para o cérebro.', timer: 0 },
+      { icon: '🎯', titulo: 'Ação Única', desc: 'Escolha uma tarefa minúscula e comece agora (ex: abrir o documento, lavar 1 prato).', timer: 0 }
     ],
     alta: [
-      { icon: 'ðŸ”¥', titulo: 'Atividade FÃ­sica', desc: 'Trote no lugar ou faÃ§a "burpees". Suba o batimento cardÃ­aco para liberar dopamina.', timer: 30 },
-      { icon: 'ðŸš¿', titulo: 'Ãgua Gelada', desc: 'Lave o rosto com Ã¡gua gelada ou tome banho gelado. Isso "reseta" o sistema nervoso.', timer: 180 },
-      { icon: 'ðŸŒªï¸', titulo: 'Esvaziar "RAM"', desc: 'Pegue um papel e faÃ§a um "Brain Dump" furioso: escreva tudo o que te preocupa atÃ© sentir que nÃ£o hÃ¡ mais nada.', timer: 0 },
-      { icon: 'ðŸ˜®â€ðŸ’¨', titulo: 'RespiraÃ§Ã£o do Fole', desc: 'InspiraÃ§Ãµes e expiraÃ§Ãµes rÃ¡pidas pelo nariz para oxigenaÃ§Ã£o profunda.', timer: 30 }
+      { icon: '🔥', titulo: 'Atividade Física', desc: 'Trote no lugar ou faça "burpees". Suba o batimento cardíaco para liberar dopamina.', timer: 30 },
+      { icon: '🚿', titulo: 'Água Gelada', desc: 'Lave o rosto com água gelada ou tome banho gelado. Isso "reseta" o sistema nervoso.', timer: 180 },
+      { icon: '🌪️', titulo: 'Esvaziar "RAM"', desc: 'Pegue um papel e faça um "Brain Dump" furioso: escreva tudo o que te preocupa até sentir que não há mais nada.', timer: 0 },
+      { icon: '😮‍💨', titulo: 'Respiração do Fole', desc: 'Inspirações e expirações rápidas pelo nariz para oxigenação profunda.', timer: 30 }
     ]
   },
   publico: {
     baixa: [
-      { icon: 'ðŸ“±', titulo: 'Esvaziar "RAM"', desc: 'Abra o bloco de notas do celular e liste as tarefas que estÃ£o te gerando ansiedade. Tire-as da cabeÃ§a e coloque-as na tela.', timer: 0 },
-      { icon: 'ðŸ’§', titulo: 'Ãgua Gelada', desc: 'DÃª goles lentos em Ã¡gua gelada, sentindo o caminho que o lÃ­quido faz. Isso traz consciÃªncia corporal.', timer: 0 },
-      { icon: 'ðŸ§˜', titulo: 'RespiraÃ§Ã£o Discreta', desc: 'Respire fundo pelo nariz e solte o ar pela boca o mais silenciosamente possÃ­vel, contando atÃ© 6 na expiraÃ§Ã£o.', timer: 0 },
-      { icon: 'ðŸš¶', titulo: 'Atividade Discreta', desc: 'Caminhe atÃ© o banheiro ou bebedouro em passo acelerado. O movimento das pernas ajuda a organizar o pensamento.', timer: 0 }
+      { icon: '📱', titulo: 'Esvaziar "RAM"', desc: 'Abra o bloco de notas do celular e liste as tarefas que estão te gerando ansiedade. Tire-as da cabeça e coloque-as na tela.', timer: 0 },
+      { icon: '💧', titulo: 'Água Gelada', desc: 'Dê goles lentos em água gelada, sentindo o caminho que o líquido faz. Isso traz consciência corporal.', timer: 0 },
+      { icon: '🧘', titulo: 'Respiração Discreta', desc: 'Respire fundo pelo nariz e solte o ar pela boca o mais silenciosamente possível, contando até 6 na expiração.', timer: 0 },
+      { icon: '🚶', titulo: 'Atividade Discreta', desc: 'Caminhe até o banheiro ou bebedouro em passo acelerado. O movimento das pernas ajuda a organizar o pensamento.', timer: 0 }
     ],
     alta: [
-      { icon: 'ðŸš°', titulo: 'Ãgua Gelada (Pulsos)', desc: 'VÃ¡ ao banheiro e deixe a Ã¡gua mais gelada possÃ­vel correr sobre os seus pulsos.', timer: 30 },
-      { icon: 'ðŸ§±', titulo: 'Atividade IsomÃ©trica', desc: 'Pressione as palmas das mÃ£os ou os pÃ©s contra o chÃ£o com toda a forÃ§a por 10 segundos e relaxe. Repita 3 vezes.', timer: 30 },
-      { icon: 'ðŸ«', titulo: 'RespiraÃ§Ã£o 4-7-8', desc: 'Inspira 4s, segura 7s, solta 8s. A expiraÃ§Ã£o longa desativa a resposta de luta ou fuga.', timer: 0 },
-      { icon: 'âœï¸', titulo: 'Esvaziar "RAM"', desc: 'Escreva no papel tudo que estÃ¡ pensando e planejando atÃ© sentir alÃ­vio.', timer: 0 },
-      { icon: 'ðŸ§ ', titulo: 'EmergÃªncia Cognitiva', desc: 'Escolha um nÃºmero alto (ex: 187) e subtraia de 7 em 7 mentalmente (180, 173, 166...).', timer: 0 }
+      { icon: '🚰', titulo: 'Água Gelada (Pulsos)', desc: 'Vá ao banheiro e deixe a água mais gelada possível correr sobre os seus pulsos.', timer: 30 },
+      { icon: '🧱', titulo: 'Atividade Isométrica', desc: 'Pressione as palmas das mãos ou os pés contra o chão com toda a força por 10 segundos e relaxe. Repita 3 vezes.', timer: 30 },
+      { icon: '🫁', titulo: 'Respiração 4-7-8', desc: 'Inspira 4s, segura 7s, solta 8s. A expiração longa desativa a resposta de luta ou fuga.', timer: 0 },
+      { icon: '✍️', titulo: 'Esvaziar "RAM"', desc: 'Escreva no papel tudo que está pensando e planejando até sentir alívio.', timer: 0 },
+      { icon: '🧠', titulo: 'Emergência Cognitiva', desc: 'Escolha um número alto (ex: 187) e subtraia de 7 em 7 mentalmente (180, 173, 166...).', timer: 0 }
     ]
   }
 };
@@ -1220,7 +1220,7 @@ function fecharReativarModal(e) {
   } 
 }
 
-// Etapa 1: Pergunta onde a pessoa estÃ¡
+// Etapa 1: Pergunta onde a pessoa está
 function renderizarSelecaoContexto() {
   document.getElementById('protocolo-wrap').classList.remove('show');
   document.getElementById('protocolo-fim').classList.remove('show');
@@ -1228,13 +1228,13 @@ function renderizarSelecaoContexto() {
   const div = document.getElementById('reativar-nivel-select');
   div.style.display = 'block';
   div.innerHTML = `
-    <h3 style="color:#E0E0FF; text-align:center; font-size:1.1rem; margin-bottom:16px;">ðŸ“ Onde vocÃª estÃ¡ agora?</h3>
+    <h3 style="color:#E0E0FF; text-align:center; font-size:1.1rem; margin-bottom:16px;">📍 Onde você está agora?</h3>
     <div class="nivel-grid" style="grid-template-columns: 1fr 1fr;">
       <div class="nivel-card" onclick="setContexto('casa')">
-        <span class="nivel-emoji">ðŸ </span><div class="nivel-nome">Em Casa</div><div class="nivel-desc">Liberdade de movimento</div>
+        <span class="nivel-emoji">🏠</span><div class="nivel-nome">Em Casa</div><div class="nivel-desc">Liberdade de movimento</div>
       </div>
       <div class="nivel-card" onclick="setContexto('publico')">
-        <span class="nivel-emoji">ðŸ¢</span><div class="nivel-nome">Em PÃºblico</div><div class="nivel-desc">Foco e discriÃ§Ã£o</div>
+        <span class="nivel-emoji">🏢</span><div class="nivel-nome">Em Público</div><div class="nivel-desc">Foco e discrição</div>
       </div>
     </div>
   `;
@@ -1245,20 +1245,20 @@ function setContexto(ctx) {
   renderizarSelecaoNivel();
 }
 
-// Etapa 2: Pergunta o nÃ­vel de desatenÃ§Ã£o
+// Etapa 2: Pergunta o nível de desatenção
 function renderizarSelecaoNivel() {
   const div = document.getElementById('reativar-nivel-select');
   div.innerHTML = `
-    <h3 style="color:#E0E0FF; text-align:center; font-size:1.1rem; margin-bottom:16px;">ðŸ§  Como estÃ¡ seu foco?</h3>
+    <h3 style="color:#E0E0FF; text-align:center; font-size:1.1rem; margin-bottom:16px;">🧠 Como está seu foco?</h3>
     <div class="nivel-grid" style="grid-template-columns: 1fr 1fr;">
       <div class="nivel-card" onclick="iniciarProtocolo('baixa')">
-        <span class="nivel-emoji">ðŸŸ¡</span><div class="nivel-nome">DesatenÃ§Ã£o Baixa</div><div class="nivel-desc">Preciso de um ajuste de rota</div>
+        <span class="nivel-emoji">🟡</span><div class="nivel-nome">Desatenção Baixa</div><div class="nivel-desc">Preciso de um ajuste de rota</div>
       </div>
       <div class="nivel-card" onclick="iniciarProtocolo('alta')">
-        <span class="nivel-emoji">ðŸ”´</span><div class="nivel-nome">DesatenÃ§Ã£o Alta</div><div class="nivel-desc">Reset total / EmergÃªncia</div>
+        <span class="nivel-emoji">🔴</span><div class="nivel-nome">Desatenção Alta</div><div class="nivel-desc">Reset total / Emergência</div>
       </div>
     </div>
-    <button style="width:100%; padding:12px; background:transparent; border:1px solid #2D2D4E; color:#9CA3AF; border-radius:12px; cursor:pointer; font-weight:700;" onclick="renderizarSelecaoContexto()">â¬…ï¸ Voltar</button>
+    <button style="width:100%; padding:12px; background:transparent; border:1px solid #2D2D4E; color:#9CA3AF; border-radius:12px; cursor:pointer; font-weight:700;" onclick="renderizarSelecaoContexto()">⬅️ Voltar</button>
   `;
 }
 
@@ -1285,7 +1285,7 @@ function renderizarPasso() {
   document.getElementById('passo-titulo').textContent = p.titulo;
   document.getElementById('passo-desc').textContent = p.desc;
 
-  // Bolinhas de progresso dinÃ¢micas de acordo com a quantidade de passos
+  // Bolinhas de progresso dinâmicas de acordo com a quantidade de passos
   let htmlDots = '';
   for(let i=0; i<protocoloAtual.length; i++) {
     if (i < passoAtual) htmlDots += '<div class="passo-dot done"></div>';
@@ -1301,7 +1301,7 @@ function renderizarPasso() {
     playBtn.style.display = 'block';
     // Se for 60s ou mais, mostra em minutos para ficar mais limpo
     const txtTempo = p.timer >= 60 ? (p.timer/60) + 'min' : p.timer + 's';
-    playBtn.textContent = 'â–¶ Iniciar ' + txtTempo;
+    playBtn.textContent = '▶ Iniciar ' + txtTempo;
     playBtn.classList.remove('tocando');
     tempoPassoRestante = p.timer;
   } else {
@@ -1310,7 +1310,7 @@ function renderizarPasso() {
 }
 
 function pularPasso() { 
-  showToast('Passo pulado â­ï¸'); 
+  showToast('Passo pulado ⏭️'); 
   passoAtual++;
   renderizarPasso();
 }
@@ -1326,7 +1326,7 @@ function toggleTimerPasso() {
   if (playBtn.classList.contains('tocando')) {
     clearInterval(timerPasso);
     playBtn.classList.remove('tocando');
-    playBtn.textContent = 'â–¶ Continuar';
+    playBtn.textContent = '▶ Continuar';
   } else {
     playBtn.classList.add('tocando');
     timerPasso = setInterval(() => {
@@ -1334,7 +1334,7 @@ function toggleTimerPasso() {
       if (tempoPassoRestante <= 0) {
         clearInterval(timerPasso);
         playBtn.classList.remove('tocando');
-        playBtn.textContent = 'âœ… ConcluÃ­do';
+        playBtn.textContent = '✅ Concluído';
         playBeep();
         setTimeout(proximoPasso, 1000);
       } else {
@@ -1342,7 +1342,7 @@ function toggleTimerPasso() {
         const m = Math.floor(tempoPassoRestante / 60);
         const s = tempoPassoRestante % 60;
         const txt = m > 0 ? `${m}m ${s}s` : `${s}s`;
-        playBtn.textContent = 'â¸ ' + txt;
+        playBtn.textContent = '⏸ ' + txt;
       }
     }, 1000);
   }
@@ -1407,9 +1407,9 @@ function carregarDia(dateISO) {
 function renderUI() {
   const now=new Date();
   document.getElementById('header-date').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-  const h=now.getHours(); document.getElementById('greeting-text').textContent=h<12?'Bom dia! ðŸ‘‹':h<18?'Boa tarde! ðŸ‘‹':'Boa noite! ðŸ‘‹';
+  const h=now.getHours(); document.getElementById('greeting-text').textContent=h<12?'Bom dia! 👋':h<18?'Boa tarde! 👋':'Boa noite! 👋';
   if(state.remedio){document.getElementById('remedio-sem-registro').style.display='none';document.getElementById('remedio-com-registro').style.display='block';atualizarBarra();}
-  else{document.getElementById('remedio-sem-registro').style.display='block';document.getElementById('remedio-com-registro').style.display='none';document.getElementById('remedio-badge').textContent='NÃ£o registrado';document.getElementById('remedio-badge').className='remedio-badge badge-inativo';document.getElementById('aviso-encerrado').classList.remove('show');document.getElementById('hora-remedio').value='';}
+  else{document.getElementById('remedio-sem-registro').style.display='block';document.getElementById('remedio-com-registro').style.display='none';document.getElementById('remedio-badge').textContent='Não registrado';document.getElementById('remedio-badge').className='remedio-badge badge-inativo';document.getElementById('aviso-encerrado').classList.remove('show');document.getElementById('hora-remedio').value='';}
   renderMetas(); renderHistSono(); renderHistMetas(); updateStats(); renderCelular(); renderLeitura(); renderPom(); renderHidrat(); renderStreak(); updateWidget();
 }
 function init() {
@@ -1428,16 +1428,16 @@ function navigate(p,btn) {
   if(p==='calendario'){renderCalendar(currentCalendarDate);document.getElementById('daily-summary-card').style.display='none';}
 }
 function registrarRemedio() {
-  if(state.currentDate!==hojeISO()){showToast('âš ï¸ SÃ³ registra para o dia atual');return;}
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra para o dia atual');return;}
   const val=document.getElementById('hora-remedio').value;
-  if(!val){showToast('âš ï¸ Informe o horÃ¡rio!');return;}
+  if(!val){showToast('⚠️ Informe o horário!');return;}
   const [hh,mm]=val.split(':').map(Number); const now=new Date();
   const reg=new Date(now.getFullYear(),now.getMonth(),now.getDate(),hh,mm,0);
   state.remedio={horaRegistro:reg}; salvar();
   document.getElementById('remedio-sem-registro').style.display='none';
   document.getElementById('remedio-com-registro').style.display='block';
   atualizarBarra(); if(state.remedioTimer) clearInterval(state.remedioTimer);
-  state.remedioTimer=setInterval(atualizarBarra,30000); showToast('ðŸ’Š MedicaÃ§Ã£o registrada!'); updateStats();
+  state.remedioTimer=setInterval(atualizarBarra,30000); showToast('💊 Medicação registrada!'); updateStats();
 }
 function atualizarBarra() {
   if(!state.remedio) return; const hr=state.remedio.horaRegistro;
@@ -1465,29 +1465,29 @@ function atualizarFaseRemedio(minPass) {
   if(box&&tit&&desc){box.style.borderLeftColor=fase.cor;tit.textContent=fase.titulo;tit.style.color=fase.cor;desc.textContent=fase.desc;}
 }
 function resetarRemedio() {
-  if(state.currentDate!==hojeISO()){showToast('âš ï¸ SÃ³ reseta para o dia atual');return;}
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Só reseta para o dia atual');return;}
   state.remedio=null;salvar();if(state.remedioTimer)clearInterval(state.remedioTimer);
   document.getElementById('remedio-sem-registro').style.display='block';document.getElementById('remedio-com-registro').style.display='none';
-  document.getElementById('remedio-badge').textContent='NÃ£o registrado';document.getElementById('remedio-badge').className='remedio-badge badge-inativo';
+  document.getElementById('remedio-badge').textContent='Não registrado';document.getElementById('remedio-badge').className='remedio-badge badge-inativo';
   document.getElementById('aviso-encerrado').classList.remove('show');document.getElementById('hora-remedio').value='';
-  document.getElementById('stat-remedio').textContent='â€”';showToast('ðŸ”„ Pronto para nova dose');
+  document.getElementById('stat-remedio').textContent='—';showToast('🔄 Pronto para nova dose');
 }
 function buildHoursGrid(){document.getElementById('hours-grid').innerHTML=[4,5,6,7,8,9,10,11].map(h=>`<button class="hour-btn" onclick="selecionarHora(${h},this)">${h}h</button>`).join('');}
 function selecionarHora(h,btn){document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');state.horasSono=h;document.getElementById('sono-display').textContent=h+'h';document.getElementById('horas-custom').value='';}
 function selecionarHoraCustom(val){document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));state.horasSono=parseFloat(val)||null;if(state.horasSono){const h=Math.floor(state.horasSono),m=(state.horasSono%1)*60;document.getElementById('sono-display').textContent=m>0?h+'h'+m:h+'h';}}
 function salvarSono(){
-  if(state.currentDate!==hojeISO()){showToast('âš ï¸ SÃ³ registra sono para o dia atual');return;}
-  if(!state.horasSono){showToast('âš ï¸ Selecione quantas horas dormiu!');return;}
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra sono para o dia atual');return;}
+  if(!state.horasSono){showToast('⚠️ Selecione quantas horas dormiu!');return;}
   state.sono.unshift({data:hoje(),horas:state.horasSono,qualidade:document.getElementById('sono-qualidade').value,obs:document.getElementById('sono-obs').value});
   if(state.sono.length>7)state.sono=state.sono.slice(0,7);
   salvar();document.getElementById('sono-obs').value='';state.horasSono=null;
   document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));
-  document.getElementById('sono-display').textContent='â€”';document.getElementById('horas-custom').value='';
-  renderHistSono();updateStats();showToast('âœ… Sono salvo!');
+  document.getElementById('sono-display').textContent='—';document.getElementById('horas-custom').value='';
+  renderHistSono();updateStats();showToast('✅ Sono salvo!');
 }
 function renderHistSono(){
   const c=document.getElementById('historico-sono'),hEl=document.getElementById('ultimo-sono-home');
-  const qM={otima:'ðŸ˜Š Ã“tima',boa:'ðŸ™‚ Boa',regular:'ðŸ˜ Regular',ruim:'ðŸ˜” Ruim',pessima:'ðŸ˜« PÃ©ssima'};
+  const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};
   const bM={otima:'badge-good',boa:'badge-good',regular:'badge-warn',ruim:'badge-bad',pessima:'badge-bad'};
   if(!state.sono.length){const m='<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum registro ainda</p>';c.innerHTML=m;hEl.innerHTML=m;return;}
   const mk=r=>`<div class="historico-item"><div><div style="font-weight:600;font-size:0.88rem;">${r.data}</div><div class="historico-data">${qM[r.qualidade]}</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:700;color:var(--primary);">${r.horas}h</span><span class="badge ${bM[r.qualidade]}">${r.horas>=7?'OK':'Baixo'}</span></div></div>`;
@@ -1495,116 +1495,116 @@ function renderHistSono(){
 }
 function renderMetas(){
   const c=document.getElementById('lista-metas');
-  const prioOrder={alta:0,media:1,baixa:2};const prioLabel={alta:'ðŸ”´ Alta',media:'ðŸŸ¡ MÃ©dia',baixa:'ðŸŸ¢ Baixa'};
+  const prioOrder={alta:0,media:1,baixa:2};const prioLabel={alta:'🔴 Alta',media:'🟡 Média',baixa:'🟢 Baixa'};
   const prioClass={alta:'prio-alta',media:'prio-media',baixa:'prio-baixa'};const prioItemClass={alta:'prio-alta-item',media:'prio-media-item',baixa:'prio-baixa-item'};
   const sortFn=(a,b)=>{if(a.done!==b.done)return a.done?1:-1;return(prioOrder[a.prioridade||'media']||1)-(prioOrder[b.prioridade||'media']||1);};
   const fixas=[...state.metasFixas].sort(sortFn);const diarias=state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).sort(sortFn);
   const mkMeta=(m,isFixa)=>{const prio=m.prioridade||'media';const toggleFn=isFixa?`toggleMetaFixa('${m.id}')`:`toggleMeta(${m.id})`;const removeFn=isFixa?`removerMetaFixa('${m.id}')`:`removerMeta(${m.id})`;
-    return`<div class="meta-item ${isFixa?'fixa':''} ${prioItemClass[prio]} ${m.done?'done':''}" onclick="${toggleFn}"><div class="meta-check">${m.done?'âœ“':''}</div><div class="meta-text"><div class="meta-title" style="${m.done?'text-decoration:line-through;color:var(--text-light)':''}">${m.texto}<span class="prio-tag ${prioClass[prio]}">${prioLabel[prio]}</span></div><div class="meta-sub">${m.done?'ConcluÃ­da! ðŸŽ‰':'Toque para concluir'}</div></div><div onclick="event.stopPropagation();${removeFn}" style="font-size:1.1rem;color:#B0BEC5;padding:4px;">âœ•</div></div>`;};
+    return`<div class="meta-item ${isFixa?'fixa':''} ${prioItemClass[prio]} ${m.done?'done':''}" onclick="${toggleFn}"><div class="meta-check">${m.done?'✓':''}</div><div class="meta-text"><div class="meta-title" style="${m.done?'text-decoration:line-through;color:var(--text-light)':''}">${m.texto}<span class="prio-tag ${prioClass[prio]}">${prioLabel[prio]}</span></div><div class="meta-sub">${m.done?'Concluída! 🎉':'Toque para concluir'}</div></div><div onclick="event.stopPropagation();${removeFn}" style="font-size:1.1rem;color:#B0BEC5;padding:4px;">✕</div></div>`;};
   let html='';
-  if(fixas.length){html+=`<div class="meta-secao-titulo">ðŸ“Œ Metas Fixas <span class="tag tag-fixa">se repetem todo dia</span></div>`;html+=fixas.map(m=>mkMeta(m,true)).join('');}
-  if(diarias.length){html+=`<div class="meta-secao-titulo">ðŸ“… Metas DiÃ¡rias <span class="tag tag-diaria">somem amanhÃ£</span></div>`;html+=diarias.map(m=>mkMeta(m,false)).join('');}
+  if(fixas.length){html+=`<div class="meta-secao-titulo">📌 Metas Fixas <span class="tag tag-fixa">se repetem todo dia</span></div>`;html+=fixas.map(m=>mkMeta(m,true)).join('');}
+  if(diarias.length){html+=`<div class="meta-secao-titulo">📅 Metas Diárias <span class="tag tag-diaria">somem amanhã</span></div>`;html+=diarias.map(m=>mkMeta(m,false)).join('');}
   if(!fixas.length&&!diarias.length)html='<p style="color:var(--text-light);text-align:center;font-size:0.85rem;padding:16px;">Nenhuma meta. Adicione acima!</p>';
   c.innerHTML=html;updateMetaProg();
 }
-function toggleMeta(id){const m=state.metas.find(m=>m.id===id);if(m){m.done=!m.done;salvar();renderMetas();updateStats();if(m.done)showToast('ðŸŽ‰ Meta concluÃ­da!');}}
-function toggleMetaFixa(id){const m=state.metasFixas.find(m=>m.id===id);if(m){m.done=!m.done;salvar();renderMetas();updateStats();if(m.done)showToast('ðŸŽ‰ Meta concluÃ­da!');}}
+function toggleMeta(id){const m=state.metas.find(m=>m.id===id);if(m){m.done=!m.done;salvar();renderMetas();updateStats();if(m.done)showToast('🎉 Meta concluída!');}}
+function toggleMetaFixa(id){const m=state.metasFixas.find(m=>m.id===id);if(m){m.done=!m.done;salvar();renderMetas();updateStats();if(m.done)showToast('🎉 Meta concluída!');}}
 function adicionarMeta(){
   const inp=document.getElementById('nova-meta-input');const tipo=document.getElementById('nova-meta-tipo').value;const prio=document.getElementById('nova-meta-prio').value;const txt=inp.value.trim();
-  if(!txt){showToast('âš ï¸ Digite uma meta!');return;}
+  if(!txt){showToast('⚠️ Digite uma meta!');return;}
   if(tipo==='fixa')state.metasFixas.push({id:'f'+Date.now(),texto:txt,done:false,tipo:'fixa',prioridade:prio});
   else state.metas.push({id:Date.now(),texto:txt,done:false,tipo:'diaria',prioridade:prio});
-  inp.value='';salvar();renderMetas();updateStats();const prioEmoji=prio==='alta'?'ðŸ”´':prio==='media'?'ðŸŸ¡':'ðŸŸ¢';
-  showToast(tipo==='fixa'?`ðŸ“Œ Meta fixa ${prioEmoji} adicionada!`:`âœ… Meta diÃ¡ria ${prioEmoji} adicionada!`);
+  inp.value='';salvar();renderMetas();updateStats();const prioEmoji=prio==='alta'?'🔴':prio==='media'?'🟡':'🟢';
+  showToast(tipo==='fixa'?`📌 Meta fixa ${prioEmoji} adicionada!`:`✅ Meta diária ${prioEmoji} adicionada!`);
 }
-function removerMeta(id){state.metas=state.metas.filter(m=>m.id!==id);salvar();renderMetas();updateStats();showToast('ðŸ—‘ï¸ Meta removida');}
-function removerMetaFixa(id){state.metasFixas=state.metasFixas.filter(m=>m.id!==id);salvar();renderMetas();updateStats();showToast('ðŸ—‘ï¸ Meta fixa removida');}
-function limparConcluidas(){state.metas=state.metas.filter(m=>!m.done);salvar();renderMetas();updateStats();showToast('ðŸ§¹ DiÃ¡rias concluÃ­das removidas!');}
+function removerMeta(id){state.metas=state.metas.filter(m=>m.id!==id);salvar();renderMetas();updateStats();showToast('🗑️ Meta removida');}
+function removerMetaFixa(id){state.metasFixas=state.metasFixas.filter(m=>m.id!==id);salvar();renderMetas();updateStats();showToast('🗑️ Meta fixa removida');}
+function limparConcluidas(){state.metas=state.metas.filter(m=>!m.done);salvar();renderMetas();updateStats();showToast('🧹 Diárias concluídas removidas!');}
 function updateMetaProg(){
   const fixasDone=state.metasFixas.filter(m=>m.done).length;const diariasDone=state.metas.filter(m=>m.done&&(m.tipo==='diaria'||!m.tipo)).length;
   const tot=state.metasFixas.length+state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).length;const dn=fixasDone+diariasDone;const pct=tot>0?Math.round((dn/tot)*100):0;
-  document.getElementById('meta-progress').style.width=pct+'%';document.getElementById('meta-info').textContent=dn+' concluÃ­da'+(dn!==1?'s':'');document.getElementById('meta-pct').textContent=pct+'%';
+  document.getElementById('meta-progress').style.width=pct+'%';document.getElementById('meta-info').textContent=dn+' concluída'+(dn!==1?'s':'');document.getElementById('meta-pct').textContent=pct+'%';
 }
 function renderHistMetas(){
   const c=document.getElementById('historico-metas-lista');
-  if(!state.metasHist.length){c.innerHTML='<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">O histÃ³rico aparecerÃ¡ aqui a partir de amanhÃ£.</p>';return;}
+  if(!state.metasHist.length){c.innerHTML='<p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">O histórico aparecerá aqui a partir de amanhã.</p>';return;}
   const fmtD=iso=>{const p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];};
   c.innerHTML=state.metasHist.slice(0,7).map(h=>{const pct=h.total>0?Math.round((h.concluidas/h.total)*100):0;const cls=pct>=80?'badge-good':pct>=50?'badge-warn':'badge-bad';
-    return`<div class="meta-hist-card"><div><div style="font-weight:600;font-size:0.88rem;">${fmtD(h.data)}</div><div style="font-size:0.8rem;color:var(--text-light);">${h.concluidas} de ${h.total} metas concluÃ­das</div></div><span class="badge ${cls}">${pct}%</span></div>`;}).join('');
+    return`<div class="meta-hist-card"><div><div style="font-weight:600;font-size:0.88rem;">${fmtD(h.data)}</div><div style="font-size:0.8rem;color:var(--text-light);">${h.concluidas} de ${h.total} metas concluídas</div></div><span class="badge ${cls}">${pct}%</span></div>`;}).join('');
 }
 function salvarLeitura(){
-  if(state.currentDate!==hojeISO()){showToast('âš ï¸ SÃ³ registra leitura para hoje');return;}
-  const val=parseInt(document.getElementById('paginas-input').value);if(!val||val<0){showToast('âš ï¸ Informe um nÃºmero vÃ¡lido de pÃ¡ginas!');return;}
-  state.leitura={paginas:val,data:hojeISO()};salvar();renderLeitura();showToast('ðŸ“š Leitura registrada!');
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra leitura para hoje');return;}
+  const val=parseInt(document.getElementById('paginas-input').value);if(!val||val<0){showToast('⚠️ Informe um número válido de páginas!');return;}
+  state.leitura={paginas:val,data:hojeISO()};salvar();renderLeitura();showToast('📚 Leitura registrada!');
 }
 function renderLeitura(){
   const form=document.getElementById('leitura-form'),reg=document.getElementById('leitura-registrada');
   if(state.leitura){
     form.style.display='none';reg.style.display='block';
     const cls=state.leitura.paginas>=20?'badge-good':state.leitura.paginas>=5?'badge-warn':'badge-bad';
-    const msg=state.leitura.paginas>=20?'Excelente! ðŸ†':state.leitura.paginas>=5?'Bom progresso! ðŸ‘':'Leia mais amanhÃ£! ðŸ’ª';
-    reg.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;"><div><div style="font-weight:700;font-size:1.2rem;color:var(--primary);">ðŸ“– ${state.leitura.paginas} pÃ¡ginas</div><div style="font-size:0.78rem;color:var(--text-light);">${msg}</div></div><span class="badge ${cls}">${state.leitura.paginas>=20?'Ã“timo':state.leitura.paginas>=5?'Ok':'Baixo'}</span></div><button onclick="resetarLeitura()" style="margin-top:10px;font-size:0.78rem;color:var(--text-light);background:none;border:none;cursor:pointer;text-decoration:underline;">Editar registro</button>`;
+    const msg=state.leitura.paginas>=20?'Excelente! 🏆':state.leitura.paginas>=5?'Bom progresso! 👍':'Leia mais amanhã! 💪';
+    reg.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;"><div><div style="font-weight:700;font-size:1.2rem;color:var(--primary);">📖 ${state.leitura.paginas} páginas</div><div style="font-size:0.78rem;color:var(--text-light);">${msg}</div></div><span class="badge ${cls}">${state.leitura.paginas>=20?'Ótimo':state.leitura.paginas>=5?'Ok':'Baixo'}</span></div><button onclick="resetarLeitura()" style="margin-top:10px;font-size:0.78rem;color:var(--text-light);background:none;border:none;cursor:pointer;text-decoration:underline;">Editar registro</button>`;
   }else{form.style.display='block';reg.style.display='none';}
 }
 function resetarLeitura(){state.leitura=null;salvar();document.getElementById('paginas-input').value='';renderLeitura();}
-function avalCelular(h,m){const t=h*60+m;if(t<=120)return{msg:'Excelente controle!',badge:'badge-good',label:'Ã“timo'};if(t<=240)return{msg:'Uso moderado',badge:'badge-warn',label:'OK'};return{msg:'Uso elevado â€” tente reduzir',badge:'badge-bad',label:'Alto'};}
+function avalCelular(h,m){const t=h*60+m;if(t<=120)return{msg:'Excelente controle!',badge:'badge-good',label:'Ótimo'};if(t<=240)return{msg:'Uso moderado',badge:'badge-warn',label:'OK'};return{msg:'Uso elevado — tente reduzir',badge:'badge-bad',label:'Alto'};}
 function salvarCelular(){
-  if(state.currentDate!==hojeISO()){showToast('âš ï¸ SÃ³ registra para hoje');return;}
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra para hoje');return;}
   const h=parseInt(document.getElementById('celular-horas').value)||0;const m=parseInt(document.getElementById('celular-minutos').value)||0;
-  if(h===0&&m===0){showToast('âš ï¸ Informe o tempo de celular!');return;}
-  state.celular={horas:h,minutos:m};salvar();renderCelular();showToast('ðŸ“± Tempo de celular salvo!');
+  if(h===0&&m===0){showToast('⚠️ Informe o tempo de celular!');return;}
+  state.celular={horas:h,minutos:m};salvar();renderCelular();showToast('📱 Tempo de celular salvo!');
 }
 function renderCelular(){
   const hD=document.getElementById('celular-home-display'),hR=document.getElementById('celular-registrado-home');
   if(state.celular){
     const txt=state.celular.horas+'h '+state.celular.minutos+'min';const av=avalCelular(state.celular.horas,state.celular.minutos);
     hD.style.display='none';hR.style.display='block';
-    hR.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;"><div><div style="font-weight:700;font-size:1.1rem;color:var(--primary);">ðŸ“± ${txt}</div><div style="font-size:0.78rem;color:var(--text-light);">${av.msg}</div></div><span class="badge ${av.badge}">${av.label}</span></div><button onclick="resetarCelular()" style="margin-top:10px;font-size:0.78rem;color:var(--text-light);background:none;border:none;cursor:pointer;text-decoration:underline;">Editar registro</button>`;
+    hR.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;"><div><div style="font-weight:700;font-size:1.1rem;color:var(--primary);">📱 ${txt}</div><div style="font-size:0.78rem;color:var(--text-light);">${av.msg}</div></div><span class="badge ${av.badge}">${av.label}</span></div><button onclick="resetarCelular()" style="margin-top:10px;font-size:0.78rem;color:var(--text-light);background:none;border:none;cursor:pointer;text-decoration:underline;">Editar registro</button>`;
   }else{hD.style.display='block';hR.style.display='none';}
 }
 function resetarCelular(){state.celular=null;salvar();document.getElementById('celular-horas').value='';document.getElementById('celular-minutos').value='';renderCelular();}
 function updateStats(){
   const fixasDone=state.metasFixas.filter(m=>m.done).length;const diariasDone=state.metas.filter(m=>m.done&&(m.tipo==='diaria'||!m.tipo)).length;
   const tot=state.metasFixas.length+state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).length;const dn=fixasDone+diariasDone;const pct=tot>0?Math.round((dn/tot)*100):0;
-  const ult=state.sono[0];document.getElementById('stat-sono').textContent=ult?ult.horas+'h':'â€”';
+  const ult=state.sono[0];document.getElementById('stat-sono').textContent=ult?ult.horas+'h':'—';
   document.getElementById('stat-metas').textContent=dn+'/'+tot;
-  document.getElementById('progress-fill').style.width=pct+'%';document.getElementById('progress-text').textContent=dn+' de '+tot+' metas concluÃ­das';document.getElementById('progress-pct').textContent=pct+'%';
+  document.getElementById('progress-fill').style.width=pct+'%';document.getElementById('progress-text').textContent=dn+' de '+tot+' metas concluídas';document.getElementById('progress-pct').textContent=pct+'%';
 }
-function togglePomodoro(){if(state.currentDate!==hojeISO()){showToast('âš ï¸ Modo Caverna sÃ³ para hoje');return;}if(state.pom.rodando)pausarPom();else iniciarPom();}
-function iniciarPom(){state.pom.rodando=true;document.getElementById('caverna-play-btn').textContent='â¸';if(!state.pom.seg||isNaN(state.pom.seg)||state.pom.seg<=0)state.pom.seg=state.pom.fase==='foco'?getPomFoco():getPomPausa();atualizarUIPom();state.pom.timer=setInterval(tickPom,1000);}
-function pausarPom(){state.pom.rodando=false;document.getElementById('caverna-play-btn').textContent='â–¶';clearInterval(state.pom.timer);salvar();}
+function togglePomodoro(){if(state.currentDate!==hojeISO()){showToast('⚠️ Modo Caverna só para hoje');return;}if(state.pom.rodando)pausarPom();else iniciarPom();}
+function iniciarPom(){state.pom.rodando=true;document.getElementById('caverna-play-btn').textContent='⏸';if(!state.pom.seg||isNaN(state.pom.seg)||state.pom.seg<=0)state.pom.seg=state.pom.fase==='foco'?getPomFoco():getPomPausa();atualizarUIPom();state.pom.timer=setInterval(tickPom,1000);}
+function pausarPom(){state.pom.rodando=false;document.getElementById('caverna-play-btn').textContent='▶';clearInterval(state.pom.timer);salvar();}
 function tickPom(){state.pom.seg--;if(state.pom.seg<=0)concluirFase();else atualizarUIPom();}
 function concluirFase(){
   clearInterval(state.pom.timer);state.pom.rodando=false;
   const focoMin=getPomFoco()/60;
-  if(state.pom.fase==='foco'){state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=focoMin;if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('ðŸ† Ciclo completo! FaÃ§a uma pausa maior.');}else showToast('âœ… SessÃ£o concluÃ­da! Hora de pausar!');state.pom.fase='pausa';state.pom.seg=getPomPausa();}
-  else{state.pom.fase='foco';state.pom.seg=getPomFoco();showToast('ðŸŽ¯ Hora de focar!');}
-  state.pom.data=hojeISO();salvar();document.getElementById('caverna-play-btn').textContent='â–¶';atualizarUIPom();playBeep();
+  if(state.pom.fase==='foco'){state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=focoMin;if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo! Faça uma pausa maior.');}else showToast('✅ Sessão concluída! Hora de pausar!');state.pom.fase='pausa';state.pom.seg=getPomPausa();}
+  else{state.pom.fase='foco';state.pom.seg=getPomFoco();showToast('🎯 Hora de focar!');}
+  state.pom.data=hojeISO();salvar();document.getElementById('caverna-play-btn').textContent='▶';atualizarUIPom();playBeep();
 }
 function pularFase(){
-  if(state.currentDate!==hojeISO()){showToast('âš ï¸ Modo Caverna sÃ³ para hoje');return;}
-  clearInterval(state.pom.timer);state.pom.rodando=false;document.getElementById('caverna-play-btn').textContent='â–¶';
-  if(state.pom.fase==='foco'){state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=getPomFoco()/60;if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('ðŸ† Ciclo completo!');}else showToast('âœ… +1 sessÃ£o registrada! Hora de pausar.');state.pom.fase='pausa';state.pom.seg=getPomPausa();}
-  else{state.pom.fase='foco';state.pom.seg=getPomFoco();showToast('ðŸŽ¯ Pausa pulada â€” hora de focar!');}
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Modo Caverna só para hoje');return;}
+  clearInterval(state.pom.timer);state.pom.rodando=false;document.getElementById('caverna-play-btn').textContent='▶';
+  if(state.pom.fase==='foco'){state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=getPomFoco()/60;if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo!');}else showToast('✅ +1 sessão registrada! Hora de pausar.');state.pom.fase='pausa';state.pom.seg=getPomPausa();}
+  else{state.pom.fase='foco';state.pom.seg=getPomFoco();showToast('🎯 Pausa pulada — hora de focar!');}
   atualizarUIPom();salvar();
 }
 function adicionarSessaoManual(){
-  if(state.currentDate!==hojeISO()){showToast('âš ï¸ SÃ³ para hoje');return;}
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Só para hoje');return;}
   state.pom.sessoes++;state.pom.sessNoCiclo++;state.pom.minFoco+=20;
-  if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('ðŸ† Ciclo completo! +1 sessÃ£o adicionada.');}else showToast('âœ… +1 sessÃ£o de 20min adicionada');
+  if(state.pom.sessNoCiclo>=SESS_CICLO){state.pom.ciclos++;state.pom.sessNoCiclo=0;showToast('🏆 Ciclo completo! +1 sessão adicionada.');}else showToast('✅ +1 sessão de 20min adicionada');
   salvar();renderPom();
 }
 function removerSessaoManual(){
-  if(state.currentDate!==hojeISO()){showToast('âš ï¸ SÃ³ para hoje');return;}
-  if(state.pom.sessoes<=0){showToast('âš ï¸ Nenhuma sessÃ£o para remover');return;}
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Só para hoje');return;}
+  if(state.pom.sessoes<=0){showToast('⚠️ Nenhuma sessão para remover');return;}
   state.pom.sessoes--;state.pom.minFoco=Math.max(0,state.pom.minFoco-20);
   if(state.pom.sessNoCiclo>0)state.pom.sessNoCiclo--;else if(state.pom.ciclos>0){state.pom.ciclos--;state.pom.sessNoCiclo=SESS_CICLO-1;}
-  salvar();renderPom();showToast('â†©ï¸ 1 sessÃ£o removida');
+  salvar();renderPom();showToast('↩️ 1 sessão removida');
 }
 function resetarPomodoro(){
-  if(state.currentDate!==hojeISO()){showToast('âš ï¸ Modo Caverna sÃ³ para hoje');return;}
+  if(state.currentDate!==hojeISO()){showToast('⚠️ Modo Caverna só para hoje');return;}
   clearInterval(state.pom.timer);state.pom.rodando=false;state.pom.fase='foco';state.pom.seg=getPomFoco();
-  document.getElementById('caverna-play-btn').textContent='â–¶';atualizarUIPom();showToast('ðŸ”„ Timer reiniciado');salvar();
+  document.getElementById('caverna-play-btn').textContent='▶';atualizarUIPom();showToast('🔄 Timer reiniciado');salvar();
 }
 function atualizarUIPom(){
   const p=state.pom;const focoSeg=getPomFoco();const pausaSeg=getPomPausa();
@@ -1616,16 +1616,16 @@ function atualizarUIPom(){
   document.getElementById('caverna-time-display').textContent=pad(mm)+':'+pad(ss);
   document.getElementById('caverna-phase-label').textContent=p.fase==='foco'?'FOCO':'PAUSA';
   const badge=document.getElementById('caverna-status-badge');const isFull=seg===(p.fase==='foco'?focoSeg:pausaSeg);
-  if(!p.rodando&&isFull){badge.textContent='â¸ Aguardando inÃ­cio';badge.className='caverna-status-badge status-idle';}
-  else if(p.fase==='foco'){badge.textContent=p.rodando?'ðŸŽ¯ Em foco':'â¸ Foco pausado';badge.className='caverna-status-badge status-foco';}
-  else{badge.textContent=p.rodando?'â˜• Pausa ativa':'â¸ Pausa pausada';badge.className='caverna-status-badge status-pausa';}
+  if(!p.rodando&&isFull){badge.textContent='⏸ Aguardando início';badge.className='caverna-status-badge status-idle';}
+  else if(p.fase==='foco'){badge.textContent=p.rodando?'🎯 Em foco':'⏸ Foco pausado';badge.className='caverna-status-badge status-foco';}
+  else{badge.textContent=p.rodando?'☕ Pausa ativa':'⏸ Pausa pausada';badge.className='caverna-status-badge status-pausa';}
   renderPom();
 }
 function renderPom(){
   const p=state.pom;document.getElementById('cav-sessoes').textContent=p.sessoes;
   const min=p.minFoco;document.getElementById('cav-foco-total').textContent=min>=60?Math.floor(min/60)+'h'+(min%60>0?min%60+'m':''):min+'min';
   document.getElementById('cav-ciclos').textContent=p.ciclos;
-  let html='';for(let i=0;i<SESS_CICLO;i++){if(i<p.sessNoCiclo)html+=`<div class="foco-dot completo">âœ“</div>`;else if(i===p.sessNoCiclo&&p.fase==='foco'&&p.rodando)html+=`<div class="foco-dot atual">${i+1}</div>`;else html+=`<div class="foco-dot">${i+1}</div>`;}
+  let html='';for(let i=0;i<SESS_CICLO;i++){if(i<p.sessNoCiclo)html+=`<div class="foco-dot completo">✓</div>`;else if(i===p.sessNoCiclo&&p.fase==='foco'&&p.rodando)html+=`<div class="foco-dot atual">${i+1}</div>`;else html+=`<div class="foco-dot">${i+1}</div>`;}
   document.getElementById('session-dots').innerHTML=html;
 }
 function playBeep(){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=440;g.gain.setValueAtTime(0.3,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.6);o.start(ctx.currentTime);o.stop(ctx.currentTime+0.6);}catch(e){}}
@@ -1633,23 +1633,23 @@ function abrirRelatorio(){
   const now=new Date();document.getElementById('relatorio-date').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   let pts=0,max=0;const pontosDetalhe=[];const dicas=[];
   const sh=state.sono.find(s=>s.data===hoje());let sonoH='';max+=25;
-  if(sh){const qM={otima:'ðŸ˜Š Ã“tima',boa:'ðŸ™‚ Boa',regular:'ðŸ˜ Regular',ruim:'ðŸ˜” Ruim',pessima:'ðŸ˜« PÃ©ssima'};const p=sh.horas>=7?25:sh.horas>=5?15:5;pts+=p;pontosDetalhe.push({label:'ðŸ˜´ Sono',pts:p,max:25,ok:sh.horas>=7});if(sh.horas<7)dicas.push(`Tente dormir ${7-sh.horas<=1?'mais 1 hora':'pelo menos 7h'} â€” sono adequado potencializa o foco e o efeito do tratamento.`);sonoH=`<div class="rel-section" style="border-color:#1565C0;"><h3>ðŸ˜´ Sono</h3><div class="rel-row"><span>Horas dormidas</span><span class="rv">${sh.horas}h</span></div><div class="rel-row"><span>Qualidade</span><span class="rv">${qM[sh.qualidade]}</span></div><div class="rel-row"><span>AvaliaÃ§Ã£o</span><span class="rv">${sh.horas>=7?'âœ… Adequado':sh.horas>=5?'âš ï¸ Abaixo do ideal':'âŒ Insuficiente'}</span></div></div>`;}
-  else{pontosDetalhe.push({label:'ðŸ˜´ Sono',pts:0,max:25,ok:false});dicas.push('Registre seu sono diariamente.');sonoH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>ðŸ˜´ Sono</h3><p style="font-size:0.83rem;color:var(--text-light);">NÃ£o registrado hoje.</p></div>`;}
+  if(sh){const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};const p=sh.horas>=7?25:sh.horas>=5?15:5;pts+=p;pontosDetalhe.push({label:'😴 Sono',pts:p,max:25,ok:sh.horas>=7});if(sh.horas<7)dicas.push(`Tente dormir ${7-sh.horas<=1?'mais 1 hora':'pelo menos 7h'} — sono adequado potencializa o foco e o efeito do tratamento.`);sonoH=`<div class="rel-section" style="border-color:#1565C0;"><h3>😴 Sono</h3><div class="rel-row"><span>Horas dormidas</span><span class="rv">${sh.horas}h</span></div><div class="rel-row"><span>Qualidade</span><span class="rv">${qM[sh.qualidade]}</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${sh.horas>=7?'✅ Adequado':sh.horas>=5?'⚠️ Abaixo do ideal':'❌ Insuficiente'}</span></div></div>`;}
+  else{pontosDetalhe.push({label:'😴 Sono',pts:0,max:25,ok:false});dicas.push('Registre seu sono diariamente.');sonoH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>😴 Sono</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;}
   const fixasDone=state.metasFixas.filter(m=>m.done).length;const tot=state.metasFixas.length+state.metas.filter(m=>m.tipo==='diaria'||!m.tipo).length;const dn=fixasDone+state.metas.filter(m=>m.done&&(m.tipo==='diaria'||!m.tipo)).length;const pctM=tot>0?Math.round((dn/tot)*100):0;
-  max+=35;const ptsMetas=Math.round((pctM/100)*35);pts+=ptsMetas;pontosDetalhe.push({label:'ðŸŽ¯ Metas',pts:ptsMetas,max:35,ok:pctM>=70});if(pctM<70&&tot>0){const pend=tot-dn;dicas.push(`Ficaram ${pend} meta${pend>1?'s':''} pendente${pend>1?'s':''}.`);}
+  max+=35;const ptsMetas=Math.round((pctM/100)*35);pts+=ptsMetas;pontosDetalhe.push({label:'🎯 Metas',pts:ptsMetas,max:35,ok:pctM>=70});if(pctM<70&&tot>0){const pend=tot-dn;dicas.push(`Ficaram ${pend} meta${pend>1?'s':''} pendente${pend>1?'s':''}.`);}
   const todasMetas=[...state.metasFixas,...state.metas.filter(m=>m.tipo==='diaria'||!m.tipo)];
-  const metasH=`<div class="rel-section" style="border-color:#2E7D32;"><h3>ðŸŽ¯ Metas do Dia</h3><div class="rel-row"><span>ConcluÃ­das</span><span class="rv">${dn} de ${tot}</span></div><div class="rel-row"><span>Taxa</span><span class="rv">${pctM}%</span></div>${todasMetas.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'ðŸ“Œ ':''}<span style="font-size:0.7rem;">${m.prioridade==='alta'?'ðŸ”´':m.prioridade==='baixa'?'ðŸŸ¢':'ðŸŸ¡'}</span> ${m.texto}</span><span class="rv">${m.done?'âœ…':'â¬œ'}</span></div>`).join('')}</div>`;
-  const p=state.pom;max+=25;const ptsPom=Math.min(25,Math.round((p.minFoco/80)*25));pts+=ptsPom;pontosDetalhe.push({label:'ðŸ”ï¸ Caverna',pts:ptsPom,max:25,ok:p.minFoco>=40});if(p.minFoco<40)dicas.push('Tente completar ao menos 2 sessÃµes de Modo Caverna amanhÃ£.');
-  const pomH=`<div class="rel-section" style="border-color:#7C3AED;"><h3>ðŸ”ï¸ Modo Caverna</h3><div class="rel-row"><span>SessÃµes</span><span class="rv">${p.sessoes}</span></div><div class="rel-row"><span>Ciclos</span><span class="rv">${p.ciclos}</span></div><div class="rel-row"><span>Foco total</span><span class="rv">${p.minFoco}min</span></div></div>`;
+  const metasH=`<div class="rel-section" style="border-color:#2E7D32;"><h3>🎯 Metas do Dia</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn} de ${tot}</span></div><div class="rel-row"><span>Taxa</span><span class="rv">${pctM}%</span></div>${todasMetas.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'📌 ':''}<span style="font-size:0.7rem;">${m.prioridade==='alta'?'🔴':m.prioridade==='baixa'?'🟢':'🟡'}</span> ${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;
+  const p=state.pom;max+=25;const ptsPom=Math.min(25,Math.round((p.minFoco/80)*25));pts+=ptsPom;pontosDetalhe.push({label:'🏔️ Caverna',pts:ptsPom,max:25,ok:p.minFoco>=40});if(p.minFoco<40)dicas.push('Tente completar ao menos 2 sessões de Modo Caverna amanhã.');
+  const pomH=`<div class="rel-section" style="border-color:#7C3AED;"><h3>🏔️ Modo Caverna</h3><div class="rel-row"><span>Sessões</span><span class="rv">${p.sessoes}</span></div><div class="rel-row"><span>Ciclos</span><span class="rv">${p.ciclos}</span></div><div class="rel-row"><span>Foco total</span><span class="rv">${p.minFoco}min</span></div></div>`;
   max+=15;let celH='';
-  if(state.celular){const tm=state.celular.horas*60+state.celular.minutos;const ptsCel=tm<=120?15:tm<=240?8:0;pts+=ptsCel;pontosDetalhe.push({label:'ðŸ“± Tela',pts:ptsCel,max:15,ok:ptsCel>=10});if(ptsCel<10)dicas.push('O tempo de tela foi elevado.');const av=avalCelular(state.celular.horas,state.celular.minutos);celH=`<div class="rel-section" style="border-color:#F57F17;"><h3>ðŸ“± Tela</h3><div class="rel-row"><span>Tempo</span><span class="rv">${state.celular.horas}h ${state.celular.minutos}min</span></div><div class="rel-row"><span>AvaliaÃ§Ã£o</span><span class="rv">${av.msg}</span></div></div>`;}
-  else{pontosDetalhe.push({label:'ðŸ“± Tela',pts:0,max:15,ok:false});dicas.push('Registre o tempo de tela amanhÃ£.');celH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>ðŸ“± Tela</h3><p style="font-size:0.83rem;color:var(--text-light);">NÃ£o registrado.</p></div>`;}
-  let remH=state.remedio?`<div class="rel-section" style="border-color:#29B6F6;"><h3>ðŸ’Š MedicaÃ§Ã£o</h3><div class="rel-row"><span>Tomado Ã s</span><span class="rv">${fmt(state.remedio.horaRegistro)}</span></div><div class="rel-row"><span>Status</span><span class="rv">âœ… Registrado hoje</span></div></div>`:`<div class="rel-section" style="border-color:#B0BEC5;"><h3>ðŸ’Š MedicaÃ§Ã£o</h3><p style="font-size:0.83rem;color:var(--text-light);">NÃ£o registrada hoje.</p></div>`;
-  let leitH=state.leitura?`<div class="rel-section" style="border-color:#6A1B9A;"><h3>ðŸ“š Leitura</h3><div class="rel-row"><span>PÃ¡ginas lidas</span><span class="rv">${state.leitura.paginas} pÃ¡ginas</span></div></div>`:'';
-  const nota=max>0?Math.round((pts/max)*100):0;const em=nota>=80?'ðŸ†':nota>=60?'â­':nota>=40?'ðŸ’ª':'ðŸŒ±';const msg=nota>=80?'Dia excelente!':nota>=60?'Bom progresso!':nota>=40?'Continue tentando!':'AmanhÃ£ serÃ¡ melhor!';
+  if(state.celular){const tm=state.celular.horas*60+state.celular.minutos;const ptsCel=tm<=120?15:tm<=240?8:0;pts+=ptsCel;pontosDetalhe.push({label:'📱 Tela',pts:ptsCel,max:15,ok:ptsCel>=10});if(ptsCel<10)dicas.push('O tempo de tela foi elevado.');const av=avalCelular(state.celular.horas,state.celular.minutos);celH=`<div class="rel-section" style="border-color:#F57F17;"><h3>📱 Tela</h3><div class="rel-row"><span>Tempo</span><span class="rv">${state.celular.horas}h ${state.celular.minutos}min</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${av.msg}</span></div></div>`;}
+  else{pontosDetalhe.push({label:'📱 Tela',pts:0,max:15,ok:false});dicas.push('Registre o tempo de tela amanhã.');celH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>📱 Tela</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado.</p></div>`;}
+  let remH=state.remedio?`<div class="rel-section" style="border-color:#29B6F6;"><h3>💊 Medicação</h3><div class="rel-row"><span>Tomado às</span><span class="rv">${fmt(state.remedio.horaRegistro)}</span></div><div class="rel-row"><span>Status</span><span class="rv">✅ Registrado hoje</span></div></div>`:`<div class="rel-section" style="border-color:#B0BEC5;"><h3>💊 Medicação</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrada hoje.</p></div>`;
+  let leitH=state.leitura?`<div class="rel-section" style="border-color:#6A1B9A;"><h3>📚 Leitura</h3><div class="rel-row"><span>Páginas lidas</span><span class="rv">${state.leitura.paginas} páginas</span></div></div>`:'';
+  const nota=max>0?Math.round((pts/max)*100):0;const em=nota>=80?'🏆':nota>=60?'⭐':nota>=40?'💪':'🌱';const msg=nota>=80?'Dia excelente!':nota>=60?'Bom progresso!':nota>=40?'Continue tentando!':'Amanhã será melhor!';
   const pontosBar=pontosDetalhe.map(pd=>`<div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:3px;"><span>${pd.label}</span><span style="font-weight:700;color:${pd.ok?'#2E7D32':'#F57F17'};">${pd.pts}/${pd.max}pts</span></div><div style="height:6px;background:#E3EAF2;border-radius:3px;overflow:hidden;"><div style="height:100%;width:${Math.round((pd.pts/pd.max)*100)}%;background:${pd.ok?'linear-gradient(to right,#2E7D32,#66BB6A)':'linear-gradient(to right,#F57F17,#FFA726)'};border-radius:3px;"></div></div></div>`).join('');
-  const dicasH=dicas.length>0?`<div class="rel-section" style="border-color:#FFB300;background:#FFFDE7;"><h3 style="color:#F57F17;">ðŸ’¡ O que melhorar amanhÃ£</h3>${dicas.map((d,i)=>`<div style="padding:8px 0;border-bottom:${i<dicas.length-1?'1px solid #FFF8E1':'none'};font-size:0.84rem;color:#5D4037;line-height:1.5;">â€¢ ${d}</div>`).join('')}</div>`:`<div class="rel-section" style="border-color:#2E7D32;background:#F1F8E9;"><h3 style="color:#2E7D32;">ðŸ† ParabÃ©ns!</h3><p style="font-size:0.84rem;color:#33691E;">Dia excelente em todas as categorias!</p></div>`;
-  document.getElementById('relatorio-body').innerHTML=`<div class="rel-avaliacao"><div style="font-size:2rem;">${em}</div><div class="rel-nota">${pts}<span style="font-size:1.2rem;opacity:0.7;">/${max}</span></div><div class="rel-nota-label">${nota}/100 pontos â€” ${msg}</div></div><div class="rel-section" style="border-color:#1565C0;"><h3>ðŸ“Š Pontos por categoria</h3>${pontosBar}</div>${dicasH}${sonoH}${metasH}${pomH}${celH}${remH}${leitH}`;
+  const dicasH=dicas.length>0?`<div class="rel-section" style="border-color:#FFB300;background:#FFFDE7;"><h3 style="color:#F57F17;">💡 O que melhorar amanhã</h3>${dicas.map((d,i)=>`<div style="padding:8px 0;border-bottom:${i<dicas.length-1?'1px solid #FFF8E1':'none'};font-size:0.84rem;color:#5D4037;line-height:1.5;">• ${d}</div>`).join('')}</div>`:`<div class="rel-section" style="border-color:#2E7D32;background:#F1F8E9;"><h3 style="color:#2E7D32;">🏆 Parabéns!</h3><p style="font-size:0.84rem;color:#33691E;">Dia excelente em todas as categorias!</p></div>`;
+  document.getElementById('relatorio-body').innerHTML=`<div class="rel-avaliacao"><div style="font-size:2rem;">${em}</div><div class="rel-nota">${pts}<span style="font-size:1.2rem;opacity:0.7;">/${max}</span></div><div class="rel-nota-label">${nota}/100 pontos — ${msg}</div></div><div class="rel-section" style="border-color:#1565C0;"><h3>📊 Pontos por categoria</h3>${pontosBar}</div>${dicasH}${sonoH}${metasH}${pomH}${celH}${remH}${leitH}`;
   document.getElementById('relatorio-modal').classList.add('show');
 }
 function fecharRelatorio(e){if(e.target.id==='relatorio-modal')document.getElementById('relatorio-modal').classList.remove('show');}
@@ -1708,7 +1708,7 @@ function gerarRelatorioMensal(){
   }
 
   if(diasDados===0){
-    wrap.innerHTML=`<div class="clinico-aviso">ðŸ“‹ Nenhum dado registrado ainda. Use o app diariamente para gerar seu relatÃ³rio clÃ­nico.</div>`;
+    wrap.innerHTML=`<div class="clinico-aviso">📋 Nenhum dado registrado ainda. Use o app diariamente para gerar seu relatório clínico.</div>`;
     return;
   }
 
@@ -1728,7 +1728,7 @@ function gerarRelatorioMensal(){
   if(avgCelular!==null){scoreMax+=15; scoreTotal+=avgCelular<=120?15:avgCelular<=240?10:avgCelular<=360?5:0;}
   const scoreGeral = scoreMax>0 ? Math.round((scoreTotal/scoreMax)*100) : 0;
   const scoreCor = scoreGeral>=75?'#2E7D32':scoreGeral>=50?'#F57F17':'#C62828';
-  const scoreLabel = scoreGeral>=75?'Boa adesÃ£o ao tratamento':scoreGeral>=50?'AdesÃ£o moderada':'AdesÃ£o baixa â€” requer atenÃ§Ã£o';
+  const scoreLabel = scoreGeral>=75?'Boa adesão ao tratamento':scoreGeral>=50?'Adesão moderada':'Adesão baixa — requer atenção';
 
   const sonoValidos = sonoSeries.filter(v=>v!==null);
   const sonoMax = Math.max(...sonoValidos, 9);
@@ -1736,109 +1736,109 @@ function gerarRelatorioMensal(){
   const grafSono = sonoSeries.slice(-14).map(v => {
     const h = Math.round((v||0)/sonoMax*100);
     const cor = !v?'#EEF2F7':v>=7?'#43A047':v>=6?'#FFA726':'#EF5350';
-    return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};flex:1;" title="${v?v+'h':'â€”'}"></div>`;
+    return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};flex:1;" title="${v?v+'h':'—'}"></div>`;
   }).join('');
   const grafFoco = focoSeries.slice(-14).map(v => {
     const h = Math.round((v/focoMax)*100);
     const cor = v>=60?'#7C3AED':v>=30?'#A78BFA':'#E3E3E3';
-    return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};flex:1;" title="${v?v+'min':'â€”'}"></div>`;
+    return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};flex:1;" title="${v?v+'min':'—'}"></div>`;
   }).join('');
 
   function parecerSono(){
-    if(!avgSono) return 'Dados de sono insuficientes para anÃ¡lise.';
-    let txt=`MÃ©dia de ${avgSono.toFixed(1)}h/noite no perÃ­odo. `;
-    if(avgSono>=8)txt+='PadrÃ£o de sono <strong>dentro dos parÃ¢metros ideais</strong> para adultos com TDAH (7â€“9h). Sono adequado potencializa a eficÃ¡cia do tratamento farmacolÃ³gico.';
-    else if(avgSono>=7)txt+='Sono <strong>limÃ­trofe ao adequado</strong>. Pequenas variaÃ§Ãµes para baixo podem impactar concentraÃ§Ã£o e resposta ao medicamento.';
-    else if(avgSono>=6)txt+='Sono <strong>abaixo do recomendado</strong>. PrivaÃ§Ã£o crÃ´nica leve (6â€“7h) agrava desatenÃ§Ã£o e impulsividade em pacientes com TDAH.';
-    else txt+='Sono <strong>significativamente abaixo do limiar terapÃªutico</strong>. PrivaÃ§Ã£o de sono desta magnitude compromete gravemente a regulaÃ§Ã£o executiva.';
-    if(sonoAbaixo7>0)txt+=` Registradas <strong>${sonoAbaixo7} noites abaixo de 7h</strong> no perÃ­odo.`;
+    if(!avgSono) return 'Dados de sono insuficientes para análise.';
+    let txt=`Média de ${avgSono.toFixed(1)}h/noite no período. `;
+    if(avgSono>=8)txt+='Padrão de sono <strong>dentro dos parâmetros ideais</strong> para adultos com TDAH (7–9h). Sono adequado potencializa a eficácia do tratamento farmacológico.';
+    else if(avgSono>=7)txt+='Sono <strong>limítrofe ao adequado</strong>. Pequenas variações para baixo podem impactar concentração e resposta ao medicamento.';
+    else if(avgSono>=6)txt+='Sono <strong>abaixo do recomendado</strong>. Privação crônica leve (6–7h) agrava desatenção e impulsividade em pacientes com TDAH.';
+    else txt+='Sono <strong>significativamente abaixo do limiar terapêutico</strong>. Privação de sono desta magnitude compromete gravemente a regulação executiva.';
+    if(sonoAbaixo7>0)txt+=` Registradas <strong>${sonoAbaixo7} noites abaixo de 7h</strong> no período.`;
     return txt;
   }
   function parecerMetas(){
-    if(pctMetas===null)return 'Dados de metas insuficientes para anÃ¡lise.';
-    let txt=`Taxa de conclusÃ£o de metas: <strong>${pctMetas}%</strong> (${metasConcl}/${metasTotal}). `;
-    if(pctMetas>=80)txt+='<strong>Desempenho satisfatÃ³rio</strong> na execuÃ§Ã£o de planejamento.';
+    if(pctMetas===null)return 'Dados de metas insuficientes para análise.';
+    let txt=`Taxa de conclusão de metas: <strong>${pctMetas}%</strong> (${metasConcl}/${metasTotal}). `;
+    if(pctMetas>=80)txt+='<strong>Desempenho satisfatório</strong> na execução de planejamento.';
     else if(pctMetas>=60)txt+='Desempenho <strong>moderado</strong>. Sugere dificuldades ocasionais de planejamento.';
-    else if(pctMetas>=40)txt+='Desempenho <strong>abaixo do esperado</strong>. Considerar ajuste de estratÃ©gias.';
-    else txt+='<strong>Dificuldade persistente na execuÃ§Ã£o de planejamento</strong>. Taxa inferior a 40% pode indicar sobrecarga.';
+    else if(pctMetas>=40)txt+='Desempenho <strong>abaixo do esperado</strong>. Considerar ajuste de estratégias.';
+    else txt+='<strong>Dificuldade persistente na execução de planejamento</strong>. Taxa inferior a 40% pode indicar sobrecarga.';
     return txt;
   }
   function parecerFoco(){
-    if(!avgFoco)return 'Nenhuma sessÃ£o de foco registrada no perÃ­odo.';
+    if(!avgFoco)return 'Nenhuma sessão de foco registrada no período.';
     const totalH = Math.floor(focoTotal/60), totalM = focoTotal%60;
-    let txt=`Total de <strong>${totalH>0?totalH+'h ':''  }${totalM>0?totalM+'min':''}de foco registrado</strong> em ${focoN} dias ativos. MÃ©dia de ${avgFoco}min/dia. `;
+    let txt=`Total de <strong>${totalH>0?totalH+'h ':''  }${totalM>0?totalM+'min':''}de foco registrado</strong> em ${focoN} dias ativos. Média de ${avgFoco}min/dia. `;
     if(avgFoco>=60)txt+='Volume de foco <strong>adequado</strong>.';
     else if(avgFoco>=30)txt+='Volume de foco <strong>moderado</strong>.';
-    else txt+='Volume de foco <strong>baixo</strong>. Considerar estratÃ©gias adicionais.';
+    else txt+='Volume de foco <strong>baixo</strong>. Considerar estratégias adicionais.';
     return txt;
   }
   function parecerTela(){
-    if(!avgCelular)return 'Tempo de tela nÃ£o monitorado no perÃ­odo.';
+    if(!avgCelular)return 'Tempo de tela não monitorado no período.';
     const h=Math.floor(avgCelular/60), m=avgCelular%60;
-    let txt=`MÃ©dia de <strong>${h}h${m>0?m+'min':''}/dia</strong> de uso de dispositivos. `;
+    let txt=`Média de <strong>${h}h${m>0?m+'min':''}/dia</strong> de uso de dispositivos. `;
     if(avgCelular<=120)txt+='<strong>Controle adequado</strong> do tempo de tela.';
     else if(avgCelular<=240)txt+='Uso <strong>moderado a elevado</strong>.';
-    else txt+='<strong>Uso elevado de telas</strong>. Correlaciona negativamente com atenÃ§Ã£o sustentada.';
+    else txt+='<strong>Uso elevado de telas</strong>. Correlaciona negativamente com atenção sustentada.';
     return txt;
   }
 
   const row=(lbl,val,badge,badgeTxt)=>`<div class="clinico-linha"><span class="cl-lbl">${lbl}</span><span class="cl-val">${val}</span><span class="cl-badge ${badge}">${badgeTxt}</span></div>`;
 
   wrap.innerHTML = `
-  <div style="font-size:0.72rem;color:#90A4AE;text-align:right;margin-bottom:8px;">ðŸ“… ${fmtD(dataIniObj)} a ${fmtD(dataFimObj)}</div>
+  <div style="font-size:0.72rem;color:#90A4AE;text-align:right;margin-bottom:8px;">📅 ${fmtD(dataIniObj)} a ${fmtD(dataFimObj)}</div>
   <div class="clinico-wrap">
     <div class="clinico-topo">
-      <div class="ct-titulo">ðŸ“‹ RelatÃ³rio ClÃ­nico de Acompanhamento</div>
-      <div class="ct-sub">TDAH Care Â· ${fmtM(today)} Â· ${diasDados} dias com registro</div>
+      <div class="ct-titulo">📋 Relatório Clínico de Acompanhamento</div>
+      <div class="ct-sub">TDAH Care · ${fmtM(today)} · ${diasDados} dias com registro</div>
       <div class="ct-meta">
         <div class="ct-meta-item"><div class="ctm-val" style="color:${scoreCor};">${scoreGeral}</div><div class="ctm-lbl">Score geral /100</div></div>
         <div class="ct-meta-item"><div class="ctm-val">${diasDados}</div><div class="ctm-lbl">Dias registrados</div></div>
-        <div class="ct-meta-item"><div class="ctm-val">${pctRemedio}%</div><div class="ctm-lbl">Uso do remÃ©dio</div></div>
+        <div class="ct-meta-item"><div class="ctm-val">${pctRemedio}%</div><div class="ctm-lbl">Uso do remédio</div></div>
       </div>
     </div>
     <div class="clinico-secao">
-      <div class="clinico-secao-titulo">ðŸ“Š Indicadores do PerÃ­odo</div>
-      ${avgSono!==null?row('MÃ©dia de sono/noite', avgSono.toFixed(1)+'h', avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit', avgSono>=7?'Adequado':avgSono>=6?'AtenÃ§Ã£o':'CrÃ­tico'):''}
-      ${pctMetas!==null?row('Taxa de conclusÃ£o de metas', pctMetas+'% ('+metasConcl+'/'+metasTotal+')', pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit', pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
-      ${avgFoco!==null?row('MÃ©dia de foco diÃ¡rio', avgFoco+'min/dia', avgFoco>=40?'cl-norm':avgFoco>=20?'cl-atenc':'cl-crit', avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}
-      ${avgCelular!==null?row('MÃ©dia de tempo de tela', Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia', avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit', avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
-      ${remedioN>0?row('Registro de medicaÃ§Ã£o', remedioN+'/'+diasDados+' dias', pctRemedio>=80?'cl-norm':pctRemedio>=60?'cl-atenc':'cl-crit', pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo'):''}
-      ${reativarTotal>0?row('AtivaÃ§Ãµes de protocolo de foco', reativarTotal+'x em '+Object.keys(diasReativar).length+' dias', reativarTotal<=5?'cl-norm':reativarTotal<=15?'cl-atenc':'cl-crit', reativarTotal<=5?'Ocasional':reativarTotal<=15?'Frequente':'Intenso'):''}
-      ${avgAgua!==null?row('MÃ©dia de Ã¡gua/dia', avgAgua>=1000?(avgAgua/1000).toFixed(1)+'L':avgAgua+'ml', avgAgua>=2000?'cl-norm':avgAgua>=1000?'cl-atenc':'cl-crit', avgAgua>=2000?'Adequada':avgAgua>=1000?'AtenÃ§Ã£o':'Baixa'):''}
-      ${leituraN>0?row('Leitura acumulada', leituraTotal+' pÃ¡ginas em '+leituraN+' dias', 'cl-norm', 'Registrada'):''}
+      <div class="clinico-secao-titulo">📊 Indicadores do Período</div>
+      ${avgSono!==null?row('Média de sono/noite', avgSono.toFixed(1)+'h', avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit', avgSono>=7?'Adequado':avgSono>=6?'Atenção':'Crítico'):''}
+      ${pctMetas!==null?row('Taxa de conclusão de metas', pctMetas+'% ('+metasConcl+'/'+metasTotal+')', pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit', pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
+      ${avgFoco!==null?row('Média de foco diário', avgFoco+'min/dia', avgFoco>=40?'cl-norm':avgFoco>=20?'cl-atenc':'cl-crit', avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}
+      ${avgCelular!==null?row('Média de tempo de tela', Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia', avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit', avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
+      ${remedioN>0?row('Registro de medicação', remedioN+'/'+diasDados+' dias', pctRemedio>=80?'cl-norm':pctRemedio>=60?'cl-atenc':'cl-crit', pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo'):''}
+      ${reativarTotal>0?row('Ativações de protocolo de foco', reativarTotal+'x em '+Object.keys(diasReativar).length+' dias', reativarTotal<=5?'cl-norm':reativarTotal<=15?'cl-atenc':'cl-crit', reativarTotal<=5?'Ocasional':reativarTotal<=15?'Frequente':'Intenso'):''}
+      ${avgAgua!==null?row('Média de água/dia', avgAgua>=1000?(avgAgua/1000).toFixed(1)+'L':avgAgua+'ml', avgAgua>=2000?'cl-norm':avgAgua>=1000?'cl-atenc':'cl-crit', avgAgua>=2000?'Adequada':avgAgua>=1000?'Atenção':'Baixa'):''}
+      ${leituraN>0?row('Leitura acumulada', leituraTotal+' páginas em '+leituraN+' dias', 'cl-norm', 'Registrada'):''}
     </div>
   </div>
   ${sonoN>0?`<div class="clinico-wrap">
     <div class="clinico-secao">
-      <div class="clinico-secao-titulo">ðŸ˜´ EvoluÃ§Ã£o do Sono â€” Ãºltimas 2 semanas</div>
+      <div class="clinico-secao-titulo">😴 Evolução do Sono — últimas 2 semanas</div>
       <div class="clinico-grafico">${grafSono}</div>
-      <div style="display:flex;gap:12px;font-size:0.65rem;color:#90A4AE;margin-top:4px;"><span>ðŸŸ¢ â‰¥7h adequado</span><span>ðŸŸ  6-7h atenÃ§Ã£o</span><span>ðŸ”´ &lt;6h crÃ­tico</span></div>
+      <div style="display:flex;gap:12px;font-size:0.65rem;color:#90A4AE;margin-top:4px;"><span>🟢 ≥7h adequado</span><span>🟠 6-7h atenção</span><span>🔴 &lt;6h crítico</span></div>
       <div style="height:1px;background:#EEF2F7;margin:12px 0;"></div>
-      <div class="clinico-secao-titulo">ðŸ”ï¸ Foco diÃ¡rio â€” Ãºltimas 2 semanas</div>
+      <div class="clinico-secao-titulo">🏔️ Foco diário — últimas 2 semanas</div>
       <div class="clinico-grafico">${grafFoco}</div>
-      <div style="font-size:0.65rem;color:#90A4AE;margin-top:4px;">ðŸŸ£ â‰¥60min adequado Â· ðŸ”µ 30-60min moderado</div>
+      <div style="font-size:0.65rem;color:#90A4AE;margin-top:4px;">🟣 ≥60min adequado · 🔵 30-60min moderado</div>
     </div>
   </div>`:''}
   <div class="clinico-wrap">
     <div class="clinico-secao">
-      <div class="clinico-secao-titulo">ðŸ“ AnÃ¡lise ClÃ­nica Detalhada</div>
-      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#1565C0;margin-bottom:6px;">ðŸ˜´ Sono e RecuperaÃ§Ã£o NeurolÃ³gica</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerSono()}</div></div>
-      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#2E7D32;margin-bottom:6px;">ðŸŽ¯ FunÃ§Ã£o Executiva e Planejamento</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerMetas()}</div></div>
-      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#7C3AED;margin-bottom:6px;">ðŸ”ï¸ AtenÃ§Ã£o Sustentada e Foco</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerFoco()}</div></div>
-      ${avgCelular!==null?`<div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#F57F17;margin-bottom:6px;">ðŸ“± RegulaÃ§Ã£o do Uso de Tecnologia</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerTela()}</div></div>`:''}
-      ${reativarTotal>0?`<div style="margin-bottom:4px;"><div style="font-size:0.78rem;font-weight:700;color:#E65100;margin-bottom:6px;">âš¡ Uso do Protocolo de ReativaÃ§Ã£o de Foco</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">Protocolo ativado <strong>${reativarTotal}x</strong> em ${Object.keys(diasReativar).length} dias. ${reativarTotal<=5?'Uso esporÃ¡dico.':reativarTotal<=15?'FrequÃªncia moderada de episÃ³dios de bloqueio cognitivo.':'FrequÃªncia elevada â€” pode indicar perÃ­odo de maior desregulaÃ§Ã£o atencional.'}</div></div>`:''}
+      <div class="clinico-secao-titulo">📝 Análise Clínica Detalhada</div>
+      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#1565C0;margin-bottom:6px;">😴 Sono e Recuperação Neurológica</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerSono()}</div></div>
+      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#2E7D32;margin-bottom:6px;">🎯 Função Executiva e Planejamento</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerMetas()}</div></div>
+      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#7C3AED;margin-bottom:6px;">🏔️ Atenção Sustentada e Foco</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerFoco()}</div></div>
+      ${avgCelular!==null?`<div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#F57F17;margin-bottom:6px;">📱 Regulação do Uso de Tecnologia</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerTela()}</div></div>`:''}
+      ${reativarTotal>0?`<div style="margin-bottom:4px;"><div style="font-size:0.78rem;font-weight:700;color:#E65100;margin-bottom:6px;">⚡ Uso do Protocolo de Reativação de Foco</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">Protocolo ativado <strong>${reativarTotal}x</strong> em ${Object.keys(diasReativar).length} dias. ${reativarTotal<=5?'Uso esporádico.':reativarTotal<=15?'Frequência moderada de episódios de bloqueio cognitivo.':'Frequência elevada — pode indicar período de maior desregulação atencional.'}</div></div>`:''}
     </div>
   </div>
   <div class="clinico-wrap">
     <div class="clinico-secao">
-      <div class="clinico-secao-titulo">â­ AvaliaÃ§Ã£o Geral do PerÃ­odo</div>
+      <div class="clinico-secao-titulo">⭐ Avaliação Geral do Período</div>
       <div style="display:flex;align-items:center;gap:16px;padding:8px 0;">
         <div style="width:64px;height:64px;border-radius:50%;background:${scoreCor};display:flex;align-items:center;justify-content:center;color:white;font-size:1.3rem;font-weight:900;flex-shrink:0;">${scoreGeral}</div>
         <div><div style="font-size:0.9rem;font-weight:700;color:#1A237E;">${scoreLabel}</div><div style="font-size:0.78rem;color:#546E7A;margin-top:4px;line-height:1.5;">Score baseado em sono, metas, foco e tempo de tela</div></div>
       </div>
     </div>
   </div>
-  <div class="clinico-aviso">âš ï¸ <strong>Importante:</strong> Este relatÃ³rio Ã© gerado automaticamente a partir de dados autodeclarados. NÃ£o substitui avaliaÃ§Ã£o clÃ­nica profissional.</div>
+  <div class="clinico-aviso">⚠️ <strong>Importante:</strong> Este relatório é gerado automaticamente a partir de dados autodeclarados. Não substitui avaliação clínica profissional.</div>
   `;
 }
 function renderCalendar(date){
@@ -1846,7 +1846,7 @@ function renderCalendar(date){
   const firstDay=new Date(yr,mo,1).getDay();const daysInMonth=new Date(yr,mo+1,0).getDate();const prevLast=new Date(yr,mo,0).getDate();let html='';
   for(let i=firstDay-1;i>=0;i--)html+=`<div class="calendar-day inactive">${prevLast-i}</div>`;
   for(let i=1;i<=daysInMonth;i++){const d=new Date(yr,mo,i);const iso=hojeISO(d);const isToday=iso===hojeISO();const isSel=iso===state.currentDate&&state.currentDate!==hojeISO();const dd=state.dailyData[iso];let met='';
-    if(dd){const s=dd.sono&&dd.sono.length>0?dd.sono[0].horas:null;const mTot=(dd.metas||[]).length+(dd.metasFixas||[]).length;const mDone=(dd.metas||[]).filter(m=>m.done).length+(dd.metasFixas||[]).filter(m=>m.done).length;const pf=dd.pom?dd.pom.minFoco:0;if(s)met+=`<span class="${s>=7?'m-ok':s>=5?'m-warn':'m-bad'}">ðŸ˜´${s}h</span>`;if(mTot>0)met+=`<span class="${mDone/mTot>=0.8?'m-ok':mDone/mTot>=0.5?'m-warn':'m-bad'}">âœ…${mDone}/${mTot}</span>`;if(pf>0)met+=`<span class="${pf>=40?'m-ok':'m-warn'}">ðŸ”ï¸${pf}m</span>`;}
+    if(dd){const s=dd.sono&&dd.sono.length>0?dd.sono[0].horas:null;const mTot=(dd.metas||[]).length+(dd.metasFixas||[]).length;const mDone=(dd.metas||[]).filter(m=>m.done).length+(dd.metasFixas||[]).filter(m=>m.done).length;const pf=dd.pom?dd.pom.minFoco:0;if(s)met+=`<span class="${s>=7?'m-ok':s>=5?'m-warn':'m-bad'}">😴${s}h</span>`;if(mTot>0)met+=`<span class="${mDone/mTot>=0.8?'m-ok':mDone/mTot>=0.5?'m-warn':'m-bad'}">✅${mDone}/${mTot}</span>`;if(pf>0)met+=`<span class="${pf>=40?'m-ok':'m-warn'}">🏔️${pf}m</span>`;}
     html+=`<div class="calendar-day${isToday?' today':''}${isSel?' selected':''}" onclick="selectDay('${iso}',this)">${i}${met?`<div class="calendar-day-metrics">${met}</div>`:''}</div>`;}
   const rem=42-(firstDay+daysInMonth);for(let i=1;i<=rem;i++)html+=`<div class="calendar-day inactive">${i}</div>`;
   document.getElementById('calendar-grid-days').innerHTML=html;
@@ -1855,14 +1855,14 @@ function changeMonth(d){currentCalendarDate.setMonth(currentCalendarDate.getMont
 function selectDay(iso,el){document.querySelectorAll('.calendar-day').forEach(d=>d.classList.remove('selected'));el.classList.add('selected');carregarDia(iso);mostrarSumarioDia(iso);}
 function mostrarSumarioDia(iso){
   const card=document.getElementById('daily-summary-card');const dd=state.dailyData[iso];const dataFmt=new Date(iso+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  if(!dd){card.innerHTML=`<div class="daily-sum-card"><div class="card-title">SumÃ¡rio â€” ${dataFmt}</div><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum dado registrado.</p></div>`;card.style.display='block';return;}
-  const qM={otima:'ðŸ˜Š Ã“tima',boa:'ðŸ™‚ Boa',regular:'ðŸ˜ Regular',ruim:'ðŸ˜” Ruim',pessima:'ðŸ˜« PÃ©ssima'};let html=`<div class="daily-sum-card"><div class="card-title">SumÃ¡rio â€” ${dataFmt}</div>`;
-  const s=dd.sono&&dd.sono.length>0?dd.sono[0]:null;if(s)html+=`<div class="rel-section" style="border-color:#1565C0"><h3>ðŸ˜´ Sono</h3><div class="rel-row"><span>Horas</span><span class="rv">${s.horas}h</span></div><div class="rel-row"><span>Qualidade</span><span class="rv">${qM[s.qualidade]}</span></div></div>`;
-  const mAll=[...(dd.metasFixas||[]),...(dd.metas||[])];if(mAll.length>0){const dn=mAll.filter(m=>m.done).length;html+=`<div class="rel-section" style="border-color:#2E7D32"><h3>ðŸŽ¯ Metas</h3><div class="rel-row"><span>ConcluÃ­das</span><span class="rv">${dn}/${mAll.length}</span></div>${mAll.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'ðŸ“Œ ':''}${m.texto}</span><span class="rv">${m.done?'âœ…':'â¬œ'}</span></div>`).join('')}</div>`;}
-  if(dd.pom&&(dd.pom.sessoes>0||dd.pom.ciclos>0))html+=`<div class="rel-section" style="border-color:#7C3AED"><h3>ðŸ”ï¸ Caverna</h3><div class="rel-row"><span>SessÃµes</span><span class="rv">${dd.pom.sessoes}</span></div><div class="rel-row"><span>Foco total</span><span class="rv">${dd.pom.minFoco}min</span></div></div>`;
-  if(dd.celular)html+=`<div class="rel-section" style="border-color:#F57F17"><h3>ðŸ“± Tela</h3><div class="rel-row"><span>Tempo</span><span class="rv">${dd.celular.horas}h ${dd.celular.minutos}min</span></div></div>`;
-  if(dd.copos>0){const mlCopo=dd.copoMl||250;html+=`<div class="rel-section" style="border-color:#29B6F6"><h3>ðŸ’§ HidrataÃ§Ã£o</h3><div class="rel-row"><span>Total ingerido</span><span class="rv">${dd.copos*mlCopo}ml</span></div><div class="rel-row"><span>Copos</span><span class="rv">${dd.copos} copo${dd.copos>1?'s':''} de ${mlCopo}ml</span></div></div>`;}
-  if(dd.leitura)html+=`<div class="rel-section" style="border-color:#6A1B9A"><h3>ðŸ“š Leitura</h3><div class="rel-row"><span>PÃ¡ginas</span><span class="rv">${dd.leitura.paginas}</span></div></div>`;
+  if(!dd){card.innerHTML=`<div class="daily-sum-card"><div class="card-title">Sumário — ${dataFmt}</div><p style="color:var(--text-light);font-size:0.85rem;text-align:center;padding:10px;">Nenhum dado registrado.</p></div>`;card.style.display='block';return;}
+  const qM={otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};let html=`<div class="daily-sum-card"><div class="card-title">Sumário — ${dataFmt}</div>`;
+  const s=dd.sono&&dd.sono.length>0?dd.sono[0]:null;if(s)html+=`<div class="rel-section" style="border-color:#1565C0"><h3>😴 Sono</h3><div class="rel-row"><span>Horas</span><span class="rv">${s.horas}h</span></div><div class="rel-row"><span>Qualidade</span><span class="rv">${qM[s.qualidade]}</span></div></div>`;
+  const mAll=[...(dd.metasFixas||[]),...(dd.metas||[])];if(mAll.length>0){const dn=mAll.filter(m=>m.done).length;html+=`<div class="rel-section" style="border-color:#2E7D32"><h3>🎯 Metas</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn}/${mAll.length}</span></div>${mAll.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'📌 ':''}${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;}
+  if(dd.pom&&(dd.pom.sessoes>0||dd.pom.ciclos>0))html+=`<div class="rel-section" style="border-color:#7C3AED"><h3>🏔️ Caverna</h3><div class="rel-row"><span>Sessões</span><span class="rv">${dd.pom.sessoes}</span></div><div class="rel-row"><span>Foco total</span><span class="rv">${dd.pom.minFoco}min</span></div></div>`;
+  if(dd.celular)html+=`<div class="rel-section" style="border-color:#F57F17"><h3>📱 Tela</h3><div class="rel-row"><span>Tempo</span><span class="rv">${dd.celular.horas}h ${dd.celular.minutos}min</span></div></div>`;
+  if(dd.copos>0){const mlCopo=dd.copoMl||250;html+=`<div class="rel-section" style="border-color:#29B6F6"><h3>💧 Hidratação</h3><div class="rel-row"><span>Total ingerido</span><span class="rv">${dd.copos*mlCopo}ml</span></div><div class="rel-row"><span>Copos</span><span class="rv">${dd.copos} copo${dd.copos>1?'s':''} de ${mlCopo}ml</span></div></div>`;}
+  if(dd.leitura)html+=`<div class="rel-section" style="border-color:#6A1B9A"><h3>📚 Leitura</h3><div class="rel-row"><span>Páginas</span><span class="rv">${dd.leitura.paginas}</span></div></div>`;
   html+='</div>';card.innerHTML=html;card.style.display='block';
 }
 function switchInfo(tab,btn){
@@ -1886,7 +1886,7 @@ function gerarRelatorioDiarioInline() {
     const htmlGerado = document.getElementById('relatorio-body').innerHTML;
     const diaStr = now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
     document.getElementById('relatorio-diario-conteudo').innerHTML =
-      `<div style="margin-top:16px;"><div style="font-size:0.72rem;color:#90A4AE;margin-bottom:12px;">ðŸ“… ${diaStr}</div>${htmlGerado}<button onclick="document.getElementById('relatorio-diario-conteudo').innerHTML=''" style="width:100%;padding:12px;background:#EEF2FF;border:1px solid #C5CAE9;border-radius:12px;font-size:0.85rem;font-weight:700;color:#1A237E;cursor:pointer;margin-top:12px;">ðŸ”„ Atualizar</button></div>`;
+      `<div style="margin-top:16px;"><div style="font-size:0.72rem;color:#90A4AE;margin-bottom:12px;">📅 ${diaStr}</div>${htmlGerado}<button onclick="document.getElementById('relatorio-diario-conteudo').innerHTML=''" style="width:100%;padding:12px;background:#EEF2FF;border:1px solid #C5CAE9;border-radius:12px;font-size:0.85rem;font-weight:700;color:#1A237E;cursor:pointer;margin-top:12px;">🔄 Atualizar</button></div>`;
     document.getElementById('relatorio-modal').classList.remove('show');
   }, 50);
 }
@@ -1902,19 +1902,19 @@ function atualizarStatsBackup() {
   const size=new Blob([raw]).size;const sizeStr=size>1024?(size/1024).toFixed(1)+'kb':size+'b';
   document.getElementById('bk-dias').textContent=dias;document.getElementById('bk-metas').textContent=totalMetas;document.getElementById('bk-size').textContent=sizeStr;
   const lastBackup=localStorage.getItem('tdah_last_backup');const lbEl=document.getElementById('backup-last-export');
-  if(lastBackup){const d=new Date(lastBackup);const diff=Math.floor((Date.now()-d)/86400000);const txt=diff===0?'hoje':diff===1?'ontem':'hÃ¡ '+diff+' dias';lbEl.className='backup-last-info'+(diff>7?' warn':'');lbEl.textContent=(diff>7?'âš ï¸':'âœ…')+' Ãšltimo backup: '+txt+' ('+d.toLocaleDateString('pt-BR')+')';}
-  else{lbEl.className='backup-last-info none';lbEl.textContent='ðŸ“ Nenhum backup exportado ainda';}
+  if(lastBackup){const d=new Date(lastBackup);const diff=Math.floor((Date.now()-d)/86400000);const txt=diff===0?'hoje':diff===1?'ontem':'há '+diff+' dias';lbEl.className='backup-last-info'+(diff>7?' warn':'');lbEl.textContent=(diff>7?'⚠️':'✅')+' Último backup: '+txt+' ('+d.toLocaleDateString('pt-BR')+')';}
+  else{lbEl.className='backup-last-info none';lbEl.textContent='📁 Nenhum backup exportado ainda';}
 }
 function gerarBackupJSON() { return JSON.stringify({version:'1.0',app:'TDAH Care',exportDate:new Date().toISOString(),data:{dailyData:state.dailyData,metasHist:state.metasHist,metasFixas:state.metasFixas}},null,2); }
 function exportarJSON() {
   const json=gerarBackupJSON();const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');
   const date=new Date().toISOString().split('T')[0];a.href=url;a.download='tdah-care-backup-'+date+'.json';a.click();URL.revokeObjectURL(url);
-  localStorage.setItem('tdah_last_backup',new Date().toISOString());atualizarStatsBackup();showToast('âœ… Backup exportado!');
+  localStorage.setItem('tdah_last_backup',new Date().toISOString());atualizarStatsBackup();showToast('✅ Backup exportado!');
 }
 async function copiarBackupClipboard() {
   const json=gerarBackupJSON();
-  try{await navigator.clipboard.writeText(json);showToast('ðŸ“‹ Backup copiado!');}
-  catch(e){const ta=document.createElement('textarea');ta.value=json;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('ðŸ“‹ Backup copiado!');}
+  try{await navigator.clipboard.writeText(json);showToast('📋 Backup copiado!');}
+  catch(e){const ta=document.createElement('textarea');ta.value=json;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('📋 Backup copiado!');}
   localStorage.setItem('tdah_last_backup',new Date().toISOString());atualizarStatsBackup();
 }
 function verificarLembreteBackup() {
@@ -1923,9 +1923,9 @@ function verificarLembreteBackup() {
   const diff=Math.floor((Date.now()-new Date(last))/86400000);if(diff>=7)document.getElementById('backup-ping').classList.add('show');
 }
 
-// ========== POMODORO EDITÃVEL ==========
+// ========== POMODORO EDITÁVEL ==========
 function aplicarConfigPom() {
-  if (state.pom.rodando) { showToast('âš ï¸ Pare o timer antes de alterar!'); return; }
+  if (state.pom.rodando) { showToast('⚠️ Pare o timer antes de alterar!'); return; }
   const f = parseInt(document.getElementById('pom-foco-input').value) || 20;
   const p = parseInt(document.getElementById('pom-pausa-input').value) || 5;
   const focoMin = Math.min(90, Math.max(1, f));
@@ -1936,7 +1936,7 @@ function aplicarConfigPom() {
   state.pom.seg = state.pom.fase === 'foco' ? state.pomConfig.foco : state.pomConfig.pausa;
   document.getElementById('caverna-subtitle').textContent = `Pomodoro ${focoMin}min foco / ${pausaMin}min pausa`;
   atualizarUIPom();
-  showToast(`âœ… ${focoMin}min foco / ${pausaMin}min pausa aplicado!`);
+  showToast(`✅ ${focoMin}min foco / ${pausaMin}min pausa aplicado!`);
   try { localStorage.setItem('tdah_pom_config', JSON.stringify({foco: focoMin, pausa: pausaMin})); } catch(e) {}
 }
 function carregarConfigPom() {
@@ -2012,22 +2012,22 @@ function calcularScoreSemana(d) {
 // ========== COMPARTILHAR PROGRESSO DIRETO NO WHATSAPP ==========
 
 
-// ========== COMPARTILHAR PROGRESSO COMO IMAGEM (WHATSAPP) - VERSÃƒO AJUSTADA ==========
+// ========== COMPARTILHAR PROGRESSO COMO IMAGEM (WHATSAPP) - VERSÃO AJUSTADA ==========
 
 async function enviarRelatorioCompletoWhatsApp() {
-  showToast('ðŸ“¸ Gerando imagem do relatÃ³rio... Aguarde.');
+  showToast('📸 Gerando imagem do relatório... Aguarde.');
 
   const d = calcularDadosSemana();
   const apelido = getApelido();
   
-  // 1. Cria o cartÃ£o visual (tamanho fixo de 400px, perfeito para tela de celular)
+  // 1. Cria o cartão visual (tamanho fixo de 400px, perfeito para tela de celular)
   const card = document.createElement('div');
   card.style.position = 'fixed';
   card.style.top = '0';
   card.style.left = '0';
   card.style.width = '400px';
   card.style.padding = '20px';
-  // Fundo com a cor primÃ¡ria do seu app para dar contraste
+  // Fundo com a cor primária do seu app para dar contraste
   card.style.background = 'linear-gradient(135deg, #1565C0, #1976D2)';
   card.style.fontFamily = 'Arial, sans-serif';
   card.style.zIndex = '999999';
@@ -2037,7 +2037,7 @@ async function enviarRelatorioCompletoWhatsApp() {
   card.innerHTML = `
     <div style="background: white; border-radius: 16px; padding: 24px; color: #1A237E; box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
         <div style="text-align: center; margin-bottom: 20px;">
-            <h2 style="margin: 0; font-size: 22px; color: #1565C0;">ðŸ“‹ RelatÃ³rio ClÃ­nico</h2>
+            <h2 style="margin: 0; font-size: 22px; color: #1565C0;">📋 Relatório Clínico</h2>
             <div style="font-size: 14px; color: #546E7A; margin-top: 6px;">Paciente: <strong>${apelido}</strong></div>
             <div style="font-size: 12px; color: #90A4AE; margin-top: 2px;">${d.periodo}</div>
         </div>
@@ -2049,31 +2049,31 @@ async function enviarRelatorioCompletoWhatsApp() {
             </div>
             <div style="flex: 1; background: #F0F4F8; padding: 12px; border-radius: 12px; text-align: center; border: 1px solid #E3EAF2;">
                 <div style="font-size: 28px; font-weight: 900; color: #1565C0;">${d.remedioN}</div>
-                <div style="font-size: 11px; color: #546E7A; text-transform: uppercase; margin-top: 2px;">Dias c/ RemÃ©dio</div>
+                <div style="font-size: 11px; color: #546E7A; text-transform: uppercase; margin-top: 2px;">Dias c/ Remédio</div>
             </div>
         </div>
 
         <div style="background: #F8FAFF; border: 2px solid #E3EAF2; border-radius: 12px; padding: 16px; margin-bottom: 15px;">
             <div style="font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
-                <span style="color: #546E7A;">ðŸ˜´ Sono MÃ©dio</span>
-                <strong style="color: #1A237E;">${d.sonoMedia ? d.sonoMedia + 'h' : 'â€”'}</strong>
+                <span style="color: #546E7A;">😴 Sono Médio</span>
+                <strong style="color: #1A237E;">${d.sonoMedia ? d.sonoMedia + 'h' : '—'}</strong>
             </div>
             <div style="font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
-                <span style="color: #546E7A;">ðŸŽ¯ Metas ConcluÃ­das</span>
-                <strong style="color: #1A237E;">${d.metasPct !== null ? d.metasPct + '%' : 'â€”'}</strong>
+                <span style="color: #546E7A;">🎯 Metas Concluídas</span>
+                <strong style="color: #1A237E;">${d.metasPct !== null ? d.metasPct + '%' : '—'}</strong>
             </div>
             <div style="font-size: 14px; margin-bottom: 12px; display: flex; justify-content: space-between;">
-                <span style="color: #546E7A;">ðŸ”ï¸ Foco Profundo</span>
+                <span style="color: #546E7A;">🏔️ Foco Profundo</span>
                 <strong style="color: #1A237E;">${d.focoH > 0 ? d.focoH + 'h ' : ''}${d.focoM > 0 ? d.focoM + 'min' : d.focoTotal + 'min'}</strong>
             </div>
             <div style="font-size: 14px; display: flex; justify-content: space-between;">
-                <span style="color: #546E7A;">ðŸ“± Uso de Tela (MÃ©dia)</span>
-                <strong style="color: #1A237E;">${d.celMedia !== null ? Math.floor(d.celMedia/60) + 'h ' + (d.celMedia%60) + 'min' : 'â€”'}</strong>
+                <span style="color: #546E7A;">📱 Uso de Tela (Média)</span>
+                <strong style="color: #1A237E;">${d.celMedia !== null ? Math.floor(d.celMedia/60) + 'h ' + (d.celMedia%60) + 'min' : '—'}</strong>
             </div>
         </div>
         
         <div style="text-align: center; font-size: 11px; color: #90A4AE; margin-top: 20px;">
-            Gerado automaticamente pelo App TDAH Care ðŸ§ 
+            Gerado automaticamente pelo App TDAH Care 🧠
         </div>
     </div>
   `;
@@ -2094,27 +2094,27 @@ async function enviarRelatorioCompletoWhatsApp() {
         
         sincronizarComFirebase(d);
 
-        // 5. Aciona o Compartilhamento Nativo (Igual ao botÃ£o de "Compartilhar" do celular)
+        // 5. Aciona o Compartilhamento Nativo (Igual ao botão de "Compartilhar" do celular)
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
-                title: 'RelatÃ³rio TDAH',
-                text: `OlÃ¡! Segue em anexo a imagem do meu relatÃ³rio semanal do TDAH Care.`,
+                title: 'Relatório TDAH',
+                text: `Olá! Segue em anexo a imagem do meu relatório semanal do TDAH Care.`,
                 files: [file]
             });
-            showToast('âœ… Imagem pronta para envio!');
+            showToast('✅ Imagem pronta para envio!');
         } else {
             // Se estiver no PC ou navegador antigo, apenas baixa a imagem
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = file.name;
             a.click();
-            showToast('â¬‡ï¸ Imagem salva! Envie no WhatsApp manualmente.');
+            showToast('⬇️ Imagem salva! Envie no WhatsApp manualmente.');
         }
     }, 'image/png');
 
   } catch (err) {
     console.error(err);
-    showToast('âš ï¸ Erro ao gerar imagem.');
+    showToast('⚠️ Erro ao gerar imagem.');
     if(document.body.contains(card)) document.body.removeChild(card);
   }
 }
@@ -2138,7 +2138,7 @@ function salvarApelido() {
   }
   if (!psico) {
     if (sel) { sel.style.borderColor='#EF5350'; setTimeout(()=>{ sel.style.borderColor='#90CAF9'; },1000); }
-    showToast('Selecione seu profissional de saÃºde!');
+    showToast('Selecione seu profissional de saúde!');
     return;
   }
   localStorage.setItem('tdah_apelido', val);
@@ -2146,7 +2146,7 @@ function salvarApelido() {
   const overlay = document.getElementById('apelido-overlay');
   if (overlay) overlay.classList.remove('show');
   const nomes = {dra_raiza:'Dra. Raiza Oliveira',dr_gabriel:'Dr. Gabriel Gomes',dra_caroline:'Dra. Caroline Guerra'};
-  showToast('OlÃ¡, ' + val + '! Profissional: ' + (nomes[psico]||psico));
+  showToast('Olá, ' + val + '! Profissional: ' + (nomes[psico]||psico));
 }
 function getApelido() {
   return localStorage.getItem('tdah_apelido') || 'Usuario';
@@ -2167,7 +2167,7 @@ function fecharAdmin() {
 
 // ========== ADMIN ==========
 function abrirAdmin() {
-    // Isso farÃ¡ com que o botÃ£o abra a nova pÃ¡gina em uma nova guia!
+    // Isso fará com que o botão abra a nova página em uma nova guia!
     window.open('admin.html', '_blank');
 }
 function verificarSenhaAdmin() {
@@ -2203,7 +2203,7 @@ async function carregarDadosAdmin() {
     const cor = s>=70 ? '#2E7D32' : s>=40 ? '#F57F17' : '#C62828';
     return '<div class="admin-user-card">' +
       '<div class="admin-user-name">' + u.apelido + '</div>' +
-      '<div class="admin-user-meta">Ultimo envio: ' + dt + ' Â· ' + (u.diasDados||0) + ' dias</div>' +
+      '<div class="admin-user-meta">Ultimo envio: ' + dt + ' · ' + (u.diasDados||0) + ' dias</div>' +
       '<div class="admin-user-stats">' +
         '<div class="admin-stat"><div class="admin-stat-val" style="color:' + cor + '">' + s + '</div><div class="admin-stat-lbl">Score</div></div>' +
         '<div class="admin-stat"><div class="admin-stat-val">' + (u.sonoMedia ? u.sonoMedia+'h' : '-') + '</div><div class="admin-stat-lbl">Sono</div></div>' +
@@ -2231,7 +2231,7 @@ async function sincronizarComFirebase(dadosSemana) {
     focoTotal: dadosSemana.focoTotal,
     diasDados: dadosSemana.diasDados,
     periodo: dadosSemana.periodo,
-    dailyData: state.dailyData, // ENVIANDO O HISTÃ“RICO REAL PARA O FIREBASE
+    dailyData: state.dailyData, // ENVIANDO O HISTÓRICO REAL PARA O FIREBASE
     psicologa: getPsicologa()
   });
   if (badge) {
@@ -2240,16 +2240,16 @@ async function sincronizarComFirebase(dadosSemana) {
   }
 }
 
-// ========== SALVAR DIÃRIO MANUAL ==========
+// ========== SALVAR DIÁRIO MANUAL ==========
 function salvarDiarioManual() {
   salvar();
   const btn = document.getElementById('btn-salvar-dia');
   if(btn) {
-    btn.textContent = 'ðŸ”„ Sincronizando...';
+    btn.textContent = '🔄 Sincronizando...';
     btn.disabled = true;
     btn.style.background = 'linear-gradient(135deg,#F57F17,#FFA726)';
   }
-  showToast('ðŸ’¾ Salvando e enviando...');
+  showToast('💾 Salvando e enviando...');
 
   const dadosSemana = calcularDadosSemana();
 
@@ -2258,12 +2258,12 @@ function salvarDiarioManual() {
       sincronizarComFirebase(dadosSemana).then(() => {
         if(btn) {
           btn.disabled = false;
-          btn.textContent = 'âœ… Sincronizado com a psicÃ³loga!';
+          btn.textContent = '✅ Sincronizado com a psicóloga!';
           btn.style.background = 'linear-gradient(135deg,#2E7D32,#43A047)';
-          showToast('âœ… Dados enviados para a psicÃ³loga!');
+          showToast('✅ Dados enviados para a psicóloga!');
           setTimeout(() => {
             if(btn) {
-              btn.textContent = 'ðŸ’¾ Salvar e Sincronizar com a PsicÃ³loga';
+              btn.textContent = '💾 Salvar e Sincronizar com a Psicóloga';
               btn.style.background = 'linear-gradient(135deg,#1565C0,#1976D2)';
             }
           }, 4000);
@@ -2274,12 +2274,12 @@ function salvarDiarioManual() {
     } else {
       if(btn) {
         btn.disabled = false;
-        btn.textContent = 'âš ï¸ Sem conexÃ£o â€” tente novamente';
+        btn.textContent = '⚠️ Sem conexão — tente novamente';
         btn.style.background = 'linear-gradient(135deg,#546E7A,#78909C)';
-        showToast('âš ï¸ Verifique sua internet e tente novamente.');
+        showToast('⚠️ Verifique sua internet e tente novamente.');
         setTimeout(() => {
           if(btn) {
-            btn.textContent = 'ðŸ’¾ Salvar e Sincronizar com a PsicÃ³loga';
+            btn.textContent = '💾 Salvar e Sincronizar com a Psicóloga';
             btn.style.background = 'linear-gradient(135deg,#1565C0,#1976D2)';
           }
         }, 4000);
@@ -2293,7 +2293,7 @@ function salvarDiarioManual() {
 async function enviarProgressoPsicologa() {
   const btn = document.getElementById('btn-enviar-psicologa');
   if(btn) {
-    btn.textContent = 'ðŸ”„ Enviando...';
+    btn.textContent = '🔄 Enviando...';
     btn.disabled = true;
   }
   salvar();
@@ -2306,17 +2306,17 @@ async function enviarProgressoPsicologa() {
   if(btn) {
     btn.disabled = false;
     if(ok) {
-      btn.textContent = 'âœ… Dados enviados com sucesso!';
+      btn.textContent = '✅ Dados enviados com sucesso!';
       btn.style.background = 'linear-gradient(135deg,#1565C0,#29B6F6)';
-      showToast('âœ… Progresso enviado para a psicÃ³loga!');
+      showToast('✅ Progresso enviado para a psicóloga!');
     } else {
-      btn.textContent = 'âš ï¸ Sem conexÃ£o â€” tente novamente';
+      btn.textContent = '⚠️ Sem conexão — tente novamente';
       btn.style.background = 'linear-gradient(135deg,#546E7A,#78909C)';
-      showToast('âš ï¸ Falha na conexÃ£o. Dados salvos localmente.');
+      showToast('⚠️ Falha na conexão. Dados salvos localmente.');
     }
     setTimeout(() => {
       if(btn) {
-        btn.textContent = 'ðŸ“¤ Enviar Progresso para a PsicÃ³loga';
+        btn.textContent = '📤 Enviar Progresso para a Psicóloga';
         btn.style.background = 'linear-gradient(135deg,#1B5E20,#43A047)';
       }
     }, 3500);
@@ -2325,9 +2325,9 @@ async function enviarProgressoPsicologa() {
 
 function testarWhatsAppPsicologa() {
   const tel = localStorage.getItem('tdah_psicologa_tel') || '';
-  if(!tel) { showToast('âš ï¸ Digite o nÃºmero primeiro!'); return; }
+  if(!tel) { showToast('⚠️ Digite o número primeiro!'); return; }
   const apelido = getApelido();
-  const msg = encodeURIComponent('OlÃ¡! Este Ã© um teste do app TDAH Care de ' + apelido + ' ðŸ‘‹');
+  const msg = encodeURIComponent('Olá! Este é um teste do app TDAH Care de ' + apelido + ' 👋');
   window.open('https://wa.me/55' + tel.replace(/\D/g,'') + '?text=' + msg, '_blank');
 }
 
@@ -2396,17 +2396,17 @@ window.addEventListener('load', function() {
 });
 
 // =============================================
-// MODO FOCO â€” MISSÃƒO ESPACIAL ðŸš€
+// MODO FOCO — MISSÃO ESPACIAL 🚀
 // =============================================
 const PLANETAS_FOCO = [
-  { emoji:'ðŸŒ', nome:'Terra',     min:0  },
-  { emoji:'ðŸŒ™', nome:'Lua',       min:2  },
-  { emoji:'ðŸ”´', nome:'Marte',     min:5  },
-  { emoji:'ðŸ’«', nome:'Asteroide', min:10 },
-  { emoji:'ðŸª', nome:'JÃºpiter',   min:20 },
-  { emoji:'ðŸŒ€', nome:'Saturno',   min:35 },
-  { emoji:'ðŸ”µ', nome:'Urano',     min:55 },
-  { emoji:'ðŸŒŒ', nome:'GalÃ¡xia',   min:80 },
+  { emoji:'🌍', nome:'Terra',     min:0  },
+  { emoji:'🌙', nome:'Lua',       min:2  },
+  { emoji:'🔴', nome:'Marte',     min:5  },
+  { emoji:'💫', nome:'Asteroide', min:10 },
+  { emoji:'🪐', nome:'Júpiter',   min:20 },
+  { emoji:'🌀', nome:'Saturno',   min:35 },
+  { emoji:'🔵', nome:'Urano',     min:55 },
+  { emoji:'🌌', nome:'Galáxia',   min:80 },
 ];
 
 const NIVEIS_FOCO = [
@@ -2416,7 +2416,7 @@ const NIVEIS_FOCO = [
   { n:4, nome:'Astronauta', xp:500  },
   { n:5, nome:'Comandante', xp:900  },
   { n:6, nome:'Almirante',  xp:1500 },
-  { n:7, nome:'LendÃ¡rio',   xp:2500 },
+  { n:7, nome:'Lendário',   xp:2500 },
 ];
 
 const BADGES_FOCO = [
@@ -2466,13 +2466,13 @@ function renderFocoXP() {
   const proxP   = _getProxPlaneta();
 
   const elBadge = document.getElementById('foco-nivel-badge');
-  if (elBadge) elBadge.textContent = `â­ NÃ­vel ${nivel.n} â€” ${nivel.nome}`;
+  if (elBadge) elBadge.textContent = `⭐ Nível ${nivel.n} — ${nivel.nome}`;
 
   const elXpTxt = document.getElementById('foco-xp-text');
   if (elXpTxt) {
     elXpTxt.textContent = prox
       ? `${_focoXP} / ${prox.xp} XP`
-      : `${_focoXP} XP â€” MÃ¡ximo!`;
+      : `${_focoXP} XP — Máximo!`;
   }
 
   const elFill = document.getElementById('foco-xp-fill');
@@ -2508,7 +2508,7 @@ function _adicionarXP(qtd) {
   _focoXP += qtd;
   _salvarFocoData();
   if (_getNivel().n > nivAntes) {
-    showToast(`â¬†ï¸ Level UP! NÃ­vel ${_getNivel().n} â€” ${_getNivel().nome}!`);
+    showToast(`⬆️ Level UP! Nível ${_getNivel().n} — ${_getNivel().nome}!`);
   }
   renderFocoXP();
 }
@@ -2526,12 +2526,12 @@ function _mostrarCelebracao(xpGanho) {
   document.getElementById('celeb-xp').textContent    = `+${xpGanho} XP`;
   const ciclosParaProx = proxP ? proxP.min - _focoCiclos : 0;
   document.getElementById('celeb-sub').innerHTML =
-    `VocÃª completou <strong style="color:#60A5FA">${_focoCiclos}</strong> ciclo(s) no total.<br>` +
+    `Você completou <strong style="color:#60A5FA">${_focoCiclos}</strong> ciclo(s) no total.<br>` +
     (proxP
-      ? `${ciclosParaProx} ciclo(s) para alcanÃ§ar ${proxP.emoji} ${proxP.nome}!`
-      : 'ðŸŒŒ VocÃª conquistou a galÃ¡xia!');
+      ? `${ciclosParaProx} ciclo(s) para alcançar ${proxP.emoji} ${proxP.nome}!`
+      : '🌌 Você conquistou a galáxia!');
   document.getElementById('celeb-planeta').textContent =
-    proxP ? `PrÃ³ximo destino: ${proxP.emoji} ${proxP.nome}` : 'ðŸ† MissÃ£o completa!';
+    proxP ? `Próximo destino: ${proxP.emoji} ${proxP.nome}` : '🏆 Missão completa!';
   el.classList.add('show');
   _dispararConfetti();
 }
@@ -2596,7 +2596,7 @@ function _atualizarNaveCenter() {
     let W = canvas.width  = Math.min(430, window.innerWidth);
     let H = canvas.height = window.innerHeight;
 
-    // â”€â”€ Stars â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Stars ──────────────────────────────────────────────
     const stars = Array.from({length: 140}, () => ({
       x: Math.random() * W, y: Math.random() * H,
       r: Math.random() * 1.4 + 0.2,
@@ -2605,7 +2605,7 @@ function _atualizarNaveCenter() {
       phase: Math.random() * Math.PI * 2
     }));
 
-    // â”€â”€ Rocket state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Rocket state ───────────────────────────────────────
     const rocket = {
       x: W / 2,
       y: H + 80,       // starts off-screen bottom
@@ -2617,7 +2617,7 @@ function _atualizarNaveCenter() {
       orbitR: 48,
     };
 
-    // â”€â”€ Planet state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Planet state ───────────────────────────────────────
     const planetObj = {
       x: W / 2,
       y: -120,         // starts off-screen top
@@ -2656,16 +2656,16 @@ function _atualizarNaveCenter() {
       { color:'#9CA3AF', ringColor:'#D1D5DB', hasRing:false, glowColor:'rgba(156,163,175,0.35)', craterColor:'rgba(0,0,0,0.18)'  }, // Lua
       { color:'#B91C1C', ringColor:'#EF4444', hasRing:false, glowColor:'rgba(185,28,28,0.4)',    craterColor:'rgba(0,0,0,0.2)'   }, // Marte
       { color:'#78716C', ringColor:'#A8A29E', hasRing:false, glowColor:'rgba(120,113,108,0.35)', craterColor:'rgba(0,0,0,0.22)'  }, // Asteroide
-      { color:'#92400E', ringColor:'#D97706', hasRing:false, glowColor:'rgba(146,64,14,0.4)',    craterColor:'rgba(0,0,0,0.15)'  }, // JÃºpiter
+      { color:'#92400E', ringColor:'#D97706', hasRing:false, glowColor:'rgba(146,64,14,0.4)',    craterColor:'rgba(0,0,0,0.15)'  }, // Júpiter
       { color:'#92400E', ringColor:'#FCD34D', hasRing:true,  glowColor:'rgba(251,191,36,0.35)',  craterColor:'rgba(0,0,0,0.12)'  }, // Saturno
       { color:'#0E7490', ringColor:'#22D3EE', hasRing:true,  glowColor:'rgba(14,116,144,0.4)',   craterColor:'rgba(0,0,0,0.15)'  }, // Urano
-      { color:'#4C1D95', ringColor:'#8B5CF6', hasRing:false, glowColor:'rgba(76,29,149,0.45)',   craterColor:'rgba(0,0,0,0.1)'   }, // GalÃ¡xia
+      { color:'#4C1D95', ringColor:'#8B5CF6', hasRing:false, glowColor:'rgba(76,29,149,0.45)',   craterColor:'rgba(0,0,0,0.1)'   }, // Galáxia
     ];
 
     let currentPlanetIdx = 0;
     let frame = 0;
-    let launchProgress = 0;  // 0â†’1 during travel
-    let arrivalAnim    = 0;  // 0â†’1 celebration
+    let launchProgress = 0;  // 0→1 during travel
+    let arrivalAnim    = 0;  // 0→1 celebration
 
     function getPlanetDef() {
       // sync with _focoCiclos
@@ -2685,7 +2685,7 @@ function _atualizarNaveCenter() {
       planetObj.glowColor  = def.glowColor;
     }
 
-    // â”€â”€ Draw helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Draw helpers ───────────────────────────────────────
     function drawPlanet(px, py, pr, def, alpha) {
       ctx.save();
       ctx.globalAlpha = alpha;
@@ -2880,7 +2880,7 @@ function _atualizarNaveCenter() {
       return `rgb(${r},${g},${b})`;
     }
 
-    // â”€â”€ Animation state machine â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Animation state machine ────────────────────────────
     let lastPhase = 'idle';
 
     function observeTimerState() {
@@ -2917,7 +2917,7 @@ function _atualizarNaveCenter() {
       }
     }
 
-    // â”€â”€ Main loop â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Main loop ──────────────────────────────────────────
     function tick() {
       ctx.clearRect(0, 0, W, H);
       frame++;
@@ -2925,7 +2925,7 @@ function _atualizarNaveCenter() {
       const running = window.state && window.state.pom && window.state.pom.rodando;
       const fase    = window.state && window.state.pom && window.state.pom.fase;
 
-      // â”€â”€ Stars â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // ── Stars ──────────────────────────────────────────
       const starSpeed = running && fase === 'foco' ? 1 : (running ? 0.4 : 0.1);
       stars.forEach(s => {
         const pulse = running
@@ -2939,16 +2939,16 @@ function _atualizarNaveCenter() {
         if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
       });
 
-      // â”€â”€ Sync state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // ── Sync state ─────────────────────────────────────
       if (running !== (lastPhase !== 'idle' && lastPhase !== 'pause')) {
         syncRocketPhase();
       }
       lastPhase = rocket.phase;
 
-      // â”€â”€ Planet visibility â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // ── Planet visibility ──────────────────────────────
       const { idx: pidx, def: pdef } = getPlanetDef();
       if (pidx !== currentPlanetIdx) {
-        // Planet changed â€” trigger transition
+        // Planet changed — trigger transition
         currentPlanetIdx = pidx;
         applyPlanetDef(pdef);
         planetObj.y      = -120;
@@ -2971,7 +2971,7 @@ function _atualizarNaveCenter() {
         }
       }
 
-      // â”€â”€ Rocket physics â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // ── Rocket physics ─────────────────────────────────
       switch (rocket.phase) {
 
         case 'idle':
@@ -3014,7 +3014,7 @@ function _atualizarNaveCenter() {
             travelPct   = Math.max(0, Math.min(1, 1 - (rem / total)));
           }
 
-          // Y: from H*0.5 â†’ H*0.35
+          // Y: from H*0.5 → H*0.35
           rocket.y = H * 0.5 - travelPct * (H * 0.5 - H * 0.35);
           rocket.x = W/2 + Math.sin(frame * 0.018) * 14;
           rocket.angle = Math.cos(frame * 0.018) * 0.1;
@@ -3111,7 +3111,7 @@ function _atualizarNaveCenter() {
         }
       }
 
-      // â”€â”€ Particles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // ── Particles ──────────────────────────────────────
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.x += p.vx; p.y += p.vy;
@@ -3145,7 +3145,7 @@ function _atualizarNaveCenter() {
 })();
 
 // =============================================
-// HOOKS: ciclo completo + sessÃ£o completa
+// HOOKS: ciclo completo + sessão completa
 // =============================================
 window.addEventListener('load', function() {
   renderFocoXP();
@@ -3171,9 +3171,9 @@ window.addEventListener('load', function() {
     setTimeout(_atualizarNaveCenter, 80);
   };
 
-  // Hook na funÃ§Ã£o que Ã© chamada quando sessÃ£o completa
+  // Hook na função que é chamada quando sessão completa
   // O app original usa: state.pom.sessoes++ e depois salvar()
-  // Vamos observar mudanÃ§a no elemento cav-sessoes via MutationObserver
+  // Vamos observar mudança no elemento cav-sessoes via MutationObserver
   const elSessoes = document.getElementById('cav-sessoes');
   if (elSessoes) {
     let lastSessoes = parseInt(elSessoes.textContent || '0');
@@ -3215,28 +3215,28 @@ window.addEventListener('load', function() {
 
 <div class="apelido-overlay" id="apelido-overlay">
   <div class="apelido-box">
-    <div class="apelido-logo">ðŸ§ </div>
+    <div class="apelido-logo">🧠</div>
     <div class="apelido-titulo">Bem-vindo ao TDAH Care</div>
-    <div class="apelido-sub">Preencha as informaÃ§Ãµes abaixo para comeÃ§ar.</div>
+    <div class="apelido-sub">Preencha as informações abaixo para começar.</div>
     <input class="apelido-input" id="apelido-input" type="text" placeholder="Seu nome ou apelido..." maxlength="30" onkeydown="if(event.key==='Enter')salvarApelido()">
-    <span class="apelido-select-label">ðŸ‘©â€âš•ï¸ Seu profissional de saÃºde</span>
+    <span class="apelido-select-label">👩‍⚕️ Seu profissional de saúde</span>
     <select class="apelido-select" id="apelido-psico-sel">
       <option value="" disabled selected>Selecione...</option>
       <option value="dra_raiza">Dra. Raiza Oliveira</option>
       <option value="dr_gabriel">Dr. Gabriel Gomes</option>
       <option value="dra_caroline">Dra. Caroline Guerra</option>
     </select>
-    <button class="apelido-btn" onclick="salvarApelido()" style="margin-top:16px;">Entrar ðŸš€</button>
+    <button class="apelido-btn" onclick="salvarApelido()" style="margin-top:16px;">Entrar 🚀</button>
   </div>
 </div>
 
 <div class="admin-overlay" id="admin-overlay">
   <div class="admin-header">
-    <div class="admin-titulo">ðŸ” Painel Admin</div>
-    <button class="admin-close" onclick="fecharAdmin()">âœ• Fechar</button>
+    <div class="admin-titulo">🔐 Painel Admin</div>
+    <button class="admin-close" onclick="fecharAdmin()">✕ Fechar</button>
   </div>
   <div id="admin-senha-wrap" style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(21,101,192,0.1);">
-    <div style="font-size:0.9rem;font-weight:700;color:#1565C0;margin-bottom:12px;">ðŸ”‘ Senha de acesso</div>
+    <div style="font-size:0.9rem;font-weight:700;color:#1565C0;margin-bottom:12px;">🔑 Senha de acesso</div>
     <input id="admin-senha-input" type="password" placeholder="Digite a senha..."
       style="width:100%;border:2px solid #90CAF9;border-radius:10px;padding:10px 14px;font-size:0.95rem;outline:none;box-sizing:border-box;margin-bottom:10px;"
       onkeydown="if(event.key==='Enter')verificarSenhaAdmin()">
@@ -3250,7 +3250,3 @@ window.addEventListener('load', function() {
 
 </body>
 </html>
-
-
-
-
