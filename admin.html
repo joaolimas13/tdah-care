@@ -453,7 +453,7 @@ details[open] .chevron{transform:rotate(180deg);}
                 const dados = documento.data();
                 const id = documento.id;
                 // Filtrar por psicóloga: se URL tem ?key=, só mostra pacientes daquela profissional
-                if (_URL_KEY && dados.psicologa !== _URL_KEY) return;
+                if (_URL_KEY && dados.psicologa && dados.psicologa !== _URL_KEY) return;
                 dadosGlobais.push({ id, ...dados });
                 qtdPacientes++;
                 totalScore += Number(dados.score) || 0;
