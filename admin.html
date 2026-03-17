@@ -728,7 +728,7 @@ if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
 
                 querySnapshot.forEach((documento) => {
                     const dados = documento.data();
-                    if (_URL_KEY && dados.psicologa && dados.psicologa !== _URL_KEY) return;
+                    if (_URL_KEY && dados.psicologa !== _URL_KEY) return;
                     const idDoDocumento = documento.id; 
                     
                     dadosGlobais.push({ id: idDoDocumento, ...dados }); 
