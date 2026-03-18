@@ -1470,9 +1470,26 @@ textarea { resize: none; height: 80px; }
 </div>
 
 <!-- Away Toast -->
-<div id="away-toast" id="away-toast"></div>
+<div id="away-toast"></div>
+
+<!-- LEVEL UP OVERLAY -->
+<div class="n-lu-overlay" id="n-lu-overlay">
+  <div class="n-lu-box">
+    <span class="n-lu-emoji" id="n-lu-emoji">🧬</span>
+    <div class="n-lu-title">NOVA SINAPSE FORMADA</div>
+    <div class="n-lu-level" id="n-lu-level">2</div>
+    <div class="n-lu-name"  id="n-lu-name">Axônio Ativo</div>
+    <div class="n-lu-xp"   id="n-lu-xp">+50 XP</div>
+    <div class="n-lu-desc" id="n-lu-desc">Seu neurônio cresceu!</div>
+    <button class="n-lu-btn" onclick="nFecharLU()">CONTINUAR 🚀</button>
+  </div>
+</div>
+
+<div class="n-toast" id="n-toast"></div>
 
 <script>
+(function() {
+
 // ═══════════════════════════════════════════════
 // CONSTANTS & CONFIG
 // ═══════════════════════════════════════════════
@@ -2354,19 +2371,9 @@ document.getElementById('lbl-pausa').textContent = (S.pausaSeg/60) + 'min';
 document.getElementById('lbl-longa').textContent = (S.longaSeg/60) + 'min';
 
 renderAll();
+
+})();
 </script>
-
-
-<div class="celebracao-overlay" id="celebracao-overlay">
-  <div class="celebracao-box">
-    <span class="celebracao-emoji" id="celeb-emoji">🎉</span>
-    <div class="celebracao-titulo">Ciclo Completo! 🚀</div>
-    <div class="celebracao-xp" id="celeb-xp">+50 XP</div>
-    <div class="celebracao-sub" id="celeb-sub">Você completou mais um ciclo de foco!</div>
-    <div class="celebracao-prox-planeta" id="celeb-planeta"></div>
-    <button class="celebracao-btn" onclick="fecharCelebracao()">Continuar Missão 🚀</button>
-  </div>
-</div>
 
 <div class="page" id="page-info">
   <div class="section-title">📚 Informações</div>
