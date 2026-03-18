@@ -1472,20 +1472,6 @@ textarea { resize: none; height: 80px; }
 <!-- Away Toast -->
 <div id="away-toast"></div>
 
-<!-- LEVEL UP OVERLAY -->
-<div class="n-lu-overlay" id="n-lu-overlay">
-  <div class="n-lu-box">
-    <span class="n-lu-emoji" id="n-lu-emoji">🧬</span>
-    <div class="n-lu-title">NOVA SINAPSE FORMADA</div>
-    <div class="n-lu-level" id="n-lu-level">2</div>
-    <div class="n-lu-name"  id="n-lu-name">Axônio Ativo</div>
-    <div class="n-lu-xp"   id="n-lu-xp">+50 XP</div>
-    <div class="n-lu-desc" id="n-lu-desc">Seu neurônio cresceu!</div>
-    <button class="n-lu-btn" onclick="nFecharLU()">CONTINUAR 🚀</button>
-  </div>
-</div>
-
-<div class="n-toast" id="n-toast"></div>
 
 <script>
 (function() {
@@ -1999,6 +1985,10 @@ window.addEventListener('scroll', () => {
     requestAnimationFrame(draw);
   }
   draw();
+
+// Expor funções no escopo global
+window.focoToggle = focoToggle;
+window.fecharCeleb = fecharCeleb;
 })();
 
 // ═══════════════════════════════════════════════
@@ -2371,43 +2361,6 @@ document.getElementById('lbl-pausa').textContent = (S.pausaSeg/60) + 'min';
 document.getElementById('lbl-longa').textContent = (S.longaSeg/60) + 'min';
 
 renderAll();
-
-// ── WRAPPERS GLOBAIS ──
-window.focoToggle    = focoToggle;
-window.focoReset     = function() {
-  if(S.rodando) focoToggle();
-  S.fase='foco'; S.seg=S.focoSeg; S.sessNoCiclo=0;
-  saveState(); renderAll();
-};
-window.focoSkip      = concluirFase;
-window.fecharCeleb   = function() {
-  document.getElementById('celeb-overlay').classList.remove('show');
-};
-window.fecharLevelUp = function() {
-  document.getElementById('levelup-overlay').classList.remove('show');
-};
-window.toggleCfg = function() {
-  document.getElementById('cfg-body').classList.toggle('open');
-  document.getElementById('cfg-arrow').classList.toggle('open');
-};
-window.slLbl = function(el, id, unit) {
-  document.getElementById(id).textContent = el.value + unit;
-};
-window.focoAplicarCfg = function() {
-  S.focoSeg  = parseInt(document.getElementById('sl-foco').value)*60;
-  S.pausaSeg = parseInt(document.getElementById('sl-pausa').value)*60;
-  S.longaSeg = parseInt(document.getElementById('sl-longa').value)*60;
-  S.seg = S.focoSeg;
-  saveState(); renderAll();
-};
-window.focoAddSessao = function() {
-  S.sessoes = Math.min((S.sessoes||0)+1, 8);
-  saveState(); renderAll();
-};
-window.focoRemSessao = function() {
-  S.sessoes = Math.max((S.sessoes||0)-1, 0);
-  saveState(); renderAll();
-};
 
 })();
 </script>
