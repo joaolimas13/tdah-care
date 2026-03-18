@@ -3085,12 +3085,28 @@ function atualizarUIPom(){
   renderPom();
 }
 function renderPom(){
-  const p=state.pom;document.getElementById('cav-sessoes').textContent=p.sessoes;
-  const min=p.minFoco;document.getElementById('cav-foco-total').textContent=min>=60?Math.floor(min/60)+'h'+(min%60>0?min%60+'m':''):min+'min';
-  document.getElementById('cav-ciclos').textContent=p.ciclos;
-  let html='';for(let i=0;i<SESS_CICLO;i++){if(i<p.sessNoCiclo)html+=`<div class="foco-dot completo">✓</div>`;else if(i===p.sessNoCiclo&&p.fase==='foco'&&p.rodando)html+=`<div class="foco-dot atual">${i+1}</div>`;else html+=`<div class="foco-dot">${i+1}</div>`;}
-  document.getElementById('session-dots').innerHTML=html;
+  const p=state.pom;
+  const elS = document.getElementById('cav-sessoes');
+  const elT = document.getElementById('cav-foco-total');
+  const elC = document.getElementById('cav-ciclos');
+  const elD = document.getElementById('session-dots');
+  if(elS) elS.textContent=p.sessoes;
+  if(elC) elC.textContent=p.ciclos;
+  if(elT){
+    const min=p.minFoco;
+    elT.textContent=min>=60?Math.floor(min/60)+'h'+(min%60>0?' '+min%60+'min':''):min+'min';
+  }
+  if(elD){
+    let html='';
+    for(let i=0;i<SESS_CICLO;i++){
+      if(i<p.sessNoCiclo)html+=`<div class="foco-dot completo">✓</div>`;
+      else if(i===p.sessNoCiclo)html+=`<div class="foco-dot atual"></div>`;
+      else html+=`<div class="foco-dot"></div>`;
+    }
+    elD.innerHTML=html;
+  }
 }
+
 function playBeep(){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=440;g.gain.setValueAtTime(0.3,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.6);o.start(ctx.currentTime);o.stop(ctx.currentTime+0.6);}catch(e){}}
 function abrirRelatorio(){
   const now=new Date();document.getElementById('relatorio-date').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
