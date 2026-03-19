@@ -2887,6 +2887,25 @@ function init() {
   if(telInput && telSalvo) telInput.value = telSalvo;
 }
 function navigate(p,btn) {
+  // Checa se o pomodoro (antigo) OU o Modo Foco Neural (novo) estão rodando
+  const pomRodando = state && state.pom && state.pom.rodando;
+  const focoRodando = window.S && window.S.rodando && window.S.fase === 'foco';
+
+  if ((pomRodando || focoRodando) && p !== 'caverna') {
+    const msgs = [
+      'Seu neurônio está em pleno foco agora! 🧠\nSair vai interromper sua sessão. Tem certeza?',
+      'Ei! Você está no meio de uma sessão de foco. ⚡\nCada minuto conta para construir sua mielina. Continua?',
+      'O modo foco está ativo! 🚀\nInterromper agora vai quebrar seu momentum. Fica mais um pouco!',
+    ];
+    const msg = msgs[Math.floor(Math.random() * msgs.length)];
+    const confirmou = confirm(msg);
+    if (!confirmou) return;
+
+    // Se confirmou sair, pausa o timer que estiver rodando
+    if (pomRodando && typeof pausarPom === 'function') pausarPom();
+    if (focoRodando && typeof focoPausar === 'function') focoPausar();
+  }
+
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active'); btn.classList.add('active');
