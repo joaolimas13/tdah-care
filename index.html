@@ -1480,7 +1480,7 @@ textarea { resize: none; height: 80px; }
 // CONSTANTS & CONFIG
 // ═══════════════════════════════════════════════
 const SESS_PER_CYCLE = 4;
-const CIRC = 2 * Math.PI * 90;
+const CIRC_FOCO = 2 * Math.PI * 90;
 const TODAY_KEY = () => {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -1616,7 +1616,7 @@ function renderXP() {
 function renderTimer() {
   const total = S.fase === 'foco' ? S.focoSeg : S.fase === 'pausa_longa' ? S.longaSeg : S.pausaSeg;
   const prog = Math.max(0, Math.min(1, (total - S.seg) / total));
-  const off = CIRC * (1 - prog);
+  const off = CIRC_FOCO * (1 - prog);
   const ring = document.getElementById('ring-fill');
   ring.style.strokeDashoffset = off;
   ring.style.stroke = S.fase === 'foco' ? '#4FC3F7' : S.fase === 'pausa_longa' ? '#FFD54F' : '#69F0AE';
@@ -1711,11 +1711,11 @@ function focoPausar() {
 
 function tick() {
   S.seg--;
-  if (S.seg <= 0) { concluirFase(); return; }
+  if (S.seg <= 0) { concluirFaseFoco(); return; }
   renderTimer(); renderStatus();
 }
 
-function concluirFase() {
+function concluirFaseFoco() {
   clearInterval(_timer); S.rodando = false; S.tsStart = null;
   playBeep();
   if (S.fase === 'foco') {
@@ -1892,7 +1892,7 @@ document.addEventListener('visibilitychange', () => {
         const mins = Math.floor(elapsed / 60), secs = elapsed % 60;
         showAwayToast(`📱 Tela apagada por ${mins > 0 ? mins+'min ' : ''}${secs}s — timer atualizado`);
       }
-      if (S.seg <= 0) { concluirFase(); }
+      if (S.seg <= 0) { concluirFaseFoco(); }
       else renderTimer();
     }
     // Away from focus warning
@@ -2786,6 +2786,7 @@ function proximoPasso() {
 }
 
 function toggleTimerPasso() {
+  clearInterval(timerPasso);
   const playBtn = document.getElementById('passo-play-btn');
   
   if (playBtn.classList.contains('tocando')) {
@@ -2862,6 +2863,7 @@ function carregar() {
 function carregarDia(dateISO) {
   state.currentDate=dateISO; const data=state.dailyData[dateISO]||{};
   state.sono=data.sono||[]; state.remedio=data.remedio||null;
+  if(state.remedio&&state.remedio.horaRegistro){state.remedio.horaRegistro=new Date(state.remedio.horaRegistro);}
   state.metas=data.metas||[]; state.celular=data.celular||null; state.leitura=data.leitura||null;
   state.pom={rodando:false,fase:'foco',seg:POM_FOCO,timer:null,sessoes:data.pom?data.pom.sessoes:0,ciclos:data.pom?data.pom.ciclos:0,sessNoCiclo:data.pom?data.pom.sessNoCiclo:0,minFoco:data.pom?data.pom.minFoco:0,data:dateISO};
   state.copos=data.copos||0;
@@ -3405,7 +3407,12 @@ function atualizarStatsBackup() {
   if(lastBackup){const d=new Date(lastBackup);const diff=Math.floor((Date.now()-d)/86400000);const txt=diff===0?'hoje':diff===1?'ontem':'há '+diff+' dias';lbEl.className='backup-last-info'+(diff>7?' warn':'');lbEl.textContent=(diff>7?'⚠️':'✅')+' Último backup: '+txt+' ('+d.toLocaleDateString('pt-BR')+')';}
   else{lbEl.className='backup-last-info none';lbEl.textContent='📁 Nenhum backup exportado ainda';}
 }
-function gerarBackupJSON() { return JSON.stringify({version:'1.0',app:'TDAH Care',exportDate:new Date().toISOString(),data:{dailyData:state.dailyData,metasHist:state.metasHist,metasFixas:state.metasFixas}},null,2); }
+function gerarBackupJSON() {
+  let _focoNeural={}; try{_focoNeural=JSON.parse(localStorage.getItem('focostatev2')||'{}');}catch(e){}
+  let _hidrat={}; try{_hidrat=JSON.parse(localStorage.getItem('tdahhidratcfg')||'{}');}catch(e){}
+  return JSON.stringify({version:'2.0',app:'TDAH Care',exportDate:new Date().toISOString(),
+    data:{dailyData:state.dailyData,metasHist:state.metasHist,metasFixas:state.metasFixas},
+    hidratConfig:_hidrat,focoNeural:_focoNeural},null,2); }
 function exportarJSON() {
   const json=gerarBackupJSON();const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');
   const date=new Date().toISOString().split('T')[0];a.href=url;a.download='tdah-care-backup-'+date+'.json';a.click();URL.revokeObjectURL(url);
@@ -3481,6 +3488,7 @@ function calcularDadosSemana() {
     const allM=[...(dd.metas||[]),...(dd.metasFixas||[])];
     if (allM.length>0) { metasConcl+=allM.filter(m=>m.done).length; metasTotal+=allM.length; }
     if (dd.pom&&dd.pom.minFoco>0) focoTotal+=dd.pom.minFoco;
+    if (i===0) { try { const _fs=JSON.parse(localStorage.getItem('focostatev2')||'{}'); if(_fs.minFocoHoje>0) focoTotal+=_fs.minFocoHoje; } catch(e){} }
     if (dd.celular) { celTotal+=dd.celular.horas*60+dd.celular.minutos; celN++; }
     if (dd.remedio) remedioN++;
     if (dd.reativarFoco) reativarN+=dd.reativarFoco.length;
