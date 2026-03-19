@@ -38,7 +38,10 @@ function abrirModalIncentivo(callbackSair) {
 
   document.getElementById('fsi-btn-sair-confirm').onclick = function() {
     document.getElementById('foco-sair-modal').classList.remove('show');
-    if (_fsiCallbackSair) _fsiCallbackSair();
+    if (_fsiCallbackSair) {
+      _fsiCallbackSair();
+    }
+    // Se callback null (veio do visibilitychange), apenas fecha — usuário já saiu
     _fsiCallbackSair = null;
   };
 
@@ -1949,22 +1952,35 @@ function showAwayToast(msg) {
 // ═══════════════════════════════════════════════
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
+    // Usuário minimizou / saiu da tela
     if (S.rodando) S.tsStart = Date.now();
+    // Mostrar modal de incentivo se estiver em sessão de foco
+    if (S.rodando && S.fase === 'foco') {
+      // Pequeno delay para garantir que a UI está visível quando voltar
+      setTimeout(() => {
+        if (typeof abrirModalIncentivo === 'function') {
+          abrirModalIncentivo(null); // null = sem ação ao "sair mesmo assim" (já saiu)
+        }
+      }, 300);
+    }
   } else {
+    // Usuário voltou para o app
+    // Fechar modal se estiver aberto (voltou sem precisar da mensagem)
+    const modalEl = document.getElementById('foco-sair-modal');
+    if (modalEl && modalEl.classList.contains('show')) {
+      modalEl.classList.remove('show');
+    }
     if (S.rodando && S.tsStart) {
       const elapsed = Math.floor((Date.now() - S.tsStart) / 1000);
       S.tsStart = Date.now();
       S.seg = Math.max(0, S.seg - elapsed);
-      if (elapsed > 30) {
+      if (elapsed > 5) {
         const mins = Math.floor(elapsed / 60), secs = elapsed % 60;
-        showAwayToast(`📱 Tela apagada por ${mins > 0 ? mins+'min ' : ''}${secs}s — timer atualizado`);
+        const tempoFora = mins > 0 ? mins+'min '+secs+'s' : secs+'s';
+        showAwayToast(`👋 Bem-vindo de volta! Fora por ${tempoFora} — vamos continuar!`);
       }
       if (S.seg <= 0) { concluirFaseFoco(); }
       else renderTimer();
-    }
-    // Away from focus warning
-    if (S.rodando && S.fase === 'foco' && elapsed > 5) {
-      // Already shown above
     }
   }
 });
