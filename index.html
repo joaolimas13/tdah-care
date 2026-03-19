@@ -1952,35 +1952,29 @@ function showAwayToast(msg) {
 // ═══════════════════════════════════════════════
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    // Usuário minimizou / saiu da tela
+    // Usuário saiu / minimizou
     if (S.rodando) S.tsStart = Date.now();
-    // Mostrar modal de incentivo se estiver em sessão de foco
-    if (S.rodando && S.fase === 'foco') {
-      // Pequeno delay para garantir que a UI está visível quando voltar
-      setTimeout(() => {
-        if (typeof abrirModalIncentivo === 'function') {
-          abrirModalIncentivo(null); // null = sem ação ao "sair mesmo assim" (já saiu)
-        }
-      }, 300);
-    }
+    // Marcar se saiu durante sessão de foco ativa
+    window._foiMinimizadoEmFoco = (S.rodando && S.fase === 'foco');
   } else {
-    // Usuário voltou para o app
-    // Fechar modal se estiver aberto (voltou sem precisar da mensagem)
-    const modalEl = document.getElementById('foco-sair-modal');
-    if (modalEl && modalEl.classList.contains('show')) {
-      modalEl.classList.remove('show');
-    }
+    // Usuário VOLTOU para o app
     if (S.rodando && S.tsStart) {
       const elapsed = Math.floor((Date.now() - S.tsStart) / 1000);
       S.tsStart = Date.now();
       S.seg = Math.max(0, S.seg - elapsed);
-      if (elapsed > 5) {
-        const mins = Math.floor(elapsed / 60), secs = elapsed % 60;
-        const tempoFora = mins > 0 ? mins+'min '+secs+'s' : secs+'s';
-        showAwayToast(`👋 Bem-vindo de volta! Fora por ${tempoFora} — vamos continuar!`);
-      }
       if (S.seg <= 0) { concluirFaseFoco(); }
       else renderTimer();
+    }
+    // Se saiu durante foco ativo, mostrar modal de incentivo ao voltar
+    if (window._foiMinimizadoEmFoco && S.rodando && S.fase === 'foco') {
+      window._foiMinimizadoEmFoco = false;
+      setTimeout(() => {
+        if (typeof abrirModalIncentivo === 'function') {
+          abrirModalIncentivo(null);
+        }
+      }, 200);
+    } else {
+      window._foiMinimizadoEmFoco = false;
     }
   }
 });
@@ -2947,7 +2941,6 @@ function carregarDia(dateISO) {
   state.currentDate=dateISO; const data=state.dailyData[dateISO]||{};
   state.sono=data.sono||[]; state.remedio=data.remedio||null;
   if(state.remedio&&state.remedio.horaRegistro){state.remedio.horaRegistro=new Date(state.remedio.horaRegistro);}
-  if(state.remedio&&state.remedio.horaRegistro){state.remedio.horaRegistro=new Date(state.remedio.horaRegistro);}
   state.metas=data.metas||[]; state.celular=data.celular||null; state.leitura=data.leitura||null;
   state.pom={rodando:false,fase:'foco',seg:POM_FOCO,timer:null,sessoes:data.pom?data.pom.sessoes:0,ciclos:data.pom?data.pom.ciclos:0,sessNoCiclo:data.pom?data.pom.sessNoCiclo:0,minFoco:data.pom?data.pom.minFoco:0,data:dateISO};
   state.copos=data.copos||0;
@@ -2956,12 +2949,28 @@ function carregarDia(dateISO) {
   renderUI();
 }
 function renderUI() {
-  const now=new Date();
-  document.getElementById('header-date').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-  const h=now.getHours(); document.getElementById('greeting-text').textContent=h<12?'Bom dia! 👋':h<18?'Boa tarde! 👋':'Boa noite! 👋';
-  if(state.remedio){document.getElementById('remedio-sem-registro').style.display='none';document.getElementById('remedio-com-registro').style.display='block';atualizarBarra();}
-  else{document.getElementById('remedio-sem-registro').style.display='block';document.getElementById('remedio-com-registro').style.display='none';document.getElementById('remedio-badge').textContent='Não registrado';document.getElementById('remedio-badge').className='remedio-badge badge-inativo';document.getElementById('aviso-encerrado').classList.remove('show');document.getElementById('hora-remedio').value='';}
-  renderMetas(); renderHistSono(); renderHistMetas(); updateStats(); renderCelular(); renderLeitura(); renderPom(); renderHidrat(); renderStreak(); updateWidget();
+  try {
+    const now = new Date();
+    const elDate = document.getElementById('header-date');
+    if (elDate) elDate.textContent = now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+    const elGreet = document.getElementById('greeting-text');
+    if (elGreet) { const h=now.getHours(); elGreet.textContent=h<12?'Bom dia! 👋':h<18?'Boa tarde! 👋':'Boa noite! 👋'; }
+    if (state.remedio) {
+      const s1=document.getElementById('remedio-sem-registro'); if(s1) s1.style.display='none';
+      const s2=document.getElementById('remedio-com-registro'); if(s2) s2.style.display='block';
+      try { atualizarBarra(); } catch(e) {}
+    } else {
+      const s1=document.getElementById('remedio-sem-registro'); if(s1) s1.style.display='block';
+      const s2=document.getElementById('remedio-com-registro'); if(s2) s2.style.display='none';
+      const rb=document.getElementById('remedio-badge');
+      if(rb){ rb.textContent='Não registrado'; rb.className='remedio-badge badge-inativo'; }
+      const ae=document.getElementById('aviso-encerrado'); if(ae) ae.classList.remove('show');
+      const hr=document.getElementById('hora-remedio'); if(hr) hr.value='';
+    }
+  } catch(e) { console.warn('renderUI header erro:', e); }
+  [renderMetas, renderHistSono, renderHistMetas, updateStats, renderCelular,
+   renderLeitura, renderPom, renderHidrat, renderStreak, updateWidget
+  ].forEach(fn => { try { if(typeof fn==='function') fn(); } catch(e){ console.warn('renderUI:', fn.name, e); } });
 }
 function init() {
   carregar();
@@ -3928,13 +3937,30 @@ function testarWhatsAppPsicologa() {
 }
 
 // ========== INIT ==========
-init();
-carregarConfigPom();
-verificarApelido();
-verificarLembreteSexta();
-setTimeout(verificarLembreteBackup, 2000);
-renderHidrat(); 
-renderStreak();
+function _inicializarApp() {
+  init();
+  carregarConfigPom();
+  verificarApelido();
+  verificarLembreteSexta();
+  setTimeout(verificarLembreteBackup, 2000);
+  renderHidrat();
+  renderStreak();
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _inicializarApp);
+} else {
+  _inicializarApp();
+}
+
+// iOS Safari bfcache: página restaurada do cache não dispara DOMContentLoaded
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) {
+    try {
+      carregar();
+      carregarDia(state.currentDate || hojeISO());
+    } catch(err) { console.warn('pageshow reload:', err); }
+  }
+});
 </script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
