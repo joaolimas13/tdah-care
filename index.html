@@ -3545,23 +3545,29 @@ async function sincronizarComFirebase(dadosSemana) {
   const badge = document.getElementById('sync-status-badge');
   if (badge) { badge.className='sync-badge sync-sending'; badge.textContent='Sincronizando...'; badge.style.display='inline-flex'; }
   if (!window._fbReady || !window._sincronizarFirebase) {
-    if (badge) { badge.className='sync-badge sync-err'; badge.textContent='Sem conexao'; }
-    return;
+    if (badge) { badge.className='sync-badge sync-err'; badge.textContent='Sem conexão'; }
+    return false;
   }
   const ok = await window._sincronizarFirebase(apelido, {
-    score: dadosSemana.scoreGeral,
-    sonoMedia: dadosSemana.sonoMedia,
-    metasPct: dadosSemana.metasPct,
-    focoTotal: dadosSemana.focoTotal,
-    diasDados: dadosSemana.diasDados,
-    periodo: dadosSemana.periodo,
-    dailyData: state.dailyData, // ENVIANDO O HISTÓRICO REAL PARA O FIREBASE
-    psicologa: getPsicologa()
+    score:       dadosSemana.scoreGeral,
+    sonoMedia:   dadosSemana.sonoMedia,
+    metasPct:    dadosSemana.metasPct,
+    focoTotal:   dadosSemana.focoTotal,
+    diasDados:   dadosSemana.diasDados,
+    periodo:     dadosSemana.periodo,
+    dailyData:   state.dailyData,
+    psicologa:   getPsicologa(),
+    focoXP:      typeof _focoXP      !== 'undefined' ? _focoXP      : 0,
+    focoNivel:   typeof _getNivel    === 'function'  ? _getNivel().n : 1,
+    focoCiclos:  typeof _focoCiclos  !== 'undefined' ? _focoCiclos  : 0,
+    focoSessoes: typeof _focoSessoes !== 'undefined' ? _focoSessoes : 0,
+    focoBadges:  typeof _focoBadges  !== 'undefined' ? _focoBadges  : []
   });
   if (badge) {
     badge.className = 'sync-badge ' + (ok ? 'sync-ok' : 'sync-err');
-    badge.textContent = ok ? 'Enviado!' : 'Falha no envio';
+    badge.textContent = ok ? '☁️ Sincronizado!' : 'Falha no envio';
   }
+  return ok;
 }
 
 // ========== SALVAR DIÁRIO MANUAL ==========
@@ -3656,7 +3662,8 @@ function testarWhatsAppPsicologa() {
 }
 
 // ========== INIT ==========
-function _inicializarApp() {
+async function _inicializarApp() {
+  // 1. Inicia com dados locais imediatamente (app abre rápido)
   init();
   carregarConfigPom();
   verificarApelido();
@@ -3664,6 +3671,43 @@ function _inicializarApp() {
   setTimeout(verificarLembreteBackup, 2000);
   renderHidrat();
   renderStreak();
+
+  // 2. Em background, carrega do Firebase e mescla
+  try {
+    const dadosNuvem = await window._carregarDoFirebase();
+    if (dadosNuvem && dadosNuvem.dailyData && typeof dadosNuvem.dailyData === 'object') {
+      const localRaw   = localStorage.getItem('tdah_daily');
+      const localDaily = localRaw ? JSON.parse(localRaw) : {};
+      const keysNuvem  = Object.keys(dadosNuvem.dailyData).length;
+      const keysLocal  = Object.keys(localDaily).length;
+
+      if (keysNuvem > keysLocal) {
+        const merged = Object.assign({}, dadosNuvem.dailyData, localDaily);
+        state.dailyData = merged;
+        localStorage.setItem('tdah_daily', JSON.stringify(merged));
+        try { carregarDia(state.currentDate || hojeISO()); } catch(e) {}
+        try { renderStats(); } catch(e) {}
+        showToast('☁️ Dados sincronizados da nuvem!');
+      }
+
+      // Restaura dados do Modo Foco
+      if (dadosNuvem.focoXP && dadosNuvem.focoXP > (typeof _focoXP !== 'undefined' ? _focoXP : 0)) {
+        try {
+          _focoXP      = dadosNuvem.focoXP;
+          _focoCiclos  = dadosNuvem.focoCiclos  || (typeof _focoCiclos  !== 'undefined' ? _focoCiclos  : 0);
+          _focoSessoes = dadosNuvem.focoSessoes || (typeof _focoSessoes !== 'undefined' ? _focoSessoes : 0);
+          _focoBadges  = dadosNuvem.focoBadges  || (typeof _focoBadges  !== 'undefined' ? _focoBadges  : []);
+          localStorage.setItem('foco_xp',            String(_focoXP));
+          localStorage.setItem('foco_ciclos_totais', String(_focoCiclos));
+          localStorage.setItem('foco_sessoes',        String(_focoSessoes));
+          localStorage.setItem('foco_badges',         JSON.stringify(_focoBadges));
+          try { _renderXP(); } catch(e) {}
+        } catch(e) {}
+      }
+    }
+  } catch(e) {
+    console.warn('Erro ao carregar Firebase na inicialização:', e);
+  }
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', _inicializarApp);
@@ -3697,25 +3741,71 @@ firebase.initializeApp(_fbConfig);
 const _db = firebase.firestore();
 window._fbReady = true;
 
+// ── SALVAR no Firebase (banco principal) ─────────────────────────────────────
 window._sincronizarFirebase = async function(apelido, dados) {
   try {
     const userId = apelido.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    await _db.collection('usuarios').doc(userId).set({
-      apelido: apelido,
+    const payload = {
+      apelido:     apelido,
       ultimoEnvio: new Date().toISOString(),
-      score: dados.score || 0,
-      sonoMedia: dados.sonoMedia || null,
-      metasPct: dados.metasPct || null,
-      focoTotal: dados.focoTotal || 0,
-      diasDados: dados.diasDados || 0,
-      periodo: dados.periodo || '',
-      dailyData: dados.dailyData || {},
-      psicologa: dados.psicologa || ''
-    }, { merge: true });
+      score:       dados.score       || 0,
+      sonoMedia:   dados.sonoMedia   || null,
+      metasPct:    dados.metasPct    || null,
+      focoTotal:   dados.focoTotal   || 0,
+      diasDados:   dados.diasDados   || 0,
+      periodo:     dados.periodo     || '',
+      dailyData:   dados.dailyData   || {},
+      psicologa:   dados.psicologa   || '',
+      focoXP:      dados.focoXP      || 0,
+      focoNivel:   dados.focoNivel   || 1,
+      focoCiclos:  dados.focoCiclos  || 0,
+      focoSessoes: dados.focoSessoes || 0,
+      focoBadges:  dados.focoBadges  || []
+    };
+    await _db.collection('usuarios').doc(userId).set(payload, { merge: true });
+    // Cache local após sucesso (fallback offline)
+    try {
+      localStorage.setItem('tdah_firebase_cache', JSON.stringify({
+        ...payload,
+        _cacheTimestamp: new Date().toISOString()
+      }));
+    } catch(e) {}
     return true;
-  } catch(e) { console.error('Firebase error:', e); return false; }
+  } catch(e) {
+    console.error('Firebase sync error:', e);
+    return false;
+  }
 };
 
+// ── CARREGAR do Firebase (com fallback para cache offline) ───────────────────
+window._carregarDoFirebase = async function() {
+  const apelido = localStorage.getItem('tdah_apelido');
+  if (!apelido || !window._fbReady) return null;
+  try {
+    const userId = apelido.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const doc = await _db.collection('usuarios').doc(userId).get();
+    if (doc.exists) {
+      const data = doc.data();
+      try {
+        localStorage.setItem('tdah_firebase_cache', JSON.stringify({
+          ...data,
+          _cacheTimestamp: new Date().toISOString()
+        }));
+      } catch(e) {}
+      return data;
+    }
+    return null;
+  } catch(e) {
+    console.warn('Firebase offline, usando cache local:', e);
+    try {
+      const cache = localStorage.getItem('tdah_firebase_cache');
+      if (cache) return JSON.parse(cache);
+    } catch(e2) {}
+    return null;
+  }
+};
+
+// ── ADMIN ─────────────────────────────────────────────────────────────────────
 window._carregarUsuariosAdmin = async function() {
   try {
     const snap = await _db.collection('usuarios').orderBy('ultimoEnvio', 'desc').get();
@@ -3725,13 +3815,17 @@ window._carregarUsuariosAdmin = async function() {
   } catch(e) { console.error('Admin error:', e); return []; }
 };
 
+// ── VERIFICAR APELIDO ao carregar ─────────────────────────────────────────────
 window.addEventListener('load', function() {
   const apelido   = localStorage.getItem('tdah_apelido');
   const psicologa = localStorage.getItem('tdah_psicologa');
   if (!apelido || !psicologa) {
     const overlay = document.getElementById('apelido-overlay');
     if (overlay) overlay.classList.add('show');
-    if (apelido) { const inp = document.getElementById('apelido-input'); if (inp) inp.value = apelido; }
+    if (apelido) {
+      const inp = document.getElementById('apelido-input');
+      if (inp) inp.value = apelido;
+    }
   }
   if (window.location.hash === '#admin') setTimeout(abrirAdmin, 500);
 });
