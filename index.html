@@ -1141,6 +1141,29 @@ textarea { resize: none; height: 80px; }
 .fsi-btn-sair { width:100%; padding:11px; border:1px solid rgba(255,255,255,0.08); border-radius:14px; background:transparent; color:#4B5563; font-size:0.82rem; font-weight:600; cursor:pointer; transition:color 0.2s,border-color 0.2s; }
 .fsi-btn-sair:hover { color:#EF5350; border-color:rgba(239,83,80,0.3); }
 
+
+/* ── MODAL INSTALAR APP (A2HS) ── */
+.a2hs-modal { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.82); z-index:600; align-items:flex-end; justify-content:center; padding:0; }
+.a2hs-modal.show { display:flex; }
+.a2hs-box { background:linear-gradient(160deg,#0D0D2A,#12182E); border:1px solid rgba(96,165,250,0.3); border-radius:24px 24px 0 0; padding:28px 24px 32px; width:100%; max-width:430px; animation:slideUp 0.4s cubic-bezier(0.34,1.26,0.64,1); }
+.a2hs-header { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+.a2hs-icon { width:56px; height:56px; border-radius:14px; background:linear-gradient(135deg,#1565C0,#29B6F6); display:flex; align-items:center; justify-content:center; font-size:1.8rem; flex-shrink:0; box-shadow:0 4px 16px rgba(21,101,192,0.4); }
+.a2hs-header-text h3 { font-size:1rem; font-weight:800; color:#E0E0FF; margin-bottom:3px; }
+.a2hs-header-text p { font-size:0.78rem; color:#6B7280; }
+.a2hs-benefits { display:flex; flex-direction:column; gap:8px; margin-bottom:22px; }
+.a2hs-benefit { display:flex; align-items:center; gap:10px; font-size:0.82rem; color:#9CA3AF; }
+.a2hs-benefit span:first-child { font-size:1.1rem; }
+/* iOS steps */
+.a2hs-ios-steps { display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+.a2hs-step { display:flex; align-items:center; gap:12px; background:rgba(255,255,255,0.04); border-radius:12px; padding:10px 14px; }
+.a2hs-step .step-num { width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,#1565C0,#29B6F6); color:white; font-size:0.72rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.a2hs-step .step-txt { font-size:0.82rem; color:#D1D5DB; line-height:1.4; }
+.a2hs-step .step-txt b { color:#60A5FA; }
+.a2hs-btn-install { width:100%; padding:15px; border:none; border-radius:14px; background:linear-gradient(135deg,#1565C0,#29B6F6); color:white; font-size:1rem; font-weight:800; cursor:pointer; margin-bottom:10px; box-shadow:0 4px 20px rgba(21,101,192,0.4); transition:transform 0.15s; }
+.a2hs-btn-install:active { transform:scale(0.97); }
+.a2hs-btn-later { width:100%; padding:11px; border:1px solid rgba(255,255,255,0.08); border-radius:14px; background:transparent; color:#4B5563; font-size:0.82rem; font-weight:600; cursor:pointer; transition:color 0.2s; }
+.a2hs-btn-later:hover { color:#9CA3AF; }
+
 </style>
 </head>
 <body>
@@ -4577,6 +4600,93 @@ function fecharModalIncentivo() {
   _fsiCallbackSair = null;
 }
 
+
+// ═══════════════════════════════════════════════════════════
+// A2HS — Add to Home Screen
+// ═══════════════════════════════════════════════════════════
+(function initA2HS() {
+  const STORAGE_KEY = 'tdah_a2hs_shown';
+  let _deferredPrompt = null;
+
+  // Detectar iOS Safari
+  function isIOS() {
+    return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  }
+  function isInStandaloneMode() {
+    return ('standalone' in window.navigator && window.navigator.standalone) ||
+           window.matchMedia('(display-mode: standalone)').matches;
+  }
+
+  function mostrarModal(tipo) {
+    if (localStorage.getItem(STORAGE_KEY)) return; // já mostrou antes
+    if (isInStandaloneMode()) return; // já está instalado
+
+    const modal      = document.getElementById('a2hs-modal');
+    const iosBlock   = document.getElementById('a2hs-ios-block');
+    const droidBlock = document.getElementById('a2hs-android-block');
+    if (!modal) return;
+
+    if (tipo === 'ios') {
+      if (iosBlock)   iosBlock.style.display   = 'block';
+      if (droidBlock) droidBlock.style.display  = 'none';
+    } else {
+      if (iosBlock)   iosBlock.style.display   = 'none';
+      if (droidBlock) droidBlock.style.display  = 'block';
+    }
+
+    modal.classList.add('show');
+  }
+
+  function fecharA2HS() {
+    const modal = document.getElementById('a2hs-modal');
+    if (modal) modal.classList.remove('show');
+    localStorage.setItem(STORAGE_KEY, '1');
+  }
+
+  // Botão "Instalar agora" (Android)
+  document.addEventListener('DOMContentLoaded', function() {
+    const btnInstall = document.getElementById('a2hs-btn-install');
+    const btnLater   = document.getElementById('a2hs-btn-later');
+
+    if (btnInstall) {
+      btnInstall.addEventListener('click', async function() {
+        if (_deferredPrompt) {
+          _deferredPrompt.prompt();
+          const { outcome } = await _deferredPrompt.userChoice;
+          _deferredPrompt = null;
+          fecharA2HS();
+          if (outcome === 'accepted') showToast('🎉 App instalado na tela inicial!');
+        } else {
+          fecharA2HS();
+        }
+      });
+    }
+
+    if (btnLater) btnLater.addEventListener('click', fecharA2HS);
+
+    // iOS: mostrar após 2s na primeira visita
+    if (isIOS() && !isInStandaloneMode() && !localStorage.getItem(STORAGE_KEY)) {
+      setTimeout(() => mostrarModal('ios'), 2000);
+    }
+  });
+
+  // Android: capturar o evento do browser
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    _deferredPrompt = e;
+    // Mostrar após 2s na primeira visita
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      setTimeout(() => mostrarModal('android'), 2000);
+    }
+  });
+
+  // App foi instalado com sucesso
+  window.addEventListener('appinstalled', function() {
+    localStorage.setItem(STORAGE_KEY, '1');
+    showToast('🎉 TDAH Care adicionado à tela inicial!');
+  });
+})();
+
 </script>
 
 <div class="apelido-overlay" id="apelido-overlay">
@@ -4628,6 +4738,53 @@ function fecharModalIncentivo() {
     </div>
     <button class="fsi-btn-continuar" onclick="fecharModalIncentivo()">🔥 Continuar focando</button>
     <button class="fsi-btn-sair" id="fsi-btn-sair-confirm">Sair mesmo assim</button>
+  </div>
+</div>
+
+
+<!-- ═══ MODAL INSTALAR APP (A2HS) ═══ -->
+<div class="a2hs-modal" id="a2hs-modal">
+  <div class="a2hs-box">
+    <div class="a2hs-header">
+      <div class="a2hs-icon">🧠</div>
+      <div class="a2hs-header-text">
+        <h3>Adicionar à tela inicial</h3>
+        <p>Acesse o TDAH Care como um app</p>
+      </div>
+    </div>
+
+    <!-- Benefícios -->
+    <div class="a2hs-benefits">
+      <div class="a2hs-benefit"><span>⚡</span><span>Abre instantaneamente, sem browser</span></div>
+      <div class="a2hs-benefit"><span>📴</span><span>Funciona mesmo sem internet</span></div>
+      <div class="a2hs-benefit"><span>🔔</span><span>Tela cheia, sem barra de endereço</span></div>
+      <div class="a2hs-benefit"><span>📌</span><span>Ícone fixo na tela inicial do celular</span></div>
+    </div>
+
+    <!-- Botão Android (padrão) -->
+    <div id="a2hs-android-block">
+      <button class="a2hs-btn-install" id="a2hs-btn-install">📲 Instalar agora</button>
+    </div>
+
+    <!-- Instruções iOS (mostrado só no Safari/iOS) -->
+    <div id="a2hs-ios-block" style="display:none;">
+      <div class="a2hs-ios-steps">
+        <div class="a2hs-step">
+          <div class="step-num">1</div>
+          <div class="step-txt">Toque no ícone de <b>compartilhar</b> (□↑) na barra inferior do Safari</div>
+        </div>
+        <div class="a2hs-step">
+          <div class="step-num">2</div>
+          <div class="step-txt">Role para baixo e toque em <b>"Adicionar à Tela de Início"</b></div>
+        </div>
+        <div class="a2hs-step">
+          <div class="step-num">3</div>
+          <div class="step-txt">Toque em <b>"Adicionar"</b> no canto superior direito</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="a2hs-btn-later" id="a2hs-btn-later">Agora não</button>
   </div>
 </div>
 
