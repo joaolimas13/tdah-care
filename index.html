@@ -2,7 +2,55 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+// ═══════════════════════════════════════════════════════════
+// MODAL INCENTIVO — sair do Modo Foco Neural
+// ═══════════════════════════════════════════════════════════
+const FSI_FRASES = [
+  { emoji: '🧠', titulo: 'Seu neurônio está crescendo!', msg: 'A cada minuto de foco, bainha de mielina se forma ao redor dos seus axônios. Esse crescimento é permanente — não desperdice agora.' },
+  { emoji: '⚡', titulo: 'Você está no estado de fluxo!', msg: 'A dopamina está fluindo e o córtex pré-frontal está ativo. Interromper agora descarta todo esse preparo neuroquímico.' },
+  { emoji: '🔥', titulo: 'O momentum é seu!', msg: 'Iniciar uma sessão é a parte mais difícil. Você já passou por isso. Ficar mais 5 minutos vale mais do que recomeçar do zero.' },
+  { emoji: '🌌', titulo: 'Sinapses em ação!', msg: 'Neurônios que disparam juntos, se conectam. Cada sessão completa fortalece o circuito de foco — sair no meio enfraquece essa ligação.' },
+  { emoji: '💜', titulo: 'Você consegue!', msg: 'TDAH torna o início difícil, mas você já venceu essa barreira. Seu cérebro está cooperando agora — aproveite essa janela.' },
+  { emoji: '🚀', titulo: 'Não quebre a sequência!', msg: 'Consistência gera plasticidade. Cada sessão concluída sinaliza ao seu cérebro que foco é possível. Você está construindo uma nova identidade.' },
+  { emoji: '🎯', titulo: 'Tão perto do fim!', msg: 'Quanto mais perto do fim da sessão, mais resistência o cérebro cria — é fisiológico. Completar libera uma dose extra de dopamina.' },
+  { emoji: '🌱', titulo: 'Dendritos emergindo!', msg: 'Novos dendritos crescem durante sessões de foco sustentado. Seu cérebro está mudando de forma mensurável agora.' },
+  { emoji: '🏆', titulo: 'Você chegou até aqui!', msg: 'Já passou pelo mais difícil — a inércia foi vencida. Sair agora seria desperdiçar toda a energia que você já investiu nessa sessão.' },
+  { emoji: '✨', titulo: 'Modo foco ativo!', msg: 'O córtex pré-frontal leva minutos para atingir plena atividade. Você está no pico agora. Aproveite — é raro e valioso.' },
+];
+
+let _fsiCallbackSair = null;
+
+function abrirModalIncentivo(callbackSair) {
+  const frase = FSI_FRASES[Math.floor(Math.random() * FSI_FRASES.length)];
+  _fsiCallbackSair = callbackSair;
+
+  document.getElementById('fsi-emoji').textContent  = frase.emoji;
+  document.getElementById('fsi-titulo').textContent = frase.titulo;
+  document.getElementById('fsi-msg').textContent    = frase.msg;
+
+  const tempoAtivo = window.S ? Math.max(0, Math.floor((window.S.focoSeg - window.S.seg) / 60)) : 0;
+  const sessoes    = window.S ? (window.S.sessoes || 0) : 0;
+  const xp         = window.S ? (window.S.xpTotal || 0) : 0;
+  document.getElementById('fsi-tempo').textContent   = tempoAtivo + 'min';
+  document.getElementById('fsi-sessoes').textContent = sessoes;
+  document.getElementById('fsi-xp').textContent      = xp + ' XP';
+
+  document.getElementById('fsi-btn-sair-confirm').onclick = function() {
+    document.getElementById('foco-sair-modal').classList.remove('show');
+    if (_fsiCallbackSair) _fsiCallbackSair();
+    _fsiCallbackSair = null;
+  };
+
+  document.getElementById('foco-sair-modal').classList.add('show');
+}
+
+function fecharModalIncentivo() {
+  document.getElementById('foco-sair-modal').classList.remove('show');
+  _fsiCallbackSair = null;
+}
+
+</script>
 <meta name="description" content="Acompanhamento diário para TDAH">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TDAH Care</title>
@@ -1067,6 +1115,25 @@ textarea { resize: none; height: 80px; }
   padding: 8px 0 4px;
   letter-spacing: 0.5px;
 }
+
+/* ── MODAL INCENTIVO FOCO ── */
+.foco-sair-modal { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.88); z-index:500; align-items:center; justify-content:center; padding:20px; }
+.foco-sair-modal.show { display:flex; }
+.foco-sair-box { background:linear-gradient(160deg,#07071A,#10103A); border:1px solid rgba(167,139,250,0.4); border-radius:24px; padding:32px 24px 24px; width:100%; max-width:360px; text-align:center; animation:popIn 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes popIn { from{transform:scale(0.82);opacity:0} to{transform:scale(1);opacity:1} }
+.fsi-emoji { font-size:3.2rem; display:block; margin-bottom:14px; animation:fsi-bounce 1.2s ease-in-out infinite; }
+@keyframes fsi-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.fsi-titulo { font-size:1.15rem; font-weight:800; color:#E0E0FF; margin-bottom:8px; line-height:1.3; }
+.fsi-msg { font-size:0.84rem; color:#9CA3AF; line-height:1.65; margin-bottom:20px; }
+.fsi-stats { display:flex; gap:8px; margin-bottom:24px; }
+.fsi-stat { flex:1; background:rgba(124,58,237,0.14); border:1px solid rgba(124,58,237,0.28); border-radius:12px; padding:12px 6px; }
+.fsi-stat .fsv { font-size:1.15rem; font-weight:800; color:#A78BFA; display:block; }
+.fsi-stat .fsl { font-size:0.58rem; color:#6B7280; margin-top:3px; text-transform:uppercase; letter-spacing:0.5px; }
+.fsi-btn-continuar { width:100%; padding:15px; border:none; border-radius:14px; background:linear-gradient(135deg,#7C3AED,#4F46E5); color:white; font-size:1rem; font-weight:800; cursor:pointer; margin-bottom:10px; box-shadow:0 4px 24px rgba(124,58,237,0.45); transition:transform 0.15s,box-shadow 0.15s; letter-spacing:0.3px; }
+.fsi-btn-continuar:active { transform:scale(0.97); box-shadow:0 2px 10px rgba(124,58,237,0.3); }
+.fsi-btn-sair { width:100%; padding:11px; border:1px solid rgba(255,255,255,0.08); border-radius:14px; background:transparent; color:#4B5563; font-size:0.82rem; font-weight:600; cursor:pointer; transition:color 0.2s,border-color 0.2s; }
+.fsi-btn-sair:hover { color:#EF5350; border-color:rgba(239,83,80,0.3); }
+
 </style>
 </head>
 <body>
@@ -2864,6 +2931,7 @@ function carregarDia(dateISO) {
   state.currentDate=dateISO; const data=state.dailyData[dateISO]||{};
   state.sono=data.sono||[]; state.remedio=data.remedio||null;
   if(state.remedio&&state.remedio.horaRegistro){state.remedio.horaRegistro=new Date(state.remedio.horaRegistro);}
+  if(state.remedio&&state.remedio.horaRegistro){state.remedio.horaRegistro=new Date(state.remedio.horaRegistro);}
   state.metas=data.metas||[]; state.celular=data.celular||null; state.leitura=data.leitura||null;
   state.pom={rodando:false,fase:'foco',seg:POM_FOCO,timer:null,sessoes:data.pom?data.pom.sessoes:0,ciclos:data.pom?data.pom.ciclos:0,sessNoCiclo:data.pom?data.pom.sessNoCiclo:0,minFoco:data.pom?data.pom.minFoco:0,data:dateISO};
   state.copos=data.copos||0;
@@ -2894,18 +2962,21 @@ function navigate(p,btn) {
   const focoRodando = window.S && window.S.rodando && window.S.fase === 'foco';
 
   if ((pomRodando || focoRodando) && p !== 'caverna') {
-    const msgs = [
-      'Seu neurônio está em pleno foco agora! 🧠\nSair vai interromper sua sessão. Tem certeza?',
-      'Ei! Você está no meio de uma sessão de foco. ⚡\nCada minuto conta para construir sua mielina. Continua?',
-      'O modo foco está ativo! 🚀\nInterromper agora vai quebrar seu momentum. Fica mais um pouco!',
-    ];
-    const msg = msgs[Math.floor(Math.random() * msgs.length)];
-    const confirmou = confirm(msg);
+    if (focoRodando) {
+      abrirModalIncentivo(() => {
+        if (pomRodando && typeof pausarPom === 'function') pausarPom();
+        if (typeof focoPausar === 'function') focoPausar();
+        document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+        document.getElementById('page-'+p).classList.add('active');
+        btn.classList.add('active');
+        if (typeof atualizarHeader === 'function') atualizarHeader();
+      });
+      return;
+    }
+    const confirmou = confirm('Pomodoro em andamento! Sair vai pausar o timer. Tem certeza?');
     if (!confirmou) return;
-
-    // Se confirmou sair, pausa o timer que estiver rodando
     if (pomRodando && typeof pausarPom === 'function') pausarPom();
-    if (focoRodando && typeof focoPausar === 'function') focoPausar();
   }
 
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
@@ -3488,6 +3559,7 @@ function calcularDadosSemana() {
     const allM=[...(dd.metas||[]),...(dd.metasFixas||[])];
     if (allM.length>0) { metasConcl+=allM.filter(m=>m.done).length; metasTotal+=allM.length; }
     if (dd.pom&&dd.pom.minFoco>0) focoTotal+=dd.pom.minFoco;
+    if (i===0) { try { const _fs=JSON.parse(localStorage.getItem('focostatev2')||'{}'); if(_fs.minFocoHoje>0) focoTotal+=_fs.minFocoHoje; } catch(e){} }
     if (i===0) { try { const _fs=JSON.parse(localStorage.getItem('focostatev2')||'{}'); if(_fs.minFocoHoje>0) focoTotal+=_fs.minFocoHoje; } catch(e){} }
     if (dd.celular) { celTotal+=dd.celular.horas*60+dd.celular.minutos; celN++; }
     if (dd.remedio) remedioN++;
@@ -4719,6 +4791,54 @@ window.addEventListener('load', function() {
   }
 });
 
+
+// ═══════════════════════════════════════════════════════════
+// MODAL INCENTIVO — sair do Modo Foco Neural
+// ═══════════════════════════════════════════════════════════
+const FSI_FRASES = [
+  { emoji: '🧠', titulo: 'Seu neurônio está crescendo!', msg: 'A cada minuto de foco, bainha de mielina se forma ao redor dos seus axônios. Esse crescimento é permanente — não desperdice agora.' },
+  { emoji: '⚡', titulo: 'Você está no estado de fluxo!', msg: 'A dopamina está fluindo e o córtex pré-frontal está ativo. Interromper agora descarta todo esse preparo neuroquímico.' },
+  { emoji: '🔥', titulo: 'O momentum é seu!', msg: 'Iniciar uma sessão é a parte mais difícil. Você já passou por isso. Ficar mais 5 minutos vale mais do que recomeçar do zero.' },
+  { emoji: '🌌', titulo: 'Sinapses em ação!', msg: 'Neurônios que disparam juntos, se conectam. Cada sessão completa fortalece o circuito de foco — sair no meio enfraquece essa ligação.' },
+  { emoji: '💜', titulo: 'Você consegue!', msg: 'TDAH torna o início difícil, mas você já venceu essa barreira. Seu cérebro está cooperando agora — aproveite essa janela.' },
+  { emoji: '🚀', titulo: 'Não quebre a sequência!', msg: 'Consistência gera plasticidade. Cada sessão concluída sinaliza ao seu cérebro que foco é possível. Você está construindo uma nova identidade.' },
+  { emoji: '🎯', titulo: 'Tão perto do fim!', msg: 'Quanto mais perto do fim da sessão, mais resistência o cérebro cria — é fisiológico. Completar libera uma dose extra de dopamina.' },
+  { emoji: '🌱', titulo: 'Dendritos emergindo!', msg: 'Novos dendritos crescem durante sessões de foco sustentado. Seu cérebro está mudando de forma mensurável agora.' },
+  { emoji: '🏆', titulo: 'Você chegou até aqui!', msg: 'Já passou pelo mais difícil — a inércia foi vencida. Sair agora seria desperdiçar toda a energia que você já investiu nessa sessão.' },
+  { emoji: '✨', titulo: 'Modo foco ativo!', msg: 'O córtex pré-frontal leva minutos para atingir plena atividade. Você está no pico agora. Aproveite — é raro e valioso.' },
+];
+
+let _fsiCallbackSair = null;
+
+function abrirModalIncentivo(callbackSair) {
+  const frase = FSI_FRASES[Math.floor(Math.random() * FSI_FRASES.length)];
+  _fsiCallbackSair = callbackSair;
+
+  document.getElementById('fsi-emoji').textContent  = frase.emoji;
+  document.getElementById('fsi-titulo').textContent = frase.titulo;
+  document.getElementById('fsi-msg').textContent    = frase.msg;
+
+  const tempoAtivo = window.S ? Math.max(0, Math.floor((window.S.focoSeg - window.S.seg) / 60)) : 0;
+  const sessoes    = window.S ? (window.S.sessoes || 0) : 0;
+  const xp         = window.S ? (window.S.xpTotal || 0) : 0;
+  document.getElementById('fsi-tempo').textContent   = tempoAtivo + 'min';
+  document.getElementById('fsi-sessoes').textContent = sessoes;
+  document.getElementById('fsi-xp').textContent      = xp + ' XP';
+
+  document.getElementById('fsi-btn-sair-confirm').onclick = function() {
+    document.getElementById('foco-sair-modal').classList.remove('show');
+    if (_fsiCallbackSair) _fsiCallbackSair();
+    _fsiCallbackSair = null;
+  };
+
+  document.getElementById('foco-sair-modal').classList.add('show');
+}
+
+function fecharModalIncentivo() {
+  document.getElementById('foco-sair-modal').classList.remove('show');
+  _fsiCallbackSair = null;
+}
+
 </script>
 
 <div class="apelido-overlay" id="apelido-overlay">
@@ -4754,6 +4874,23 @@ window.addEventListener('load', function() {
     </button>
   </div>
   <div id="admin-lista" style="display:none;"></div>
+</div>
+
+
+<!-- ═══ MODAL INCENTIVO FOCO ═══ -->
+<div class="foco-sair-modal" id="foco-sair-modal">
+  <div class="foco-sair-box">
+    <span class="fsi-emoji" id="fsi-emoji">🧠</span>
+    <div class="fsi-titulo" id="fsi-titulo">Você está no meio de uma sessão!</div>
+    <div class="fsi-msg" id="fsi-msg">Seu cérebro está produzindo dopamina agora. Cada minuto de foco constrói conexões permanentes.</div>
+    <div class="fsi-stats">
+      <div class="fsi-stat"><span class="fsv" id="fsi-tempo">0min</span><span class="fsl">Tempo ativo</span></div>
+      <div class="fsi-stat"><span class="fsv" id="fsi-sessoes">0</span><span class="fsl">Sessões hoje</span></div>
+      <div class="fsi-stat"><span class="fsv" id="fsi-xp">0 XP</span><span class="fsl">Acumulado</span></div>
+    </div>
+    <button class="fsi-btn-continuar" onclick="fecharModalIncentivo()">🔥 Continuar focando</button>
+    <button class="fsi-btn-sair" id="fsi-btn-sair-confirm">Sair mesmo assim</button>
+  </div>
 </div>
 
 </body>
