@@ -1557,6 +1557,7 @@ function loadState() {
 }
 
 let S = loadState();
+  window.S = S;
 
 function saveState() {
   localStorage.setItem('foco_state_v2', JSON.stringify(S));
