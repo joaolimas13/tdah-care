@@ -4034,8 +4034,41 @@ function verificarApelido() {
     }, 600);
   }
 }
-howToast('Olá, ' + val + '! Profissional: ' + (nomes[psico]||psico));
+function salvarApelido() {
+  const inp  = document.getElementById('apelido-input');
+  const sel  = document.getElementById('apelido-psico-sel');
+  const val  = inp ? inp.value.trim() : '';
+  const psico = sel ? sel.value : '';
+
+  if (!val) {
+    if (inp) { inp.style.borderColor='#EF5350'; setTimeout(()=>{ inp.style.borderColor='#90CAF9'; },1000); }
+    return;
+  }
+  if (!psico) {
+    if (sel) { sel.style.borderColor='#EF5350'; setTimeout(()=>{ sel.style.borderColor='#90CAF9'; },1000); }
+    showToast('Selecione seu profissional de saúde!');
+    return;
+  }
+
+  localStorage.setItem('tdah_apelido', val);
+  localStorage.setItem('tdah_psicologa', psico);
+
+  const overlay = document.getElementById('apelido-overlay');
+  if (overlay) overlay.classList.remove('show');
+
+  const nomes = {dra_raiza:'Dra. Raiza Oliveira',dr_gabriel:'Dr. Gabriel Gomes',dra_caroline:'Dra. Caroline Guerra'};
+  showToast('Olá, ' + val + '! Profissional: ' + (nomes[psico]||psico));
+
+  // ✅ Sincroniza imediatamente para o psicólogo aparecer no painel admin
+  setTimeout(async () => {
+    try {
+      if (typeof salvarDiarioFirebase === 'function') {
+        await salvarDiarioFirebase();
+      }
+    } catch(e) { console.warn('Sync inicial falhou:', e); }
+  }, 1200);
 }
+
 function getApelido() {
   return localStorage.getItem('tdah_apelido') || 'Usuario';
 }
