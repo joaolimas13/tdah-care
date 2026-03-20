@@ -2,7 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+
 // ═══════════════════════════════════════════════════════════
 // MODAL INCENTIVO — sair do Modo Foco Neural
 // ═══════════════════════════════════════════════════════════
@@ -68,6 +70,7 @@ function fecharModalIncentivo() {
 <link rel="apple-touch-icon" href="icon.png">
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap');
 /* Manteremos o seu CSS exatamente igual, pois está excelente */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -518,7 +521,7 @@ textarea { resize: none; height: 80px; }
 .admin-stat-val{font-size:0.95rem;font-weight:800;color:#1565C0;}
 .admin-stat-lbl{font-size:0.6rem;color:#90A4AE;}
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap');
+
 
 
 
@@ -3318,7 +3321,6 @@ function calcularDadosSemana() {
     const allM=[...(dd.metas||[]),...(dd.metasFixas||[])];
     if (allM.length>0) { metasConcl+=allM.filter(m=>m.done).length; metasTotal+=allM.length; }
     if (dd.pom&&dd.pom.minFoco>0) focoTotal+=dd.pom.minFoco;
-    if (i===0) { try { const _fs=JSON.parse(localStorage.getItem('focostatev2')||'{}'); if(_fs.minFocoHoje>0) focoTotal+=_fs.minFocoHoje; } catch(e){} }
     if (i===0) { try { const _fs=JSON.parse(localStorage.getItem('focostatev2')||'{}'); if(_fs.minFocoHoje>0) focoTotal+=_fs.minFocoHoje; } catch(e){} }
     if (dd.celular) { celTotal+=dd.celular.horas*60+dd.celular.minutos; celN++; }
     if (dd.remedio) remedioN++;
