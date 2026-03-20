@@ -1363,7 +1363,13 @@ textarea { resize: none; height: 80px; }
     <div class="form-group">
       <label>⏰ Quantas horas dormiu?</label>
       <div class="hours-grid" id="hours-grid"></div>
-      <div class="custom-hours"><input type="number" id="horas-custom" placeholder="Outro valor..." min="0" max="24" step="0.5" oninput="selecionarHoraCustom(this.value)"><span>horas</span></div>
+      <div class="custom-hours">
+  <input type="number" id="horas-custom" placeholder="h" min="0" max="24" step="1" oninput="selecionarHoraCustom()" style="width:65px">
+  <span>h</span>
+  <input type="number" id="minutos-custom" placeholder="min" min="0" max="59" step="1" oninput="selecionarHoraCustom()" style="width:65px">
+  <span>min</span>
+</div>
+
     </div>
     <div class="form-group">
       <label>😴 Qualidade do sono</label>
@@ -3062,7 +3068,18 @@ function resetarRemedio() {
 }
 function buildHoursGrid(){document.getElementById('hours-grid').innerHTML=[4,5,6,7,8,9,10,11].map(h=>`<button class="hour-btn" onclick="selecionarHora(${h},this)">${h}h</button>`).join('');}
 function selecionarHora(h,btn){document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');state.horasSono=h;document.getElementById('sono-display').textContent=h+'h';document.getElementById('horas-custom').value='';}
-function selecionarHoraCustom(val){document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));state.horasSono=parseFloat(val)||null;if(state.horasSono){const h=Math.floor(state.horasSono),m=(state.horasSono%1)*60;document.getElementById('sono-display').textContent=m>0?h+'h'+m:h+'h';}}
+function selecionarHoraCustom(){
+  const h = parseFloat(document.getElementById('horas-custom').value) || 0;
+  const m = parseFloat(document.getElementById('minutos-custom').value) || 0;
+  document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
+  state.horasSono = h + (m / 60);
+  if(state.horasSono > 0){
+    const hh = Math.floor(state.horasSono);
+    const mm = Math.round((state.horasSono - hh) * 60);
+    document.getElementById('sono-display').textContent = mm > 0 ? hh+'h'+mm+'min' : hh+'h';
+  }
+}
+
 function salvarSono(){
   if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra sono para o dia atual');return;}
   if(!state.horasSono){showToast('⚠️ Selecione quantas horas dormiu!');return;}
