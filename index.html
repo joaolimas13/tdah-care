@@ -4050,23 +4050,22 @@ function salvarApelido() {
     return;
   }
 
-  localStorage.setItem('tdah_apelido', val);
-  localStorage.setItem('tdah_psicologa', psico);
+  localStorage.setItem('tdahapelido', val);
+  localStorage.setItem('tdahpsicologa', psico);
 
   const overlay = document.getElementById('apelido-overlay');
   if (overlay) overlay.classList.remove('show');
 
-  const nomes = {dra_raiza:'Dra. Raiza Oliveira',dr_gabriel:'Dr. Gabriel Gomes',dra_caroline:'Dra. Caroline Guerra'};
+  const nomes = {draraiza:'Dra. Raiza Oliveira', drgabriel:'Dr. Gabriel Gomes', dracaroline:'Dra. Caroline Guerra'};
   showToast('Olá, ' + val + '! Profissional: ' + (nomes[psico]||psico));
 
-  // ✅ Sincroniza imediatamente para o psicólogo aparecer no painel admin
+  // ✅ Sincroniza imediatamente com o Firebase
   setTimeout(async () => {
-    try {
-      if (typeof salvarDiarioFirebase === 'function') {
-        await salvarDiarioFirebase();
-      }
-    } catch(e) { console.warn('Sync inicial falhou:', e); }
-  }, 1200);
+    if (window.fbReady && window.sincronizarFirebase) {
+      const dadosSemana = calcularDadosSemana();
+      await sincronizarComFirebase(dadosSemana);
+    }
+  }, 1500);
 }
 
 function getApelido() {
