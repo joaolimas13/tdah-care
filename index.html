@@ -8,54 +8,7 @@
 // ═══════════════════════════════════════════════════════════
 // MODAL INCENTIVO — sair do Modo Foco Neural
 // ═══════════════════════════════════════════════════════════
-const FSI_FRASES = [
-  { emoji: '🧠', titulo: 'Seu neurônio está crescendo!', msg: 'A cada minuto de foco, bainha de mielina se forma ao redor dos seus axônios. Esse crescimento é permanente — não desperdice agora.' },
-  { emoji: '⚡', titulo: 'Você está no estado de fluxo!', msg: 'A dopamina está fluindo e o córtex pré-frontal está ativo. Interromper agora descarta todo esse preparo neuroquímico.' },
-  { emoji: '🔥', titulo: 'O momentum é seu!', msg: 'Iniciar uma sessão é a parte mais difícil. Você já passou por isso. Ficar mais 5 minutos vale mais do que recomeçar do zero.' },
-  { emoji: '🌌', titulo: 'Sinapses em ação!', msg: 'Neurônios que disparam juntos, se conectam. Cada sessão completa fortalece o circuito de foco — sair no meio enfraquece essa ligação.' },
-  { emoji: '💜', titulo: 'Você consegue!', msg: 'TDAH torna o início difícil, mas você já venceu essa barreira. Seu cérebro está cooperando agora — aproveite essa janela.' },
-  { emoji: '🚀', titulo: 'Não quebre a sequência!', msg: 'Consistência gera plasticidade. Cada sessão concluída sinaliza ao seu cérebro que foco é possível. Você está construindo uma nova identidade.' },
-  { emoji: '🎯', titulo: 'Tão perto do fim!', msg: 'Quanto mais perto do fim da sessão, mais resistência o cérebro cria — é fisiológico. Completar libera uma dose extra de dopamina.' },
-  { emoji: '🌱', titulo: 'Dendritos emergindo!', msg: 'Novos dendritos crescem durante sessões de foco sustentado. Seu cérebro está mudando de forma mensurável agora.' },
-  { emoji: '🏆', titulo: 'Você chegou até aqui!', msg: 'Já passou pelo mais difícil — a inércia foi vencida. Sair agora seria desperdiçar toda a energia que você já investiu nessa sessão.' },
-  { emoji: '✨', titulo: 'Modo foco ativo!', msg: 'O córtex pré-frontal leva minutos para atingir plena atividade. Você está no pico agora. Aproveite — é raro e valioso.' },
-];
 
-let _fsiCallbackSair = null;
-
-function abrirModalIncentivo(callbackSair) {
-  const frase = FSI_FRASES[Math.floor(Math.random() * FSI_FRASES.length)];
-  _fsiCallbackSair = callbackSair;
-
-  document.getElementById('fsi-emoji').textContent  = frase.emoji;
-  document.getElementById('fsi-titulo').textContent = frase.titulo;
-  document.getElementById('fsi-msg').textContent    = frase.msg;
-
-  const tempoAtivo = window.S ? Math.max(0, Math.floor((window.S.focoSeg - window.S.seg) / 60)) : 0;
-  const sessoes    = window.S ? (window.S.sessoes || 0) : 0;
-  const xp         = window.S ? (window.S.xpTotal || 0) : 0;
-  document.getElementById('fsi-tempo').textContent   = tempoAtivo + 'min';
-  document.getElementById('fsi-sessoes').textContent = sessoes;
-  document.getElementById('fsi-xp').textContent      = xp + ' XP';
-
-  document.getElementById('fsi-btn-sair-confirm').onclick = function() {
-    document.getElementById('foco-sair-modal').classList.remove('show');
-    if (_fsiCallbackSair) {
-      _fsiCallbackSair();
-    }
-    // Se callback null (veio do visibilitychange), apenas fecha — usuário já saiu
-    _fsiCallbackSair = null;
-  };
-
-  document.getElementById('foco-sair-modal').classList.add('show');
-}
-
-function fecharModalIncentivo() {
-  document.getElementById('foco-sair-modal').classList.remove('show');
-  _fsiCallbackSair = null;
-}
-
-</script>
 <meta name="description" content="Acompanhamento diário para TDAH">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TDAH Care</title>
