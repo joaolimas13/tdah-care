@@ -1199,36 +1199,87 @@ textarea { resize: none; height: 80px; }
   <span id="stat-remedio" style="display:none;"></span>
   
   <div class="remedio-card">
-    <div class="remedio-header">
-      <div><div class="remedio-title">💊 Venvanse (Lisdexanfetamina)</div><div style="font-size:0.75rem;color:var(--text-light);">Duração: 12 horas</div></div>
-      <span class="remedio-badge badge-inativo" id="remedio-badge">Não registrado</span>
+  <div class="remedio-header">
+    <div>
+      <div class="remedio-title" id="remedio-title-display">💊 Medicação</div>
+      <div style="font-size:0.75rem;color:var(--text-light);" id="remedio-subtitle-display">Selecione abaixo</div>
     </div>
-    <div id="remedio-sem-registro">
-      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Registre o horário que tomou o remédio:</p>
-      <div class="time-input-wrap"><input type="time" id="hora-remedio"><button onclick="registrarRemedio()">💊 Tomei</button></div>
-    </div>
-    <div id="remedio-com-registro" style="display:none;">
-      <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:8px;">
-        <span style="color:var(--text-light);">Tomado às <strong id="hora-tomada-display">—</strong></span>
-        <span style="color:var(--text-light);">Encerra às <strong id="hora-encerra-display">—</strong></span>
-      </div>
-      <div class="remedio-progress-bar"><div class="remedio-progress-fill" id="remedio-fill" style="width:0%"></div></div>
-      <div class="remedio-info-row"><span id="tempo-ativo-label">0h no organismo</span><span id="tempo-restante-label">12h restantes</span></div>
-      <div class="remedio-stats">
-        <div class="remedio-stat"><div class="val" id="tempo-ativo-val">0h 00min</div><div class="lbl">Tempo ativo</div></div>
-        <div class="remedio-stat"><div class="val" id="tempo-restante-val">12h 00min</div><div class="lbl">Tempo restante</div></div>
-      </div>
-      <div class="remedio-fase-box" id="remedio-fase-box">
-        <div class="remedio-fase-titulo" id="remedio-fase-titulo">📊 Fase atual</div>
-        <div class="remedio-fase-desc" id="remedio-fase-desc">Calculando...</div>
-      </div>
-      <div class="aviso-encerrado" id="aviso-encerrado">
-        <h4>⚠️ Efeito do remédio encerrado</h4>
-        <p>O Venvanse completou suas 12h de ação. É normal sentir cansaço, irritabilidade leve e retorno da fome.<br><br>💡 <strong>Dica:</strong> Evite tarefas de alto foco agora. Descanse e alimente-se bem.</p>
-      </div>
-      <button class="btn-danger" onclick="resetarRemedio()">🔄 Registrar nova dose</button>
+    <span class="remedio-badge badge-inativo" id="remedio-badge">Não registrado</span>
+  </div>
+
+  <!-- Seletor de medicamento -->
+  <div id="remedio-seletor" style="margin-bottom:14px;">
+    <label style="font-size:0.78rem;font-weight:600;color:var(--text);display:block;margin-bottom:6px;">Meu medicamento:</label>
+    <select id="remedio-tipo-select" onchange="onRemedioTipoChange()"
+      style="width:100%;padding:10px 12px;border:2px solid #E3EAF2;border-radius:10px;font-size:0.85rem;background:#F8FAFF;outline:none;">
+      <option value="venvanse">💊 Venvanse (Lisdexanfetamina) — 12h</option>
+      <option value="ritalina">💊 Ritalina (Metilfenidato) — 4-6h</option>
+      <option value="ritalina_la">💊 Ritalina LA (Metilfenidato) — 8h</option>
+      <option value="concerta">💊 Concerta (Metilfenidato) — 10-12h</option>
+      <option value="strattera">💊 Strattera (Atomoxetina) — não estimulante</option>
+      <option value="intuniv">💊 Intuniv (Guanfacina) — não estimulante</option>
+      <option value="personalizado">✏️ Outro (personalizado)</option>
+    </select>
+    <div id="remedio-custom-wrap" style="display:none;margin-top:8px;">
+      <input type="text" id="remedio-custom-nome" placeholder="Nome do medicamento..."
+        style="width:100%;padding:10px 14px;border:2px solid #E3EAF2;border-radius:10px;font-size:0.85rem;background:#F8FAFF;">
     </div>
   </div>
+
+  <!-- Registro sem remédio tomado (estimulante) -->
+  <div id="remedio-sem-registro">
+    <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;" id="remedio-instrucao-txt">Registre o horário que tomou o remédio:</p>
+    <div class="time-input-wrap" id="remedio-time-wrap">
+      <input type="time" id="hora-remedio">
+      <button onclick="registrarRemedio()">💊 Tomei</button>
+    </div>
+    <!-- Para não-estimulantes: só checkbox -->
+    <div id="remedio-simples-wrap" style="display:none;">
+      <button onclick="registrarRemedioSimples()"
+        style="width:100%;padding:13px;background:linear-gradient(135deg,#1565C0,#29B6F6);color:white;border:none;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;">
+        ✅ Marcar como tomado hoje
+      </button>
+    </div>
+  </div>
+
+  <!-- Registro com remédio tomado (estimulante — barra de progresso) -->
+  <div id="remedio-com-registro" style="display:none;">
+    <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:8px;">
+      <span style="color:var(--text-light);">Tomado às <strong id="hora-tomada-display">—</strong></span>
+      <span style="color:var(--text-light);">Encerra às <strong id="hora-encerra-display">—</strong></span>
+    </div>
+    <div class="remedio-progress-bar"><div class="remedio-progress-fill" id="remedio-fill" style="width:0%"></div></div>
+    <div class="remedio-info-row"><span id="tempo-ativo-label">0h no organismo</span><span id="tempo-restante-label">restante</span></div>
+    <div class="remedio-stats">
+      <div class="remedio-stat"><div class="val" id="tempo-ativo-val">0h 00min</div><div class="lbl">Tempo ativo</div></div>
+      <div class="remedio-stat"><div class="val" id="tempo-restante-val">—</div><div class="lbl">Tempo restante</div></div>
+    </div>
+    <div class="remedio-fase-box" id="remedio-fase-box">
+      <div class="remedio-fase-titulo" id="remedio-fase-titulo">📊 Fase atual</div>
+      <div class="remedio-fase-desc" id="remedio-fase-desc">Calculando...</div>
+    </div>
+    <div class="aviso-encerrado" id="aviso-encerrado">
+      <h4>⚠️ Efeito do remédio encerrado</h4>
+      <p id="aviso-encerrado-txt">O medicamento completou sua duração. É normal sentir cansaço e retorno da fome.<br><br>💡 <strong>Dica:</strong> Evite tarefas de alto foco agora. Descanse e alimente-se bem.</p>
+    </div>
+    <button class="btn-danger" onclick="resetarRemedio()">🔄 Registrar nova dose</button>
+  </div>
+
+  <!-- Registro simples (não-estimulante) — tomado hoje -->
+  <div id="remedio-simples-registro" style="display:none;">
+    <div style="background:#E8F5E9;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+      <div style="font-size:1.8rem;">✅</div>
+      <div>
+        <div style="font-weight:700;color:#2E7D32;font-size:0.92rem;">Tomado hoje!</div>
+        <div style="font-size:0.78rem;color:#546E7A;" id="remedio-simples-hora-txt">—</div>
+      </div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text-light);line-height:1.5;margin-bottom:10px;" id="remedio-nao-estimulante-info">
+      Este medicamento age de forma contínua, sem janela de pico. Tome todos os dias no mesmo horário para manter o nível terapêutico.
+    </p>
+    <button class="btn-danger" onclick="resetarRemedio()">🔄 Registrar nova dose</button>
+  </div>
+</div>
   
   <div class="card">
     <div class="card-title">📊 Progresso de hoje</div>
@@ -2354,14 +2405,141 @@ const METAS_FIXAS_DEFAULT = [
   {id:'f3', texto:'Fazer 30min de exercício', done:false, tipo:'fixa'},
   {id:'f4', texto:'Dormir antes das 23h', done:false, tipo:'fixa'},
 ];
-const FASES_REMEDIO = [
-  { min: 0,   max: 60,  titulo:'🌅 Absorção (0–1h)', cor:'#1565C0', desc:'Sendo absorvido. Evite refeições pesadas.' },
-  { min: 60,  max: 180, titulo:'📈 Início (1–3h)', cor:'#1976D2', desc:'Ação iniciando. Normal boca seca.' },
-  { min: 180, max: 300, titulo:'🚀 Pico (3–5h)', cor:'#00897B', desc:'Maior foco e controle de impulsos.' },
-  { min: 300, max: 480, titulo:'⚡ Plena (5–8h)', cor:'#2E7D32', desc:'Foco sustentado. Alimente-se mesmo sem fome.' },
-  { min: 480, max: 600, titulo:'📉 Declínio (8–10h)', cor:'#F57F17', desc:'Ação diminuindo.' },
-  { min: 600, max: 720, titulo:'🌙 Rebote (10–12h)', cor:'#E65100', desc:'Fim da ação. Cansaço e irritabilidade são normais.' },
-  { min: 720, max: Infinity, titulo:'⏹️ Encerrado', cor:'#C62828', desc:'Duração completa. Descanse.' },
+// ─── CONFIG DOS MEDICAMENTOS ────────────────────────────────────────────────
+const REMEDIOS_CONFIG = {
+  venvanse: {
+    nome: 'Venvanse (Lisdexanfetamina)',
+    duracao: 12 * 60, // minutos
+    estimulante: true,
+    info: 'O Venvanse completou suas 12h de ação. É normal sentir cansaço, irritabilidade leve e retorno da fome.',
+    subtitle: 'Duração: ~12 horas',
+  },
+  ritalina: {
+    nome: 'Ritalina (Metilfenidato)',
+    duracao: 5 * 60,
+    estimulante: true,
+    info: 'A Ritalina IR completou suas ~5h de ação. A concentração vai diminuindo gradualmente.',
+    subtitle: 'Duração: ~4-6 horas',
+  },
+  ritalina_la: {
+    nome: 'Ritalina LA (Metilfenidato)',
+    duracao: 8 * 60,
+    estimulante: true,
+    info: 'A Ritalina LA completou suas ~8h de ação. Efeito de liberação prolongada encerrado.',
+    subtitle: 'Duração: ~8 horas',
+  },
+  concerta: {
+    nome: 'Concerta (Metilfenidato)',
+    duracao: 11 * 60,
+    estimulante: true,
+    info: 'O Concerta completou suas ~11h de ação. Sistema OROS encerrou a liberação.',
+    subtitle: 'Duração: ~10-12 horas',
+  },
+  strattera: {
+    nome: 'Strattera (Atomoxetina)',
+    duracao: null,
+    estimulante: false,
+    info: 'Não-estimulante. Efeito contínuo — sem janela de pico. Tome diariamente.',
+    subtitle: 'Não estimulante — ação contínua',
+  },
+  intuniv: {
+    nome: 'Intuniv (Guanfacina)',
+    duracao: null,
+    estimulante: false,
+    info: 'Não-estimulante. Efeito gradual e contínuo. Não tem "hora de pico".',
+    subtitle: 'Não estimulante — ação contínua',
+  },
+  personalizado: {
+    nome: 'Medicamento personalizado',
+    duracao: null,
+    estimulante: false,
+    info: 'Medicamento registrado. Consulte seu médico sobre horários e efeitos.',
+    subtitle: 'Personalizado',
+  },
+};
+
+// Fases dinâmicas por tipo de estimulante (baseado na duração)
+function getFasesRemedio(duracaoMin) {
+  if (!duracaoMin) return [];
+  const d = duracaoMin;
+  return [
+    { min: 0,          max: d*0.08,  titulo:'🌅 Absorção',      cor:'#1565C0', desc:'Sendo absorvido. Evite refeições pesadas.' },
+    { min: d*0.08,     max: d*0.25,  titulo:'📈 Início',         cor:'#1976D2', desc:'Ação iniciando. Normal boca seca e redução do apetite.' },
+    { min: d*0.25,     max: d*0.42,  titulo:'🚀 Pico',           cor:'#00897B', desc:'Maior foco e controle de impulsos.' },
+    { min: d*0.42,     max: d*0.67,  titulo:'⚡ Plena ação',     cor:'#2E7D32', desc:'Foco sustentado. Alimente-se mesmo sem fome.' },
+    { min: d*0.67,     max: d*0.83,  titulo:'📉 Declínio',       cor:'#F57F17', desc:'Ação diminuindo gradualmente.' },
+    { min: d*0.83,     max: d,       titulo:'🌙 Final',          cor:'#E65100', desc:'Fim da ação se aproximando.' },
+    { min: d,          max: Infinity,titulo:'⏹️ Encerrado',      cor:'#C62828', desc:'Duração completa. Descanse.' },
+  ];
+}
+
+function getRemedioAtual() {
+  const tipo = document.getElementById('remedio-tipo-select') ? document.getElementById('remedio-tipo-select').value : 'venvanse';
+  const cfg  = REMEDIOS_CONFIG[tipo] || REMEDIOS_CONFIG['venvanse'];
+  if (tipo === 'personalizado') {
+    const nomeCustom = document.getElementById('remedio-custom-nome') ? document.getElementById('remedio-custom-nome').value.trim() : '';
+    cfg.nome = nomeCustom || 'Medicamento personalizado';
+  }
+  return { tipo, cfg };
+}
+
+function onRemedioTipoChange() {
+  const { tipo, cfg } = getRemedioAtual();
+  const customWrap  = document.getElementById('remedio-custom-wrap');
+  const timeWrap    = document.getElementById('remedio-time-wrap');
+  const simplesWrap = document.getElementById('remedio-simples-wrap');
+  const instrucao   = document.getElementById('remedio-instrucao-txt');
+
+  if (customWrap)  customWrap.style.display  = tipo === 'personalizado' ? 'block' : 'none';
+
+  // Salvar preferência
+  localStorage.setItem('tdah_remedio_tipo', tipo);
+  if (tipo === 'personalizado') {
+    const nomeEl = document.getElementById('remedio-custom-nome');
+    if (nomeEl) {
+      nomeEl.oninput = () => localStorage.setItem('tdah_remedio_custom_nome', nomeEl.value);
+      const saved = localStorage.getItem('tdah_remedio_custom_nome') || '';
+      nomeEl.value = saved;
+    }
+  }
+
+  if (cfg.estimulante) {
+    if (timeWrap)    timeWrap.style.display    = 'flex';
+    if (simplesWrap) simplesWrap.style.display = 'none';
+    if (instrucao)   instrucao.textContent     = 'Registre o horário que tomou o remédio:';
+  } else {
+    if (timeWrap)    timeWrap.style.display    = 'none';
+    if (simplesWrap) simplesWrap.style.display = 'block';
+    if (instrucao)   instrucao.textContent     = cfg.nome + ':';
+  }
+
+  // Atualizar título visível
+  const titleEl    = document.getElementById('remedio-title-display');
+  const subtitleEl = document.getElementById('remedio-subtitle-display');
+  if (titleEl)    titleEl.textContent    = '💊 ' + cfg.nome;
+  if (subtitleEl) subtitleEl.textContent = cfg.subtitle;
+}
+
+function registrarRemedioSimples() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só registra para o dia atual'); return; }
+  const { tipo, cfg } = getRemedioAtual();
+  const agora = new Date();
+  state.remedio = { horaRegistro: agora, tipo: tipo, estimulante: false };
+  salvar();
+
+  document.getElementById('remedio-sem-registro').style.display  = 'none';
+  document.getElementById('remedio-simples-registro').style.display = 'block';
+  document.getElementById('remedio-com-registro').style.display   = 'none';
+
+  const horaEl = document.getElementById('remedio-simples-hora-txt');
+  if (horaEl) horaEl.textContent = 'Registrado às ' + fmt(agora) + ' · ' + cfg.info.split('.')[0];
+
+  const badge = document.getElementById('remedio-badge');
+  if (badge) { badge.textContent = 'Tomado ✅'; badge.className = 'remedio-badge badge-ativo'; }
+
+  showToast('✅ ' + cfg.nome + ' marcado como tomado!');
+  updateStats();
+}
 ];
 let state = {
   dailyData: {}, currentDate: hojeISO(),
@@ -2675,6 +2853,12 @@ function carregarDia(dateISO) {
   state.metas=data.metas||[]; state.celular=data.celular||null; state.leitura=data.leitura||null;
   state.pom={rodando:false,fase:'foco',seg:POM_FOCO,timer:null,sessoes:data.pom?data.pom.sessoes:0,ciclos:data.pom?data.pom.ciclos:0,sessNoCiclo:data.pom?data.pom.sessNoCiclo:0,minFoco:data.pom?data.pom.minFoco:0,data:dateISO};
   state.copos=data.copos||0;
+    const tipoSalvo = state.remedio ? (state.remedio.tipo || 'venvanse') : (localStorage.getItem('tdah_remedio_tipo') || 'venvanse');
+    const selectEl = document.getElementById('remedio-tipo-select');
+    if (selectEl) {
+      selectEl.value = tipoSalvo;
+      onRemedioTipoChange();
+    }
   if(state.remedioTimer) clearInterval(state.remedioTimer);
   if(state.remedio&&dateISO===hojeISO()) state.remedioTimer=setInterval(atualizarBarra,30000);
   renderUI();
@@ -2686,18 +2870,43 @@ function renderUI() {
     if (elDate) elDate.textContent = now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
     const elGreet = document.getElementById('greeting-text');
     if (elGreet) { const h=now.getHours(); elGreet.textContent=h<12?'Bom dia! 👋':h<18?'Boa tarde! 👋':'Boa noite! 👋'; }
-    if (state.remedio) {
-      const s1=document.getElementById('remedio-sem-registro'); if(s1) s1.style.display='none';
-      const s2=document.getElementById('remedio-com-registro'); if(s2) s2.style.display='block';
-      try { atualizarBarra(); } catch(e) {}
-    } else {
-      const s1=document.getElementById('remedio-sem-registro'); if(s1) s1.style.display='block';
-      const s2=document.getElementById('remedio-com-registro'); if(s2) s2.style.display='none';
-      const rb=document.getElementById('remedio-badge');
-      if(rb){ rb.textContent='Não registrado'; rb.className='remedio-badge badge-inativo'; }
-      const ae=document.getElementById('aviso-encerrado'); if(ae) ae.classList.remove('show');
-      const hr=document.getElementById('hora-remedio'); if(hr) hr.value='';
-    }
+   if (state.remedio) {
+  const s1 = document.getElementById('remedio-sem-registro');
+  if (s1) s1.style.display = 'none';
+
+  if (state.remedio.estimulante === false) {
+    // Não-estimulante: mostra bloco simples
+    const s2 = document.getElementById('remedio-com-registro');
+    const s3 = document.getElementById('remedio-simples-registro');
+    if (s2) s2.style.display = 'none';
+    if (s3) s3.style.display = 'block';
+    const horaEl = document.getElementById('remedio-simples-hora-txt');
+    const cfg = REMEDIOS_CONFIG[state.remedio.tipo || 'strattera'] || {};
+    if (horaEl) horaEl.textContent = 'Registrado às ' + fmt(state.remedio.horaRegistro) + ' · ' + (cfg.info || '').split('.')[0];
+    const badge = document.getElementById('remedio-badge');
+    if (badge) { badge.textContent = 'Tomado ✅'; badge.className = 'remedio-badge badge-ativo'; }
+  } else {
+    // Estimulante: mostra barra de progresso
+    const s2 = document.getElementById('remedio-com-registro');
+    const s3 = document.getElementById('remedio-simples-registro');
+    if (s2) s2.style.display = 'block';
+    if (s3) s3.style.display = 'none';
+    try { atualizarBarra(); } catch(e) {}
+  }
+} else {
+  // Sem registro
+  const s1 = document.getElementById('remedio-sem-registro');
+  const s2 = document.getElementById('remedio-com-registro');
+  const s3 = document.getElementById('remedio-simples-registro');
+  if (s1) s1.style.display = 'block';
+  if (s2) s2.style.display = 'none';
+  if (s3) s3.style.display = 'none';
+  const badge = document.getElementById('remedio-badge');
+  if (badge) { badge.textContent = 'Não registrado'; badge.className = 'remedio-badge badge-inativo'; }
+  const avisoEl = document.getElementById('aviso-encerrado');
+  if (avisoEl) avisoEl.classList.remove('show');
+  onRemedioTipoChange(); // aplica visual correto
+}
   } catch(e) { console.warn('renderUI header erro:', e); }
   [renderMetas, renderHistSono, renderHistMetas, updateStats, renderCelular,
    renderLeitura, renderPom, renderHidrat, renderStreak, updateWidget
@@ -2741,16 +2950,122 @@ function navigate(p,btn) {
   if(p==='calendario'){renderCalendar(currentCalendarDate);document.getElementById('daily-summary-card').style.display='none';}
 }
 function registrarRemedio() {
-  if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra para o dia atual');return;}
-  const val=document.getElementById('hora-remedio').value;
-  if(!val){showToast('⚠️ Informe o horário!');return;}
-  const [hh,mm]=val.split(':').map(Number); const now=new Date();
-  const reg=new Date(now.getFullYear(),now.getMonth(),now.getDate(),hh,mm,0);
-  state.remedio={horaRegistro:reg}; salvar();
-  document.getElementById('remedio-sem-registro').style.display='none';
-  document.getElementById('remedio-com-registro').style.display='block';
-  atualizarBarra(); if(state.remedioTimer) clearInterval(state.remedioTimer);
-  state.remedioTimer=setInterval(atualizarBarra,30000); showToast('💊 Medicação registrada!'); updateStats();
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só registra para o dia atual'); return; }
+  const val = document.getElementById('hora-remedio').value;
+  if (!val) { showToast('⚠️ Informe o horário!'); return; }
+
+  const { tipo, cfg } = getRemedioAtual();
+  const [hh, mm] = val.split(':').map(Number);
+  const now = new Date();
+  const reg = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hh, mm, 0);
+
+  state.remedio = { horaRegistro: reg, tipo: tipo, estimulante: true, duracao: cfg.duracao };
+  salvar();
+
+  document.getElementById('remedio-sem-registro').style.display    = 'none';
+  document.getElementById('remedio-com-registro').style.display    = 'block';
+  document.getElementById('remedio-simples-registro').style.display = 'none';
+
+  atualizarBarra();
+  if (state.remedioTimer) clearInterval(state.remedioTimer);
+  state.remedioTimer = setInterval(atualizarBarra, 30000);
+
+  showToast('💊 ' + cfg.nome + ' registrado!');
+  updateStats();
+}
+
+function atualizarBarra() {
+  if (!state.remedio) return;
+  const hr = state.remedio.horaRegistro;
+  if (!(hr instanceof Date) || isNaN(hr)) return;
+
+  const { tipo } = { tipo: state.remedio.tipo || 'venvanse' };
+  const cfg = REMEDIOS_CONFIG[tipo] || REMEDIOS_CONFIG['venvanse'];
+  const duracaoMin = state.remedio.duracao || cfg.duracao || DUR_REM;
+
+  const agora    = new Date();
+  const minPass  = Math.floor((agora - hr) / 60000);
+  const minRest  = Math.max(0, duracaoMin - minPass);
+  const pct      = Math.min(100, (minPass / duracaoMin) * 100);
+  const horaEnc  = new Date(hr.getTime() + duracaoMin * 60000);
+
+  document.getElementById('hora-tomada-display').textContent  = fmt(hr);
+  document.getElementById('hora-encerra-display').textContent = fmt(horaEnc);
+  document.getElementById('remedio-fill').style.width = pct + '%';
+
+  const cor = pct < 40
+    ? 'linear-gradient(90deg,#1565C0,#42A5F5)'
+    : pct < 75
+    ? 'linear-gradient(90deg,#1976D2,#26C6DA)'
+    : pct < 100
+    ? 'linear-gradient(90deg,#F57F17,#FFCA28)'
+    : 'linear-gradient(90deg,#C62828,#EF5350)';
+  document.getElementById('remedio-fill').style.background = cor;
+
+  const hA = Math.floor(minPass / 60), mA = minPass % 60;
+  const hR = Math.floor(minRest / 60), mR = minRest % 60;
+
+  document.getElementById('tempo-ativo-val').textContent    = hA + 'h ' + pad(mA) + 'min';
+  document.getElementById('tempo-restante-val').textContent = minRest > 0 ? hR + 'h ' + pad(mR) + 'min' : 'Encerrado';
+  document.getElementById('tempo-ativo-label').textContent  = hA + 'h no organismo';
+  document.getElementById('tempo-restante-label').textContent = minRest > 0 ? hR + 'h restantes' : 'Efeito encerrado';
+
+  const badge = document.getElementById('remedio-badge');
+  const avisoEl = document.getElementById('aviso-encerrado');
+  const avisoTxt = document.getElementById('aviso-encerrado-txt');
+
+  if (minRest <= 0) {
+    if (badge)    { badge.textContent = 'Encerrado'; badge.className = 'remedio-badge badge-encerrado'; }
+    if (avisoEl)  avisoEl.classList.add('show');
+    if (avisoTxt) avisoTxt.innerHTML = cfg.info + '<br><br>💡 <strong>Dica:</strong> Evite tarefas de alto foco agora. Descanse e alimente-se bem.';
+    document.getElementById('stat-remedio').textContent = 'Enc.';
+  } else {
+    if (badge)    { badge.textContent = 'Ativo'; badge.className = 'remedio-badge badge-ativo'; }
+    if (avisoEl)  avisoEl.classList.remove('show');
+    document.getElementById('stat-remedio').textContent = hA + 'h';
+  }
+
+  atualizarFaseRemedio(minPass, duracaoMin);
+}
+
+function atualizarFaseRemedio(minPass, duracaoMin) {
+  const fases = getFasesRemedio(duracaoMin);
+  if (!fases.length) return;
+  const fase = fases.find(f => minPass >= f.min && minPass < f.max) || fases[fases.length - 1];
+  const box  = document.getElementById('remedio-fase-box');
+  const tit  = document.getElementById('remedio-fase-titulo');
+  const desc = document.getElementById('remedio-fase-desc');
+  if (box && tit && desc) {
+    box.style.borderLeftColor = fase.cor;
+    tit.textContent = fase.titulo;
+    tit.style.color = fase.cor;
+    desc.textContent = fase.desc;
+  }
+}
+
+function resetarRemedio() {
+  if (state.currentDate !== hojeISO()) { showToast('⚠️ Só reseta para o dia atual'); return; }
+  state.remedio = null;
+  salvar();
+  if (state.remedioTimer) clearInterval(state.remedioTimer);
+
+  document.getElementById('remedio-sem-registro').style.display     = 'block';
+  document.getElementById('remedio-com-registro').style.display     = 'none';
+  document.getElementById('remedio-simples-registro').style.display = 'none';
+
+  const badge = document.getElementById('remedio-badge');
+  if (badge) { badge.textContent = 'Não registrado'; badge.className = 'remedio-badge badge-inativo'; }
+  const avisoEl = document.getElementById('aviso-encerrado');
+  if (avisoEl) avisoEl.classList.remove('show');
+
+  const horaEl = document.getElementById('hora-remedio');
+  if (horaEl) horaEl.value = '';
+
+  document.getElementById('stat-remedio').textContent = '—';
+  showToast('🔄 Pronto para nova dose');
+
+  // Re-aplicar visual do tipo selecionado
+  onRemedioTipoChange();
 }
 function atualizarBarra() {
   if(!state.remedio) return; const hr=state.remedio.horaRegistro;
