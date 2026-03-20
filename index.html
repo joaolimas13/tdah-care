@@ -3578,11 +3578,7 @@ function getPomFoco() { return state.pomConfig ? state.pomConfig.foco : POM_FOCO
 function getPomPausa() { return state.pomConfig ? state.pomConfig.pausa : POM_PAUSA; }
 
 // ========== COMPARTILHAR PROGRESSO ==========
-function verificarLembreteSexta() {
-  const hj = new Date();
-  const banner = document.getElementById('lembrete-sexta');
-  if (banner) banner.style.display = hj.getDay() === 5 ? 'block' : 'none';
-}
+
 function fecharCompartilharModal(e) { if (e.target.id === 'compartilhar-modal') document.getElementById('compartilhar-modal').classList.remove('show'); }
 function switchCompTab(tab, btn) {
   document.querySelectorAll('.comp-tab-content').forEach(c => c.style.display = 'none');
@@ -3965,7 +3961,6 @@ async function _inicializarApp() {
   init();
   carregarConfigPom();
   verificarApelido();
-  verificarLembreteSexta();
   setTimeout(verificarLembreteBackup, 2000);
   renderHidrat();
   renderStreak();
