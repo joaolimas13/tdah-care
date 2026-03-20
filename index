@@ -2540,7 +2540,6 @@ function registrarRemedioSimples() {
   showToast('✅ ' + cfg.nome + ' marcado como tomado!');
   updateStats();
 }
-];
 let state = {
   dailyData: {}, currentDate: hojeISO(),
   sono: [], horasSono: null,
@@ -3066,39 +3065,6 @@ function resetarRemedio() {
 
   // Re-aplicar visual do tipo selecionado
   onRemedioTipoChange();
-}
-function atualizarBarra() {
-  if(!state.remedio) return; const hr=state.remedio.horaRegistro;
-  if(!(hr instanceof Date)||isNaN(hr)) return;
-  const agora=new Date(); const minPass=Math.floor((agora-hr)/60000); const minRest=Math.max(0,DUR_REM-minPass);
-  const pct=Math.min(100,(minPass/DUR_REM)*100); const horaEnc=new Date(hr.getTime()+DUR_REM*60000);
-  document.getElementById('hora-tomada-display').textContent=fmt(hr);
-  document.getElementById('hora-encerra-display').textContent=fmt(horaEnc);
-  document.getElementById('remedio-fill').style.width=pct+'%';
-  const cor=pct<40?'linear-gradient(90deg,#1565C0,#42A5F5)':pct<75?'linear-gradient(90deg,#1976D2,#26C6DA)':pct<100?'linear-gradient(90deg,#F57F17,#FFCA28)':'linear-gradient(90deg,#C62828,#EF5350)';
-  document.getElementById('remedio-fill').style.background=cor;
-  const hA=Math.floor(minPass/60),mA=minPass%60,hR=Math.floor(minRest/60),mR=minRest%60;
-  document.getElementById('tempo-ativo-val').textContent=hA+'h '+pad(mA)+'min';
-  document.getElementById('tempo-restante-val').textContent=minRest>0?hR+'h '+pad(mR)+'min':'Encerrado';
-  document.getElementById('tempo-ativo-label').textContent=hA+'h no organismo';
-  document.getElementById('tempo-restante-label').textContent=minRest>0?hR+'h restantes':'Efeito encerrado';
-  const badge=document.getElementById('remedio-badge');
-  if(minRest<=0){badge.textContent='Encerrado';badge.className='remedio-badge badge-encerrado';document.getElementById('aviso-encerrado').classList.add('show');document.getElementById('stat-remedio').textContent='Enc.';}
-  else{badge.textContent='Ativo';badge.className='remedio-badge badge-ativo';document.getElementById('aviso-encerrado').classList.remove('show');document.getElementById('stat-remedio').textContent=hA+'h';}
-  atualizarFaseRemedio(minPass);
-}
-function atualizarFaseRemedio(minPass) {
-  const fase=FASES_REMEDIO.find(f=>minPass>=f.min&&minPass<f.max)||FASES_REMEDIO[FASES_REMEDIO.length-1];
-  const box=document.getElementById('remedio-fase-box'),tit=document.getElementById('remedio-fase-titulo'),desc=document.getElementById('remedio-fase-desc');
-  if(box&&tit&&desc){box.style.borderLeftColor=fase.cor;tit.textContent=fase.titulo;tit.style.color=fase.cor;desc.textContent=fase.desc;}
-}
-function resetarRemedio() {
-  if(state.currentDate!==hojeISO()){showToast('⚠️ Só reseta para o dia atual');return;}
-  state.remedio=null;salvar();if(state.remedioTimer)clearInterval(state.remedioTimer);
-  document.getElementById('remedio-sem-registro').style.display='block';document.getElementById('remedio-com-registro').style.display='none';
-  document.getElementById('remedio-badge').textContent='Não registrado';document.getElementById('remedio-badge').className='remedio-badge badge-inativo';
-  document.getElementById('aviso-encerrado').classList.remove('show');document.getElementById('hora-remedio').value='';
-  document.getElementById('stat-remedio').textContent='—';showToast('🔄 Pronto para nova dose');
 }
 function buildHoursGrid(){document.getElementById('hours-grid').innerHTML=[4,5,6,7,8,9,10,11].map(h=>`<button class="hour-btn" onclick="selecionarHora(${h},this)">${h}h</button>`).join('');}
 function selecionarHora(h,btn){document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');state.horasSono=h;document.getElementById('sono-display').textContent=h+'h';document.getElementById('horas-custom').value='';}
