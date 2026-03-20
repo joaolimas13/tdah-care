@@ -1167,21 +1167,6 @@ textarea { resize: none; height: 80px; }
 .a2hs-btn-later { width:100%; padding:11px; border:1px solid rgba(255,255,255,0.08); border-radius:14px; background:transparent; color:#4B5563; font-size:0.82rem; font-weight:600; cursor:pointer; transition:color 0.2s; }
 .a2hs-btn-later:hover { color:#9CA3AF; }
 
-
-/* ── Seletor de Remédio ────────────────────────── */
-.rem-opcao {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 10px 8px; border: 2px solid #E3EAF2; border-radius: 12px;
-  background: #F8FAFF; cursor: pointer; transition: all 0.2s; text-align: center;
-}
-.rem-opcao:hover { border-color: #1565C0; background: #EEF2FF; }
-.rem-opcao.selecionado { border-color: #1565C0; background: #EEF2FF; }
-.rem-opcao-naoe.selecionado { border-color: #7B1FA2; background: #F3E5F5; }
-.rem-opcao-naoe:hover { border-color: #7B1FA2; background: #F3E5F5; }
-.rem-nome { font-size: 0.82rem; font-weight: 700; color: #1A237E; }
-.rem-dur  { font-size: 0.65rem; color: #546E7A; margin-top: 2px; }
-.rem-opcao-naoe .rem-nome { color: #4A148C; }
-
 </style>
 </head>
 <body>
@@ -1213,126 +1198,36 @@ textarea { resize: none; height: 80px; }
   <span id="stat-metas" style="display:none;"></span>
   <span id="stat-remedio" style="display:none;"></span>
   
-  <div class="remedio-card" id="remedio-card-principal">
-    <!-- SELETOR DE REMÉDIO -->
-    <div id="remedio-seletor-wrap">
-      <div class="remedio-header" style="margin-bottom:10px;">
-        <div>
-          <div class="remedio-title">💊 Medicação</div>
-          <div style="font-size:0.75rem;color:var(--text-light);">Selecione seu remédio</div>
-        </div>
-        <span class="remedio-badge badge-inativo" id="remedio-badge">Não registrado</span>
-      </div>
-      <div style="display:grid;gap:8px;margin-bottom:12px;">
-        <!-- Estimulantes -->
-        <div style="font-size:0.72rem;font-weight:700;color:#1565C0;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;">⚡ Estimulantes</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <div class="rem-opcao" onclick="selecionarRemedio('ritalina')" id="rem-opt-ritalina">
-            <span class="rem-nome">Ritalina</span><span class="rem-dur">4–6h</span>
-          </div>
-          <div class="rem-opcao" onclick="selecionarRemedio('ritalina_la')" id="rem-opt-ritalina_la">
-            <span class="rem-nome">Ritalina LA</span><span class="rem-dur">8h</span>
-          </div>
-          <div class="rem-opcao" onclick="selecionarRemedio('concerta')" id="rem-opt-concerta">
-            <span class="rem-nome">Concerta</span><span class="rem-dur">10–12h</span>
-          </div>
-          <div class="rem-opcao" onclick="selecionarRemedio('venvanse')" id="rem-opt-venvanse">
-            <span class="rem-nome">Venvanse</span><span class="rem-dur">10–14h</span>
-          </div>
-        </div>
-        <!-- Não-estimulantes -->
-        <div style="font-size:0.72rem;font-weight:700;color:#7B1FA2;text-transform:uppercase;letter-spacing:0.5px;margin-top:6px;">🔵 Não-estimulantes</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <div class="rem-opcao rem-opcao-naoe" onclick="selecionarRemedio('strattera')" id="rem-opt-strattera">
-            <span class="rem-nome">Strattera</span><span class="rem-dur">contínuo</span>
-          </div>
-          <div class="rem-opcao rem-opcao-naoe" onclick="selecionarRemedio('intuniv')" id="rem-opt-intuniv">
-            <span class="rem-nome">Intuniv</span><span class="rem-dur">contínuo</span>
-          </div>
-        </div>
-        <!-- Outro -->
-        <div style="font-size:0.72rem;font-weight:700;color:#546E7A;text-transform:uppercase;letter-spacing:0.5px;margin-top:6px;">➕ Outro</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <input type="text" id="rem-outro-input" placeholder="Nome do remédio..."
-                 style="flex:1;padding:10px 12px;border:2px solid #E3EAF2;border-radius:10px;font-size:0.88rem;background:#F8FAFF;"
-                 oninput="selecionarRemedio('outro')">
-        </div>
-      </div>
+  <div class="remedio-card">
+    <div class="remedio-header">
+      <div><div class="remedio-title">💊 Venvanse (Lisdexanfetamina)</div><div style="font-size:0.75rem;color:var(--text-light);">Duração: 12 horas</div></div>
+      <span class="remedio-badge badge-inativo" id="remedio-badge">Não registrado</span>
     </div>
-
-    <!-- PAINEL ESTIMULANTE (com fases) -->
-    <div id="remedio-painel-estimulante" style="display:none;">
-      <div class="remedio-header">
-        <div>
-          <div class="remedio-title" id="remedio-title-est">💊 Venvanse</div>
-          <div style="font-size:0.75rem;color:var(--text-light);" id="remedio-dur-est">Duração: 12 horas</div>
-        </div>
-        <span class="remedio-badge badge-inativo" id="remedio-badge-est">Não registrado</span>
-      </div>
-      <div id="remedio-sem-registro">
-        <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Registre o horário que tomou o remédio:</p>
-        <div class="time-input-wrap"><input type="time" id="hora-remedio"><button onclick="registrarRemedio()">💊 Tomei</button></div>
-      </div>
-      <div id="remedio-com-registro" style="display:none;">
-        <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:8px;">
-          <span style="color:var(--text-light);">Tomado às <strong id="hora-tomada-display">—</strong></span>
-          <span style="color:var(--text-light);">Encerra às <strong id="hora-encerra-display">—</strong></span>
-        </div>
-        <div class="remedio-progress-bar"><div class="remedio-progress-fill" id="remedio-fill" style="width:0%"></div></div>
-        <div class="remedio-info-row"><span id="tempo-ativo-label">0h no organismo</span><span id="tempo-restante-label">12h restantes</span></div>
-        <div class="remedio-stats">
-          <div class="remedio-stat"><div class="val" id="tempo-ativo-val">0h 00min</div><div class="lbl">Tempo ativo</div></div>
-          <div class="remedio-stat"><div class="val" id="tempo-restante-val">12h 00min</div><div class="lbl">Tempo restante</div></div>
-        </div>
-        <div class="remedio-fase-box" id="remedio-fase-box">
-          <div class="remedio-fase-titulo" id="remedio-fase-titulo">📊 Fase atual</div>
-          <div class="remedio-fase-desc" id="remedio-fase-desc">Calculando...</div>
-        </div>
-        <div class="aviso-encerrado" id="aviso-encerrado">
-          <h4>⚠️ Efeito do remédio encerrado</h4>
-          <p id="aviso-encerrado-txt">O remédio completou sua duração. É normal sentir cansaço e retorno da fome.<br><br>💡 <strong>Dica:</strong> Evite tarefas de alto foco agora. Descanse e alimente-se bem.</p>
-        </div>
-        <button class="btn-danger" onclick="resetarRemedio()">🔄 Registrar nova dose</button>
-      </div>
-      <button class="btn-outline" style="margin-top:10px;padding:8px;font-size:0.78rem;" onclick="trocarRemedio()">🔁 Trocar remédio</button>
+    <div id="remedio-sem-registro">
+      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Registre o horário que tomou o remédio:</p>
+      <div class="time-input-wrap"><input type="time" id="hora-remedio"><button onclick="registrarRemedio()">💊 Tomei</button></div>
     </div>
-
-    <!-- PAINEL NÃO-ESTIMULANTE / OUTRO (simples) -->
-    <div id="remedio-painel-simples" style="display:none;">
-      <div class="remedio-header">
-        <div>
-          <div class="remedio-title" id="remedio-title-simples">💊 Strattera</div>
-          <div style="font-size:0.75rem;color:#7B1FA2;">Efeito contínuo — sem janela de pico</div>
-        </div>
-        <span class="remedio-badge badge-inativo" id="remedio-badge-simples">Não registrado</span>
+    <div id="remedio-com-registro" style="display:none;">
+      <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:8px;">
+        <span style="color:var(--text-light);">Tomado às <strong id="hora-tomada-display">—</strong></span>
+        <span style="color:var(--text-light);">Encerra às <strong id="hora-encerra-display">—</strong></span>
       </div>
-      <div id="simples-sem-registro">
-        <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:12px;">Você tomou o remédio hoje?</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <button onclick="registrarRemedioSimples(true)"
-                  style="padding:14px;background:linear-gradient(135deg,#2E7D32,#43A047);color:white;border:none;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;">
-            ✅ Sim, tomei
-          </button>
-          <button onclick="registrarRemedioSimples(false)"
-                  style="padding:14px;background:#FFEBEE;color:#C62828;border:2px solid #EF9A9A;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;">
-            ❌ Não tomei
-          </button>
-        </div>
+      <div class="remedio-progress-bar"><div class="remedio-progress-fill" id="remedio-fill" style="width:0%"></div></div>
+      <div class="remedio-info-row"><span id="tempo-ativo-label">0h no organismo</span><span id="tempo-restante-label">12h restantes</span></div>
+      <div class="remedio-stats">
+        <div class="remedio-stat"><div class="val" id="tempo-ativo-val">0h 00min</div><div class="lbl">Tempo ativo</div></div>
+        <div class="remedio-stat"><div class="val" id="tempo-restante-val">12h 00min</div><div class="lbl">Tempo restante</div></div>
       </div>
-      <div id="simples-com-registro" style="display:none;">
-        <div style="background:#E8F5E9;border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;">
-          <div style="font-size:1.8rem;margin-bottom:4px;" id="simples-icon">✅</div>
-          <div style="font-size:0.9rem;font-weight:700;color:#2E7D32;" id="simples-status-txt">Tomado hoje</div>
-          <div style="font-size:0.75rem;color:#546E7A;margin-top:4px;" id="simples-hora-txt"></div>
-        </div>
-        <div style="background:#F3E5F5;border-left:4px solid #7B1FA2;border-radius:0 12px 12px 0;padding:12px 14px;font-size:0.82rem;color:#4A148C;line-height:1.5;">
-          🔵 <strong>Medicação não-estimulante:</strong> O efeito é acumulativo e contínuo. A consistência diária é o que garante o resultado.
-        </div>
-        <button class="btn-danger" style="margin-top:10px;" onclick="resetarRemedioSimples()">🔄 Corrigir registro</button>
+      <div class="remedio-fase-box" id="remedio-fase-box">
+        <div class="remedio-fase-titulo" id="remedio-fase-titulo">📊 Fase atual</div>
+        <div class="remedio-fase-desc" id="remedio-fase-desc">Calculando...</div>
       </div>
-      <button class="btn-outline" style="margin-top:10px;padding:8px;font-size:0.78rem;" onclick="trocarRemedio()">🔁 Trocar remédio</button>
+      <div class="aviso-encerrado" id="aviso-encerrado">
+        <h4>⚠️ Efeito do remédio encerrado</h4>
+        <p>O Venvanse completou suas 12h de ação. É normal sentir cansaço, irritabilidade leve e retorno da fome.<br><br>💡 <strong>Dica:</strong> Evite tarefas de alto foco agora. Descanse e alimente-se bem.</p>
+      </div>
+      <button class="btn-danger" onclick="resetarRemedio()">🔄 Registrar nova dose</button>
     </div>
-  </div>
   </div>
   
   <div class="card">
@@ -2399,38 +2294,6 @@ renderAll();
       </div>
     </div>
   </div>
-
-  <!-- Card Lembrete Diário -->
-  <div class="card" style="margin-top:16px;">
-    <div class="card-title">🔔 Lembrete Diário</div>
-    <div style="font-size:0.85rem;color:#546E7A;margin-bottom:14px;line-height:1.5;">
-      Receba uma notificação toda noite para registrar como foi seu dia.
-    </div>
-    <div class="auto-backup-row" style="margin-bottom:14px;">
-      <div>
-        <div style="font-size:0.9rem;font-weight:700;color:#1A237E;">Ativar lembrete noturno</div>
-        <div style="font-size:0.75rem;color:#546E7A;" id="notif-status-texto">Desativado</div>
-      </div>
-      <div class="toggle-switch" id="notif-toggle" onclick="toggleNotificacao()"></div>
-    </div>
-    <div id="notif-horario-wrap" style="display:none;">
-      <label style="font-size:0.85rem;font-weight:600;color:#1A237E;margin-bottom:6px;display:block;">⏰ Horário do lembrete</label>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <input type="time" id="notif-horario-input" value="21:00"
-               style="flex:1;padding:12px 14px;border:2px solid #E3EAF2;border-radius:10px;font-size:0.95rem;background:#F8FAFF;"
-               onchange="salvarHorarioNotificacao()">
-        <button onclick="salvarHorarioNotificacao()"
-                style="padding:12px 18px;background:#1565C0;color:white;border:none;border-radius:10px;font-size:0.9rem;font-weight:700;cursor:pointer;">
-          Salvar
-        </button>
-      </div>
-      <div style="font-size:0.75rem;color:#546E7A;margin-top:8px;" id="notif-proxima"></div>
-    </div>
-    <div id="notif-bloqueado" style="display:none;background:#FFF8E1;border-radius:10px;padding:10px 14px;font-size:0.78rem;color:#5D4037;margin-top:10px;">
-      ⚠️ Notificações bloqueadas. Acesse as configurações do celular para permitir.
-    </div>
-  </div>
-
 </div>
 
 <div class="reativar-modal" id="reativar-modal" onclick="fecharReativarModal(event)">
@@ -3853,7 +3716,7 @@ async function _inicializarApp() {
           _focoBadges  = dadosNuvem.focoBadges  || (typeof _focoBadges  !== 'undefined' ? _focoBadges  : []);
           localStorage.setItem('foco_xp',            String(_focoXP));
           localStorage.setItem('foco_ciclos_totais', String(_focoCiclos));
-          localStorage.setItem('foco_sessoes_totais', String(_focoSessoes));
+          localStorage.setItem('foco_sessoes',        String(_focoSessoes));
           localStorage.setItem('foco_badges',         JSON.stringify(_focoBadges));
           try { _renderXP(); } catch(e) {}
         } catch(e) {}
@@ -4934,348 +4797,6 @@ function fecharModalIncentivo() {
     showToast('🎉 TDAH Care adicionado à tela inicial!');
   });
 })();
-
-
-// ═══════════════════════════════════════════════════════════════════════
-// SISTEMA DE NOTIFICAÇÕES — LEMBRETE DIÁRIO
-// ═══════════════════════════════════════════════════════════════════════
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW:', e));
-}
-
-const NOTIF_KEY_ATIVO   = 'tdah_notif_ativo';
-const NOTIF_KEY_HORA    = 'tdah_notif_hora';
-const NOTIF_HORA_PADRAO = '21:00';
-
-const NOTIF_MSGS = [
-  'Como foi seu dia hoje? Registre seu sono, metas e humor 🌙',
-  'Hora de fechar o dia! Seus dados ajudam a entender seus padrões 🧠',
-  'Não esqueça de registrar como foi hoje. Você se saiu bem? 💜',
-  'Anote seu sono e metas de hoje — cada registro conta! 📊',
-  'Final de dia! Que tal 2 minutos para registrar seu progresso? 🚀',
-];
-
-function iniciarSistemaNotificacoes() {
-  const ativo  = localStorage.getItem(NOTIF_KEY_ATIVO) === 'true';
-  const hora   = localStorage.getItem(NOTIF_KEY_HORA) || NOTIF_HORA_PADRAO;
-  const toggle = document.getElementById('notif-toggle');
-  const wrap   = document.getElementById('notif-horario-wrap');
-  const input  = document.getElementById('notif-horario-input');
-  if (input) input.value = hora;
-  if (ativo) {
-    if (toggle) toggle.classList.add('on');
-    if (wrap)   wrap.style.display = 'block';
-    atualizarStatusNotif(true, hora);
-    agendarNotificacaoLoop();
-  } else {
-    atualizarStatusNotif(false);
-  }
-}
-
-function atualizarStatusNotif(ativo, hora) {
-  const el   = document.getElementById('notif-status-texto');
-  const prox = document.getElementById('notif-proxima');
-  if (!el) return;
-  if (ativo && hora) {
-    el.textContent = '✅ Ativo — lembrete às ' + hora;
-    el.style.color = '#2E7D32';
-    if (prox) {
-      const partes = hora.split(':').map(Number);
-      const agora  = new Date();
-      const alvo   = new Date();
-      alvo.setHours(partes[0], partes[1], 0, 0);
-      if (alvo <= agora) alvo.setDate(alvo.getDate() + 1);
-      const diff = Math.round((alvo - agora) / 60000);
-      const hh   = Math.floor(diff / 60);
-      const mm   = diff % 60;
-      prox.textContent = 'Próximo lembrete em ' + (hh > 0 ? hh + 'h ' : '') + mm + 'min';
-    }
-  } else {
-    el.textContent = 'Desativado';
-    el.style.color = '#546E7A';
-    if (prox) prox.textContent = '';
-  }
-}
-
-async function toggleNotificacao() {
-  const toggle = document.getElementById('notif-toggle');
-  const ativo  = toggle && toggle.classList.contains('on');
-  if (!ativo) {
-    if (!('Notification' in window)) {
-      document.getElementById('notif-bloqueado').style.display = 'block';
-      return;
-    }
-    const perm = await Notification.requestPermission();
-    if (perm !== 'granted') {
-      document.getElementById('notif-bloqueado').style.display = 'block';
-      showToast('Permissão negada. Verifique as configurações do celular.');
-      return;
-    }
-    document.getElementById('notif-bloqueado').style.display = 'none';
-    const hora = localStorage.getItem(NOTIF_KEY_HORA) || NOTIF_HORA_PADRAO;
-    localStorage.setItem(NOTIF_KEY_ATIVO, 'true');
-    if (toggle) toggle.classList.add('on');
-    document.getElementById('notif-horario-wrap').style.display = 'block';
-    atualizarStatusNotif(true, hora);
-    agendarNotificacaoLoop();
-    showToast('🔔 Lembrete ativado às ' + hora + '!');
-  } else {
-    localStorage.setItem(NOTIF_KEY_ATIVO, 'false');
-    if (toggle) toggle.classList.remove('on');
-    document.getElementById('notif-horario-wrap').style.display = 'none';
-    if (window._notifTimeout) { clearTimeout(window._notifTimeout); window._notifTimeout = null; }
-    atualizarStatusNotif(false);
-    showToast('🔕 Lembrete desativado.');
-  }
-}
-
-function salvarHorarioNotificacao() {
-  const input = document.getElementById('notif-horario-input');
-  const hora  = (input && input.value) ? input.value : NOTIF_HORA_PADRAO;
-  localStorage.setItem(NOTIF_KEY_HORA, hora);
-  if (window._notifTimeout) { clearTimeout(window._notifTimeout); window._notifTimeout = null; }
-  agendarNotificacaoLoop();
-  atualizarStatusNotif(true, hora);
-  showToast('⏰ Lembrete salvo para as ' + hora + '!');
-}
-
-function agendarNotificacaoLoop() {
-  if (window._notifTimeout) { clearTimeout(window._notifTimeout); window._notifTimeout = null; }
-  if (localStorage.getItem(NOTIF_KEY_ATIVO) !== 'true') return;
-  const hora   = localStorage.getItem(NOTIF_KEY_HORA) || NOTIF_HORA_PADRAO;
-  const partes = hora.split(':').map(Number);
-  const agora  = new Date();
-  const alvo   = new Date();
-  alvo.setHours(partes[0], partes[1], 0, 0);
-  if (alvo <= agora) alvo.setDate(alvo.getDate() + 1);
-  const ms = alvo - agora;
-  window._notifTimeout = setTimeout(function() {
-    dispararNotificacao();
-    setTimeout(agendarNotificacaoLoop, 5000);
-  }, ms);
-}
-
-function dispararNotificacao() {
-  if (!('Notification' in window) || Notification.permission !== 'granted') return;
-  const msg  = NOTIF_MSGS[Math.floor(Math.random() * NOTIF_MSGS.length)];
-  const opts = {
-    body: msg,
-    icon: 'icon.png',
-    badge: 'icon.png',
-    vibrate: [200, 100, 200],
-    tag: 'lembrete-diario',
-    renotify: true
-  };
-  if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-    navigator.serviceWorker.ready.then(function(reg) {
-      reg.showNotification('🧠 TDAH Care — Lembrete Diário', opts);
-    });
-  } else {
-    new Notification('🧠 TDAH Care — Lembrete Diário', opts);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', iniciarSistemaNotificacoes);
-// ═══════════════════════════════════════════════════════════════════════
-
-
-// ═══════════════════════════════════════════════════════════════════════
-// SISTEMA DE SELEÇÃO DE REMÉDIO
-// ═══════════════════════════════════════════════════════════════════════
-const REMEDIOS_CONFIG = {
-  ritalina:    { nome: 'Ritalina',     tipo: 'estimulante', durHoras: 5,  label: '4–6h',   fases: [
-    {min:0,   max:30,  titulo:'Absorção 0–30min',  cor:'#1565C0', desc:'Sendo absorvido. Evite refeições pesadas.'},
-    {min:30,  max:90,  titulo:'Início 30min–1h30', cor:'#1976D2', desc:'Ação iniciando. Normal boca seca.'},
-    {min:90,  max:240, titulo:'Pico 1h30–4h',      cor:'#00897B', desc:'Maior foco e controle de impulsos.'},
-    {min:240, max:360, titulo:'Declínio 4–6h',     cor:'#F57F17', desc:'Ação diminuindo gradualmente.'},
-    {min:360, max:Infinity, titulo:'Encerrado',    cor:'#C62828', desc:'Duração completa. Descanse.'},
-  ]},
-  ritalina_la: { nome: 'Ritalina LA',  tipo: 'estimulante', durHoras: 8,  label: '8h',     fases: [
-    {min:0,   max:60,  titulo:'Absorção 0–1h',   cor:'#1565C0', desc:'Sendo absorvido. Evite refeições pesadas.'},
-    {min:60,  max:180, titulo:'Início 1–3h',     cor:'#1976D2', desc:'Ação iniciando gradualmente.'},
-    {min:180, max:360, titulo:'Pico 3–6h',       cor:'#00897B', desc:'Foco sustentado. Alimente-se mesmo sem fome.'},
-    {min:360, max:480, titulo:'Declínio 6–8h',   cor:'#F57F17', desc:'Ação diminuindo.'},
-    {min:480, max:Infinity, titulo:'Encerrado',  cor:'#C62828', desc:'Duração completa. Descanse.'},
-  ]},
-  concerta:    { nome: 'Concerta',     tipo: 'estimulante', durHoras: 11, label: '10–12h', fases: [
-    {min:0,   max:60,  titulo:'Absorção 0–1h',    cor:'#1565C0', desc:'Liberação inicial. Evite refeições pesadas.'},
-    {min:60,  max:180, titulo:'Início 1–3h',      cor:'#1976D2', desc:'Ação iniciando. Sistema OROS ativo.'},
-    {min:180, max:480, titulo:'Pico 3–8h',        cor:'#00897B', desc:'Liberação contínua. Foco e controle no máximo.'},
-    {min:480, max:660, titulo:'Declínio 8–11h',   cor:'#F57F17', desc:'Ação diminuindo suavemente.'},
-    {min:660, max:Infinity, titulo:'Encerrado',   cor:'#C62828', desc:'Duração completa. Descanse.'},
-  ]},
-  venvanse:    { nome: 'Venvanse',     tipo: 'estimulante', durHoras: 12, label: '10–14h', fases: [
-    {min:0,   max:60,  titulo:'Absorção 0–1h',    cor:'#1565C0', desc:'Sendo absorvido. Evite refeições pesadas.'},
-    {min:60,  max:180, titulo:'Início 1–3h',      cor:'#1976D2', desc:'Ação iniciando. Normal boca seca.'},
-    {min:180, max:300, titulo:'Pico 3–5h',        cor:'#00897B', desc:'Maior foco e controle de impulsos.'},
-    {min:300, max:480, titulo:'Plena 5–8h',       cor:'#2E7D32', desc:'Foco sustentado. Alimente-se mesmo sem fome.'},
-    {min:480, max:600, titulo:'Declínio 8–10h',   cor:'#F57F17', desc:'Ação diminuindo.'},
-    {min:600, max:720, titulo:'Rebote 10–12h',    cor:'#E65100', desc:'Fim da ação. Cansaço e irritabilidade são normais.'},
-    {min:720, max:Infinity, titulo:'Encerrado',   cor:'#C62828', desc:'Duração completa. Descanse.'},
-  ]},
-  strattera:   { nome: 'Strattera',   tipo: 'nao_estimulante', label: 'contínuo' },
-  intuniv:     { nome: 'Intuniv',     tipo: 'nao_estimulante', label: 'contínuo' },
-  outro:       { nome: '',            tipo: 'nao_estimulante', label: 'outro' },
-};
-
-const REM_KEY = 'tdah_remedio_selecionado';
-const REM_NOME_OUTRO_KEY = 'tdah_remedio_outro_nome';
-
-let remedioAtualId = null;
-
-function iniciarSeletorRemedio() {
-  const salvo = localStorage.getItem(REM_KEY);
-  if (salvo && REMEDIOS_CONFIG[salvo]) {
-    remedioAtualId = salvo;
-    if (salvo === 'outro') {
-      const nomeOutro = localStorage.getItem(REM_NOME_OUTRO_KEY) || '';
-      const inp = document.getElementById('rem-outro-input');
-      if (inp) inp.value = nomeOutro;
-    }
-    aplicarRemedioSelecionado(salvo, false);
-  }
-}
-
-function selecionarRemedio(id) {
-  // Se for "outro", só salva se tiver nome digitado
-  if (id === 'outro') {
-    const inp = document.getElementById('rem-outro-input');
-    const nome = inp ? inp.value.trim() : '';
-    if (!nome) return; // aguarda digitação
-    localStorage.setItem(REM_NOME_OUTRO_KEY, nome);
-    REMEDIOS_CONFIG['outro'].nome = nome;
-  }
-  remedioAtualId = id;
-  localStorage.setItem(REM_KEY, id);
-  aplicarRemedioSelecionado(id, true);
-}
-
-function aplicarRemedioSelecionado(id, comToast) {
-  const cfg = REMEDIOS_CONFIG[id];
-  if (!cfg) return;
-
-  // Atualizar visual dos botões
-  document.querySelectorAll('.rem-opcao').forEach(el => el.classList.remove('selecionado'));
-  const optEl = document.getElementById('rem-opt-' + id);
-  if (optEl) optEl.classList.add('selecionado');
-
-  // Esconder seletor e mostrar painel correto
-  document.getElementById('remedio-seletor-wrap').style.display = 'none';
-
-  if (cfg.tipo === 'estimulante') {
-    document.getElementById('remedio-painel-estimulante').style.display = 'block';
-    document.getElementById('remedio-painel-simples').style.display = 'none';
-    // Atualizar título e duração
-    const titleEl = document.getElementById('remedio-title-est');
-    const durEl   = document.getElementById('remedio-dur-est');
-    if (titleEl) titleEl.textContent = '💊 ' + cfg.nome;
-    if (durEl)   durEl.textContent   = 'Duração: ' + cfg.durHoras + ' horas (' + cfg.label + ')';
-    // Atualizar FASESREMEDIO dinamicamente
-    window._remedioFasesAtual = cfg.fases;
-    window._remedioDurAtual   = cfg.durHoras * 60;
-  } else {
-    document.getElementById('remedio-painel-estimulante').style.display = 'none';
-    document.getElementById('remedio-painel-simples').style.display = 'block';
-    const nomeExib = id === 'outro' ? (localStorage.getItem(REM_NOME_OUTRO_KEY) || 'Outro') : cfg.nome;
-    const titleEl = document.getElementById('remedio-title-simples');
-    if (titleEl) titleEl.textContent = '💊 ' + nomeExib;
-    // Restaurar estado do dia se já registrado
-    renderRemedioSimples();
-  }
-
-  if (comToast) showToast('💊 ' + (id === 'outro' ? localStorage.getItem(REM_NOME_OUTRO_KEY) : cfg.nome) + ' selecionado!');
-}
-
-function trocarRemedio() {
-  document.getElementById('remedio-seletor-wrap').style.display = 'block';
-  document.getElementById('remedio-painel-estimulante').style.display = 'none';
-  document.getElementById('remedio-painel-simples').style.display = 'none';
-}
-
-// ── Remédio simples (não-estimulante / outro) ──────────────────────────────
-function registrarRemedioSimples(tomou) {
-  const agora = new Date();
-  state.remedio = {
-    tipo: 'simples',
-    tomou: tomou,
-    horaRegistro: agora,
-    remedioId: remedioAtualId,
-    nomeRemedio: remedioAtualId === 'outro'
-      ? (localStorage.getItem(REM_NOME_OUTRO_KEY) || 'Outro')
-      : (REMEDIOS_CONFIG[remedioAtualId] ? REMEDIOS_CONFIG[remedioAtualId].nome : remedioAtualId)
-  };
-  salvar();
-  renderRemedioSimples();
-  showToast(tomou ? '✅ Medicação registrada!' : '📝 Registrado como não tomado.');
-}
-
-function renderRemedioSimples() {
-  const rem = state.remedio;
-  const semReg = document.getElementById('simples-sem-registro');
-  const comReg = document.getElementById('simples-com-registro');
-  const badge  = document.getElementById('remedio-badge-simples');
-  if (!semReg || !comReg) return;
-
-  if (rem && rem.tipo === 'simples') {
-    semReg.style.display = 'none';
-    comReg.style.display = 'block';
-    const icon   = document.getElementById('simples-icon');
-    const status = document.getElementById('simples-status-txt');
-    const hora   = document.getElementById('simples-hora-txt');
-    if (icon)   icon.textContent   = rem.tomou ? '✅' : '❌';
-    if (status) status.textContent = rem.tomou ? 'Tomado hoje' : 'Não tomado hoje';
-    if (status) status.style.color = rem.tomou ? '#2E7D32' : '#C62828';
-    if (hora && rem.horaRegistro) {
-      const d = rem.horaRegistro instanceof Date ? rem.horaRegistro : new Date(rem.horaRegistro);
-      hora.textContent = 'Registrado às ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-    }
-    if (badge) {
-      badge.textContent  = rem.tomou ? 'Tomado' : 'Não tomado';
-      badge.className    = 'remedio-badge ' + (rem.tomou ? 'badge-ativo' : 'badge-inativo');
-    }
-    // Atualizar badge do header
-    const badgeMain = document.getElementById('remedio-badge');
-    if (badgeMain) {
-      badgeMain.textContent = rem.tomou ? 'Tomado' : 'Não tomado';
-      badgeMain.className   = 'remedio-badge ' + (rem.tomou ? 'badge-ativo' : 'badge-inativo');
-    }
-  } else {
-    semReg.style.display = 'block';
-    comReg.style.display = 'none';
-    if (badge) { badge.textContent = 'Não registrado'; badge.className = 'remedio-badge badge-inativo'; }
-  }
-}
-
-function resetarRemedioSimples() {
-  state.remedio = null;
-  salvar();
-  renderRemedioSimples();
-}
-
-// ── Patch: atualizarBarra usa fases dinâmicas se remédio foi selecionado ──
-const _atualizarBarraOriginal = typeof atualizarBarra === 'function' ? atualizarBarra : null;
-function atualizarBarraPatch() {
-  if (window._remedioFasesAtual) {
-    window.FASESREMEDIO   = window._remedioFasesAtual;
-  }
-  if (window._remedioDurAtual) {
-    // Atualiza duração para cálculos de tempo restante
-    window._durRemedioMin = window._remedioDurAtual;
-  }
-  if (_atualizarBarraOriginal) _atualizarBarraOriginal();
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  iniciarSeletorRemedio();
-  // Renderizar estado simples se já tinha remédio salvo
-  setTimeout(function() {
-    if (remedioAtualId) {
-      const cfg = REMEDIOS_CONFIG[remedioAtualId];
-      if (cfg && cfg.tipo === 'nao_estimulante') renderRemedioSimples();
-    }
-  }, 300);
-});
-// ═══════════════════════════════════════════════════════════════════════
 
 </script>
 
