@@ -4061,13 +4061,13 @@ function salvarApelido() {
 
   // ✅ Sincroniza imediatamente com o Firebase
   setTimeout(async () => {
-    if (window.fbReady && window.sincronizarFirebase) {
-      const dadosSemana = calcularDadosSemana();
-      await sincronizarComFirebase(dadosSemana);
-    }
-  }, 1500);
+  try {
+    salvar(); // garante dados locais salvos
+    const dadosSemana = calcularDadosSemana();
+    await sincronizarComFirebase(dadosSemana);
+  } catch(e) { console.warn('Sync inicial falhou:', e); }
+}, 1200);
 }
-
 function getApelido() {
   return localStorage.getItem('tdah_apelido') || 'Usuario';
 }
@@ -4340,6 +4340,7 @@ window._fbReady = true;
 window._sincronizarFirebase = async function(apelido, dados) {
   try {
     const userId = apelido.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    console.log('🔥 Enviando para Firebase:', userId, dados); 
     const payload = {
       apelido:     apelido,
       ultimoEnvio: new Date().toISOString(),
