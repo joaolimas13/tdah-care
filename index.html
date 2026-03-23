@@ -4011,7 +4011,7 @@ function salvarApelido() {
   const overlay = document.getElementById('apelido-overlay');
   if (overlay) overlay.classList.remove('show');
 
-  const nomes = {draraiza:'Dra. Raiza Oliveira', drgabriel:'Dr. Gabriel Gomes', dracaroline:'Dra. Caroline Guerra', JP:'JP', dra_raiza:'Dra. Raiza Oliveira', dr_gabriel:'Dr. Gabriel Gomes'};
+  const nomes = {draraiza:'Dra. Raiza Oliveira', drgabriel:'Dr. Gabriel Gomes', jp:'jp', dra_raiza:'Dra. Raiza Oliveira', dr_gabriel:'Dr. Gabriel Gomes'};
   showToast('Olá, ' + val + '! Profissional: ' + (nomes[psico]||psico));
 
   // ✅ Sincroniza com Firebase com retry automático
@@ -4038,7 +4038,7 @@ function getApelido() {
 function getPsicologa() {
   return localStorage.getItem('tdah_psicologa') || '';
 }
-const _PSICO_NOMES = {dra_raiza:'Dra. Raiza Oliveira',dr_gabriel:'Dr. Gabriel Gomes',JP:'JP'};
+const _PSICO_NOMES = {dra_raiza:'Dra. Raiza Oliveira',dr_gabriel:'Dr. Gabriel Gomes',jp:'jp'};
 
 
 function fecharAdmin() {
@@ -5365,7 +5365,7 @@ function fecharModalIncentivo() {
       <option value="" disabled selected>Selecione...</option>
       <option value="dra_raiza">Dra. Raiza Oliveira</option>
       <option value="dr_gabriel">Dr. Gabriel Gomes</option>
-      <option value="JP">JP</option>
+      <option value="jp"jp</option>
     </select>
     <button class="apelido-btn" onclick="salvarApelido()" style="margin-top:16px;">Entrar 🚀</button>
   </div>
