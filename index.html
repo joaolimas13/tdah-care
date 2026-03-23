@@ -4011,7 +4011,7 @@ function salvarApelido() {
   const overlay = document.getElementById('apelido-overlay');
   if (overlay) overlay.classList.remove('show');
 
-  const nomes = {draraiza:'Dra. Raiza Oliveira', drgabriel:'Dr. Gabriel Gomes', dracaroline:'Dra. Caroline Guerra'};
+  const nomes = {draraiza:'Dra. Raiza Oliveira', drgabriel:'Dr. Gabriel Gomes', JP:'JP'};
   showToast('Olá, ' + val + '! Profissional: ' + (nomes[psico]||psico));
 
   // ✅ Sincroniza imediatamente com o Firebase
