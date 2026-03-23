@@ -4011,17 +4011,26 @@ function salvarApelido() {
   const overlay = document.getElementById('apelido-overlay');
   if (overlay) overlay.classList.remove('show');
 
-  const nomes = {draraiza:'Dra. Raiza Oliveira', drgabriel:'Dr. Gabriel Gomes', JP:'JP'};
+  const nomes = {draraiza:'Dra. Raiza Oliveira', drgabriel:'Dr. Gabriel Gomes', dracaroline:'Dra. Caroline Guerra', JP:'JP', dra_raiza:'Dra. Raiza Oliveira', dr_gabriel:'Dr. Gabriel Gomes'};
   showToast('Olá, ' + val + '! Profissional: ' + (nomes[psico]||psico));
 
-  // ✅ Sincroniza imediatamente com o Firebase
-  setTimeout(async () => {
-  try {
-    salvar(); // garante dados locais salvos
-    const dadosSemana = calcularDadosSemana();
-    await sincronizarComFirebase(dadosSemana);
-  } catch(e) { console.warn('Sync inicial falhou:', e); }
-}, 1200);
+  // ✅ Sincroniza com Firebase com retry automático
+  const _tentarSyncInicial = async (tentativas) => {
+    try {
+      salvar();
+      if (!window._fbReady || !window._sincronizarFirebase) {
+        if (tentativas > 0) { setTimeout(() => _tentarSyncInicial(tentativas - 1), 1500); return; }
+        return;
+      }
+      const dadosSemana = calcularDadosSemana();
+      const ok = await sincronizarComFirebase(dadosSemana);
+      if (!ok && tentativas > 0) setTimeout(() => _tentarSyncInicial(tentativas - 1), 2000);
+    } catch(e) {
+      console.warn('Sync inicial falhou:', e);
+      if (tentativas > 0) setTimeout(() => _tentarSyncInicial(tentativas - 1), 2000);
+    }
+  };
+  setTimeout(() => _tentarSyncInicial(3), 1500);
 }
 function getApelido() {
   return localStorage.getItem('tdah_apelido') || 'Usuario';
@@ -4052,7 +4061,18 @@ function verificarSenhaAdmin() {
     const wrap = document.getElementById('admin-senha-wrap');
     const lista = document.getElementById('admin-lista');
     if(wrap) wrap.style.display = 'none';
-    if(lista) lista.style.display = 'block';
+    if(lista) {
+      lista.style.display = 'block';
+      // Adiciona botão atualizar se não existir
+      if (!document.getElementById('admin-refresh-btn')) {
+        const btn = document.createElement('button');
+        btn.id = 'admin-refresh-btn';
+        btn.textContent = '🔄 Atualizar lista';
+        btn.onclick = carregarDadosAdmin;
+        btn.style.cssText = 'width:100%;padding:10px;background:#E3F2FD;border:2px solid #90CAF9;border-radius:10px;font-size:0.85rem;font-weight:700;color:#1565C0;cursor:pointer;margin-bottom:14px;';
+        lista.parentNode.insertBefore(btn, lista);
+      }
+    }
     carregarDadosAdmin();
   } else {
     inp.style.borderColor = '#EF5350';
