@@ -3040,11 +3040,16 @@ function salvar() {
     metas: state.metas, metasFixas: state.metasFixas, celular: state.celular, leitura: state.leitura, copos: state.copos||0, copoMl: hidratConfig.copoMl||250,
     pom: (function(){
     const sN = window.S && window.S.dataHoje===hojeISO() ? window.S : null;
+    // CORREÇÃO: state.pom.minFoco é carregado do dailyData que já incluía sN.minFocoHoje
+    // na última chamada de salvar(). Para evitar dupla contagem, usamos APENAS sN.minFocoHoje
+    // quando há sessão ativa hoje, pois ele já contém o total correto da sessão atual.
+    // state.pom.minFoco só é usado quando não há sessão ativa (sN === null).
+    const minFocoFinal = sN ? (sN.minFocoHoje||0) : (state.pom.minFoco||0);
     return {
-      sessoes:     (state.pom.sessoes||0)    + (sN?sN.sessoes:0),
-      ciclos:      (state.pom.ciclos||0)     + (sN?sN.ciclos:0),
+      sessoes:     sN ? (sN.sessoes||0)    : (state.pom.sessoes||0),
+      ciclos:      sN ? (sN.ciclos||0)     : (state.pom.ciclos||0),
       sessNoCiclo: state.pom.sessNoCiclo||0,
-      minFoco:     (state.pom.minFoco||0)    + (sN?sN.minFocoHoje:0),
+      minFoco:     minFocoFinal,
       data:        state.pom.data||state.currentDate
     };
   })()
