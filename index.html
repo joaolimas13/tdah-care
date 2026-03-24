@@ -1136,7 +1136,7 @@ textarea { resize: none; height: 80px; }
       <div class="widget-item"><div class="widget-icon">💧</div><div class="widget-val" id="wr-hidrat">0</div><div class="widget-lbl">Água</div></div>
       <div class="widget-item"><div class="widget-icon">🏔️</div><div class="widget-val" id="wr-pom">0</div><div class="widget-lbl">Sessões</div></div>
     </div>
-
+    <div class="widget-score"><div class="widget-score-num" id="wr-score">0<span style="font-size:1rem;color:#90CAF9;">/100</span></div><div class="widget-score-lbl">score parcial de hoje</div></div>
   </div>
   
   <div class="streak-banner" id="streak-banner" style="display:none;">
@@ -1368,17 +1368,7 @@ textarea { resize: none; height: 80px; }
     <div class="divider"></div>
     <button class="btn btn-outline" onclick="limparConcluidas()" style="margin-top:8px;">🗑️ Limpar diárias concluídas</button>
   </div>
-  <div class="card">
-    <div class="card-title">📚 Páginas lidas hoje</div>
-    <div id="leitura-form">
-      <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:10px;">Quantas páginas você leu hoje?</p>
-      <div class="leitura-row">
-        <input type="number" id="paginas-input" placeholder="Ex: 30" min="0">
-        <button onclick="salvarLeitura()">💾 Salvar</button>
-      </div>
-    </div>
-    <div id="leitura-registrada" style="display:none;"></div>
-  </div>
+
   <div class="card"><div class="card-title">💡 Dica</div>
     <div style="background:#FFF8E1;border-left:4px solid #FFB300;border-radius:0 12px 12px 0;padding:12px 16px;font-size:0.83rem;color:#5D4037;line-height:1.5;"><strong>TDAH e metas:</strong> Divida tarefas grandes em passos pequenos. Cada ✅ libera dopamina!</div>
   </div>
@@ -3040,16 +3030,11 @@ function salvar() {
     metas: state.metas, metasFixas: state.metasFixas, celular: state.celular, leitura: state.leitura, copos: state.copos||0, copoMl: hidratConfig.copoMl||250,
     pom: (function(){
     const sN = window.S && window.S.dataHoje===hojeISO() ? window.S : null;
-    // CORREÇÃO: state.pom.minFoco é carregado do dailyData que já incluía sN.minFocoHoje
-    // na última chamada de salvar(). Para evitar dupla contagem, usamos APENAS sN.minFocoHoje
-    // quando há sessão ativa hoje, pois ele já contém o total correto da sessão atual.
-    // state.pom.minFoco só é usado quando não há sessão ativa (sN === null).
-    const minFocoFinal = sN ? (sN.minFocoHoje||0) : (state.pom.minFoco||0);
     return {
-      sessoes:     sN ? (sN.sessoes||0)    : (state.pom.sessoes||0),
-      ciclos:      sN ? (sN.ciclos||0)     : (state.pom.ciclos||0),
+      sessoes:     (state.pom.sessoes||0)    + (sN?sN.sessoes:0),
+      ciclos:      (state.pom.ciclos||0)     + (sN?sN.ciclos:0),
       sessNoCiclo: state.pom.sessNoCiclo||0,
-      minFoco:     minFocoFinal,
+      minFoco:     (state.pom.minFoco||0)    + (sN?sN.minFocoHoje:0),
       data:        state.pom.data||state.currentDate
     };
   })()
@@ -3575,7 +3560,7 @@ function gerarRelatorioMensal(){
   const avgSono = sonoN>0 ? (sonoTotal/sonoN) : null;
   const avgAgua = aguaN>0 ? Math.round((aguaTotal||0)/aguaN) : null;
   const pctMetas = metasTotal>0 ? Math.round((metasConcl/metasTotal)*100) : null;
-  const avgFoco = focoN>0 ? Math.round(focoTotal/focoN) : null;
+  const avgFoco = diasDados>0 ? Math.round(focoTotal/diasDados) : null;
   const avgCelular = celularN>0 ? Math.round(celularTotal/celularN) : null;
   const pctRemedio = Math.round((remedioN/diasDados)*100);
   const fmtD = d => d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
@@ -3627,8 +3612,8 @@ function gerarRelatorioMensal(){
     if(!avgFoco)return 'Nenhuma sessão de foco registrada no período.';
     const totalH = Math.floor(focoTotal/60), totalM = focoTotal%60;
     let txt=`Total de <strong>${totalH>0?totalH+'h ':''  }${totalM>0?totalM+'min':''}de foco registrado</strong> em ${focoN} dias ativos. Média de ${avgFoco}min/dia. `;
-    if(avgFoco>=60)txt+='Volume de foco <strong>adequado</strong>.';
-    else if(avgFoco>=30)txt+='Volume de foco <strong>moderado</strong>.';
+    if(avgFoco>=25)txt+='Volume de foco <strong>adequado</strong>.';
+    else if(avgFoco>=12)txt+='Volume de foco <strong>moderado</strong>.';
     else txt+='Volume de foco <strong>baixo</strong>. Considerar estratégias adicionais.';
     return txt;
   }
@@ -3660,7 +3645,7 @@ function gerarRelatorioMensal(){
       <div class="clinico-secao-titulo">📊 Indicadores do Período</div>
       ${avgSono!==null?row('Média de sono/noite', avgSono.toFixed(1)+'h', avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit', avgSono>=7?'Adequado':avgSono>=6?'Atenção':'Crítico'):''}
       ${pctMetas!==null?row('Taxa de conclusão de metas', pctMetas+'% ('+metasConcl+'/'+metasTotal+')', pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit', pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
-      ${avgFoco!==null?row('Média de foco diário', avgFoco+'min/dia', avgFoco>=40?'cl-norm':avgFoco>=20?'cl-atenc':'cl-crit', avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}
+      ${avgFoco!==null?row('Média de foco diário', avgFoco+'min/dia', avgFoco>=25?'cl-norm':avgFoco>=12?'cl-atenc':'cl-crit', avgFoco>=25?'Adequado':avgFoco>=12?'Moderado':'Baixo'):''}
       ${avgCelular!==null?row('Média de tempo de tela', Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia', avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit', avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
       ${remedioN>0?row('Registro de medicação', remedioN+'/'+diasDados+' dias', pctRemedio>=80?'cl-norm':pctRemedio>=60?'cl-atenc':'cl-crit', pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo'):''}
       ${reativarTotal>0?row('Ativações de protocolo de foco', reativarTotal+'x em '+Object.keys(diasReativar).length+' dias', reativarTotal<=5?'cl-norm':reativarTotal<=15?'cl-atenc':'cl-crit', reativarTotal<=5?'Ocasional':reativarTotal<=15?'Frequente':'Intenso'):''}
@@ -3679,16 +3664,7 @@ function gerarRelatorioMensal(){
       <div style="font-size:0.65rem;color:#90A4AE;margin-top:4px;">🟣 ≥60min adequado · 🔵 30-60min moderado</div>
     </div>
   </div>`:''}
-  <div class="clinico-wrap">
-    <div class="clinico-secao">
-      <div class="clinico-secao-titulo">📝 Análise Clínica Detalhada</div>
-      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#1565C0;margin-bottom:6px;">😴 Sono e Recuperação Neurológica</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerSono()}</div></div>
-      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#2E7D32;margin-bottom:6px;">🎯 Função Executiva e Planejamento</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerMetas()}</div></div>
-      <div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#7C3AED;margin-bottom:6px;">🏔️ Atenção Sustentada e Foco</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerFoco()}</div></div>
-      ${avgCelular!==null?`<div style="margin-bottom:14px;"><div style="font-size:0.78rem;font-weight:700;color:#F57F17;margin-bottom:6px;">📱 Regulação do Uso de Tecnologia</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">${parecerTela()}</div></div>`:''}
-      ${reativarTotal>0?`<div style="margin-bottom:4px;"><div style="font-size:0.78rem;font-weight:700;color:#E65100;margin-bottom:6px;">⚡ Uso do Protocolo de Reativação de Foco</div><div style="font-size:0.83rem;color:#37474F;line-height:1.7;">Protocolo ativado <strong>${reativarTotal}x</strong> em ${Object.keys(diasReativar).length} dias. ${reativarTotal<=5?'Uso esporádico.':reativarTotal<=15?'Frequência moderada de episódios de bloqueio cognitivo.':'Frequência elevada — pode indicar período de maior desregulação atencional.'}</div></div>`:''}
-    </div>
-  </div>
+
   <div class="clinico-wrap">
     <div class="clinico-secao">
       <div class="clinico-secao-titulo">⭐ Avaliação Geral do Período</div>
@@ -4011,26 +3987,17 @@ function salvarApelido() {
   const overlay = document.getElementById('apelido-overlay');
   if (overlay) overlay.classList.remove('show');
 
-  const nomes = {draraiza:'Dra. Raiza Oliveira', drgabriel:'Dr. Gabriel Gomes', jp:'jp', dra_raiza:'Dra. Raiza Oliveira', dr_gabriel:'Dr. Gabriel Gomes',jp:'jp'};
+  const nomes = {draraiza:'Dra. Raiza Oliveira', drgabriel:'Dr. Gabriel Gomes', dracaroline:'Dra. Caroline Guerra'};
   showToast('Olá, ' + val + '! Profissional: ' + (nomes[psico]||psico));
 
-  // ✅ Sincroniza com Firebase com retry automático
-  const _tentarSyncInicial = async (tentativas) => {
-    try {
-      salvar();
-      if (!window._fbReady || !window._sincronizarFirebase) {
-        if (tentativas > 0) { setTimeout(() => _tentarSyncInicial(tentativas - 1), 1500); return; }
-        return;
-      }
-      const dadosSemana = calcularDadosSemana();
-      const ok = await sincronizarComFirebase(dadosSemana);
-      if (!ok && tentativas > 0) setTimeout(() => _tentarSyncInicial(tentativas - 1), 2000);
-    } catch(e) {
-      console.warn('Sync inicial falhou:', e);
-      if (tentativas > 0) setTimeout(() => _tentarSyncInicial(tentativas - 1), 2000);
-    }
-  };
-  setTimeout(() => _tentarSyncInicial(3), 1500);
+  // ✅ Sincroniza imediatamente com o Firebase
+  setTimeout(async () => {
+  try {
+    salvar(); // garante dados locais salvos
+    const dadosSemana = calcularDadosSemana();
+    await sincronizarComFirebase(dadosSemana);
+  } catch(e) { console.warn('Sync inicial falhou:', e); }
+}, 1200);
 }
 function getApelido() {
   return localStorage.getItem('tdah_apelido') || 'Usuario';
@@ -4038,7 +4005,7 @@ function getApelido() {
 function getPsicologa() {
   return localStorage.getItem('tdah_psicologa') || '';
 }
-const _PSICO_NOMES = {dra_raiza:'Dra. Raiza Oliveira',dr_gabriel:'Dr. Gabriel Gomes',jp:'jp'};
+const _PSICO_NOMES = {dra_raiza:'Dra. Raiza Oliveira',dr_gabriel:'Dr. Gabriel Gomes',JP:'JP'};
 
 
 function fecharAdmin() {
@@ -4061,18 +4028,7 @@ function verificarSenhaAdmin() {
     const wrap = document.getElementById('admin-senha-wrap');
     const lista = document.getElementById('admin-lista');
     if(wrap) wrap.style.display = 'none';
-    if(lista) {
-      lista.style.display = 'block';
-      // Adiciona botão atualizar se não existir
-      if (!document.getElementById('admin-refresh-btn')) {
-        const btn = document.createElement('button');
-        btn.id = 'admin-refresh-btn';
-        btn.textContent = '🔄 Atualizar lista';
-        btn.onclick = carregarDadosAdmin;
-        btn.style.cssText = 'width:100%;padding:10px;background:#E3F2FD;border:2px solid #90CAF9;border-radius:10px;font-size:0.85rem;font-weight:700;color:#1565C0;cursor:pointer;margin-bottom:14px;';
-        lista.parentNode.insertBefore(btn, lista);
-      }
-    }
+    if(lista) lista.style.display = 'block';
     carregarDadosAdmin();
   } else {
     inp.style.borderColor = '#EF5350';
@@ -5365,7 +5321,7 @@ function fecharModalIncentivo() {
       <option value="" disabled selected>Selecione...</option>
       <option value="dra_raiza">Dra. Raiza Oliveira</option>
       <option value="dr_gabriel">Dr. Gabriel Gomes</option>
-      <option value="jp">jp</option>
+      <option value="JP">JP</option>
     </select>
     <button class="apelido-btn" onclick="salvarApelido()" style="margin-top:16px;">Entrar 🚀</button>
   </div>
