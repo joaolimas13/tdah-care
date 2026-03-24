@@ -1139,11 +1139,6 @@ textarea { resize: none; height: 80px; }
     <div class="widget-score"><div class="widget-score-num" id="wr-score">0<span style="font-size:1rem;color:#90CAF9;">/100</span></div><div class="widget-score-lbl">score parcial de hoje</div></div>
   </div>
   
-  <div class="streak-banner" id="streak-banner" style="display:none;">
-    <div class="streak-flame">🔥</div>
-    <div class="streak-info"><div class="streak-num" id="streak-num">0</div><div class="streak-label">dias consecutivos com metas</div></div>
-  </div>
-  
   <span id="stat-sono" style="display:none;"></span>
   <span id="stat-metas" style="display:none;"></span>
   <span id="stat-remedio" style="display:none;"></span>
@@ -1230,12 +1225,6 @@ textarea { resize: none; height: 80px; }
     <button class="btn-danger" onclick="resetarRemedio()">🔄 Registrar nova dose</button>
   </div>
 </div>
-  
-  <div class="card">
-    <div class="card-title">📊 Progresso de hoje</div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    <div class="progress-info"><span id="progress-text">0 de 0 metas concluídas</span><span id="progress-pct">0%</span></div>
-  </div>
 
   <button id="btn-salvar-dia" onclick="salvarDiarioManual()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1565C0,#1976D2);color:white;border:none;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(21,101,192,0.3);">💾 Salvar e Sincronizar com a Psicóloga</button>
 
@@ -2822,7 +2811,33 @@ function updateWidget() {
   document.getElementById('wr-metas').textContent = dn + '/' + tot;
   document.getElementById('wr-hidrat').textContent = (state.copos || 0);
   document.getElementById('wr-pom').textContent = ((state.pom.sessoes||0) + (window.S&&window.S.dataHoje===hojeISO()?window.S.sessoes:0)) || 0;
-  document.getElementById('wr-score').innerHTML = `${dn*10}<span style="font-size:1rem;color:#90CAF9;">/100</span>`;
+  // Score parcial real (0-100) baseado em sono, metas, foco e tela
+let _sTotal = 0, _sMax = 0;
+const _ultSono = state.sono[0];
+if (_ultSono) {
+  _sMax += 30;
+  _sTotal += _ultSono.horas >= 7 ? 30 : _ultSono.horas >= 6 ? 18 : _ultSono.horas >= 5 ? 8 : 2;
+}
+if (tot > 0) {
+  _sMax += 30;
+  _sTotal += Math.round((dn / tot) * 30);
+}
+const _sToday = window.S && window.S.dataHoje === hojeISO() ? window.S : null;
+const _ddHoje = state.dailyData[state.currentDate] || {};
+const _pomHoje = _ddHoje.pom || {};
+const _minFocoHoje = (_pomHoje.minFoco || 0) + (_sToday ? _sToday.minFocoHoje : 0);
+if (_minFocoHoje > 0) {
+  _sMax += 25;
+  _sTotal += Math.min(25, Math.round((_minFocoHoje / 60) * 25));
+}
+if (state.celular) {
+  const _celMin = state.celular.horas * 60 + state.celular.minutos;
+  _sMax += 15;
+  _sTotal += _celMin <= 120 ? 15 : _celMin <= 240 ? 10 : _celMin <= 360 ? 5 : 0;
+}
+const _scoreP = _sMax > 0 ? Math.round((_sTotal / _sMax) * 100) : 0;
+const _scoreCor = _scoreP >= 75 ? '#10B981' : _scoreP >= 50 ? '#F59E0B' : '#EF4444';
+document.getElementById('wr-score').innerHTML = `<span style="color:${_scoreCor};">${_scoreP}</span><span style="font-size:1rem;color:#90CAF9;">/100</span>`;
 }
 // --- LÓGICA DO REATIVAR FOCO (POR CONTEXTO E NÍVEL) ---
 
