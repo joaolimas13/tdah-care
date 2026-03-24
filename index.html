@@ -9,7 +9,7 @@
 
 <meta name="theme-color" content="#1565C0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">A
 <meta name="apple-mobile-web-app-title" content="TDAH Care">
 <meta name="mobile-web-app-capable" content="yes">
 
@@ -1127,6 +1127,131 @@ textarea { resize: none; height: 80px; }
 
 <div class="page active" id="page-home">
   <div class="greeting"><h2 id="greeting-text">Olá! 👋</h2><p>Acompanhe seu dia com TDAH</p></div>
+  
+<!-- ═══ WIDGET SONO RÁPIDO (HOME) ═══ -->
+<div id="sono-rapido-card" style="
+  background: linear-gradient(135deg, #1A237E, #1565C0);
+  border-radius: 18px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(21,101,192,0.25);
+  color: white;
+">
+
+  <!-- Cabeçalho -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+    <div>
+      <div style="font-size:1rem; font-weight:800; letter-spacing:0.3px;">😴 Como você dormiu?</div>
+      <div style="font-size:0.72rem; opacity:0.75; margin-top:2px;" id="sono-rapido-status-txt">Nenhum registro hoje</div>
+    </div>
+    <div id="sono-rapido-badge" style="
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 0.75rem;
+      font-weight:700;
+      display:none;
+    "></div>
+  </div>
+
+  <!-- FORMULÁRIO (visível antes de registrar) -->
+  <div id="sono-rapido-form">
+
+    <!-- Horas + Minutos -->
+    <div style="display:flex; gap:10px; margin-bottom:12px; align-items:flex-end;">
+      <div style="flex:1; text-align:center;">
+        <div style="font-size:0.65rem; opacity:0.7; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.5px;">Horas</div>
+        <input
+          id="sr-horas"
+          type="number"
+          min="0" max="24"
+          placeholder="7"
+          style="
+            width:100%; padding:12px 8px;
+            background:rgba(255,255,255,0.15);
+            border:2px solid rgba(255,255,255,0.25);
+            border-radius:12px;
+            font-size:1.5rem; font-weight:800;
+            color:white; text-align:center;
+            outline:none;
+          "
+        >
+      </div>
+      <div style="font-size:1.8rem; font-weight:300; opacity:0.5; padding-bottom:8px;">:</div>
+      <div style="flex:1; text-align:center;">
+        <div style="font-size:0.65rem; opacity:0.7; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.5px;">Minutos</div>
+        <input
+          id="sr-minutos"
+          type="number"
+          min="0" max="59"
+          placeholder="00"
+          style="
+            width:100%; padding:12px 8px;
+            background:rgba(255,255,255,0.15);
+            border:2px solid rgba(255,255,255,0.25);
+            border-radius:12px;
+            font-size:1.5rem; font-weight:800;
+            color:white; text-align:center;
+            outline:none;
+          "
+        >
+      </div>
+    </div>
+
+    <!-- Qualidade — botões simples -->
+    <div style="font-size:0.68rem; opacity:0.75; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Como foi?</div>
+    <div style="display:flex; gap:6px; margin-bottom:14px;" id="sr-qualidade-btns">
+      <button onclick="setSRQual('ruim',this)"    style="flex:1; padding:10px 4px; border-radius:12px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:1.2rem; cursor:pointer; transition:all 0.2s;" title="Ruim">😫</button>
+      <button onclick="setSRQual('regular',this)" style="flex:1; padding:10px 4px; border-radius:12px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:1.2rem; cursor:pointer; transition:all 0.2s;" title="Regular">😐</button>
+      <button onclick="setSRQual('boa',this)"     style="flex:1; padding:10px 4px; border-radius:12px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:1.2rem; cursor:pointer; transition:all 0.2s;" title="Boa">🙂</button>
+      <button onclick="setSRQual('otima',this)"   style="flex:1; padding:10px 4px; border-radius:12px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:1.2rem; cursor:pointer; transition:all 0.2s;" title="Ótima">😊</button>
+    </div>
+
+    <!-- Botão salvar -->
+    <button
+      onclick="salvarSonoRapido()"
+      style="
+        width:100%; padding:14px;
+        background:rgba(255,255,255,0.2);
+        border: 2px solid rgba(255,255,255,0.35);
+        border-radius:14px;
+        color:white; font-size:1rem; font-weight:800;
+        cursor:pointer; letter-spacing:0.3px;
+        transition: background 0.2s;
+      "
+      onmouseover="this.style.background='rgba(255,255,255,0.3)'"
+      onmouseout="this.style.background='rgba(255,255,255,0.2)'"
+    >
+      💾 Salvar sono
+    </button>
+  </div>
+
+  <!-- CONFIRMAÇÃO (visível após registrar) -->
+  <div id="sono-rapido-ok" style="display:none;">
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div style="font-size:3rem;" id="sr-ok-emoji">😊</div>
+      <div>
+        <div style="font-size:1.5rem; font-weight:900; line-height:1;" id="sr-ok-horas">—</div>
+        <div style="font-size:0.8rem; opacity:0.8; margin-top:2px;" id="sr-ok-qual">—</div>
+      </div>
+      <div style="margin-left:auto;">
+        <button
+          onclick="editarSonoRapido()"
+          style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; border-radius:10px; padding:7px 12px; font-size:0.75rem; font-weight:700; cursor:pointer;"
+        >✏️ Editar</button>
+      </div>
+    </div>
+
+    <!-- Barra visual de qualidade -->
+    <div style="margin-top:14px; height:6px; background:rgba(255,255,255,0.15); border-radius:3px; overflow:hidden;">
+      <div id="sr-ok-bar" style="height:100%; border-radius:3px; background:#69F0AE; transition:width 0.6s ease; width:0%;"></div>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size:0.62rem; opacity:0.6; margin-top:4px;">
+      <span>0h</span><span>Ideal: 7-9h</span><span>12h</span>
+    </div>
+  </div>
+
+</div>
   
   <div class="widget-resumo">
     <div class="widget-title">Resumo do dia</div>
@@ -5323,6 +5448,153 @@ function fecharModalIncentivo() {
   });
 })();
 
+</script>
+  <script>
+(function() {
+
+  let _srQual = null; // qualidade selecionada
+
+  // Emojis e labels de qualidade
+  const SR_QUAL = {
+    ruim:    { emoji:'😫', label:'Sono ruim',    bar:20,  cor:'#EF5350' },
+    regular: { emoji:'😐', label:'Sono regular', bar:50,  cor:'#FFA726' },
+    boa:     { emoji:'🙂', label:'Sono bom',     bar:75,  cor:'#29B6F6' },
+    otima:   { emoji:'😊', label:'Sono ótimo',   bar:100, cor:'#69F0AE' },
+  };
+
+  // Expõe globalmente para os onclick inline
+  window.setSRQual = function(val, btn) {
+    _srQual = val;
+    document.querySelectorAll('#sr-qualidade-btns button').forEach(b => {
+      b.style.background = 'rgba(255,255,255,0.08)';
+      b.style.borderColor = 'rgba(255,255,255,0.2)';
+      b.style.transform = 'scale(1)';
+    });
+    btn.style.background  = 'rgba(255,255,255,0.35)';
+    btn.style.borderColor = 'rgba(255,255,255,0.8)';
+    btn.style.transform   = 'scale(1.1)';
+  };
+
+  window.salvarSonoRapido = function() {
+    const h = parseInt(document.getElementById('sr-horas').value)   || 0;
+    const m = parseInt(document.getElementById('sr-minutos').value)  || 0;
+
+    if (h === 0 && m === 0) {
+      // Shake de feedback
+      const card = document.getElementById('sono-rapido-card');
+      card.style.transform = 'translateX(-6px)';
+      setTimeout(() => { card.style.transform = 'translateX(6px)'; }, 80);
+      setTimeout(() => { card.style.transform = 'translateX(0)'; },   160);
+      if (typeof showToast === 'function') showToast('⚠️ Informe quanto você dormiu!');
+      return;
+    }
+    if (!_srQual) {
+      if (typeof showToast === 'function') showToast('⚠️ Selecione como foi o sono!');
+      return;
+    }
+
+    // Garante que o estado do app existe
+    if (typeof state === 'undefined') {
+      if (typeof showToast === 'function') showToast('⚠️ App ainda carregando, tente novamente.');
+      return;
+    }
+
+    // Calcula horas decimais
+    const horasDec = h + (m / 60);
+
+    // Insere no estado do app (mesmo formato da tela Sono)
+    state.sono.unshift({
+      data:       typeof hoje === 'function' ? hoje() : new Date().toLocaleDateString('pt-BR'),
+      horas:      parseFloat(horasDec.toFixed(2)),
+      qualidade:  _srQual,
+      obs:        ''
+    });
+    if (state.sono.length > 7) state.sono = state.sono.slice(0, 7);
+
+    // Sincroniza com a tela Sono (se aberta)
+    state.horasSono = horasDec;
+
+    if (typeof salvar       === 'function') salvar();
+    if (typeof renderHistSono === 'function') renderHistSono();
+    if (typeof updateStats  === 'function') updateStats();
+    if (typeof updateWidget === 'function') updateWidget();
+    if (typeof showToast    === 'function') showToast('✅ Sono salvo!');
+
+    _mostrarConfirmacao(h, m, horasDec, _srQual);
+  };
+
+  window.editarSonoRapido = function() {
+    document.getElementById('sono-rapido-form').style.display = 'block';
+    document.getElementById('sono-rapido-ok').style.display   = 'none';
+    document.getElementById('sono-rapido-badge').style.display = 'none';
+    document.getElementById('sono-rapido-status-txt').textContent = 'Editando registro...';
+  };
+
+  function _mostrarConfirmacao(h, m, horasDec, qual) {
+    const q = SR_QUAL[qual];
+    const hLabel = m > 0
+      ? h + 'h ' + String(m).padStart(2,'0') + 'min'
+      : h + 'h de sono';
+    const sonoStatus = horasDec >= 7
+      ? '🟢 Dentro do ideal'
+      : horasDec >= 6
+      ? '🟡 Pouco abaixo do ideal'
+      : '🔴 Abaixo do recomendado';
+
+    document.getElementById('sr-ok-emoji').textContent  = q.emoji;
+    document.getElementById('sr-ok-horas').textContent  = hLabel;
+    document.getElementById('sr-ok-qual').innerHTML     = q.label + ' · ' + sonoStatus;
+
+    // Barra proporcional (0-12h = 0-100%)
+    const barPct = Math.min(100, Math.round((horasDec / 12) * 100));
+    const bar = document.getElementById('sr-ok-bar');
+    bar.style.background = q.cor;
+    setTimeout(() => { bar.style.width = barPct + '%'; }, 50);
+
+    // Badge no header
+    const badge = document.getElementById('sono-rapido-badge');
+    badge.textContent = q.emoji + ' ' + hLabel;
+    badge.style.display = 'block';
+
+    document.getElementById('sono-rapido-status-txt').textContent = 'Registrado hoje ✓';
+    document.getElementById('sono-rapido-form').style.display = 'none';
+    document.getElementById('sono-rapido-ok').style.display   = 'block';
+  }
+
+  // Ao carregar a página, verifica se já há registro de hoje
+  function _verificarRegistroExistente() {
+    if (typeof state === 'undefined') { setTimeout(_verificarRegistroExistente, 400); return; }
+    const ultSono = state.sono && state.sono[0];
+    if (!ultSono) return;
+
+    // Compara com a data de hoje
+    const hoje = typeof hojeISO === 'function'
+      ? hojeISO()
+      : new Date().toISOString().split('T')[0];
+
+    // Converte data do registro para ISO se necessário
+    const dataReg = ultSono.data; // pode ser dd/mm/yyyy
+    const dataRegISO = dataReg && dataReg.includes('/')
+      ? dataReg.split('/').reverse().join('-')
+      : dataReg;
+
+    if (dataRegISO === hoje) {
+      const h  = Math.floor(ultSono.horas);
+      const m  = Math.round((ultSono.horas - h) * 60);
+      const q  = ultSono.qualidade || 'boa';
+      _srQual  = q;
+      _mostrarConfirmacao(h, m, ultSono.horas, q);
+    }
+  }
+
+  // Inicializa após o DOM + app estarem prontos
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(_verificarRegistroExistente, 600));
+  } else {
+    setTimeout(_verificarRegistroExistente, 600);
+  }
+
+})();
 </script>
 
 <div class="apelido-overlay" id="apelido-overlay">
