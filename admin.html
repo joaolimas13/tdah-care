@@ -580,11 +580,7 @@
                 <div class="stat-val" id="total-pacientes">—</div>
                 <div class="stat-lbl">Pacientes registrados</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">⭐</div>
-                <div class="stat-val" id="score-medio">—</div>
-                <div class="stat-lbl">Score médio geral</div>
-            </div>
+
         </div>
 
         <!-- ACTION BAR -->
@@ -726,7 +722,7 @@
 
         const avgSono=sonoN>0?(sonoTotal/sonoN):null;
         const pctMetas=metasTotal>0?Math.round((metasConcl/metasTotal)*100):null;
-        const avgFoco=focoN>0?Math.round(focoTotal/focoN):null;
+        const avgFoco=diasDados>0?Math.round(focoTotal/diasDados):null;
         const avgCelular=celularN>0?Math.round(celularTotal/celularN):null;
         const pctRemedio=Math.round((remedioN/diasDados)*100);
 
@@ -778,8 +774,8 @@
             if(!avgFoco)return 'Nenhuma sessão de foco registrada.';
             const totalH=Math.floor(focoTotal/60),totalM=focoTotal%60;
             let t=`Total de <strong>${totalH>0?totalH+'h ':''}${totalM>0?totalM+'min':''}de foco</strong> em ${focoN} dias. Média ${avgFoco}min/dia. `;
-            if(avgFoco>=60)t+='Volume <strong>adequado</strong>.';
-            else if(avgFoco>=30)t+='Volume <strong>moderado</strong>.';
+            if(avgFoco>=25)t+='Volume <strong>adequado</strong>.';
+            else if(avgFoco>=12)t+='Volume <strong>moderado</strong>.';
             else t+='Volume <strong>baixo</strong>.';
             return t;
         }
@@ -812,7 +808,7 @@
                 <div class="clinico-secao-titulo">📊 Indicadores do Período</div>
                 ${avgSono!==null?row('Média de sono/noite',avgSono.toFixed(1)+'h',avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit',avgSono>=7?'Adequado':avgSono>=6?'Atenção':'Crítico'):''}
                 ${pctMetas!==null?row('Taxa de conclusão de metas',pctMetas+'% ('+metasConcl+'/'+metasTotal+')',pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit',pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
-                ${avgFoco!==null?row('Média de foco diário',avgFoco+'min/dia',avgFoco>=40?'cl-norm':avgFoco>=20?'cl-atenc':'cl-crit',avgFoco>=40?'Adequado':avgFoco>=20?'Moderado':'Baixo'):''}
+                ${avgFoco!==null?row('Média de foco diário',avgFoco+'min/dia',avgFoco>=25?'cl-norm':avgFoco>=12?'cl-atenc':'cl-crit',avgFoco>=25?'Adequado':avgFoco>=12?'Moderado':'Baixo'):''}
                 ${avgCelular!==null?row('Média de tempo de tela',Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia',avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit',avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
                 ${remedioN>0?row('Registro de medicação',remedioN+'/'+diasDados+' dias',pctRemedio>=80?'cl-norm':pctRemedio>=60?'cl-atenc':'cl-crit',pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo'):''}
                 ${leituraN>0?row('Leitura acumulada',leituraTotal+' páginas em '+leituraN+' dias','cl-norm','Registrada'):''}
@@ -894,7 +890,6 @@
             if (querySnapshot.empty) {
                 divLista.innerHTML = `<div class="loading-state" style="color:#64748B;">Nenhum paciente encontrado.</div>`;
                 document.getElementById('total-pacientes').innerText = "0";
-                document.getElementById('score-medio').innerText = "0";
                 return;
             }
 
@@ -930,11 +925,10 @@
                     <div class="patient-body">
                         <div class="analise-banner">${gerarAnalise(dados)}</div>
                         <div class="mini-grid">
-                            <div class="mini-item"><div class="mini-lbl">Score semanal</div><div class="mini-val" style="color:${sc};">${dados.score||0}</div></div>
                             <div class="mini-item"><div class="mini-lbl">Dias registrados</div><div class="mini-val">${dados.diasDados||0}</div></div>
                             <div class="mini-item"><div class="mini-lbl">Sono médio</div><div class="mini-val">${dados.sonoMedia ? dados.sonoMedia+'h' : '—'}</div></div>
                             <div class="mini-item"><div class="mini-lbl">Metas</div><div class="mini-val">${dados.metasPct!=null ? dados.metasPct+'%' : '—'}</div></div>
-                            <div class="mini-item"><div class="mini-lbl">Foco total</div><div class="mini-val">${dados.focoTotal ? dados.focoTotal+'min' : '—'}</div></div>
+                            <div class="mini-item"><div class="mini-lbl">Foco/dia</div><div class="mini-val">${(dados.focoTotal && dados.diasDados) ? Math.round(dados.focoTotal/dados.diasDados)+'min' : '—'}</div></div>
                         </div>
 
                         <div class="tab-nav">
@@ -969,7 +963,7 @@
             });
 
             document.getElementById('total-pacientes').innerText = qtdPacientes;
-            document.getElementById('score-medio').innerText = qtdPacientes > 0 ? (totalScore/qtdPacientes).toFixed(1) : '0';
+
 
         } catch (erro) {
             console.error("Erro:", erro);
@@ -1084,7 +1078,7 @@
         if(diasDados===0) return '<div class="clinico-aviso">Nenhum dado registrado neste período.</div>';
         const avgSono=sonoN>0?(sonoTotal/sonoN):null;
         const pctMetas=metasTotal>0?Math.round((metasConcl/metasTotal)*100):null;
-        const avgFoco=focoN>0?Math.round(focoTotal/focoN):null;
+        const avgFoco=diasDados>0?Math.round(focoTotal/diasDados):null;
         const avgCelular=celularN>0?Math.round(celularTotal/celularN):null;
         const pctRemedio=Math.round((remedioN/diasDados)*100);
         let sT=0,sM=0;
@@ -1107,7 +1101,7 @@
         <div class="clinico-secao"><div class="clinico-secao-titulo">📊 Indicadores</div>
         ${avgSono!==null?row('Sono médio',avgSono.toFixed(1)+'h',avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit',avgSono>=7?'Adequado':'Atenção'):''}
         ${pctMetas!==null?row('Taxa de metas',pctMetas+'%',pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit',pctMetas>=70?'Boa':'Baixa'):''}
-        ${avgFoco!==null?row('Foco médio',avgFoco+'min/dia',avgFoco>=40?'cl-norm':avgFoco>=20?'cl-atenc':'cl-crit',avgFoco>=40?'Adequado':'Baixo'):''}
+        ${avgFoco!==null?row('Foco médio',avgFoco+'min/dia',avgFoco>=25?'cl-norm':avgFoco>=12?'cl-atenc':'cl-crit',avgFoco>=25?'Adequado':avgFoco>=12?'Moderado':'Baixo'):''}
         ${avgCelular!==null?row('Tempo de tela',Math.floor(avgCelular/60)+'h/dia',avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit',avgCelular<=180?'OK':'Elevado'):''}
         ${remedioN>0?row('Medicação',remedioN+'/'+diasDados+' dias',pctRemedio>=80?'cl-norm':'cl-atenc',pctRemedio+'%'):''}
         </div></div>
