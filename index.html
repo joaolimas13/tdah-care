@@ -1124,6 +1124,134 @@ textarea { resize: none; height: 80px; }
   <div onclick="handleTitleTap()"><h1>🧠 TDAH Care</h1><span id="header-date"></span></div>
   <div style="font-size:2rem;cursor:pointer;" onclick="handleAdminTap()">👤</div>
 </div>
+
+<div class="page active" id="page-home">
+  <div class="greeting"><h2 id="greeting-text">Olá! 👋</h2><p>Acompanhe seu dia com TDAH</p></div>
+  
+<!-- ═══ WIDGET SONO RÁPIDO (HOME) ═══ -->
+<div id="sono-rapido-card" style="
+  background: linear-gradient(135deg, #1A237E, #1565C0);
+  border-radius: 18px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(21,101,192,0.25);
+  color: white;
+">
+
+  <!-- Cabeçalho -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+    <div>
+      <div style="font-size:1rem; font-weight:800; letter-spacing:0.3px;">😴 Como você dormiu?</div>
+      <div style="font-size:0.72rem; opacity:0.75; margin-top:2px;" id="sono-rapido-status-txt">Nenhum registro hoje</div>
+    </div>
+    <div id="sono-rapido-badge" style="
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 0.75rem;
+      font-weight:700;
+      display:none;
+    "></div>
+  </div>
+
+  <!-- FORMULÁRIO (visível antes de registrar) -->
+  <div id="sono-rapido-form">
+
+    <!-- Horas + Minutos -->
+    <div style="display:flex; gap:10px; margin-bottom:12px; align-items:flex-end;">
+      <div style="flex:1; text-align:center;">
+        <div style="font-size:0.65rem; opacity:0.7; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.5px;">Horas</div>
+        <input
+          id="sr-horas"
+          type="number"
+          min="0" max="24"
+          placeholder="7"
+          style="
+            width:100%; padding:12px 8px;
+            background:rgba(255,255,255,0.15);
+            border:2px solid rgba(255,255,255,0.25);
+            border-radius:12px;
+            font-size:1.5rem; font-weight:800;
+            color:white; text-align:center;
+            outline:none;
+          "
+        >
+      </div>
+      <div style="font-size:1.8rem; font-weight:300; opacity:0.5; padding-bottom:8px;">:</div>
+      <div style="flex:1; text-align:center;">
+        <div style="font-size:0.65rem; opacity:0.7; margin-bottom:5px; text-transform:uppercase; letter-spacing:0.5px;">Minutos</div>
+        <input
+          id="sr-minutos"
+          type="number"
+          min="0" max="59"
+          placeholder="00"
+          style="
+            width:100%; padding:12px 8px;
+            background:rgba(255,255,255,0.15);
+            border:2px solid rgba(255,255,255,0.25);
+            border-radius:12px;
+            font-size:1.5rem; font-weight:800;
+            color:white; text-align:center;
+            outline:none;
+          "
+        >
+      </div>
+    </div>
+
+    <!-- Qualidade — botões simples -->
+    <div style="font-size:0.68rem; opacity:0.75; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Como foi?</div>
+    <div style="display:flex; gap:6px; margin-bottom:14px;" id="sr-qualidade-btns">
+      <button onclick="setSRQual('ruim',this)"    style="flex:1; padding:10px 4px; border-radius:12px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:1.2rem; cursor:pointer; transition:all 0.2s;" title="Ruim">😫</button>
+      <button onclick="setSRQual('regular',this)" style="flex:1; padding:10px 4px; border-radius:12px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:1.2rem; cursor:pointer; transition:all 0.2s;" title="Regular">😐</button>
+      <button onclick="setSRQual('boa',this)"     style="flex:1; padding:10px 4px; border-radius:12px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:1.2rem; cursor:pointer; transition:all 0.2s;" title="Boa">🙂</button>
+      <button onclick="setSRQual('otima',this)"   style="flex:1; padding:10px 4px; border-radius:12px; border:2px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:white; font-size:1.2rem; cursor:pointer; transition:all 0.2s;" title="Ótima">😊</button>
+    </div>
+
+    <!-- Botão salvar -->
+    <button
+      onclick="salvarSonoRapido()"
+      style="
+        width:100%; padding:14px;
+        background:rgba(255,255,255,0.2);
+        border: 2px solid rgba(255,255,255,0.35);
+        border-radius:14px;
+        color:white; font-size:1rem; font-weight:800;
+        cursor:pointer; letter-spacing:0.3px;
+        transition: background 0.2s;
+      "
+      onmouseover="this.style.background='rgba(255,255,255,0.3)'"
+      onmouseout="this.style.background='rgba(255,255,255,0.2)'"
+    >
+      💾 Salvar sono
+    </button>
+  </div>
+
+  <!-- CONFIRMAÇÃO (visível após registrar) -->
+  <div id="sono-rapido-ok" style="display:none;">
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div style="font-size:3rem;" id="sr-ok-emoji">😊</div>
+      <div>
+        <div style="font-size:1.5rem; font-weight:900; line-height:1;" id="sr-ok-horas">—</div>
+        <div style="font-size:0.8rem; opacity:0.8; margin-top:2px;" id="sr-ok-qual">—</div>
+      </div>
+      <div style="margin-left:auto;">
+        <button
+          onclick="editarSonoRapido()"
+          style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; border-radius:10px; padding:7px 12px; font-size:0.75rem; font-weight:700; cursor:pointer;"
+        >✏️ Editar</button>
+      </div>
+    </div>
+
+    <!-- Barra visual de qualidade -->
+    <div style="margin-top:14px; height:6px; background:rgba(255,255,255,0.15); border-radius:3px; overflow:hidden;">
+      <div id="sr-ok-bar" style="height:100%; border-radius:3px; background:#69F0AE; transition:width 0.6s ease; width:0%;"></div>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size:0.62rem; opacity:0.6; margin-top:4px;">
+      <span>0h</span><span>Ideal: 7-9h</span><span>12h</span>
+    </div>
+  </div>
+
+</div>
   
   <div class="widget-resumo">
     <div class="widget-title">Resumo do dia</div>
@@ -2593,6 +2721,7 @@ renderAll();
 
 <div class="nav">
   <button class="nav-btn active" onclick="navigate('home',this)"><span class="icon">🏠</span><span>Início</span></button>
+  <button class="nav-btn" onclick="navigate('sono',this)"><span class="icon">😴</span><span>Sono</span></button>
   <button class="nav-btn" onclick="navigate('metas',this)"><span class="icon">🎯</span><span>Metas</span></button>
   <button class="nav-btn" onclick="navigate('calendario',this)"><span class="icon">🗓️</span><span>Histórico</span></button>
   <button class="nav-btn foco-nav" onclick="navigate('caverna',this)"><span class="icon">🚀</span><span>Foco</span></button>
@@ -3142,7 +3271,6 @@ function renderUI() {
 }
 function init() {
   carregar();
-  buildHoursGrid();
   carregarDia(hojeISO());
   renderCalendar(currentCalendarDate);
   const telSalvo = localStorage.getItem('tdah_psicologa_tel') || '';
@@ -3294,30 +3422,6 @@ function resetarRemedio() {
 
   // Re-aplicar visual do tipo selecionado
   onRemedioTipoChange();
-}
-function buildHoursGrid(){document.getElementById('hours-grid').innerHTML=[4,5,6,7,8,9,10,11].map(h=>`<button class="hour-btn" onclick="selecionarHora(${h},this)">${h}h</button>`).join('');}
-function selecionarHora(h,btn){document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');state.horasSono=h;document.getElementById('sono-display').textContent=h+'h';document.getElementById('horas-custom').value='';}
-function selecionarHoraCustom(){
-  const h = parseFloat(document.getElementById('horas-custom').value) || 0;
-  const m = parseFloat(document.getElementById('minutos-custom').value) || 0;
-  document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('selected'));
-  state.horasSono = h + (m / 60);
-  if(state.horasSono > 0){
-    const hh = Math.floor(state.horasSono);
-    const mm = Math.round((state.horasSono - hh) * 60);
-    document.getElementById('sono-display').textContent = mm > 0 ? hh+'h'+mm+'min' : hh+'h';
-  }
-}
-
-function salvarSono(){
-  if(state.currentDate!==hojeISO()){showToast('⚠️ Só registra sono para o dia atual');return;}
-  if(!state.horasSono){showToast('⚠️ Selecione quantas horas dormiu!');return;}
-  state.sono.unshift({data:hoje(),horas:state.horasSono,qualidade:document.getElementById('sono-qualidade').value,obs:document.getElementById('sono-obs').value});
-  if(state.sono.length>7)state.sono=state.sono.slice(0,7);
-  salvar();document.getElementById('sono-obs').value='';state.horasSono=null;
-  document.querySelectorAll('.hour-btn').forEach(b=>b.classList.remove('selected'));
-  document.getElementById('sono-display').textContent='—';document.getElementById('horas-custom').value='';
-  renderHistSono();updateStats();showToast('✅ Sono salvo!');
 }
 function renderHistSono(){
   const c=document.getElementById('historico-sono'),hEl=document.getElementById('ultimo-sono-home');
