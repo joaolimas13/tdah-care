@@ -1117,6 +1117,34 @@ textarea { resize: none; height: 80px; }
 .a2hs-btn-later { width:100%; padding:11px; border:1px solid rgba(255,255,255,0.08); border-radius:14px; background:transparent; color:#4B5563; font-size:0.82rem; font-weight:600; cursor:pointer; transition:color 0.2s; }
 .a2hs-btn-later:hover { color:#9CA3AF; }
 
+
+/* ===== Card de Atividade Física ===== */
+.activity-card { background: #2251a3; border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+.activity-card-title { font-size: 18px; font-weight: 500; color: #fff; margin: 0 0 2px; display: flex; align-items: center; gap: 8px; }
+.activity-card-sub { font-size: 13px; color: #93b8e8; margin: 0 0 18px; }
+.activity-section-label { font-size: 11px; color: #93b8e8; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+.emoji-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+.emoji-opt { background: #1a3a6b; border: 2px solid transparent; border-radius: 12px; padding: 12px 8px; cursor: pointer; text-align: center; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.emoji-opt:hover { background: #163261; }
+.emoji-opt.selected { border-color: #4da6ff; }
+.emoji-icon { font-size: 26px; line-height: 1; }
+.emoji-label { font-size: 11px; color: #93b8e8; }
+.emoji-opt.selected .emoji-label { color: #4da6ff; }
+.other-input { width: 100%; box-sizing: border-box; background: #1a3a6b; border: 2px solid transparent; border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 14px; outline: none; transition: border-color 0.15s; margin-bottom: 14px; font-family: inherit; }
+.other-input::placeholder { color: #5a82b8; }
+.other-input:focus { border-color: #4da6ff; }
+.other-input.hidden { display: none; }
+.intensity-row { display: flex; gap: 8px; margin-bottom: 18px; }
+.int-btn { flex: 1; background: #1a3a6b; border: 2px solid transparent; border-radius: 10px; padding: 10px 4px; cursor: pointer; text-align: center; color: #93b8e8; font-size: 13px; transition: all 0.15s; font-family: inherit; }
+.int-btn:hover { background: #163261; }
+.int-btn.selected { border-color: #4da6ff; color: #fff; }
+.activity-divider { border: none; border-top: 1px solid #1a3a6b; margin: 14px 0; }
+.save-btn { width: 100%; background: #4da6ff; border: none; border-radius: 12px; padding: 14px; color: #042C53; font-size: 16px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.15s; font-family: inherit; }
+.save-btn:hover { background: #6db8ff; }
+.save-btn:active { transform: scale(0.98); }
+.save-btn.saved { background: #3B6D11; color: #EAF3DE; }
+.save-btn.error { background: #993C1D; color: #fff; }
+
 </style>
 </head>
 <body>
@@ -1263,6 +1291,32 @@ textarea { resize: none; height: 80px; }
     </div>
     <div class="widget-score"><div class="widget-score-num" id="wr-score">0<span style="font-size:1rem;color:#90CAF9;">/100</span></div><div class="widget-score-lbl">score parcial de hoje</div></div>
   </div>
+  <!-- Card de Atividade Física -->
+  <div class="activity-card">
+    <p class="activity-card-title"><span style="font-size:22px;">🏃</span> Atividade física hoje?</p>
+    <p class="activity-card-sub" id="card-sub">Nenhum registro hoje</p>
+    <div class="activity-section-label">O que você fez?</div>
+    <div class="emoji-grid">
+      <div class="emoji-opt" onclick="selectActivity(this,'Caminhada')"><span class="emoji-icon">🚶</span><span class="emoji-label">Caminhada</span></div>
+      <div class="emoji-opt" onclick="selectActivity(this,'Corrida')"><span class="emoji-icon">🏃</span><span class="emoji-label">Corrida</span></div>
+      <div class="emoji-opt" onclick="selectActivity(this,'Musculação')"><span class="emoji-icon">🏋️</span><span class="emoji-label">Musculação</span></div>
+      <div class="emoji-opt" onclick="selectActivity(this,'Natação')"><span class="emoji-icon">🏊</span><span class="emoji-label">Natação</span></div>
+      <div class="emoji-opt" onclick="selectActivity(this,'Descanso')"><span class="emoji-icon">😴</span><span class="emoji-label">Descanso</span></div>
+      <div class="emoji-opt" onclick="selectActivity(this,'Outros')"><span class="emoji-icon">✏️</span><span class="emoji-label">Outros</span></div>
+    </div>
+    <input class="other-input hidden" id="other-input" type="text" placeholder="Qual atividade você fez?" oninput="updateSub()" />
+    <hr class="activity-divider" />
+    <div class="activity-section-label">Como foi?</div>
+    <div class="intensity-row">
+      <button class="int-btn" onclick="selectInt(this)">😓 Pesado</button>
+      <button class="int-btn" onclick="selectInt(this)">😊 Normal</button>
+      <button class="int-btn" onclick="selectInt(this)">😄 Leve</button>
+    </div>
+    <button class="save-btn" id="save-btn" onclick="saveAtividade()">
+      <span style="font-size:16px;">💾</span> Salvar atividade
+    </button>
+  </div>
+
   
   <span id="stat-sono" style="display:none;"></span>
   <span id="stat-metas" style="display:none;"></span>
@@ -5569,6 +5623,44 @@ function fecharModalIncentivo() {
   }
 
 })();
+
+  // ===== Card de Atividade Física =====
+  let selActivity = null, selInt = null;
+  function selectActivity(el, name) {
+    document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected'); selActivity = name;
+    const inp = document.getElementById('other-input');
+    if (name === 'Outros') { inp.classList.remove('hidden'); inp.focus(); }
+    else { inp.classList.add('hidden'); inp.value = ''; }
+    updateSub();
+  }
+  function selectInt(el) {
+    document.querySelectorAll('.int-btn').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected'); selInt = el.textContent.trim(); updateSub();
+  }
+  function updateSub() {
+    const sub = document.getElementById('card-sub');
+    const inp = document.getElementById('other-input');
+    const nome = selActivity === 'Outros' ? (inp.value.trim() || 'Outros') : selActivity;
+    if (nome && selInt) sub.textContent = nome + ' · ' + selInt;
+    else if (nome) sub.textContent = nome + ' selecionado';
+    else sub.textContent = 'Nenhum registro hoje';
+  }
+  function saveAtividade() {
+    const btn = document.getElementById('save-btn');
+    const inp = document.getElementById('other-input');
+    const nome = selActivity === 'Outros' ? inp.value.trim() : selActivity;
+    if (!selActivity) {
+      btn.classList.add('error'); btn.innerHTML = '<span style="font-size:16px;">⚠️</span> Selecione uma atividade';
+      setTimeout(() => { btn.classList.remove('error'); btn.innerHTML = '<span style="font-size:16px;">💾</span> Salvar atividade'; }, 1800); return;
+    }
+    if (selActivity === 'Outros' && !nome) {
+      btn.classList.add('error'); btn.innerHTML = '<span style="font-size:16px;">⚠️</span> Descreva a atividade';
+      setTimeout(() => { btn.classList.remove('error'); btn.innerHTML = '<span style="font-size:16px;">💾</span> Salvar atividade'; }, 1800); return;
+    }
+    btn.classList.add('saved'); btn.innerHTML = '<span style="font-size:16px;">✅</span> Salvo com sucesso!';
+  }
+
 </script>
 
 <div class="apelido-overlay" id="apelido-overlay">
