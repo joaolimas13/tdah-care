@@ -3699,14 +3699,16 @@ function abrirRelatorio(){
   max+=35;const ptsMetas=Math.round((pctM/100)*35);pts+=ptsMetas;pontosDetalhe.push({label:'🎯 Metas',pts:ptsMetas,max:35,ok:pctM>=70});if(pctM<70&&tot>0){const pend=tot-dn;dicas.push(`Ficaram ${pend} meta${pend>1?'s':''} pendente${pend>1?'s':''}.`);}
   const todasMetas=[...state.metasFixas,...state.metas.filter(m=>m.tipo==='diaria'||!m.tipo)];
   const metasH=`<div class="rel-section" style="border-color:#2E7D32;"><h3>🎯 Metas do Dia</h3><div class="rel-row"><span>Concluídas</span><span class="rv">${dn} de ${tot}</span></div><div class="rel-row"><span>Taxa</span><span class="rv">${pctM}%</span></div>${todasMetas.map(m=>`<div class="rel-row"><span>${m.tipo==='fixa'?'📌 ':''}<span style="font-size:0.7rem;">${m.prioridade==='alta'?'🔴':m.prioridade==='baixa'?'🟢':'🟡'}</span> ${m.texto}</span><span class="rv">${m.done?'✅':'⬜'}</span></div>`).join('')}</div>`;
-  const _sToday = window.S && window.S.dataHoje===hojeISO() ? window.S : null;
-  const p = {
-    sessoes: (state.pom.sessoes||0) + (_sToday?_sToday.sessoes:0),
-    ciclos:  (state.pom.ciclos||0)  + (_sToday?_sToday.ciclos:0),
-    minFoco: (state.pom.minFoco||0) + (_sToday?_sToday.minFocoHoje:0)
-  };
-  max+=25;const ptsPom=Math.min(25,Math.round((p.minFoco/80)*25));pts+=ptsPom;pontosDetalhe.push({label:'🏔️ Caverna',pts:ptsPom,max:25,ok:p.minFoco>=40});if(p.minFoco<40)dicas.push('Tente completar ao menos 2 sessões de Modo Caverna amanhã.');
-  const pomH=`<div class="rel-section" style="border-color:#7C3AED;"><h3>🏔️ Modo Caverna</h3><div class="rel-row"><span>Sessões</span><span class="rv">${p.sessoes}</span></div><div class="rel-row"><span>Ciclos</span><span class="rv">${p.ciclos}</span></div><div class="rel-row"><span>Foco total</span><span class="rv">${p.minFoco}min</span></div></div>`;
+  const _atividadeHoje = (state.dailyData[state.currentDate] || {}).atividade || null;
+  const _iconsAtiv = {Caminhada:'🚶',Corrida:'🏃',Musculação:'🏋️',Natação:'🏊',Descanso:'😴',Outros:'✏️'};
+  max+=25;
+  const ptsAtiv = _atividadeHoje ? 25 : 0;
+  pts+=ptsAtiv;
+  pontosDetalhe.push({label:'🏃 Atividade',pts:ptsAtiv,max:25,ok:!!_atividadeHoje});
+  if(!_atividadeHoje) dicas.push('Registre sua atividade física ou descanso do dia.');
+  const pomH = _atividadeHoje
+    ? `<div class="rel-section" style="border-color:#F97316;"><h3>🏃 Atividade Física</h3><div class="rel-row"><span>Atividade</span><span class="rv">${_iconsAtiv[_atividadeHoje.nome]||'✅'} ${_atividadeHoje.nome}</span></div><div class="rel-row"><span>Intensidade</span><span class="rv">${_atividadeHoje.intensidade||'—'}</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">✅ Registrado</span></div></div>`
+    : `<div class="rel-section" style="border-color:#B0BEC5;"><h3>🏃 Atividade Física</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado hoje.</p></div>`;
   max+=15;let celH='';
   if(state.celular){const tm=state.celular.horas*60+state.celular.minutos;const ptsCel=tm<=120?15:tm<=240?8:0;pts+=ptsCel;pontosDetalhe.push({label:'📱 Tela',pts:ptsCel,max:15,ok:ptsCel>=10});if(ptsCel<10)dicas.push('O tempo de tela foi elevado.');const av=avalCelular(state.celular.horas,state.celular.minutos);celH=`<div class="rel-section" style="border-color:#F57F17;"><h3>📱 Tela</h3><div class="rel-row"><span>Tempo</span><span class="rv">${state.celular.horas}h ${state.celular.minutos}min</span></div><div class="rel-row"><span>Avaliação</span><span class="rv">${av.msg}</span></div></div>`;}
   else{pontosDetalhe.push({label:'📱 Tela',pts:0,max:15,ok:false});dicas.push('Registre o tempo de tela amanhã.');celH=`<div class="rel-section" style="border-color:#B0BEC5;"><h3>📱 Tela</h3><p style="font-size:0.83rem;color:var(--text-light);">Não registrado.</p></div>`;}
@@ -5723,7 +5725,7 @@ function fecharModalIncentivo() {
     // Persiste via salvar() para consistência total com o restante do app
     if (typeof salvar === 'function') salvar();
     else { try { localStorage.setItem('tdah_daily', JSON.stringify(state.dailyData)); } catch(e) {} }
-    if (typeof atualizarResumo === 'function') atualizarResumo();
+    if (typeof updateWidget === 'function') updateWidget();
     btn.classList.add('saved'); btn.innerHTML = '<span style="font-size:16px;">✅</span> Salvo com sucesso!';
   }
 
