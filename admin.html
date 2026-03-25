@@ -702,7 +702,7 @@
 
         let sonoTotal=0,sonoN=0,sonoAbaixo7=0,metasConcl=0,metasTotal=0,
             focoTotal=0,focoN=0,celularTotal=0,celularN=0,remedioN=0,
-            leituraTotal=0,leituraN=0,diasDados=0;
+            leituraTotal=0,leituraN=0,diasDados=0,atividadeN=0;
         const sonoSeries=[],focoSeries=[];
 
         for(let i=daysN-1;i>=0;i--){
@@ -716,6 +716,7 @@
             if(dd.pom&&dd.pom.minFoco>0){focoTotal+=dd.pom.minFoco;focoN++;focoSeries.push(dd.pom.minFoco);}else focoSeries.push(0);
             if(dd.celular){celularTotal+=dd.celular.horas*60+dd.celular.minutos;celularN++;}
             if(dd.remedio)remedioN++;
+            if(dd.atividade)atividadeN++;
             if(dd.leitura){leituraTotal+=dd.leitura.paginas;leituraN++;}
         }
         if(diasDados===0) return '<div class="clinico-aviso">📋 Nenhum dado registrado neste período.</div>';
@@ -729,7 +730,7 @@
         let scoreTotal=0,scoreMax=0;
         if(avgSono!==null){scoreMax+=30;scoreTotal+=avgSono>=7?30:avgSono>=6?18:avgSono>=5?8:2;}
         if(pctMetas!==null){scoreMax+=30;scoreTotal+=Math.round((pctMetas/100)*30);}
-        if(avgFoco!==null){scoreMax+=25;scoreTotal+=Math.min(25,Math.round((avgFoco/60)*25));}
+        if(atividadeN>0){scoreMax+=25;scoreTotal+=Math.round((atividadeN/diasDados)*25);}
         if(avgCelular!==null){scoreMax+=15;scoreTotal+=avgCelular<=120?15:avgCelular<=240?10:avgCelular<=360?5:0;}
         const scoreGeral=scoreMax>0?Math.round((scoreTotal/scoreMax)*100):0;
         const sc=scoreCor(scoreGeral);
@@ -810,7 +811,8 @@
                 ${pctMetas!==null?row('Taxa de conclusão de metas',pctMetas+'% ('+metasConcl+'/'+metasTotal+')',pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit',pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
                 ${avgFoco!==null?row('Média de foco diário',avgFoco+'min/dia',avgFoco>=25?'cl-norm':avgFoco>=12?'cl-atenc':'cl-crit',avgFoco>=25?'Adequado':avgFoco>=12?'Moderado':'Baixo'):''}
                 ${avgCelular!==null?row('Média de tempo de tela',Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia',avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit',avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
-                ${remedioN>0?row('Registro de medicação',remedioN+'/'+diasDados+' dias',pctRemedio>=80?'cl-norm':pctRemedio>=60?'cl-atenc':'cl-crit',pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo'):''}
+                ${remedioN>0?row('Registro de medicação',remedioN+' vezes em '+diasDados+' dias','',''): ''}
+                ${atividadeN>0?row('Atividade física',atividadeN+' vezes em '+diasDados+' dias','',''):''}
                 ${leituraN>0?row('Leitura acumulada',leituraTotal+' páginas em '+leituraN+' dias','cl-norm','Registrada'):''}
             </div>
         </div>
@@ -1073,6 +1075,7 @@
             if(dd.pom&&dd.pom.minFoco>0){focoTotal+=dd.pom.minFoco;focoN++;focoSeries.push(dd.pom.minFoco);}else focoSeries.push(0);
             if(dd.celular){celularTotal+=dd.celular.horas*60+dd.celular.minutos;celularN++;}
             if(dd.remedio)remedioN++;
+            if(dd.atividade)atividadeN++;
             if(dd.leitura){leituraTotal+=dd.leitura.paginas;leituraN++;}
         }
         if(diasDados===0) return '<div class="clinico-aviso">Nenhum dado registrado neste período.</div>';
