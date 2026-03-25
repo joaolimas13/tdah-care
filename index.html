@@ -3241,6 +3241,7 @@ function salvar() {
   state.dailyData[state.currentDate] = {
     sono: state.sono, remedio: state.remedio ? {...state.remedio, horaRegistro: state.remedio.horaRegistro instanceof Date ? state.remedio.horaRegistro.toISOString() : state.remedio.horaRegistro} : null,
     metas: state.metas, metasFixas: state.metasFixas, celular: state.celular, leitura: state.leitura, copos: state.copos||0, copoMl: hidratConfig.copoMl||250,
+    atividade: (state.dailyData[state.currentDate]||{}).atividade || null,
     pom: (function(){
     const sN = window.S && window.S.dataHoje===hojeISO() ? window.S : null;
     return {
@@ -3291,6 +3292,8 @@ function carregarDia(dateISO) {
     }
   if(state.remedioTimer) clearInterval(state.remedioTimer);
   if(state.remedio&&dateISO===hojeISO()) state.remedioTimer=setInterval(atualizarBarra,30000);
+  // Restaura card de atividade se for hoje
+  if(dateISO===hojeISO()) setTimeout(restaurarCardAtividade, 50);
   renderUI();
 }
 function renderUI() {
@@ -3343,7 +3346,7 @@ function renderUI() {
   ].forEach(fn => { try { if(typeof fn==='function') fn(); } catch(e){ console.warn('renderUI:', fn.name, e); } });
 }
 function restaurarCardAtividade() {
-  const _dd = (state.dailyData[hojeISO()] || {}).atividade || null;
+  const _dd = (state.dailyData[state.currentDate || hojeISO()] || {}).atividade || null;
   if (!_dd) return;
   // Restaura seleção visual da atividade
   document.querySelectorAll('.emoji-opt').forEach(el => {
@@ -5712,9 +5715,14 @@ function fecharModalIncentivo() {
       setTimeout(() => { btn.classList.remove('error'); btn.innerHTML = '<span style="font-size:16px;">💾</span> Salvar atividade'; }, 1800); return;
     }
     const _hoje = hojeISO();
+    // Garante que currentDate é hoje para salvar() funcionar corretamente
+    state.currentDate = _hoje;
     if (!state.dailyData[_hoje]) state.dailyData[_hoje] = {};
+    // Salva atividade diretamente no dailyData (salvar() vai preservar com merge)
     state.dailyData[_hoje].atividade = { nome: nome, intensidade: selInt };
-    salvarState();
+    // Persiste via salvar() para consistência total com o restante do app
+    if (typeof salvar === 'function') salvar();
+    else { try { localStorage.setItem('tdah_daily', JSON.stringify(state.dailyData)); } catch(e) {} }
     if (typeof atualizarResumo === 'function') atualizarResumo();
     btn.classList.add('saved'); btn.innerHTML = '<span style="font-size:16px;">✅</span> Salvo com sucesso!';
   }
