@@ -2929,7 +2929,7 @@ function renderStreak() {
 }
 function updateWidget() {
   const s = state.sono[0];
-  document.getElementById('wr-sono').textContent = s ? s.horas + 'h' : '—';
+  document.getElementById('wr-sono').textContent = s ? (Math.floor(s.horas) + 'h' + (Math.round((s.horas % 1) * 60) > 0 ? Math.round((s.horas % 1) * 60) + 'm' : '')) : '-';
   const dn = state.metasFixas.filter(m=>m.done).length + state.metas.filter(m=>m.done).length;
   const tot = state.metasFixas.length + state.metas.length;
   document.getElementById('wr-metas').textContent = dn + '/' + tot;
