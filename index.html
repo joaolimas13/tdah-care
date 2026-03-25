@@ -1162,7 +1162,7 @@ textarea { resize: none; height: 80px; }
       <div class="widget-item"><div class="widget-icon">😴</div><div class="widget-val" id="wr-sono">—</div><div class="widget-lbl">Sono</div></div>
       <div class="widget-item"><div class="widget-icon">🎯</div><div class="widget-val" id="wr-metas">0/0</div><div class="widget-lbl">Metas</div></div>
       <div class="widget-item"><div class="widget-icon">💧</div><div class="widget-val" id="wr-hidrat">0</div><div class="widget-lbl">Água</div></div>
-      <div class="widget-item"><div class="widget-icon">🏔️</div><div class="widget-val" id="wr-pom">0</div><div class="widget-lbl">Sessões</div></div>
+      <div class="widget-item"><div class="widget-icon">🏃</div><div class="widget-val" id="wr-ativ">—</div><div class="widget-lbl">Atividade</div></div>
     </div>
     <div class="widget-score"><div class="widget-score-num" id="wr-score">0<span style="font-size:1rem;color:#90CAF9;">/100</span></div><div class="widget-score-lbl">score parcial de hoje</div></div>
   </div>
@@ -3002,13 +3002,20 @@ if (tot > 0) {
   _sMax += 30;
   _sTotal += Math.round((dn / tot) * 30);
 }
-const _sToday = window.S && window.S.dataHoje === hojeISO() ? window.S : null;
 const _ddHoje = state.dailyData[state.currentDate] || {};
-const _pomHoje = _ddHoje.pom || {};
-const _minFocoHoje = (_pomHoje.minFoco || 0) + (_sToday ? _sToday.minFocoHoje : 0);
-if (_minFocoHoje > 0) {
+const _atividadeHoje = _ddHoje.atividade || null;
+if (_atividadeHoje) {
   _sMax += 25;
-  _sTotal += Math.min(25, Math.round((_minFocoHoje / 60) * 25));
+  _sTotal += 25;
+}
+const _wrAtiv = document.getElementById('wr-ativ');
+if (_wrAtiv) {
+  if (_atividadeHoje) {
+    const _icons = {Caminhada:'🚶',Corrida:'🏃',Musculação:'🏋️',Natação:'🏊',Descanso:'😴',Outros:'✏️'};
+    _wrAtiv.textContent = _icons[_atividadeHoje.nome] || '✅';
+  } else {
+    _wrAtiv.textContent = '—';
+  }
 }
 if (state.celular) {
   const _celMin = state.celular.horas * 60 + state.celular.minutos;
@@ -3698,7 +3705,7 @@ function gerarRelatorioMensal(){
   let sonoTotal=0,sonoN=0,sonoAbaixo7=0,sonoAbaixo6=0,metasConcl=0,metasTotal=0,
       focoTotal=0,focoN=0,celularTotal=0,celularN=0,remedioN=0,
       leituraTotal=0,leituraN=0,diasDados=0,reativarTotal=0,
-      aguaTotal=0,aguaN=0;
+      aguaTotal=0,aguaN=0,atividadeN=0;
   const diasReativar={}; const sonoSeries=[]; const focoSeries=[];
 
   for(let i=daysN-1;i>=0;i--){
@@ -3717,6 +3724,7 @@ function gerarRelatorioMensal(){
     else focoSeries.push(0);
     if(dd.celular){ celularTotal+=dd.celular.horas*60+dd.celular.minutos; celularN++; }
     if(dd.remedio) remedioN++;
+    if(dd.atividade) atividadeN++;
     if(dd.leitura){ leituraTotal+=dd.leitura.paginas; leituraN++; }
     if(dd.copos>0){ aguaTotal+=(dd.copos*(dd.copoMl||250)); aguaN++; }
     if(dd.reativarFoco&&dd.reativarFoco.length>0){ reativarTotal+=dd.reativarFoco.length; diasReativar[iso]=dd.reativarFoco.length; }
@@ -3739,7 +3747,7 @@ function gerarRelatorioMensal(){
   let scoreTotal=0, scoreMax=0;
   if(avgSono!==null){scoreMax+=30; scoreTotal+=avgSono>=7?30:avgSono>=6?18:avgSono>=5?8:2;}
   if(pctMetas!==null){scoreMax+=30; scoreTotal+=Math.round((pctMetas/100)*30);}
-  if(avgFoco!==null){scoreMax+=25; scoreTotal+=Math.min(25,Math.round((avgFoco/60)*25));}
+  if(atividadeN>0){scoreMax+=25; scoreTotal+=Math.round((atividadeN/diasDados)*25);}
   if(avgCelular!==null){scoreMax+=15; scoreTotal+=avgCelular<=120?15:avgCelular<=240?10:avgCelular<=360?5:0;}
   const scoreGeral = scoreMax>0 ? Math.round((scoreTotal/scoreMax)*100) : 0;
   const scoreCor = scoreGeral>=75?'#2E7D32':scoreGeral>=50?'#F57F17':'#C62828';
@@ -3817,7 +3825,8 @@ function gerarRelatorioMensal(){
       ${pctMetas!==null?row('Taxa de conclusão de metas', pctMetas+'% ('+metasConcl+'/'+metasTotal+')', pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit', pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
       ${avgFoco!==null?row('Média de foco diário', avgFoco+'min/dia', avgFoco>=25?'cl-norm':avgFoco>=12?'cl-atenc':'cl-crit', avgFoco>=25?'Adequado':avgFoco>=12?'Moderado':'Baixo'):''}
       ${avgCelular!==null?row('Média de tempo de tela', Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia', avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit', avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
-      ${remedioN>0?row('Registro de medicação', remedioN+'/'+diasDados+' dias', pctRemedio>=80?'cl-norm':pctRemedio>=60?'cl-atenc':'cl-crit', pctRemedio>=80?'Frequente':pctRemedio>=60?'Moderado':'Baixo'):''}
+      ${remedioN>0?row('Registro de medicação', remedioN+' vezes em '+diasDados+' dias', '', ''):''}
+      ${atividadeN>0?row('Atividade física', atividadeN+' vezes em '+diasDados+' dias', '', ''):''}
       ${reativarTotal>0?row('Ativações de protocolo de foco', reativarTotal+'x em '+Object.keys(diasReativar).length+' dias', reativarTotal<=5?'cl-norm':reativarTotal<=15?'cl-atenc':'cl-crit', reativarTotal<=5?'Ocasional':reativarTotal<=15?'Frequente':'Intenso'):''}
       ${avgAgua!==null?row('Média de água/dia', avgAgua>=1000?(avgAgua/1000).toFixed(1)+'L':avgAgua+'ml', avgAgua>=2000?'cl-norm':avgAgua>=1000?'cl-atenc':'cl-crit', avgAgua>=2000?'Adequada':avgAgua>=1000?'Atenção':'Baixa'):''}
       ${leituraN>0?row('Leitura acumulada', leituraTotal+' páginas em '+leituraN+' dias', 'cl-norm', 'Registrada'):''}
@@ -5660,6 +5669,11 @@ function fecharModalIncentivo() {
       btn.classList.add('error'); btn.innerHTML = '<span style="font-size:16px;">⚠️</span> Descreva a atividade';
       setTimeout(() => { btn.classList.remove('error'); btn.innerHTML = '<span style="font-size:16px;">💾</span> Salvar atividade'; }, 1800); return;
     }
+    const _hoje = hojeISO();
+    if (!state.dailyData[_hoje]) state.dailyData[_hoje] = {};
+    state.dailyData[_hoje].atividade = { nome: nome, intensidade: selInt };
+    salvarState();
+    if (typeof atualizarResumo === 'function') atualizarResumo();
     btn.classList.add('saved'); btn.innerHTML = '<span style="font-size:16px;">✅</span> Salvo com sucesso!';
   }
 
