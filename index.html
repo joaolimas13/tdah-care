@@ -2991,6 +2991,17 @@ function updateWidget() {
   document.getElementById('wr-metas').textContent = dn + '/' + tot;
   document.getElementById('wr-hidrat').textContent = (state.copos || 0);
   document.getElementById('wr-pom').textContent = ((state.pom.sessoes||0) + (window.S&&window.S.dataHoje===hojeISO()?window.S.sessoes:0)) || 0;
+  // Atualiza atividade no widget resumo
+  const _wrAtivEl = document.getElementById('wr-ativ');
+  if (_wrAtivEl) {
+    const _ddAtiv = (state.dailyData[state.currentDate] || {}).atividade || null;
+    if (_ddAtiv) {
+      const _iconsMap = {Caminhada:'🚶',Corrida:'🏃',Musculação:'🏋️',Natação:'🏊',Descanso:'😴',Outros:'✏️'};
+      _wrAtivEl.textContent = _iconsMap[_ddAtiv.nome] || '✅';
+    } else {
+      _wrAtivEl.textContent = '—';
+    }
+  }
   // Score parcial real (0-100) baseado em sono, metas, foco e tela
 let _sTotal = 0, _sMax = 0;
 const _ultSono = state.sono[0];
@@ -3331,10 +3342,40 @@ function renderUI() {
    renderLeitura, renderPom, renderHidrat, renderStreak, updateWidget
   ].forEach(fn => { try { if(typeof fn==='function') fn(); } catch(e){ console.warn('renderUI:', fn.name, e); } });
 }
+function restaurarCardAtividade() {
+  const _dd = (state.dailyData[hojeISO()] || {}).atividade || null;
+  if (!_dd) return;
+  // Restaura seleção visual da atividade
+  document.querySelectorAll('.emoji-opt').forEach(el => {
+    const lbl = el.querySelector('.emoji-label');
+    if (lbl && lbl.textContent === _dd.nome) el.classList.add('selected');
+  });
+  // Restaura intensidade
+  document.querySelectorAll('.int-btn').forEach(el => {
+    if (el.textContent.trim() === _dd.intensidade) el.classList.add('selected');
+  });
+  // Atualiza subtítulo
+  const sub = document.getElementById('card-sub');
+  if (sub && _dd.nome && _dd.intensidade) sub.textContent = _dd.nome + ' · ' + _dd.intensidade;
+  else if (sub && _dd.nome) sub.textContent = _dd.nome + ' selecionado';
+  // Atualiza botão salvar
+  const btn = document.getElementById('save-btn');
+  if (btn) { btn.classList.add('saved'); btn.innerHTML = '<span style="font-size:16px;">✅</span> Salvo com sucesso!'; }
+  // Restaura variáveis JS
+  selActivity = _dd.nome;
+  selInt = _dd.intensidade;
+  // Mostra input outros se necessário
+  if (_dd.nome === 'Outros') {
+    const inp = document.getElementById('other-input');
+    if (inp) inp.classList.remove('hidden');
+  }
+}
+
 function init() {
   carregar();
   carregarDia(hojeISO());
   renderCalendar(currentCalendarDate);
+  setTimeout(restaurarCardAtividade, 100);
   const telSalvo = localStorage.getItem('tdah_psicologa_tel') || '';
   const telInput = document.getElementById('psicologa-tel-input');
   if(telInput && telSalvo) telInput.value = telSalvo;
@@ -4426,6 +4467,7 @@ window.addEventListener('pageshow', function(e) {
     try {
       carregar();
       carregarDia(state.currentDate || hojeISO());
+      setTimeout(restaurarCardAtividade, 100);
     } catch(err) { console.warn('pageshow reload:', err); }
   }
 });
