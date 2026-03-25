@@ -2995,12 +2995,7 @@ function updateWidget() {
   const _wrAtivEl = document.getElementById('wr-ativ');
   if (_wrAtivEl) {
     const _ddAtiv = (state.dailyData[state.currentDate] || {}).atividade || null;
-    if (_ddAtiv) {
-      const _iconsMap = {Caminhada:'🚶',Corrida:'🏃',Musculação:'🏋️',Natação:'🏊',Descanso:'😴',Outros:'✏️'};
-      _wrAtivEl.textContent = _iconsMap[_ddAtiv.nome] || '✅';
-    } else {
-      _wrAtivEl.textContent = '—';
-    }
+    _wrAtivEl.textContent = _ddAtiv ? '✅' : '—';
   }
   // Score parcial real (0-100) baseado em sono, metas, foco e tela
 let _sTotal = 0, _sMax = 0;
@@ -3020,14 +3015,7 @@ if (_atividadeHoje) {
   _sTotal += 25;
 }
 const _wrAtiv = document.getElementById('wr-ativ');
-if (_wrAtiv) {
-  if (_atividadeHoje) {
-    const _icons = {Caminhada:'🚶',Corrida:'🏃',Musculação:'🏋️',Natação:'🏊',Descanso:'😴',Outros:'✏️'};
-    _wrAtiv.textContent = _icons[_atividadeHoje.nome] || '✅';
-  } else {
-    _wrAtiv.textContent = '—';
-  }
-}
+if (_wrAtiv) _wrAtiv.textContent = _atividadeHoje ? '✅' : '—';
 if (state.celular) {
   const _celMin = state.celular.horas * 60 + state.celular.minutos;
   _sMax += 15;
@@ -3364,6 +3352,9 @@ function restaurarCardAtividade() {
   // Atualiza botão salvar
   const btn = document.getElementById('save-btn');
   if (btn) { btn.classList.add('saved'); btn.innerHTML = '<span style="font-size:16px;">✅</span> Salvo com sucesso!'; }
+  // Atualiza widget resumo
+  const _wrA = document.getElementById('wr-ativ');
+  if (_wrA) _wrA.textContent = '✅';
   // Restaura variáveis JS
   selActivity = _dd.nome;
   selInt = _dd.intensidade;
