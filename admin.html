@@ -256,6 +256,24 @@ select option { background:var(--slate2); color:var(--text); }
 /* MODAIS DO CALENDÁRIO */
 .cal-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
 .cal-modal-overlay.open { display:flex; }
+
+/* Botões base dos modais (fora do .cal-scope) */
+.cal-modal .btn, .cal-cancel-modal .btn, .cal-confirm-modal .btn {
+    padding:0.4rem 0.9rem; border-radius:6px; border:1px solid rgba(255,255,255,0.06);
+    cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:500;
+    transition:all 0.2s; background:#273549; color:#E2E8F0; display:inline-flex;
+    align-items:center; gap:4px;
+}
+.cal-modal .btn:hover, .cal-cancel-modal .btn:hover, .cal-confirm-modal .btn:hover { border-color:#3B82F6; color:#3B82F6; }
+.cal-modal .btn-primary, .cal-cancel-modal .btn-primary, .cal-confirm-modal .btn-primary { background:#2563EB; color:white; border-color:#2563EB; }
+.cal-modal .btn-primary:hover { background:#1A56DB; }
+.cal-modal .btn-ghost, .cal-cancel-modal .btn-ghost, .cal-confirm-modal .btn-ghost { background:transparent; color:#94A3B8; border:1px solid rgba(255,255,255,0.06); }
+.cal-modal .btn-ghost:hover, .cal-cancel-modal .btn-ghost:hover, .cal-confirm-modal .btn-ghost:hover { border-color:#94A3B8; color:#E2E8F0; }
+.cal-modal .btn-danger, .cal-cancel-modal .btn-danger, .cal-confirm-modal .btn-danger { background:transparent; color:#EF4444; border:1px solid #EF4444; }
+.cal-modal .btn-danger:hover { background:#EF4444; color:white; }
+
+.cal-modal-overlay .cal-template-btn { padding:0.3rem 0.7rem; border-radius:20px; border:1px solid rgba(255,255,255,0.06); background:#273549; font-size:0.72rem; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; color:#E2E8F0; }
+.cal-modal-overlay .cal-template-btn:hover { border-color:#3B82F6; color:#3B82F6; }
 .cal-modal { background:#1C2B40; border:1px solid rgba(59,130,246,0.2); border-radius:16px; padding:2rem; width:460px; max-width:95vw; box-shadow:0 24px 80px rgba(0,0,0,0.5); animation:fadeUp 0.25s ease; }
 .cal-modal-title { font-family:'Space Grotesk',sans-serif; font-size:1.15rem; font-weight:600; margin-bottom:1.5rem; padding-bottom:0.75rem; border-bottom:1px solid rgba(59,130,246,0.15); color:#E2E8F0; }
 .cal-form-group { margin-bottom:1rem; }
