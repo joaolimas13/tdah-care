@@ -257,20 +257,24 @@ select option { background:var(--slate2); color:var(--text); }
 .cal-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
 .cal-modal-overlay.open { display:flex; }
 
-/* Botões base dos modais (fora do .cal-scope) */
-.cal-modal .btn, .cal-cancel-modal .btn, .cal-confirm-modal .btn {
-    padding:0.4rem 0.9rem; border-radius:6px; border:1px solid rgba(255,255,255,0.06);
-    cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:500;
-    transition:all 0.2s; background:#273549; color:#E2E8F0; display:inline-flex;
-    align-items:center; gap:4px;
+/* ══ BOTÕES DOS MODAIS (seletor universal, fora do cal-scope) ══ */
+.cal-modal-overlay button.btn {
+    padding:0.45rem 1rem; border-radius:6px; border:1px solid rgba(255,255,255,0.1);
+    cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:500;
+    transition:all 0.2s; background:#273549; color:#E2E8F0;
+    display:inline-flex; align-items:center; gap:5px; line-height:1.4;
 }
-.cal-modal .btn:hover, .cal-cancel-modal .btn:hover, .cal-confirm-modal .btn:hover { border-color:#3B82F6; color:#3B82F6; }
-.cal-modal .btn-primary, .cal-cancel-modal .btn-primary, .cal-confirm-modal .btn-primary { background:#2563EB; color:white; border-color:#2563EB; }
-.cal-modal .btn-primary:hover { background:#1A56DB; }
-.cal-modal .btn-ghost, .cal-cancel-modal .btn-ghost, .cal-confirm-modal .btn-ghost { background:transparent; color:#94A3B8; border:1px solid rgba(255,255,255,0.06); }
-.cal-modal .btn-ghost:hover, .cal-cancel-modal .btn-ghost:hover, .cal-confirm-modal .btn-ghost:hover { border-color:#94A3B8; color:#E2E8F0; }
-.cal-modal .btn-danger, .cal-cancel-modal .btn-danger, .cal-confirm-modal .btn-danger { background:transparent; color:#EF4444; border:1px solid #EF4444; }
-.cal-modal .btn-danger:hover { background:#EF4444; color:white; }
+.cal-modal-overlay button.btn:hover { border-color:#3B82F6; color:#3B82F6; }
+.cal-modal-overlay button.btn-primary { background:#2563EB !important; color:white !important; border-color:#2563EB !important; }
+.cal-modal-overlay button.btn-primary:hover { background:#1A56DB !important; }
+.cal-modal-overlay button.btn-ghost { background:transparent !important; color:#94A3B8 !important; border:1px solid rgba(255,255,255,0.1) !important; }
+.cal-modal-overlay button.btn-ghost:hover { border-color:#94A3B8 !important; color:#E2E8F0 !important; }
+.cal-modal-overlay button.btn-danger { background:transparent !important; color:#EF4444 !important; border:1px solid #EF4444 !important; }
+.cal-modal-overlay button.btn-danger:hover { background:#EF4444 !important; color:white !important; }
+.cal-modal-overlay button.btn-cancel-msg { background:transparent !important; color:#25D366 !important; border:1px solid #25D366 !important; }
+.cal-modal-overlay button.btn-cancel-msg:hover { background:#25D366 !important; color:white !important; }
+.cal-modal-overlay button.btn-whatsapp-confirm { background:#25D366 !important; color:white !important; border-color:#25D366 !important; }
+.cal-modal-overlay button.btn-whatsapp-confirm:hover { background:#1da851 !important; border-color:#1da851 !important; }
 
 .cal-modal-overlay .cal-template-btn { padding:0.3rem 0.7rem; border-radius:20px; border:1px solid rgba(255,255,255,0.06); background:#273549; font-size:0.72rem; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; color:#E2E8F0; }
 .cal-modal-overlay .cal-template-btn:hover { border-color:#3B82F6; color:#3B82F6; }
