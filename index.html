@@ -352,6 +352,18 @@ textarea { resize: none; height: 80px; }
 .breath-circle.exhale { animation: breath-out 8s ease-in-out forwards; }
 @keyframes breath-in { from{transform:scale(1)} to{transform:scale(1.4)} }
 @keyframes breath-out { from{transform:scale(1.4)} to{transform:scale(1)} }
+/* ── Respiração Quadrática ── */
+#breath-anim-wrap { display:none; flex-direction:column; align-items:center; margin: 8px 0 18px; }
+#breath-circle-anim {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,109,0,0.4), rgba(255,109,0,0.1));
+  border: 3px solid rgba(255,109,0,0.5);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transform: scale(1);
+  box-shadow: 0 0 24px rgba(255,109,0,0.2);
+}
+#breath-counter { font-size: 2.2rem; font-weight: 800; color: white; line-height: 1; }
+#breath-phase-label { margin-top: 12px; font-size: 0.9rem; color: #9CA3AF; font-weight: 700; text-align: center; letter-spacing: 0.5px; }
 .passo-btn-row { display: flex; gap: 10px; }
 .passo-btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
 .passo-btn-next { background: linear-gradient(135deg, #E65100, #FF6D00); color: white; }
@@ -2756,6 +2768,15 @@ renderAll();
           <span class="passo-icon" id="passo-icon">💧</span>
           <div class="passo-titulo" id="passo-titulo">Beba água agora</div>
           <div class="passo-desc" id="passo-desc">Desidratação piora a concentração. Levante e beba um copo d'água.</div>
+
+        <!-- Círculo animado de respiração quadrática -->
+        <div id="breath-anim-wrap">
+          <div id="breath-circle-anim">
+            <span id="breath-counter"></span>
+          </div>
+          <div id="breath-phase-label">Aperte play para começar</div>
+        </div>
+
         </div>
         <div class="passo-btn-row">
           <button class="passo-btn passo-btn-skip" onclick="pularPasso()">Pular</button>
@@ -3033,7 +3054,7 @@ const passosReativar = {
     baixa: [
       { icon: '📝', titulo: 'Esvaziar "RAM"', desc: 'Escreva em um papel ou no app as 3 distrações que estão "rodando em segundo plano" na sua mente agora.', timer: 0 },
       { icon: '🧊', titulo: 'Água Gelada', desc: 'Beba um copo grande de água bem gelada. O choque térmico interno desperta o sistema de alerta.', timer: 0 },
-      { icon: '🫁', titulo: 'Respiração Quadrada', desc: 'Inspira 4s, Segura 4s, Expira 4s, Segura 4s. Faça isso por 1 minuto.', timer: 60 },
+      { icon: '🫁', titulo: 'Respiração Quadrada', desc: 'Respiração quadrática: 4s inspira → 4s segura → 4s expira → 4s segura. Siga o círculo.', timer: 64, isBreathing: true },
       { icon: '🏃', titulo: 'Atividade Física', desc: 'Faça 10 polichinelos ou 10 agachamentos rápidos para bombear sangue para o cérebro.', timer: 0 },
       { icon: '🎯', titulo: 'Ação Única', desc: 'Escolha uma tarefa minúscula e comece agora (ex: abrir o documento, lavar 1 prato).', timer: 0 }
     ],
@@ -3041,20 +3062,20 @@ const passosReativar = {
       { icon: '🔥', titulo: 'Atividade Física', desc: 'Trote no lugar ou faça "burpees". Suba o batimento cardíaco para liberar dopamina.', timer: 30 },
       { icon: '🚿', titulo: 'Água Gelada', desc: 'Lave o rosto com água gelada ou tome banho gelado. Isso "reseta" o sistema nervoso.', timer: 180 },
       { icon: '🌪️', titulo: 'Esvaziar "RAM"', desc: 'Pegue um papel e faça um "Brain Dump" furioso: escreva tudo o que te preocupa até sentir que não há mais nada.', timer: 0 },
-      { icon: '😮‍💨', titulo: 'Respiração do Fole', desc: 'Inspirações e expirações rápidas pelo nariz para oxigenação profunda.', timer: 30 }
+      { icon: '🫁', titulo: 'Respiração Quadrada', desc: 'Respiração quadrática: 4s inspira → 4s segura → 4s expira → 4s segura. Siga o círculo.', timer: 64, isBreathing: true }
     ]
   },
   publico: {
     baixa: [
       { icon: '📱', titulo: 'Esvaziar "RAM"', desc: 'Abra o bloco de notas do celular e liste as tarefas que estão te gerando ansiedade. Tire-as da cabeça e coloque-as na tela.', timer: 0 },
       { icon: '💧', titulo: 'Água Gelada', desc: 'Dê goles lentos em água gelada, sentindo o caminho que o líquido faz. Isso traz consciência corporal.', timer: 0 },
-      { icon: '🧘', titulo: 'Respiração Discreta', desc: 'Respire fundo pelo nariz e solte o ar pela boca o mais silenciosamente possível, contando até 6 na expiração.', timer: 0 },
+      { icon: '🫁', titulo: 'Respiração Quadrada', desc: 'Respiração quadrática: 4s inspira → 4s segura → 4s expira → 4s segura. Siga o círculo.', timer: 64, isBreathing: true },
       { icon: '🚶', titulo: 'Atividade Discreta', desc: 'Caminhe até o banheiro ou bebedouro em passo acelerado. O movimento das pernas ajuda a organizar o pensamento.', timer: 0 }
     ],
     alta: [
       { icon: '🚰', titulo: 'Água Gelada (Pulsos)', desc: 'Vá ao banheiro e deixe a água mais gelada possível correr sobre os seus pulsos.', timer: 30 },
       { icon: '🧱', titulo: 'Atividade Isométrica', desc: 'Pressione as palmas das mãos ou os pés contra o chão com toda a força por 10 segundos e relaxe. Repita 3 vezes.', timer: 30 },
-      { icon: '🫁', titulo: 'Respiração 4-7-8', desc: 'Inspira 4s, segura 7s, solta 8s. A expiração longa desativa a resposta de luta ou fuga.', timer: 0 },
+      { icon: '🫁', titulo: 'Respiração Quadrada', desc: 'Respiração quadrática: 4s inspira → 4s segura → 4s expira → 4s segura. Siga o círculo.', timer: 64, isBreathing: true },
       { icon: '✍️', titulo: 'Esvaziar "RAM"', desc: 'Escreva no papel tudo que está pensando e planejando até sentir alívio.', timer: 0 },
       { icon: '🧠', titulo: 'Emergência Cognitiva', desc: 'Escolha um número alto (ex: 187) e subtraia de 7 em 7 mentalmente (180, 173, 166...).', timer: 0 }
     ]
@@ -3145,7 +3166,7 @@ function renderizarPasso() {
   document.getElementById('passo-titulo').textContent = p.titulo;
   document.getElementById('passo-desc').textContent = p.desc;
 
-  // Bolinhas de progresso dinâmicas de acordo com a quantidade de passos
+  // Bolinhas de progresso dinâmicas
   let htmlDots = '';
   for(let i=0; i<protocoloAtual.length; i++) {
     if (i < passoAtual) htmlDots += '<div class="passo-dot done"></div>';
@@ -3156,16 +3177,23 @@ function renderizarPasso() {
 
   const playBtn = document.getElementById('passo-play-btn');
   clearInterval(timerPasso);
-  
+  stopBreathingAnimation();
+
   if (p.timer > 0) {
     playBtn.style.display = 'block';
-    // Se for 60s ou mais, mostra em minutos para ficar mais limpo
-    const txtTempo = p.timer >= 60 ? (p.timer/60) + 'min' : p.timer + 's';
+    const txtTempo = p.isBreathing ? '4 ciclos' : (p.timer >= 60 ? Math.round(p.timer/60) + 'min' : p.timer + 's');
     playBtn.textContent = '▶ Iniciar ' + txtTempo;
     playBtn.classList.remove('tocando');
     tempoPassoRestante = p.timer;
   } else {
     playBtn.style.display = 'none';
+  }
+
+  // Mostra/esconde círculo de respiração
+  const breathWrap = document.getElementById('breath-anim-wrap');
+  if (breathWrap) {
+    breathWrap.style.display = p.isBreathing ? 'flex' : 'none';
+    if (p.isBreathing) resetBreathCircle();
   }
 }
 
@@ -3180,30 +3208,100 @@ function proximoPasso() {
   renderizarPasso();
 }
 
+// ── Funções de Respiração Quadrática ──
+let _breathTimeout = null;
+let _breathPhaseIdx = 0;
+const BREATH_PHASES = [
+  { label: 'Inspira...', duration: 4, scale: 1.45, color: '#4FC3F7', shadow: 'rgba(79,195,247,0.4)' },
+  { label: 'Segura ✋',  duration: 4, scale: 1.45, color: '#FFD54F', shadow: 'rgba(255,213,79,0.4)'  },
+  { label: 'Expira...',  duration: 4, scale: 1.0,  color: '#69F0AE', shadow: 'rgba(105,240,174,0.4)' },
+  { label: 'Segura ✋',  duration: 4, scale: 1.0,  color: '#FF8A65', shadow: 'rgba(255,138,101,0.4)' }
+];
+
+function resetBreathCircle() {
+  const circle = document.getElementById('breath-circle-anim');
+  const label  = document.getElementById('breath-phase-label');
+  const counter = document.getElementById('breath-counter');
+  if (circle) {
+    circle.style.transition = 'none';
+    circle.style.transform  = 'scale(1)';
+    circle.style.background = 'radial-gradient(circle, rgba(255,109,0,0.4), rgba(255,109,0,0.1))';
+    circle.style.borderColor = 'rgba(255,109,0,0.5)';
+    circle.style.boxShadow  = '0 0 24px rgba(255,109,0,0.2)';
+  }
+  if (label)   label.textContent   = 'Aperte play para começar';
+  if (counter) counter.textContent = '';
+}
+
+function startBreathingAnimation() {
+  _breathPhaseIdx = 0;
+  _runBreathPhase();
+}
+
+function _runBreathPhase() {
+  const circle  = document.getElementById('breath-circle-anim');
+  const label   = document.getElementById('breath-phase-label');
+  const counter = document.getElementById('breath-counter');
+  if (!circle) return;
+
+  const ph = BREATH_PHASES[_breathPhaseIdx];
+  if (label) label.textContent = ph.label;
+
+  circle.style.transition  = `transform ${ph.duration}s ease-in-out, background ${ph.duration}s ease, border-color ${ph.duration}s ease, box-shadow ${ph.duration}s ease`;
+  circle.style.transform   = `scale(${ph.scale})`;
+  circle.style.background  = `radial-gradient(circle, ${ph.color}88, ${ph.color}22)`;
+  circle.style.borderColor = ph.color;
+  circle.style.boxShadow   = `0 0 32px ${ph.shadow}`;
+
+  let phCount = ph.duration;
+  if (counter) counter.textContent = phCount;
+  const phTimer = setInterval(() => {
+    phCount--;
+    if (counter) counter.textContent = phCount > 0 ? phCount : '';
+    if (phCount <= 0) clearInterval(phTimer);
+  }, 1000);
+
+  _breathTimeout = setTimeout(() => {
+    _breathPhaseIdx = (_breathPhaseIdx + 1) % 4;
+    _runBreathPhase();
+  }, ph.duration * 1000);
+}
+
+function stopBreathingAnimation() {
+  clearTimeout(_breathTimeout);
+  _breathTimeout = null;
+  resetBreathCircle();
+}
+
+
 function toggleTimerPasso() {
   clearInterval(timerPasso);
   const playBtn = document.getElementById('passo-play-btn');
-  
+  const p = protocoloAtual[passoAtual];
+
   if (playBtn.classList.contains('tocando')) {
     clearInterval(timerPasso);
     playBtn.classList.remove('tocando');
     playBtn.textContent = '▶ Continuar';
+    if (p && p.isBreathing) stopBreathingAnimation();
   } else {
     playBtn.classList.add('tocando');
+    if (p && p.isBreathing) startBreathingAnimation();
+
     timerPasso = setInterval(() => {
       tempoPassoRestante--;
       if (tempoPassoRestante <= 0) {
         clearInterval(timerPasso);
         playBtn.classList.remove('tocando');
         playBtn.textContent = '✅ Concluído';
+        if (p && p.isBreathing) stopBreathingAnimation();
         playBeep();
         setTimeout(proximoPasso, 1000);
       } else {
-        // Formata o timer rodando (ex: 2m 5s)
         const m = Math.floor(tempoPassoRestante / 60);
         const s = tempoPassoRestante % 60;
         const txt = m > 0 ? `${m}m ${s}s` : `${s}s`;
-        playBtn.textContent = '⏸ ' + txt;
+        if (!p || !p.isBreathing) playBtn.textContent = '⏸ ' + txt;
       }
     }, 1000);
   }
