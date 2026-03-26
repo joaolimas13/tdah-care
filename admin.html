@@ -1039,4 +1039,308 @@ function calRenderWeekView(){
         const d=new Date(ws); d.setDate(d.getDate()+i);
         const isToday=d.getTime()===today.getTime();
         const num=isToday?`<div class="week-day-num today-num">${d.getDate()}</div>`:`<div class="week-day-num">${d.getDate()}</div>`;
-        headerHtml+=`<div class="week-day-header"><div class="week-day-name
+
+        headerHtml+=`<div class="week-day-header"><div class="week-day-name">${DAYS_PT[d.getDay()]}</div>${num}</div>`;
+    }
+    let gridHtml='';
+    const timeColHtml = Array.from({length:endHour-startHour},(_,i)=>`<div class="time-label">${(startHour+i).toString().padStart(2,'0')}:00</div>`).join('');
+    gridHtml+=`<div class="time-col">${timeColHtml}</div>`;
+    for(let i=0;i<7;i++){
+        const d=new Date(ws); d.setDate(d.getDate()+i);
+        const dateStr=d.toISOString().split('T')[0];
+        const isToday=d.getTime()===today.getTime();
+        let hoursHtml='';
+        for(let h=startHour;h<endHour;h++){
+            hoursHtml+=`<div class="hour-line" style="top:${(h-startHour)*60}px"><div class="half-line"></div></div>`;
+        }
+        const dayEvents=calState.events.filter(e=>e.date===dateStr&&(!calState.selectedPatient||e.patientId===calState.selectedPatient));
+        let eventsHtml='';
+        dayEvents.forEach(ev=>{
+            const p=calGetPatient(ev.patientId);
+            if(!p)return;
+            const c=calPatientColor(p);
+            const startMins=calTimeToMins(ev.start)-(startHour*60);
+            const top=Math.max(0,startMins);
+            const height=Math.min(ev.duration,(endHour-startHour)*60-startMins);
+            if(top>=(endHour-startHour)*60)return;
+            eventsHtml+=`<div class="event-block" style="top:${top}px;height:${Math.max(20,height)}px;background:${c.bg};color:${c.text}"
+                onclick="calOpenEventModal('${ev.id}',null,null)">
+                <div class="event-title">${p.name.split(' ')[0]} — ${ev.type}</div>
+                <div class="event-time">${ev.start} · ${ev.duration}min</div>
+            </div>`;
+        });
+        const isCurrentDay=isToday?'<div class="current-time-line"></div>':'';
+        gridHtml+=`<div class="day-col" onclick="calOpenEventModal(null,'${dateStr}',null)">${hoursHtml}${eventsHtml}${isCurrentDay}</div>`;
+    }
+    return `<div class="week-view"><div class="week-header">${headerHtml}</div><div class="week-grid">${gridHtml}</div></div>`;
+}
+function calRenderDayView(){
+    const d=calState.currentDate;
+    const dateStr=d.toISOString().split('T')[0];
+    const startHour=7,endHour=21;
+    const timeColHtml=Array.from({length:endHour-startHour},(_,i)=>`<div class="time-label">${(startHour+i).toString().padStart(2,'0')}:00</div>`).join('');
+    let hoursHtml='';
+    for(let h=startHour;h<endHour;h++) hoursHtml+=`<div class="hour-line" style="top:${(h-startHour)*60}px"><div class="half-line"></div></div>`;
+    const dayEvents=calState.events.filter(e=>e.date===dateStr&&(!calState.selectedPatient||e.patientId===calState.selectedPatient));
+    let eventsHtml='';
+    dayEvents.forEach(ev=>{
+        const p=calGetPatient(ev.patientId); if(!p)return;
+        const c=calPatientColor(p);
+        const startMins=calTimeToMins(ev.start)-(startHour*60);
+        const top=Math.max(0,startMins);
+        const height=Math.min(ev.duration,(endHour-startHour)*60-startMins);
+        if(top>=(endHour-startHour)*60)return;
+        eventsHtml+=`<div class="event-block" style="top:${top}px;height:${Math.max(20,height)}px;background:${c.bg};color:${c.text};left:6px;right:6px"
+            onclick="calOpenEventModal('${ev.id}',null,null)">
+            <div class="event-title">${p.name} — ${ev.type}</div>
+            <div class="event-time">${ev.start} · ${ev.duration}min · ${ev.notes||''}</div>
+        </div>`;
+    });
+    const now=new Date(); const isToday=d.toDateString()===now.toDateString();
+    return `<div class="day-view"><div class="day-grid"><div class="time-col">${timeColHtml}</div>
+        <div class="day-col-main" onclick="calOpenEventModal(null,'${dateStr}',null)">${hoursHtml}${eventsHtml}${isToday?'<div class="current-time-line"></div>':''}</div>
+    </div></div>`;
+}
+function calRenderMonthView(){
+    const d=calState.currentDate;
+    const today=new Date(); today.setHours(0,0,0,0);
+    const first=new Date(d.getFullYear(),d.getMonth(),1);
+    const startDay=first.getDay();
+    const daysInMonth=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+    const prevDays=new Date(d.getFullYear(),d.getMonth(),0).getDate();
+    let html='<div class="month-view"><div class="month-grid">';
+    DAYS_PT.forEach(day=>html+=`<div class="month-day-label">${day}</div>`);
+    for(let i=startDay-1;i>=0;i--){
+        const dd=new Date(d.getFullYear(),d.getMonth()-1,prevDays-i);
+        const dateStr=dd.toISOString().split('T')[0];
+        html+=`<div class="month-day other-month" onclick="calSelectDay('${dateStr}')"><span class="month-day-num">${prevDays-i}</span></div>`;
+    }
+    for(let day=1;day<=daysInMonth;day++){
+        const dd=new Date(d.getFullYear(),d.getMonth(),day);
+        const dateStr=dd.toISOString().split('T')[0];
+        const isToday=dd.getTime()===today.getTime();
+        const dayEvents=calState.events.filter(e=>e.date===dateStr&&(!calState.selectedPatient||e.patientId===calState.selectedPatient));
+        let evHtml=dayEvents.slice(0,3).map(ev=>{
+            const p=calGetPatient(ev.patientId); if(!p)return'';
+            const c=calPatientColor(p);
+            return `<div class="month-event" style="background:${c.bg};color:${c.text}" onclick="event.stopPropagation();calOpenEventModal('${ev.id}',null,null)">${p.name.split(' ')[0]}</div>`;
+        }).join('');
+        if(dayEvents.length>3) evHtml+=`<div style="font-size:0.62rem;color:#64748B">+${dayEvents.length-3} mais</div>`;
+        html+=`<div class="month-day ${isToday?'today-cell':''}" onclick="calOpenEventModal(null,'${dateStr}',null)">
+            <span class="month-day-num">${day}</span>${evHtml}</div>`;
+    }
+    const totalCells=startDay+daysInMonth;
+    const remaining=(7-totalCells%7)%7;
+    for(let i=1;i<=remaining;i++){
+        const dd=new Date(d.getFullYear(),d.getMonth()+1,i);
+        const dateStr=dd.toISOString().split('T')[0];
+        html+=`<div class="month-day other-month" onclick="calSelectDay('${dateStr}')"><span class="month-day-num">${i}</span></div>`;
+    }
+    html+='</div></div>';
+    return html;
+}
+
+/* ════ NAVIGATION ════ */
+function calNavigate(dir){
+    const d=calState.currentDate;
+    if(calState.view==='week') d.setDate(d.getDate()+dir*7);
+    else if(calState.view==='day') d.setDate(d.getDate()+dir);
+    else d.setMonth(d.getMonth()+dir);
+    calState.miniDate=new Date(d);
+    calRender();
+}
+function calGoToday(){
+    calState.currentDate=new Date();
+    calState.miniDate=new Date();
+    calRender();
+}
+function calSetView(v){ calState.view=v; calRender(); }
+function calMiniNav(dir){ calState.miniDate.setMonth(calState.miniDate.getMonth()+dir); calRenderMiniCal(); }
+function calSelectDay(dateStr){
+    calState.currentDate=new Date(dateStr+'T12:00:00');
+    calState.miniDate=new Date(dateStr+'T12:00:00');
+    if(calState.view==='month') calState.view='day';
+    calRender();
+}
+function calSelectPatient(id){
+    calState.selectedPatient=calState.selectedPatient===id?null:id;
+    calRender();
+}
+function calFilterPatients(val){ calRenderSidebar(); }
+
+/* ════ STORAGE ════ */
+function calSave(){
+    try{
+        localStorage.setItem('calPatients',JSON.stringify(calState.patients));
+        localStorage.setItem('calEvents',JSON.stringify(calState.events));
+    }catch(e){}
+}
+function calLoad(){
+    try{
+        const p=localStorage.getItem('calPatients');
+        const e=localStorage.getItem('calEvents');
+        if(p) calState.patients=JSON.parse(p);
+        if(e) calState.events=JSON.parse(e);
+    }catch(e){}
+}
+
+/* ════ MODAIS ════ */
+function calOpenModal(id){ document.getElementById(id).classList.add('open'); }
+function calCloseModal(id){ document.getElementById(id).classList.remove('open'); }
+
+function calOpenEventModal(eventId, dateStr, hour){
+    calState.editingEventId=eventId;
+    const sel=document.getElementById('calEvtPatient');
+    sel.innerHTML=calState.patients.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+    if(eventId){
+        const ev=calState.events.find(e=>e.id===eventId);
+        if(!ev)return;
+        document.getElementById('calEventModalTitle').textContent='Editar Consulta';
+        document.getElementById('calEvtPatient').value=ev.patientId;
+        document.getElementById('calEvtDate').value=ev.date;
+        document.getElementById('calEvtStart').value=ev.start;
+        document.getElementById('calEvtDuration').value=ev.duration;
+        document.getElementById('calEvtType').value=ev.type;
+        document.getElementById('calEvtNotes').value=ev.notes||'';
+        document.getElementById('calEvtDeleteBtn').style.display='inline-flex';
+        document.getElementById('calEvtCancelMsgBtn').style.display='inline-flex';
+    } else {
+        document.getElementById('calEventModalTitle').textContent='Nova Consulta';
+        document.getElementById('calEvtDate').value=dateStr||hojeISO();
+        document.getElementById('calEvtStart').value=hour||'09:00';
+        document.getElementById('calEvtDuration').value='50';
+        document.getElementById('calEvtType').value='Sessão';
+        document.getElementById('calEvtNotes').value='';
+        document.getElementById('calEvtDeleteBtn').style.display='none';
+        document.getElementById('calEvtCancelMsgBtn').style.display='none';
+        if(calState.selectedPatient) document.getElementById('calEvtPatient').value=calState.selectedPatient;
+    }
+    calOpenModal('calEventModal');
+}
+function calSaveEvent(){
+    const patientId=document.getElementById('calEvtPatient').value;
+    const date=document.getElementById('calEvtDate').value;
+    const start=document.getElementById('calEvtStart').value;
+    const duration=parseInt(document.getElementById('calEvtDuration').value);
+    const type=document.getElementById('calEvtType').value;
+    const notes=document.getElementById('calEvtNotes').value;
+    if(!patientId||!date||!start){calShowToast('Preencha todos os campos obrigatórios.');return;}
+    if(calState.editingEventId){
+        const idx=calState.events.findIndex(e=>e.id===calState.editingEventId);
+        if(idx>=0) calState.events[idx]={...calState.events[idx],patientId,date,start,duration,type,notes};
+    } else {
+        calState.events.push({id:calGenId(),patientId,date,start,duration,type,notes});
+    }
+    calSave(); calCloseModal('calEventModal'); calRender();
+    calShowToast(calState.editingEventId?'Consulta atualizada!':'Consulta agendada!');
+}
+function calDeleteEvent(){
+    if(!calState.editingEventId)return;
+    if(!confirm('Excluir esta consulta?'))return;
+    calState.events=calState.events.filter(e=>e.id!==calState.editingEventId);
+    calSave(); calCloseModal('calEventModal'); calRender();
+    calShowToast('Consulta excluída.');
+}
+
+function calOpenPatientModal(patientId){
+    calState.editingPatientId=patientId;
+    const picker=document.getElementById('calColorPicker');
+    picker.innerHTML=CAL_COLORS.map((c,i)=>`<div class="cal-color-dot${calState.selectedColor===i?' selected':''}" style="background:${c.bg}" onclick="calSelectColor(${i})" title="${c.label}"></div>`).join('');
+    if(patientId){
+        const p=calGetPatient(patientId); if(!p)return;
+        document.getElementById('calPatientModalTitle').textContent='Editar Paciente';
+        document.getElementById('calPtName').value=p.name;
+        document.getElementById('calPtPhone').value=p.phone||'';
+        document.getElementById('calPtBirth').value=p.birth||'';
+        document.getElementById('calPtStart').value=p.start||'';
+        document.getElementById('calPtNotes').value=p.notes||'';
+        calState.selectedColor=p.color||0;
+        document.getElementById('calPtDeleteBtn').style.display='inline-flex';
+    } else {
+        document.getElementById('calPatientModalTitle').textContent='Novo Paciente';
+        document.getElementById('calPtName').value='';
+        document.getElementById('calPtPhone').value='';
+        document.getElementById('calPtBirth').value='';
+        document.getElementById('calPtStart').value='';
+        document.getElementById('calPtNotes').value='';
+        calState.selectedColor=0;
+        document.getElementById('calPtDeleteBtn').style.display='none';
+    }
+    calOpenModal('calPatientModal');
+}
+function calSelectColor(idx){
+    calState.selectedColor=idx;
+    document.querySelectorAll('.cal-color-dot').forEach((d,i)=>d.classList.toggle('selected',i===idx));
+}
+function calSavePatient(){
+    const name=document.getElementById('calPtName').value.trim();
+    if(!name){calShowToast('Informe o nome do paciente.');return;}
+    const data={name,phone:document.getElementById('calPtPhone').value,birth:document.getElementById('calPtBirth').value,
+        start:document.getElementById('calPtStart').value,notes:document.getElementById('calPtNotes').value,color:calState.selectedColor};
+    if(calState.editingPatientId){
+        const idx=calState.patients.findIndex(p=>p.id===calState.editingPatientId);
+        if(idx>=0) calState.patients[idx]={...calState.patients[idx],...data};
+    } else {
+        calState.patients.push({id:calGenId(),...data});
+    }
+    calSave(); calCloseModal('calPatientModal'); calRender();
+    calShowToast(calState.editingPatientId?'Paciente atualizado!':'Paciente cadastrado!');
+}
+function calDeletePatient(){
+    if(!calState.editingPatientId)return;
+    if(!confirm('Excluir este paciente e todas as suas consultas?'))return;
+    calState.events=calState.events.filter(e=>e.patientId!==calState.editingPatientId);
+    calState.patients=calState.patients.filter(p=>p.id!==calState.editingPatientId);
+    calSave(); calCloseModal('calPatientModal'); calRender();
+    calShowToast('Paciente excluído.');
+}
+
+/* ════ CANCELAMENTO ════ */
+function calOpenCancelModal(){
+    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
+    const p=calGetPatient(ev.patientId); if(!p)return;
+    const c=calPatientColor(p);
+    const initials=p.name.split(' ').slice(0,2).map(n=>n[0]).join('');
+    const avatar=document.getElementById('calCancelPatientAvatar');
+    avatar.textContent=initials; avatar.style.background=c.bg+'33'; avatar.style.color=c.bg;
+    document.getElementById('calCancelPatientName').textContent=p.name;
+    document.getElementById('calCancelEventInfo').textContent=`${calFormatDateBR(ev.date)} às ${ev.start} — ${ev.type}`;
+    const btns=document.getElementById('calTemplateBtns');
+    btns.innerHTML=CAL_TEMPLATES.map((t,i)=>`<button class="cal-template-btn" onclick="calApplyTemplate(${i})">${t.label}</button>`).join('');
+    calApplyTemplate(0);
+    calCloseModal('calEventModal');
+    calOpenModal('calCancelModal');
+}
+function calApplyTemplate(idx){
+    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
+    const p=calGetPatient(ev.patientId); if(!p)return;
+    document.getElementById('calCancelMsgText').value=CAL_TEMPLATES[idx].texto(p.name.split(' ')[0],calFormatDateBR(ev.date),ev.start);
+}
+function calSendWhatsApp(){
+    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
+    const p=calGetPatient(ev.patientId); if(!p)return;
+    const phone=calGetCleanPhone(p.phone);
+    const msg=encodeURIComponent(document.getElementById('calCancelMsgText').value);
+    window.open(phone?`https://wa.me/55${phone}?text=${msg}`:`https://wa.me/?text=${msg}`,'_blank');
+}
+function calSendSMS(){
+    const msg=encodeURIComponent(document.getElementById('calCancelMsgText').value);
+    const ev=calState.events.find(e=>e.id===calState.editingEventId);
+    const p=ev?calGetPatient(ev.patientId):null;
+    const phone=p?calGetCleanPhone(p.phone):'';
+    window.open(`sms:${phone}?body=${msg}`,'_blank');
+}
+
+/* ════ TOAST ════ */
+function calShowToast(msg){
+    const t=document.getElementById('calToast');
+    t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+/* ════ INIT ════ */
+calLoad();
+
+</script>
+</body>
+</html>
