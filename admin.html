@@ -770,7 +770,9 @@ function entrar() {
         document.getElementById('tela-senha').style.display = 'none';
         document.getElementById('conteudo-principal').style.display = 'block';
         calRender();
-        carregarDados();
+        function carregarDados() {
+    buscarRelatorios();
+}
     } else {
         document.getElementById('msg-erro').textContent = 'Senha incorreta.';
         setTimeout(() => document.getElementById('msg-erro').textContent = '', 3000);
@@ -1281,6 +1283,29 @@ function showToast(msg) {
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2800);
+}
+    // ── FIREBASE CONFIG ──
+const firebaseConfig = {
+    apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
+    authDomain: "cleantdah.firebaseapp.com",
+    projectId: "cleantdah",
+    storageBucket: "cleantdah.firebasestorage.app",
+    messagingSenderId: "553813989536",
+    appId: "1:553813989536:web:7852d1fea9d8906ee091c5"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+let dadosGlobais = [];
+
+const _URL_KEY = new URLSearchParams(window.location.search).get('key') || '';
+const _PSICO_NOMES = {
+    dra_raiza:  'Dra. Raiza Oliveira',
+    dr_gabriel: 'Dr. Gabriel Gomes',
+    jp: 'jp'
+};
+if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
+    document.getElementById('topbar-psico').textContent = _PSICO_NOMES[_URL_KEY];
+    document.getElementById('page-sub-txt').textContent = 'Painel de ' + _PSICO_NOMES[_URL_KEY];
 }
 </script>
 </body>
