@@ -271,6 +271,9 @@ select option { background:var(--slate2); color:var(--text); }
 .cal-modal-actions { display:flex; gap:0.75rem; justify-content:flex-end; margin-top:1.5rem; padding-top:1rem; border-top:1px solid rgba(59,130,246,0.15); }
 .cal-modal-actions .btn-cancel-msg { background:transparent; color:#25D366; border:1px solid #25D366; }
 .cal-modal-actions .btn-cancel-msg:hover { background:#25D366; color:white; }
+.cal-modal-actions .btn-whatsapp-confirm { background:#25D366; color:white; border:1px solid #25D366; }
+.cal-modal-actions .btn-whatsapp-confirm:hover { background:#1da851; border-color:#1da851; }
+.cal-confirm-modal { background:#1C2B40; border:1px solid rgba(59,130,246,0.2); border-radius:16px; padding:2rem; width:520px; max-width:95vw; box-shadow:0 24px 80px rgba(0,0,0,0.5); animation:fadeUp 0.25s ease; }
 .cal-toast { position:fixed; bottom:2rem; right:2rem; background:#1C2B40; color:#E2E8F0; border:1px solid rgba(59,130,246,0.2); padding:0.75rem 1.25rem; border-radius:10px; font-size:0.82rem; opacity:0; transform:translateY(10px); transition:all 0.3s; z-index:9999; pointer-events:none; }
 .cal-toast.show { opacity:1; transform:translateY(0); }
 .cal-cancel-modal { background:#1C2B40; border:1px solid rgba(59,130,246,0.2); border-radius:16px; padding:2rem; width:520px; max-width:95vw; box-shadow:0 24px 80px rgba(0,0,0,0.5); animation:fadeUp 0.25s ease; }
@@ -437,7 +440,8 @@ select option { background:var(--slate2); color:var(--text); }
     </div>
     <div class="cal-modal-actions">
       <button class="btn btn-danger" id="calEvtDeleteBtn" onclick="calDeleteEvent()" style="display:none">Excluir</button>
-      <button class="btn btn-cancel-msg" id="calEvtCancelMsgBtn" onclick="calOpenCancelModal()" style="display:none">📲 Cancelar consulta</button>
+      <button class="btn btn-cancel-msg" id="calEvtCancelMsgBtn" onclick="calOpenCancelModal()" style="display:none">📲 Cancelar</button>
+      <button class="btn btn-whatsapp-confirm" id="calEvtConfirmBtn" onclick="calOpenConfirmModal()" style="display:none">✅ Confirmar consulta</button>
       <button class="btn btn-ghost" onclick="calCloseModal('calEventModal')">Fechar</button>
       <button class="btn btn-primary" onclick="calSaveEvent()">Salvar</button>
     </div>
@@ -510,6 +514,37 @@ select option { background:var(--slate2); color:var(--text); }
       <button class="btn btn-danger" id="calPtDeleteBtn" onclick="calDeletePatient()" style="display:none">Excluir</button>
       <button class="btn btn-ghost" onclick="calCloseModal('calPatientModal')">Cancelar</button>
       <button class="btn btn-primary" onclick="calSavePatient()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMAÇÃO WHATSAPP -->
+<div class="cal-modal-overlay" id="calConfirmModal">
+  <div class="cal-confirm-modal">
+    <div class="cal-modal-title">✅ Confirmação de Consulta</div>
+    <div style="background:#1E293B;border-radius:8px;padding:1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.75rem;">
+      <div id="calConfirmPatientAvatar" class="cal-pat-avatar" style="width:40px;height:40px;font-size:0.9rem;flex-shrink:0"></div>
+      <div>
+        <div id="calConfirmPatientName" style="font-weight:500;font-size:0.9rem;color:#E2E8F0"></div>
+        <div id="calConfirmEventInfo" style="font-size:0.78rem;color:#64748B"></div>
+      </div>
+    </div>
+    <div class="cal-form-group">
+      <label class="cal-form-label">Template da mensagem</label>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem" id="calConfirmTemplateBtns"></div>
+    </div>
+    <div class="cal-form-group">
+      <label class="cal-form-label">Mensagem <span style="font-weight:300;text-transform:none;letter-spacing:0">(editável)</span></label>
+      <textarea class="cal-form-textarea" id="calConfirmMsgText" style="min-height:130px;font-size:0.85rem;line-height:1.5"></textarea>
+    </div>
+    <div style="background:rgba(37,211,102,0.08);border-radius:6px;padding:0.75rem;font-size:0.76rem;color:#25D366;margin-bottom:1rem;border:1px solid rgba(37,211,102,0.2)">
+      💬 O paciente receberá a mensagem de confirmação pelo <strong>WhatsApp</strong>.
+    </div>
+    <div class="cal-modal-actions" style="justify-content:space-between">
+      <button class="btn btn-ghost" onclick="calCloseModal('calConfirmModal')">Voltar</button>
+      <button class="btn" style="background:#25D366;color:white;border:none;font-size:0.88rem;padding:0.5rem 1.2rem" onclick="calSendConfirmWhatsApp()">
+        <span style="margin-right:6px">📲</span> Enviar pelo WhatsApp
+      </button>
     </div>
   </div>
 </div>
@@ -1204,6 +1239,7 @@ function calOpenEventModal(eventId, dateStr, hour){
         document.getElementById('calEvtNotes').value=ev.notes||'';
         document.getElementById('calEvtDeleteBtn').style.display='inline-flex';
         document.getElementById('calEvtCancelMsgBtn').style.display='inline-flex';
+        document.getElementById('calEvtConfirmBtn').style.display='inline-flex';
     } else {
         document.getElementById('calEventModalTitle').textContent='Nova Consulta';
         document.getElementById('calEvtDate').value=dateStr||hojeISO();
@@ -1213,6 +1249,7 @@ function calOpenEventModal(eventId, dateStr, hour){
         document.getElementById('calEvtNotes').value='';
         document.getElementById('calEvtDeleteBtn').style.display='none';
         document.getElementById('calEvtCancelMsgBtn').style.display='none';
+        document.getElementById('calEvtConfirmBtn').style.display='none';
         if(calState.selectedPatient) document.getElementById('calEvtPatient').value=calState.selectedPatient;
     }
     calOpenModal('calEventModal');
@@ -1293,6 +1330,44 @@ function calDeletePatient(){
     calState.patients=calState.patients.filter(p=>p.id!==calState.editingPatientId);
     calSave(); calCloseModal('calPatientModal'); calRender();
     calShowToast('Paciente excluído.');
+}
+
+/* ════ CONFIRMAÇÃO ════ */
+const CAL_CONFIRM_TEMPLATES = [
+    {label:'Padrão',    texto:(n,d,h,t)=>`Olá, ${n}! 😊 Passando para confirmar sua consulta (${t}) no dia ${d} às ${h}. Por favor, confirme sua presença respondendo esta mensagem. Até lá!`},
+    {label:'Lembrete',  texto:(n,d,h,t)=>`Oi, ${n}! 🗓️ Lembrete: você tem uma sessão (${t}) agendada para ${d} às ${h}. Qualquer dúvida, é só falar. Te espero!`},
+    {label:'Formal',    texto:(n,d,h,t)=>`Prezado(a) ${n}, confirmamos o agendamento de sua consulta (${t}) para o dia ${d} às ${h}. Aguardamos sua presença.`},
+    {label:'Online',    texto:(n,d,h,t)=>`Olá, ${n}! 💻 Sua sessão online (${t}) está confirmada para ${d} às ${h}. Vou enviar o link de acesso em breve. Qualquer dúvida, me chame!`},
+];
+function calOpenConfirmModal(){
+    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
+    const p=calGetPatient(ev.patientId); if(!p)return;
+    const c=calPatientColor(p);
+    const initials=p.name.split(' ').slice(0,2).map(n=>n[0]).join('');
+    const avatar=document.getElementById('calConfirmPatientAvatar');
+    avatar.textContent=initials; avatar.style.background=c.bg+'33'; avatar.style.color=c.bg;
+    document.getElementById('calConfirmPatientName').textContent=p.name;
+    document.getElementById('calConfirmEventInfo').textContent=`${calFormatDateBR(ev.date)} às ${ev.start} — ${ev.type}`;
+    const btns=document.getElementById('calConfirmTemplateBtns');
+    btns.innerHTML=CAL_CONFIRM_TEMPLATES.map((t,i)=>`<button class="cal-template-btn" onclick="calApplyConfirmTemplate(${i})">${t.label}</button>`).join('');
+    calApplyConfirmTemplate(0);
+    calCloseModal('calEventModal');
+    calOpenModal('calConfirmModal');
+}
+function calApplyConfirmTemplate(idx){
+    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
+    const p=calGetPatient(ev.patientId); if(!p)return;
+    document.getElementById('calConfirmMsgText').value=CAL_CONFIRM_TEMPLATES[idx].texto(
+        p.name.split(' ')[0], calFormatDateBR(ev.date), ev.start, ev.type
+    );
+}
+function calSendConfirmWhatsApp(){
+    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
+    const p=calGetPatient(ev.patientId); if(!p)return;
+    const phone=calGetCleanPhone(p.phone);
+    const msg=encodeURIComponent(document.getElementById('calConfirmMsgText').value);
+    window.open(phone?`https://wa.me/55${phone}?text=${msg}`:`https://wa.me/?text=${msg}`,'_blank');
+    calShowToast('Abrindo WhatsApp...');
 }
 
 /* ════ CANCELAMENTO ════ */
