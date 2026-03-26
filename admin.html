@@ -461,11 +461,11 @@ select option { background:var(--slate2); color:var(--text); }
       <textarea class="cal-form-textarea" id="calEvtNotes" placeholder="Notas desta consulta..."></textarea>
     </div>
     <div class="cal-modal-actions">
-      <button class="btn btn-danger" id="calEvtDeleteBtn" onclick="calDeleteEvent()" style="display:none">Excluir</button>
-      <button class="btn btn-cancel-msg" id="calEvtCancelMsgBtn" onclick="calOpenCancelModal()" style="display:none">📲 Cancelar</button>
-      <button class="btn btn-whatsapp-confirm" id="calEvtConfirmBtn" onclick="calOpenConfirmModal()" style="display:none">✅ Confirmar consulta</button>
-      <button class="btn btn-ghost" onclick="calCloseModal('calEventModal')">Fechar</button>
-      <button class="btn btn-primary" onclick="calSaveEvent()">Salvar</button>
+      <button id="calEvtDeleteBtn" onclick="calDeleteEvent()" style="display:none;padding:7px 14px;border-radius:6px;border:1px solid #EF4444;background:transparent;color:#EF4444;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;">🗑 Excluir</button>
+      <button id="calEvtCancelMsgBtn" onclick="calOpenCancelModal()" style="display:none;padding:7px 14px;border-radius:6px;border:1px solid #25D366;background:transparent;color:#25D366;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;">📲 Cancelar</button>
+      <button id="calEvtConfirmBtn" onclick="calOpenConfirmModal()" style="display:none;padding:7px 14px;border-radius:6px;border:none;background:#25D366;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">✅ Confirmar consulta</button>
+      <button onclick="calCloseModal('calEventModal')" style="padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:#94A3B8;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">Fechar</button>
+      <button onclick="calSaveEvent()" style="padding:7px 18px;border-radius:6px;border:none;background:#2563EB;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">Salvar</button>
     </div>
   </div>
 </div>
@@ -492,10 +492,10 @@ select option { background:var(--slate2); color:var(--text); }
       💡 O botão <strong>WhatsApp</strong> abrirá o app com a mensagem pronta. O <strong>SMS</strong> abrirá seu app de mensagens padrão.
     </div>
     <div class="cal-modal-actions" style="justify-content:space-between">
-      <button class="btn btn-ghost" onclick="calCloseModal('calCancelModal')">Voltar</button>
+      <button onclick="calCloseModal('calCancelModal')" style="padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:#94A3B8;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">Voltar</button>
       <div style="display:flex;gap:0.6rem">
-        <button class="btn" style="background:#25D366;color:white;border:none" onclick="calSendWhatsApp()">WhatsApp</button>
-        <button class="btn" style="background:#5b9bd5;color:white;border:none" onclick="calSendSMS()">SMS</button>
+        <button onclick="calSendWhatsApp()" style="padding:7px 18px;border-radius:6px;border:none;background:#25D366;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">📲 WhatsApp</button>
+        <button onclick="calSendSMS()" style="padding:7px 18px;border-radius:6px;border:none;background:#5b9bd5;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">SMS</button>
       </div>
     </div>
   </div>
@@ -533,9 +533,9 @@ select option { background:var(--slate2); color:var(--text); }
       <div class="cal-color-picker" id="calColorPicker"></div>
     </div>
     <div class="cal-modal-actions">
-      <button class="btn btn-danger" id="calPtDeleteBtn" onclick="calDeletePatient()" style="display:none">Excluir</button>
-      <button class="btn btn-ghost" onclick="calCloseModal('calPatientModal')">Cancelar</button>
-      <button class="btn btn-primary" onclick="calSavePatient()">Salvar</button>
+      <button id="calPtDeleteBtn" onclick="calDeletePatient()" style="display:none;padding:7px 14px;border-radius:6px;border:1px solid #EF4444;background:transparent;color:#EF4444;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">🗑 Excluir</button>
+      <button onclick="calCloseModal('calPatientModal')" style="padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:#94A3B8;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">Cancelar</button>
+      <button onclick="calSavePatient()" style="padding:7px 18px;border-radius:6px;border:none;background:#2563EB;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">Salvar</button>
     </div>
   </div>
 </div>
@@ -563,10 +563,8 @@ select option { background:var(--slate2); color:var(--text); }
       💬 O paciente receberá a mensagem de confirmação pelo <strong>WhatsApp</strong>.
     </div>
     <div class="cal-modal-actions" style="justify-content:space-between">
-      <button class="btn btn-ghost" onclick="calCloseModal('calConfirmModal')">Voltar</button>
-      <button class="btn" style="background:#25D366;color:white;border:none;font-size:0.88rem;padding:0.5rem 1.2rem" onclick="calSendConfirmWhatsApp()">
-        <span style="margin-right:6px">📲</span> Enviar pelo WhatsApp
-      </button>
+      <button onclick="calCloseModal('calConfirmModal')" style="padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:#94A3B8;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">Voltar</button>
+      <button onclick="calSendConfirmWhatsApp()" style="padding:8px 20px;border-radius:6px;border:none;background:#25D366;color:white;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;">📲 Enviar pelo WhatsApp</button>
     </div>
   </div>
 </div>
