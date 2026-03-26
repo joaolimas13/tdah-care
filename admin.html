@@ -6,9 +6,6 @@
 <title>Painel Clínico — CleanTdah</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════
-   CSS ORIGINAL DO PAINEL (paste-2)
-══════════════════════════════════ */
 :root {
     --navy: #0A1628; --navy2: #0F2040; --blue: #1A56DB;
     --blue-mid: #2563EB; --blue-light: #3B82F6;
@@ -91,7 +88,7 @@ body > * { position: relative; z-index: 1; }
 .btn-action:hover { border-color:var(--blue-light); color:var(--blue-light); }
 .btn-refresh:hover { border-color:var(--green); color:var(--green); }
 
-/* PATIENT CARDS (painel original) */
+/* PATIENT CARDS */
 .patient-card { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:12px; overflow:hidden; transition:border-color 0.2s; }
 .patient-card:hover { border-color:rgba(59,130,246,0.4); }
 .patient-summary { display:flex; align-items:center; justify-content:space-between; padding:18px 22px; cursor:pointer; list-style:none; user-select:none; }
@@ -165,7 +162,7 @@ details[open] .chevron { transform:rotate(180deg); }
 select option { background:var(--slate2); color:var(--text); }
 
 /* ══════════════════════════════════
-   CSS DO CALENDÁRIO — isolado em .cal-scope
+   CALENDÁRIO
 ══════════════════════════════════ */
 .cal-scope {
   --sage: #7a9e8e; --sage-light: #a8c4b7; --sage-dark: #4f7263;
@@ -215,8 +212,6 @@ select option { background:var(--slate2); color:var(--text); }
 .cal-scope .btn-primary:hover { background:#1A56DB; }
 .cal-scope .btn-ghost { background:transparent; color:#94A3B8; border:1px solid rgba(255,255,255,0.06); }
 .cal-scope .btn-ghost:hover { border-color:#94A3B8; color:#E2E8F0; }
-.cal-scope .btn-danger { background:transparent; color:#EF4444; border:1px solid #EF4444; }
-.cal-scope .btn-danger:hover { background:#EF4444; color:white; }
 .cal-scope .view-tabs { display:flex; border:1px solid rgba(255,255,255,0.06); border-radius:8px; overflow:hidden; }
 .cal-scope .view-tab { background:#273549; border:none; padding:0.4rem 0.9rem; font-family:'DM Sans',sans-serif; font-size:0.78rem; cursor:pointer; color:#64748B; transition:all 0.2s; border-right:1px solid rgba(255,255,255,0.06); }
 .cal-scope .view-tab:last-child { border-right:none; }
@@ -234,8 +229,8 @@ select option { background:var(--slate2); color:var(--text); }
 .cal-scope .day-col { border-left:1px solid rgba(59,130,246,0.15); position:relative; min-height:840px; }
 .cal-scope .hour-line { position:absolute; left:0; right:0; border-top:1px solid rgba(255,255,255,0.04); height:60px; }
 .cal-scope .half-line { position:absolute; left:0; right:0; border-top:1px dashed rgba(255,255,255,0.03); top:30px; }
-.cal-scope .event-block { position:absolute; left:3px; right:3px; border-radius:6px; padding:4px 6px; cursor:pointer; overflow:hidden; transition:filter 0.15s,transform 0.15s; z-index:5; }
-.cal-scope .event-block:hover { filter:brightness(1.15); transform:scale(1.02); z-index:10; }
+.cal-scope .event-block { position:absolute; left:3px; right:3px; border-radius:6px; padding:5px 7px; cursor:pointer; overflow:hidden; transition:filter 0.15s,transform 0.15s,box-shadow 0.15s; z-index:5; border:1px solid rgba(255,255,255,0.15); }
+.cal-scope .event-block:hover { filter:brightness(1.2); transform:scale(1.03); z-index:10; box-shadow:0 4px 16px rgba(0,0,0,0.4); }
 .cal-scope .event-title { font-size:0.72rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .cal-scope .event-time { font-size:0.62rem; opacity:0.85; }
 .cal-scope .day-view { flex:1; overflow-y:auto; display:flex; flex-direction:column; }
@@ -249,40 +244,18 @@ select option { background:var(--slate2); color:var(--text); }
 .cal-scope .month-day.other-month { background:#162032; opacity:0.6; }
 .cal-scope .month-day-num { font-family:'Space Grotesk',sans-serif; font-size:0.9rem; font-weight:500; margin-bottom:0.3rem; color:#E2E8F0; display:inline-flex; width:24px; height:24px; align-items:center; justify-content:center; border-radius:50%; }
 .cal-scope .month-day.today-cell .month-day-num { background:#2563EB; color:white; }
-.cal-scope .month-event { font-size:0.65rem; padding:1px 5px; border-radius:4px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; }
+.cal-scope .month-event { font-size:0.65rem; padding:2px 6px; border-radius:4px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; border:1px solid rgba(255,255,255,0.1); }
 .cal-scope .current-time-line { position:absolute; left:0; right:0; border-top:2px solid #3B82F6; z-index:8; }
 .cal-scope .current-time-line::before { content:''; width:8px; height:8px; background:#3B82F6; border-radius:50%; position:absolute; left:-4px; top:-4px; }
 
-/* MODAIS DO CALENDÁRIO */
-.cal-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+/* ══ MODAIS ══ */
+.cal-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(6px); }
 .cal-modal-overlay.open { display:flex; }
-
-/* ══ BOTÕES DOS MODAIS (seletor universal, fora do cal-scope) ══ */
-.cal-modal-overlay button.btn {
-    padding:0.45rem 1rem; border-radius:6px; border:1px solid rgba(255,255,255,0.1);
-    cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:500;
-    transition:all 0.2s; background:#273549; color:#E2E8F0;
-    display:inline-flex; align-items:center; gap:5px; line-height:1.4;
-}
-.cal-modal-overlay button.btn:hover { border-color:#3B82F6; color:#3B82F6; }
-.cal-modal-overlay button.btn-primary { background:#2563EB !important; color:white !important; border-color:#2563EB !important; }
-.cal-modal-overlay button.btn-primary:hover { background:#1A56DB !important; }
-.cal-modal-overlay button.btn-ghost { background:transparent !important; color:#94A3B8 !important; border:1px solid rgba(255,255,255,0.1) !important; }
-.cal-modal-overlay button.btn-ghost:hover { border-color:#94A3B8 !important; color:#E2E8F0 !important; }
-.cal-modal-overlay button.btn-danger { background:transparent !important; color:#EF4444 !important; border:1px solid #EF4444 !important; }
-.cal-modal-overlay button.btn-danger:hover { background:#EF4444 !important; color:white !important; }
-.cal-modal-overlay button.btn-cancel-msg { background:transparent !important; color:#25D366 !important; border:1px solid #25D366 !important; }
-.cal-modal-overlay button.btn-cancel-msg:hover { background:#25D366 !important; color:white !important; }
-.cal-modal-overlay button.btn-whatsapp-confirm { background:#25D366 !important; color:white !important; border-color:#25D366 !important; }
-.cal-modal-overlay button.btn-whatsapp-confirm:hover { background:#1da851 !important; border-color:#1da851 !important; }
-
-.cal-modal-overlay .cal-template-btn { padding:0.3rem 0.7rem; border-radius:20px; border:1px solid rgba(255,255,255,0.06); background:#273549; font-size:0.72rem; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; color:#E2E8F0; }
-.cal-modal-overlay .cal-template-btn:hover { border-color:#3B82F6; color:#3B82F6; }
-.cal-modal { background:#1C2B40; border:1px solid rgba(59,130,246,0.2); border-radius:16px; padding:2rem; width:460px; max-width:95vw; box-shadow:0 24px 80px rgba(0,0,0,0.5); animation:fadeUp 0.25s ease; }
-.cal-modal-title { font-family:'Space Grotesk',sans-serif; font-size:1.15rem; font-weight:600; margin-bottom:1.5rem; padding-bottom:0.75rem; border-bottom:1px solid rgba(59,130,246,0.15); color:#E2E8F0; }
+.cal-modal { background:#1C2B40; border:1px solid rgba(59,130,246,0.25); border-radius:16px; padding:2rem; width:480px; max-width:95vw; max-height:90vh; overflow-y:auto; box-shadow:0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(59,130,246,0.1); animation:fadeUp 0.25s cubic-bezier(0.22,1,0.36,1); }
+.cal-modal-title { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:600; margin-bottom:1.5rem; padding-bottom:0.75rem; border-bottom:1px solid rgba(59,130,246,0.15); color:#E2E8F0; }
 .cal-form-group { margin-bottom:1rem; }
 .cal-form-label { display:block; font-size:0.72rem; font-weight:600; color:#64748B; margin-bottom:0.35rem; letter-spacing:0.05em; text-transform:uppercase; }
-.cal-form-input, .cal-form-select, .cal-form-textarea { width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(255,255,255,0.06); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.875rem; color:#E2E8F0; background:#1E293B; outline:none; transition:border-color 0.2s; }
+.cal-form-input, .cal-form-select, .cal-form-textarea { width:100%; padding:0.55rem 0.75rem; border:1px solid rgba(255,255,255,0.08); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.875rem; color:#E2E8F0; background:#1E293B; outline:none; transition:border-color 0.2s; }
 .cal-form-input:focus, .cal-form-select:focus, .cal-form-textarea:focus { border-color:#2563EB; background:#273549; }
 .cal-form-textarea { resize:vertical; min-height:70px; }
 .cal-form-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
@@ -290,17 +263,80 @@ select option { background:var(--slate2); color:var(--text); }
 .cal-color-dot { width:24px; height:24px; border-radius:50%; cursor:pointer; border:2px solid transparent; transition:transform 0.15s,border-color 0.15s; }
 .cal-color-dot:hover { transform:scale(1.2); }
 .cal-color-dot.selected { border-color:white; transform:scale(1.15); }
-.cal-modal-actions { display:flex; gap:0.75rem; justify-content:flex-end; margin-top:1.5rem; padding-top:1rem; border-top:1px solid rgba(59,130,246,0.15); }
-.cal-modal-actions .btn-cancel-msg { background:transparent; color:#25D366; border:1px solid #25D366; }
-.cal-modal-actions .btn-cancel-msg:hover { background:#25D366; color:white; }
-.cal-modal-actions .btn-whatsapp-confirm { background:#25D366; color:white; border:1px solid #25D366; }
-.cal-modal-actions .btn-whatsapp-confirm:hover { background:#1da851; border-color:#1da851; }
-.cal-confirm-modal { background:#1C2B40; border:1px solid rgba(59,130,246,0.2); border-radius:16px; padding:2rem; width:520px; max-width:95vw; box-shadow:0 24px 80px rgba(0,0,0,0.5); animation:fadeUp 0.25s ease; }
-.cal-toast { position:fixed; bottom:2rem; right:2rem; background:#1C2B40; color:#E2E8F0; border:1px solid rgba(59,130,246,0.2); padding:0.75rem 1.25rem; border-radius:10px; font-size:0.82rem; opacity:0; transform:translateY(10px); transition:all 0.3s; z-index:9999; pointer-events:none; }
+
+/* ══ MODAL ACTIONS — botões inline ══ */
+.cal-modal-actions {
+    display:flex;
+    gap:0.6rem;
+    justify-content:flex-end;
+    margin-top:1.5rem;
+    padding-top:1rem;
+    border-top:1px solid rgba(59,130,246,0.12);
+    flex-wrap:wrap;
+    align-items:center;
+}
+.cal-modal-actions-left { margin-right:auto; display:flex; gap:0.6rem; }
+
+/* Botões do modal — estilos base */
+.cmbtn {
+    display:inline-flex; align-items:center; gap:5px;
+    padding:8px 16px; border-radius:8px; border:1px solid transparent;
+    font-family:'DM Sans',sans-serif; font-size:0.82rem; font-weight:600;
+    cursor:pointer; transition:all 0.18s; white-space:nowrap; line-height:1.3;
+}
+.cmbtn-ghost { background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); color:#94A3B8; }
+.cmbtn-ghost:hover { border-color:#94A3B8; color:#E2E8F0; background:rgba(255,255,255,0.07); }
+.cmbtn-primary { background:#2563EB; border-color:#2563EB; color:white; }
+.cmbtn-primary:hover { background:#1A56DB; border-color:#1A56DB; box-shadow:0 4px 12px rgba(37,99,235,0.4); }
+.cmbtn-danger { background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.4); color:#EF4444; }
+.cmbtn-danger:hover { background:#EF4444; color:white; border-color:#EF4444; }
+.cmbtn-whatsapp { background:#25D366; border-color:#25D366; color:white; }
+.cmbtn-whatsapp:hover { background:#1da851; border-color:#1da851; box-shadow:0 4px 12px rgba(37,211,102,0.35); }
+.cmbtn-sms { background:#4b8fd5; border-color:#4b8fd5; color:white; }
+.cmbtn-sms:hover { background:#3a7dbf; border-color:#3a7dbf; }
+
+/* Separador visual entre acoes destrutivas e principais */
+.cmbtn-divider { width:1px; height:28px; background:rgba(255,255,255,0.08); flex-shrink:0; }
+
+/* Alerta de acoes do evento */
+.cal-event-actions-bar {
+    display:flex;
+    gap:8px;
+    padding:12px 14px;
+    background:rgba(37,99,235,0.06);
+    border:1px solid rgba(59,130,246,0.15);
+    border-radius:10px;
+    margin-top:1rem;
+    align-items:center;
+    flex-wrap:wrap;
+}
+.cal-event-actions-bar .bar-label {
+    font-size:0.72rem;
+    color:#64748B;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-right:4px;
+    flex-shrink:0;
+}
+.cal-event-actions-bar .cmbtn { padding:7px 14px; font-size:0.8rem; }
+
+/* Confirm / cancel modals */
+.cal-confirm-modal { background:#1C2B40; border:1px solid rgba(59,130,246,0.25); border-radius:16px; padding:2rem; width:520px; max-width:95vw; box-shadow:0 32px 80px rgba(0,0,0,0.6); animation:fadeUp 0.25s cubic-bezier(0.22,1,0.36,1); }
+.cal-cancel-modal { background:#1C2B40; border:1px solid rgba(59,130,246,0.25); border-radius:16px; padding:2rem; width:520px; max-width:95vw; box-shadow:0 32px 80px rgba(0,0,0,0.6); animation:fadeUp 0.25s cubic-bezier(0.22,1,0.36,1); }
+
+.cal-patient-info-row { background:#1E293B; border-radius:10px; padding:0.9rem 1rem; margin-bottom:1.2rem; display:flex; align-items:center; gap:0.75rem; border:1px solid rgba(255,255,255,0.05); }
+
+.cal-template-btn { padding:4px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.08); background:#273549; font-size:0.72rem; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; color:#94A3B8; font-weight:500; }
+.cal-template-btn:hover { border-color:#3B82F6; color:#3B82F6; background:#1E293B; }
+
+.cal-toast { position:fixed; bottom:2rem; right:2rem; background:#1C2B40; color:#E2E8F0; border:1px solid rgba(59,130,246,0.25); padding:0.8rem 1.4rem; border-radius:10px; font-size:0.82rem; opacity:0; transform:translateY(10px); transition:all 0.3s; z-index:9999; pointer-events:none; box-shadow:0 8px 32px rgba(0,0,0,0.4); }
 .cal-toast.show { opacity:1; transform:translateY(0); }
-.cal-cancel-modal { background:#1C2B40; border:1px solid rgba(59,130,246,0.2); border-radius:16px; padding:2rem; width:520px; max-width:95vw; box-shadow:0 24px 80px rgba(0,0,0,0.5); animation:fadeUp 0.25s ease; }
-.cal-template-btn { padding:0.3rem 0.7rem; border-radius:20px; border:1px solid rgba(255,255,255,0.06); background:#273549; font-size:0.72rem; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; color:#E2E8F0; }
-.cal-template-btn:hover { border-color:#3B82F6; color:#3B82F6; }
+
+/* Info tip no modal WhatsApp */
+.cal-info-tip { padding:10px 14px; border-radius:8px; font-size:0.76rem; line-height:1.5; margin-bottom:1rem; }
+.cal-info-tip.green { background:rgba(37,211,102,0.08); color:#25D366; border:1px solid rgba(37,211,102,0.2); }
+.cal-info-tip.blue { background:rgba(37,99,235,0.08); color:#93C5FD; border:1px solid rgba(59,130,246,0.2); }
 </style>
 </head>
 <body>
@@ -327,7 +363,6 @@ select option { background:var(--slate2); color:var(--text); }
 <!-- ══ PAINEL PRINCIPAL ══ -->
 <div id="conteudo-principal">
 
-  <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-logo">
       <div class="topbar-logo-icon">🧠</div>
@@ -339,13 +374,12 @@ select option { background:var(--slate2); color:var(--text); }
     </div>
   </div>
 
-  <!-- TABS -->
   <div class="main-tabs">
     <button class="main-tab active" onclick="trocarAba('tab-pacientes', this)">👥 Pacientes</button>
     <button class="main-tab" onclick="trocarAba('tab-agenda', this)">📅 Agenda</button>
   </div>
 
-  <!-- ══ ABA: PACIENTES ══ -->
+  <!-- ABA PACIENTES -->
   <div id="tab-pacientes" class="tab-panel active">
     <div class="content-wrap">
       <div class="page-title">Painel de Acompanhamento</div>
@@ -360,8 +394,8 @@ select option { background:var(--slate2); color:var(--text); }
         </div>
       </div>
       <div class="action-bar">
-        <button class="btn-action btn-refresh" id="btn-atualizar" onclick="buscarRelatorios()">🔄 Atualizar</button>
-        <button class="btn-action" id="btn-csv" onclick="exportarCSV()">📊 Exportar CSV</button>
+        <button class="btn-action btn-refresh" onclick="buscarRelatorios()">🔄 Atualizar</button>
+        <button class="btn-action" onclick="exportarCSV()">📊 Exportar CSV</button>
         <button class="btn-action" onclick="imprimirRelatorioAdmin()">📄 Salvar PDF</button>
       </div>
       <div id="lista-relatorios">
@@ -373,7 +407,7 @@ select option { background:var(--slate2); color:var(--text); }
     </div>
   </div>
 
-  <!-- ══ ABA: AGENDA ══ -->
+  <!-- ABA AGENDA -->
   <div id="tab-agenda" class="tab-panel">
     <div style="padding:24px 28px;">
       <div class="page-title" style="margin-bottom:4px">Agenda de Consultas</div>
@@ -382,7 +416,6 @@ select option { background:var(--slate2); color:var(--text); }
         <button class="btn-action" onclick="calOpenPatientModal(null)">+ Paciente</button>
         <button class="btn-action" style="background:#2563EB;border-color:#2563EB;color:white;" onclick="calOpenEventModal(null,null,null)">+ Consulta</button>
       </div>
-      <!-- CALENDÁRIO -->
       <div class="cal-scope">
         <div class="cal-wrapper">
           <aside>
@@ -418,10 +451,11 @@ select option { background:var(--slate2); color:var(--text); }
 
 </div><!-- fim conteudo-principal -->
 
-<!-- ══ MODAIS DO CALENDÁRIO ══ -->
+<!-- ══ MODAL: EVENTO ══ -->
 <div class="cal-modal-overlay" id="calEventModal">
   <div class="cal-modal">
     <div class="cal-modal-title" id="calEventModalTitle">Nova Consulta</div>
+
     <div class="cal-form-group">
       <label class="cal-form-label">Paciente</label>
       <select class="cal-form-select" id="calEvtPatient"></select>
@@ -460,26 +494,73 @@ select option { background:var(--slate2); color:var(--text); }
       <label class="cal-form-label">Anotações</label>
       <textarea class="cal-form-textarea" id="calEvtNotes" placeholder="Notas desta consulta..."></textarea>
     </div>
+
+    <!-- ══ BARRA DE AÇÕES (só aparece na edição) ══ -->
+    <div id="calEvtActionsBar" class="cal-event-actions-bar" style="display:none;">
+      <span class="bar-label">Ações:</span>
+      <button class="cmbtn cmbtn-whatsapp" onclick="calOpenConfirmModal()">
+        ✅ Confirmar via WhatsApp
+      </button>
+      <button class="cmbtn cmbtn-danger" onclick="calDeleteEvent()">
+        🗑 Excluir
+      </button>
+    </div>
+
     <div class="cal-modal-actions">
-      <button id="calEvtDeleteBtn" onclick="calDeleteEvent()" style="display:none;padding:7px 14px;border-radius:6px;border:1px solid #EF4444;background:transparent;color:#EF4444;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;">🗑 Excluir</button>
-      <button id="calEvtCancelMsgBtn" onclick="calOpenCancelModal()" style="display:none;padding:7px 14px;border-radius:6px;border:1px solid #25D366;background:transparent;color:#25D366;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;">📲 Cancelar</button>
-      <button id="calEvtConfirmBtn" onclick="calOpenConfirmModal()" style="display:none;padding:7px 14px;border-radius:6px;border:none;background:#25D366;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">✅ Confirmar consulta</button>
-      <button onclick="calCloseModal('calEventModal')" style="padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:#94A3B8;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">Fechar</button>
-      <button onclick="calSaveEvent()" style="padding:7px 18px;border-radius:6px;border:none;background:#2563EB;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">Salvar</button>
+      <button class="cmbtn cmbtn-ghost" onclick="calCloseModal('calEventModal')">Fechar</button>
+      <button class="cmbtn cmbtn-primary" onclick="calSaveEvent()">💾 Salvar</button>
     </div>
   </div>
 </div>
 
+<!-- ══ MODAL: CONFIRMAÇÃO WHATSAPP ══ -->
+<div class="cal-modal-overlay" id="calConfirmModal">
+  <div class="cal-confirm-modal">
+    <div class="cal-modal-title">✅ Confirmar Consulta via WhatsApp</div>
+
+    <div class="cal-patient-info-row">
+      <div id="calConfirmPatientAvatar" class="cal-pat-avatar" style="width:40px;height:40px;font-size:0.9rem;flex-shrink:0;border-radius:50%"></div>
+      <div>
+        <div id="calConfirmPatientName" style="font-weight:600;font-size:0.92rem;color:#E2E8F0"></div>
+        <div id="calConfirmEventInfo" style="font-size:0.78rem;color:#64748B;margin-top:2px"></div>
+      </div>
+    </div>
+
+    <div class="cal-form-group">
+      <label class="cal-form-label">Template da mensagem</label>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem" id="calConfirmTemplateBtns"></div>
+    </div>
+    <div class="cal-form-group">
+      <label class="cal-form-label">Mensagem <span style="font-weight:300;text-transform:none;letter-spacing:0">(editável)</span></label>
+      <textarea class="cal-form-textarea" id="calConfirmMsgText" style="min-height:130px;font-size:0.85rem;line-height:1.5"></textarea>
+    </div>
+
+    <div class="cal-info-tip green">
+      💬 Ao clicar em <strong>Abrir WhatsApp</strong>, o app será aberto com a mensagem já preenchida para o número cadastrado do paciente.
+    </div>
+
+    <div class="cal-modal-actions" style="justify-content:space-between">
+      <button class="cmbtn cmbtn-ghost" onclick="calCloseModal('calConfirmModal');calOpenModal('calEventModal')">← Voltar</button>
+      <button class="cmbtn cmbtn-whatsapp" onclick="calSendConfirmWhatsApp()" style="font-size:0.88rem;padding:9px 22px;">
+        📲 Abrir WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: CANCELAMENTO ══ -->
 <div class="cal-modal-overlay" id="calCancelModal">
   <div class="cal-cancel-modal">
     <div class="cal-modal-title">📲 Aviso de Cancelamento</div>
-    <div style="background:#1E293B;border-radius:8px;padding:1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.75rem;">
-      <div id="calCancelPatientAvatar" class="cal-pat-avatar" style="width:40px;height:40px;font-size:0.9rem;flex-shrink:0"></div>
+
+    <div class="cal-patient-info-row">
+      <div id="calCancelPatientAvatar" class="cal-pat-avatar" style="width:40px;height:40px;font-size:0.9rem;flex-shrink:0;border-radius:50%"></div>
       <div>
-        <div id="calCancelPatientName" style="font-weight:500;font-size:0.9rem;color:#E2E8F0"></div>
-        <div id="calCancelEventInfo" style="font-size:0.78rem;color:#64748B"></div>
+        <div id="calCancelPatientName" style="font-weight:600;font-size:0.92rem;color:#E2E8F0"></div>
+        <div id="calCancelEventInfo" style="font-size:0.78rem;color:#64748B;margin-top:2px"></div>
       </div>
     </div>
+
     <div class="cal-form-group">
       <label class="cal-form-label">Template da mensagem</label>
       <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem" id="calTemplateBtns"></div>
@@ -488,19 +569,22 @@ select option { background:var(--slate2); color:var(--text); }
       <label class="cal-form-label">Mensagem <span style="font-weight:300;text-transform:none;letter-spacing:0">(editável)</span></label>
       <textarea class="cal-form-textarea" id="calCancelMsgText" style="min-height:130px;font-size:0.85rem;line-height:1.5"></textarea>
     </div>
-    <div style="background:rgba(16,185,129,0.1);border-radius:6px;padding:0.75rem;font-size:0.76rem;color:#10B981;margin-bottom:1rem">
-      💡 O botão <strong>WhatsApp</strong> abrirá o app com a mensagem pronta. O <strong>SMS</strong> abrirá seu app de mensagens padrão.
+
+    <div class="cal-info-tip blue">
+      💡 <strong>WhatsApp</strong> abre o app com a mensagem pronta para o número do paciente. <strong>SMS</strong> usa o app de mensagens padrão.
     </div>
+
     <div class="cal-modal-actions" style="justify-content:space-between">
-      <button onclick="calCloseModal('calCancelModal')" style="padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:#94A3B8;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">Voltar</button>
+      <button class="cmbtn cmbtn-ghost" onclick="calCloseModal('calCancelModal');calOpenModal('calEventModal')">← Voltar</button>
       <div style="display:flex;gap:0.6rem">
-        <button onclick="calSendWhatsApp()" style="padding:7px 18px;border-radius:6px;border:none;background:#25D366;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">📲 WhatsApp</button>
-        <button onclick="calSendSMS()" style="padding:7px 18px;border-radius:6px;border:none;background:#5b9bd5;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">SMS</button>
+        <button class="cmbtn cmbtn-sms" onclick="calSendSMS()">📩 SMS</button>
+        <button class="cmbtn cmbtn-whatsapp" onclick="calSendWhatsApp()">📲 WhatsApp</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ══ MODAL: PACIENTE ══ -->
 <div class="cal-modal-overlay" id="calPatientModal">
   <div class="cal-modal">
     <div class="cal-modal-title" id="calPatientModalTitle">Novo Paciente</div>
@@ -533,38 +617,11 @@ select option { background:var(--slate2); color:var(--text); }
       <div class="cal-color-picker" id="calColorPicker"></div>
     </div>
     <div class="cal-modal-actions">
-      <button id="calPtDeleteBtn" onclick="calDeletePatient()" style="display:none;padding:7px 14px;border-radius:6px;border:1px solid #EF4444;background:transparent;color:#EF4444;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">🗑 Excluir</button>
-      <button onclick="calCloseModal('calPatientModal')" style="padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:#94A3B8;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">Cancelar</button>
-      <button onclick="calSavePatient()" style="padding:7px 18px;border-radius:6px;border:none;background:#2563EB;color:white;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL CONFIRMAÇÃO WHATSAPP -->
-<div class="cal-modal-overlay" id="calConfirmModal">
-  <div class="cal-confirm-modal">
-    <div class="cal-modal-title">✅ Confirmação de Consulta</div>
-    <div style="background:#1E293B;border-radius:8px;padding:1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:0.75rem;">
-      <div id="calConfirmPatientAvatar" class="cal-pat-avatar" style="width:40px;height:40px;font-size:0.9rem;flex-shrink:0"></div>
-      <div>
-        <div id="calConfirmPatientName" style="font-weight:500;font-size:0.9rem;color:#E2E8F0"></div>
-        <div id="calConfirmEventInfo" style="font-size:0.78rem;color:#64748B"></div>
+      <div class="cal-modal-actions-left">
+        <button id="calPtDeleteBtn" onclick="calDeletePatient()" style="display:none" class="cmbtn cmbtn-danger">🗑 Excluir paciente</button>
       </div>
-    </div>
-    <div class="cal-form-group">
-      <label class="cal-form-label">Template da mensagem</label>
-      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem" id="calConfirmTemplateBtns"></div>
-    </div>
-    <div class="cal-form-group">
-      <label class="cal-form-label">Mensagem <span style="font-weight:300;text-transform:none;letter-spacing:0">(editável)</span></label>
-      <textarea class="cal-form-textarea" id="calConfirmMsgText" style="min-height:130px;font-size:0.85rem;line-height:1.5"></textarea>
-    </div>
-    <div style="background:rgba(37,211,102,0.08);border-radius:6px;padding:0.75rem;font-size:0.76rem;color:#25D366;margin-bottom:1rem;border:1px solid rgba(37,211,102,0.2)">
-      💬 O paciente receberá a mensagem de confirmação pelo <strong>WhatsApp</strong>.
-    </div>
-    <div class="cal-modal-actions" style="justify-content:space-between">
-      <button onclick="calCloseModal('calConfirmModal')" style="padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:#94A3B8;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">Voltar</button>
-      <button onclick="calSendConfirmWhatsApp()" style="padding:8px 20px;border-radius:6px;border:none;background:#25D366;color:white;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;">📲 Enviar pelo WhatsApp</button>
+      <button class="cmbtn cmbtn-ghost" onclick="calCloseModal('calPatientModal')">Cancelar</button>
+      <button class="cmbtn cmbtn-primary" onclick="calSavePatient()">💾 Salvar</button>
     </div>
   </div>
 </div>
@@ -576,11 +633,8 @@ select option { background:var(--slate2); color:var(--text); }
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-/* ════════════════════════════════════════════
-   PAINEL — LOGIN
-════════════════════════════════════════════ */
+/* ═══════════════════════ LOGIN ═══════════════════════ */
 const senhaCorreta = "psico2024";
-
 function toggleSenha() {
     const inp = document.getElementById('input-senha');
     inp.type = inp.type === 'password' ? 'text' : 'password';
@@ -592,9 +646,11 @@ function verificarSenha() {
         document.getElementById('tela-senha').style.display = 'none';
         document.getElementById('conteudo-principal').style.display = 'block';
         buscarRelatorios();
+        calLoad();
         calRender();
     } else {
         err.style.display = 'block';
+        err.textContent = 'Senha incorreta. Tente novamente.';
         const card = document.querySelector('.login-card');
         card.classList.remove('shake');
         void card.offsetWidth;
@@ -617,9 +673,7 @@ function trocarAba(tabId, btn) {
     btn.classList.add('active');
 }
 
-/* ════════════════════════════════════════════
-   FIREBASE
-════════════════════════════════════════════ */
+/* ═══════════════════════ FIREBASE ═══════════════════════ */
 const firebaseConfig = {
     apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
     authDomain: "cleantdah.firebaseapp.com",
@@ -633,17 +687,13 @@ const db = firebase.firestore();
 let dadosGlobais = [];
 
 const _URL_KEY = new URLSearchParams(window.location.search).get('key') || '';
-const _PSICO_NOMES = {
-    dra_raiza:  'Dra. Raiza Oliveira',
-    dr_gabriel: 'Dr. Gabriel Gomes',
-    jp: 'jp'
-};
+const _PSICO_NOMES = { dra_raiza:'Dra. Raiza Oliveira', dr_gabriel:'Dr. Gabriel Gomes', jp:'jp' };
 if (_URL_KEY && _PSICO_NOMES[_URL_KEY]) {
     document.getElementById('topbar-psico').textContent = _PSICO_NOMES[_URL_KEY];
     document.getElementById('page-sub-txt').textContent = 'Painel de ' + _PSICO_NOMES[_URL_KEY];
 }
 
-/* ════ HELPERS ════ */
+/* ═══ HELPERS ═══ */
 function pad(n) { return String(n).padStart(2,'0'); }
 function hojeISO(date) {
     date = date || new Date();
@@ -660,7 +710,7 @@ function gerarAnalise(dados) {
 }
 function scoreCor(s) { return s >= 75 ? '#10B981' : s >= 50 ? '#F59E0B' : '#EF4444'; }
 
-/* ════ RELATÓRIO CLÍNICO ════ */
+/* ═══ RELATÓRIO CLÍNICO ═══ */
 function gerarRelatorioClinico(dailyData, periodoIni, periodoFim) {
     if (!dailyData || typeof dailyData !== 'object')
         return '<div class="clinico-aviso">Nenhum dado diário sincronizado para este paciente ainda.</div>';
@@ -781,7 +831,6 @@ function gerarRelatorioClinico(dailyData, periodoIni, periodoFim) {
     </div>`;
 }
 
-/* ════ HISTÓRICO ════ */
 function gerarHistoricoHTML(dailyData) {
     if (!dailyData || typeof dailyData !== 'object') return '<div class="clinico-aviso">Sem histórico disponível.</div>';
     const datas = Object.keys(dailyData).sort().reverse().slice(0,30);
@@ -801,7 +850,6 @@ function gerarHistoricoHTML(dailyData) {
     }).join('');
 }
 
-/* ════ BUSCAR RELATÓRIOS ════ */
 async function buscarRelatorios() {
     const divLista = document.getElementById('lista-relatorios');
     divLista.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Carregando dados do Firebase...</div></div>`;
@@ -826,7 +874,7 @@ async function buscarRelatorios() {
             const dtEnvio = dados.ultimoEnvio ? new Date(dados.ultimoEnvio).toLocaleString('pt-BR') : '—';
             const hoje = new Date();
             const iniDefault = new Date(); iniDefault.setDate(hoje.getDate()-29);
-            const cardHTML = `
+            divLista.innerHTML += `
             <details class="patient-card" id="details-${uid}">
                 <summary class="patient-summary">
                     <div class="patient-left">
@@ -872,7 +920,6 @@ async function buscarRelatorios() {
                     <button class="btn-deletar" onclick="deletarPaciente('${id}')">🗑 Remover paciente</button>
                 </div>
             </details>`;
-            divLista.innerHTML += cardHTML;
         });
         document.getElementById('total-pacientes').innerText = qtdPacientes;
     } catch(error) {
@@ -907,7 +954,7 @@ function atualizarRelatorio(uid) {
     if (container) container.innerHTML = gerarRelatorioClinico(paciente.dailyData, ini, fim);
 }
 window.deletarPaciente = async function(id) {
-    if (!confirm("Tem certeza que deseja APAGAR os dados deste paciente? Essa ação não pode ser desfeita.")) return;
+    if (!confirm("Tem certeza que deseja APAGAR os dados deste paciente?")) return;
     try {
         await db.collection("usuarios").doc(id).delete();
         alert("Paciente removido com sucesso!");
@@ -916,8 +963,6 @@ window.deletarPaciente = async function(id) {
         alert("Erro ao remover: " + error.message);
     }
 }
-
-/* ════ EXPORTAR CSV ════ */
 function exportarCSV() {
     if (!dadosGlobais || dadosGlobais.length === 0) { alert("Não há dados para exportar."); return; }
     let csv = "ID,Apelido,Score,Dias Registrados,Sono Médio,Metas %,Foco Total,Último Envio\n";
@@ -928,13 +973,10 @@ function exportarCSV() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a'); a.href=url; a.download='relatorio_cleantdah.csv'; a.click();
 }
-
-/* ════ PDF ════ */
 window.imprimirRelatorioAdmin = function() {
     if (!dadosGlobais || dadosGlobais.length === 0) { alert("Não há dados para gerar o PDF."); return; }
     const hoje = new Date();
     const iniDefault = new Date(); iniDefault.setDate(hoje.getDate()-29);
-    const strIni = hojeISO(iniDefault), strFim = hojeISO(hoje);
     let htmlPrint = `<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'><title>Relatório Clínico - CleanTdah</title>
     <style>body{font-family:'Segoe UI',sans-serif;padding:20px;color:#333;}h1{text-align:center;color:#1A237E;margin-bottom:30px;}
     .pc{page-break-after:always;margin-bottom:40px;}.ph{font-size:18px;font-weight:bold;color:#1A237E;border-bottom:2px solid #1A237E;padding-bottom:5px;margin-bottom:14px;}
@@ -950,9 +992,7 @@ window.imprimirRelatorioAdmin = function() {
     const w = window.open('','_blank'); w.document.write(htmlPrint); w.document.close(); w.print();
 }
 
-/* ════════════════════════════════════════════
-   CALENDÁRIO
-════════════════════════════════════════════ */
+/* ═══════════════════════ CALENDÁRIO ═══════════════════════ */
 const CAL_COLORS = [
     {bg:'#7a9e8e',text:'#fff',label:'Sálvia'},
     {bg:'#c4938a',text:'#fff',label:'Rosa'},
@@ -963,18 +1003,24 @@ const CAL_COLORS = [
     {bg:'#b58a8a',text:'#fff',label:'Terracota'},
     {bg:'#8aab8a',text:'#fff',label:'Verde'},
 ];
-const CAL_TEMPLATES = [
-    {label:'Padrão', texto:(n,d,h)=>`Olá, ${n}! Precisamos cancelar nossa sessão do dia ${d} às ${h}. Em breve entramos em contato para reagendar. Desculpe o transtorno.`},
+
+const CAL_CONFIRM_TEMPLATES = [
+    {label:'Padrão',   texto:(n,d,h,t)=>`Olá, ${n}! 😊 Passando para confirmar sua consulta (${t}) no dia ${d} às ${h}. Por favor, confirme sua presença respondendo esta mensagem. Até lá!`},
+    {label:'Lembrete', texto:(n,d,h,t)=>`Oi, ${n}! 🗓️ Lembrete: você tem uma sessão (${t}) agendada para ${d} às ${h}. Qualquer dúvida, é só falar. Te espero!`},
+    {label:'Formal',   texto:(n,d,h,t)=>`Prezado(a) ${n}, confirmamos o agendamento de sua consulta (${t}) para o dia ${d} às ${h}. Aguardamos sua presença.`},
+    {label:'Online',   texto:(n,d,h,t)=>`Olá, ${n}! 💻 Sua sessão online (${t}) está confirmada para ${d} às ${h}. Vou enviar o link de acesso em breve. Qualquer dúvida, me chame!`},
+];
+
+const CAL_CANCEL_TEMPLATES = [
+    {label:'Padrão',   texto:(n,d,h)=>`Olá, ${n}! Precisamos cancelar nossa sessão do dia ${d} às ${h}. Em breve entramos em contato para reagendar. Desculpe o transtorno.`},
     {label:'Urgência', texto:(n,d,h)=>`Olá, ${n}. Por motivo de força maior, precisei cancelar nossa sessão de ${d} às ${h}. Retorno em breve para reagendar.`},
-    {label:'Reagendar', texto:(n,d,h)=>`Olá, ${n}! Vou precisar remarcar nossa sessão de ${d} às ${h}. Qual horário seria melhor para você?`},
+    {label:'Reagendar',texto:(n,d,h)=>`Olá, ${n}! Vou precisar remarcar nossa sessão de ${d} às ${h}. Qual horário seria melhor para você?`},
 ];
 
 let calState = {
     view: 'week', currentDate: new Date(), miniDate: new Date(),
     selectedPatient: null, editingEventId: null, editingPatientId: null,
-    selectedColor: 0,
-    patients: [],
-    events: [],
+    selectedColor: 0, patients: [], events: [],
 };
 
 function calGenId() { return '_'+Math.random().toString(36).substr(2,9); }
@@ -986,8 +1032,6 @@ const MONTHS_PT=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','
 const DAYS_PT=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 function calGetPatient(id) { return calState.patients.find(p=>p.id===id); }
 function calPatientColor(p) { return CAL_COLORS[p.color]||CAL_COLORS[0]; }
-function calTimeToMins(t) { const[h,m]=t.split(':').map(Number); return h*60+m; }
-function calMinsToTime(m) { return `${Math.floor(m/60).toString().padStart(2,'0')}:${(m%60).toString().padStart(2,'0')}`; }
 function calGetCleanPhone(phone) { return phone ? phone.replace(/\D/g,'') : ''; }
 function calFormatDateBR(dateStr) {
     if (!dateStr) return '';
@@ -995,13 +1039,11 @@ function calFormatDateBR(dateStr) {
     return `${d}/${m}/${y}`;
 }
 
-/* ════ RENDER ════ */
-function calRender() {
-    calRenderSidebar(); calRenderMiniCal(); calRenderMain(); calRenderLegend();
-}
+/* ═══ RENDER ═══ */
+function calRender() { calRenderSidebar(); calRenderMiniCal(); calRenderMain(); calRenderLegend(); }
+
 function calRenderSidebar() {
-    const list = document.getElementById('calPatientList');
-    if (!list) return;
+    const list = document.getElementById('calPatientList'); if (!list) return;
     const search = (document.getElementById('calPatientSearch').value||'').toLowerCase();
     const filtered = calState.patients.filter(p=>p.name.toLowerCase().includes(search));
     list.innerHTML = filtered.map(p => {
@@ -1016,17 +1058,19 @@ function calRenderSidebar() {
                 <div class="cal-pat-name">${p.name}</div>
                 <div class="cal-pat-sessions">${sessions} sessão${sessions!==1?'s':''}</div>
             </div>
-            <button onclick="event.stopPropagation();calOpenPatientModal('${p.id}')" style="background:none;border:none;cursor:pointer;opacity:0.4;font-size:0.85rem;padding:2px 4px;color:#E2E8F0">✏️</button>
+            <button onclick="event.stopPropagation();calOpenPatientModal('${p.id}')" style="background:none;border:none;cursor:pointer;opacity:0.4;font-size:0.85rem;padding:2px 4px;color:#E2E8F0;transition:opacity 0.15s" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.4">✏️</button>
         </div>`;
-    }).join('');
+    }).join('') || '<div style="color:#64748B;font-size:0.8rem;text-align:center;padding:1rem">Nenhum paciente cadastrado</div>';
 }
+
 function calRenderLegend() {
     const el = document.getElementById('calLegend'); if (!el) return;
     el.innerHTML = calState.patients.map(p=>{
         const c=calPatientColor(p);
         return `<div class="legend-item"><div class="legend-dot" style="background:${c.bg}"></div><span>${p.name.split(' ')[0]}</span></div>`;
-    }).join('');
+    }).join('') || '<div style="color:#64748B;font-size:0.78rem">Nenhum paciente ainda</div>';
 }
+
 function calRenderMiniCal() {
     const el = document.getElementById('calMiniCalTitle'); if (!el) return;
     const d = calState.miniDate;
@@ -1052,6 +1096,7 @@ function calRenderMiniCal() {
     }
     grid.innerHTML = html;
 }
+
 function calRenderMain() {
     const main = document.getElementById('calMainContent'); if (!main) return;
     const d = calState.currentDate;
@@ -1085,6 +1130,7 @@ function calRenderMain() {
         if(mins>=0) document.querySelectorAll('.current-time-line').forEach(el=>{el.style.top=mins+'px';});
     },50);
 }
+
 function calRenderWeekView(){
     const ws=calGetWeekStart(calState.currentDate);
     const today=new Date(); today.setHours(0,0,0,0);
@@ -1094,32 +1140,28 @@ function calRenderWeekView(){
         const d=new Date(ws); d.setDate(d.getDate()+i);
         const isToday=d.getTime()===today.getTime();
         const num=isToday?`<div class="week-day-num today-num">${d.getDate()}</div>`:`<div class="week-day-num">${d.getDate()}</div>`;
-
         headerHtml+=`<div class="week-day-header"><div class="week-day-name">${DAYS_PT[d.getDay()]}</div>${num}</div>`;
     }
     let gridHtml='';
-    const timeColHtml = Array.from({length:endHour-startHour},(_,i)=>`<div class="time-label">${(startHour+i).toString().padStart(2,'0')}:00</div>`).join('');
+    const timeColHtml=Array.from({length:endHour-startHour},(_,i)=>`<div class="time-label">${(startHour+i).toString().padStart(2,'0')}:00</div>`).join('');
     gridHtml+=`<div class="time-col">${timeColHtml}</div>`;
     for(let i=0;i<7;i++){
         const d=new Date(ws); d.setDate(d.getDate()+i);
         const dateStr=d.toISOString().split('T')[0];
         const isToday=d.getTime()===today.getTime();
         let hoursHtml='';
-        for(let h=startHour;h<endHour;h++){
-            hoursHtml+=`<div class="hour-line" style="top:${(h-startHour)*60}px"><div class="half-line"></div></div>`;
-        }
+        for(let h=startHour;h<endHour;h++) hoursHtml+=`<div class="hour-line" style="top:${(h-startHour)*60}px"><div class="half-line"></div></div>`;
         const dayEvents=calState.events.filter(e=>e.date===dateStr&&(!calState.selectedPatient||e.patientId===calState.selectedPatient));
         let eventsHtml='';
         dayEvents.forEach(ev=>{
-            const p=calGetPatient(ev.patientId);
-            if(!p)return;
+            const p=calGetPatient(ev.patientId); if(!p)return;
             const c=calPatientColor(p);
             const startMins=calTimeToMins(ev.start)-(startHour*60);
             const top=Math.max(0,startMins);
             const height=Math.min(ev.duration,(endHour-startHour)*60-startMins);
             if(top>=(endHour-startHour)*60)return;
-            eventsHtml+=`<div class="event-block" style="top:${top}px;height:${Math.max(20,height)}px;background:${c.bg};color:${c.text}"
-                onclick="calOpenEventModal('${ev.id}',null,null)">
+            eventsHtml+=`<div class="event-block" style="top:${top}px;height:${Math.max(22,height)}px;background:${c.bg};color:${c.text}"
+                onclick="event.stopPropagation();calOpenEventModal('${ev.id}',null,null)">
                 <div class="event-title">${p.name.split(' ')[0]} — ${ev.type}</div>
                 <div class="event-time">${ev.start} · ${ev.duration}min</div>
             </div>`;
@@ -1129,6 +1171,7 @@ function calRenderWeekView(){
     }
     return `<div class="week-view"><div class="week-header">${headerHtml}</div><div class="week-grid">${gridHtml}</div></div>`;
 }
+
 function calRenderDayView(){
     const d=calState.currentDate;
     const dateStr=d.toISOString().split('T')[0];
@@ -1145,10 +1188,10 @@ function calRenderDayView(){
         const top=Math.max(0,startMins);
         const height=Math.min(ev.duration,(endHour-startHour)*60-startMins);
         if(top>=(endHour-startHour)*60)return;
-        eventsHtml+=`<div class="event-block" style="top:${top}px;height:${Math.max(20,height)}px;background:${c.bg};color:${c.text};left:6px;right:6px"
-            onclick="calOpenEventModal('${ev.id}',null,null)">
+        eventsHtml+=`<div class="event-block" style="top:${top}px;height:${Math.max(22,height)}px;background:${c.bg};color:${c.text};left:6px;right:6px"
+            onclick="event.stopPropagation();calOpenEventModal('${ev.id}',null,null)">
             <div class="event-title">${p.name} — ${ev.type}</div>
-            <div class="event-time">${ev.start} · ${ev.duration}min · ${ev.notes||''}</div>
+            <div class="event-time">${ev.start} · ${ev.duration}min${ev.notes?' · '+ev.notes:''}</div>
         </div>`;
     });
     const now=new Date(); const isToday=d.toDateString()===now.toDateString();
@@ -1156,6 +1199,7 @@ function calRenderDayView(){
         <div class="day-col-main" onclick="calOpenEventModal(null,'${dateStr}',null)">${hoursHtml}${eventsHtml}${isToday?'<div class="current-time-line"></div>':''}</div>
     </div></div>`;
 }
+
 function calRenderMonthView(){
     const d=calState.currentDate;
     const today=new Date(); today.setHours(0,0,0,0);
@@ -1195,7 +1239,7 @@ function calRenderMonthView(){
     return html;
 }
 
-/* ════ NAVIGATION ════ */
+/* ═══ NAVEGAÇÃO ═══ */
 function calNavigate(dir){
     const d=calState.currentDate;
     if(calState.view==='week') d.setDate(d.getDate()+dir*7);
@@ -1204,11 +1248,7 @@ function calNavigate(dir){
     calState.miniDate=new Date(d);
     calRender();
 }
-function calGoToday(){
-    calState.currentDate=new Date();
-    calState.miniDate=new Date();
-    calRender();
-}
+function calGoToday(){ calState.currentDate=new Date(); calState.miniDate=new Date(); calRender(); }
 function calSetView(v){ calState.view=v; calRender(); }
 function calMiniNav(dir){ calState.miniDate.setMonth(calState.miniDate.getMonth()+dir); calRenderMiniCal(); }
 function calSelectDay(dateStr){
@@ -1217,13 +1257,10 @@ function calSelectDay(dateStr){
     if(calState.view==='month') calState.view='day';
     calRender();
 }
-function calSelectPatient(id){
-    calState.selectedPatient=calState.selectedPatient===id?null:id;
-    calRender();
-}
-function calFilterPatients(val){ calRenderSidebar(); }
+function calSelectPatient(id){ calState.selectedPatient=calState.selectedPatient===id?null:id; calRender(); }
+function calFilterPatients(){ calRenderSidebar(); }
 
-/* ════ STORAGE ════ */
+/* ═══ STORAGE ═══ */
 function calSave(){
     try{
         localStorage.setItem('calPatients',JSON.stringify(calState.patients));
@@ -1239,203 +1276,212 @@ function calLoad(){
     }catch(e){}
 }
 
-/* ════ MODAIS ════ */
+/* ═══ MODAIS ═══ */
 function calOpenModal(id){ document.getElementById(id).classList.add('open'); }
 function calCloseModal(id){ document.getElementById(id).classList.remove('open'); }
 
+/* ── MODAL EVENTO ── */
 function calOpenEventModal(eventId, dateStr, hour){
-    calState.editingEventId=eventId;
-    const sel=document.getElementById('calEvtPatient');
-    sel.innerHTML=calState.patients.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+    calState.editingEventId = eventId;
+    const sel = document.getElementById('calEvtPatient');
+    sel.innerHTML = calState.patients.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+
+    const actionsBar = document.getElementById('calEvtActionsBar');
+
     if(eventId){
-        const ev=calState.events.find(e=>e.id===eventId);
-        if(!ev)return;
-        document.getElementById('calEventModalTitle').textContent='Editar Consulta';
-        document.getElementById('calEvtPatient').value=ev.patientId;
-        document.getElementById('calEvtDate').value=ev.date;
-        document.getElementById('calEvtStart').value=ev.start;
-        document.getElementById('calEvtDuration').value=ev.duration;
-        document.getElementById('calEvtType').value=ev.type;
-        document.getElementById('calEvtNotes').value=ev.notes||'';
-        document.getElementById('calEvtDeleteBtn').style.display='inline-flex';
-        document.getElementById('calEvtCancelMsgBtn').style.display='inline-flex';
-        document.getElementById('calEvtConfirmBtn').style.display='inline-flex';
+        const ev = calState.events.find(e=>e.id===eventId);
+        if(!ev) return;
+        document.getElementById('calEventModalTitle').textContent = '✏️ Editar Consulta';
+        sel.value = ev.patientId;
+        document.getElementById('calEvtDate').value = ev.date;
+        document.getElementById('calEvtStart').value = ev.start;
+        document.getElementById('calEvtDuration').value = ev.duration;
+        document.getElementById('calEvtType').value = ev.type;
+        document.getElementById('calEvtNotes').value = ev.notes||'';
+        // Mostrar barra de ações
+        actionsBar.style.display = 'flex';
     } else {
-        document.getElementById('calEventModalTitle').textContent='Nova Consulta';
-        document.getElementById('calEvtDate').value=dateStr||hojeISO();
-        document.getElementById('calEvtStart').value=hour||'09:00';
-        document.getElementById('calEvtDuration').value='50';
-        document.getElementById('calEvtType').value='Sessão';
-        document.getElementById('calEvtNotes').value='';
-        document.getElementById('calEvtDeleteBtn').style.display='none';
-        document.getElementById('calEvtCancelMsgBtn').style.display='none';
-        document.getElementById('calEvtConfirmBtn').style.display='none';
-        if(calState.selectedPatient) document.getElementById('calEvtPatient').value=calState.selectedPatient;
+        document.getElementById('calEventModalTitle').textContent = '+ Nova Consulta';
+        document.getElementById('calEvtDate').value = dateStr || hojeISO();
+        document.getElementById('calEvtStart').value = hour || '09:00';
+        document.getElementById('calEvtDuration').value = '50';
+        document.getElementById('calEvtType').value = 'Sessão';
+        document.getElementById('calEvtNotes').value = '';
+        // Esconder barra de ações em nova consulta
+        actionsBar.style.display = 'none';
+        if(calState.selectedPatient) sel.value = calState.selectedPatient;
     }
     calOpenModal('calEventModal');
 }
+
 function calSaveEvent(){
-    const patientId=document.getElementById('calEvtPatient').value;
-    const date=document.getElementById('calEvtDate').value;
-    const start=document.getElementById('calEvtStart').value;
-    const duration=parseInt(document.getElementById('calEvtDuration').value);
-    const type=document.getElementById('calEvtType').value;
-    const notes=document.getElementById('calEvtNotes').value;
-    if(!patientId||!date||!start){calShowToast('Preencha todos os campos obrigatórios.');return;}
+    const patientId = document.getElementById('calEvtPatient').value;
+    const date = document.getElementById('calEvtDate').value;
+    const start = document.getElementById('calEvtStart').value;
+    const duration = parseInt(document.getElementById('calEvtDuration').value);
+    const type = document.getElementById('calEvtType').value;
+    const notes = document.getElementById('calEvtNotes').value;
+    if(!patientId||!date||!start){ calShowToast('⚠️ Preencha todos os campos obrigatórios.'); return; }
     if(calState.editingEventId){
-        const idx=calState.events.findIndex(e=>e.id===calState.editingEventId);
+        const idx = calState.events.findIndex(e=>e.id===calState.editingEventId);
         if(idx>=0) calState.events[idx]={...calState.events[idx],patientId,date,start,duration,type,notes};
     } else {
         calState.events.push({id:calGenId(),patientId,date,start,duration,type,notes});
     }
     calSave(); calCloseModal('calEventModal'); calRender();
-    calShowToast(calState.editingEventId?'Consulta atualizada!':'Consulta agendada!');
-}
-function calDeleteEvent(){
-    if(!calState.editingEventId)return;
-    if(!confirm('Excluir esta consulta?'))return;
-    calState.events=calState.events.filter(e=>e.id!==calState.editingEventId);
-    calSave(); calCloseModal('calEventModal'); calRender();
-    calShowToast('Consulta excluída.');
+    calShowToast(calState.editingEventId ? '✅ Consulta atualizada!' : '✅ Consulta agendada!');
 }
 
+function calDeleteEvent(){
+    if(!calState.editingEventId) return;
+    if(!confirm('Excluir esta consulta permanentemente?')) return;
+    calState.events = calState.events.filter(e=>e.id!==calState.editingEventId);
+    calSave(); calCloseModal('calEventModal'); calRender();
+    calShowToast('🗑 Consulta excluída.');
+}
+
+/* ── MODAL PACIENTE ── */
 function calOpenPatientModal(patientId){
-    calState.editingPatientId=patientId;
-    const picker=document.getElementById('calColorPicker');
-    picker.innerHTML=CAL_COLORS.map((c,i)=>`<div class="cal-color-dot${calState.selectedColor===i?' selected':''}" style="background:${c.bg}" onclick="calSelectColor(${i})" title="${c.label}"></div>`).join('');
+    calState.editingPatientId = patientId;
+    const picker = document.getElementById('calColorPicker');
+    picker.innerHTML = CAL_COLORS.map((c,i)=>`<div class="cal-color-dot${calState.selectedColor===i?' selected':''}" style="background:${c.bg}" onclick="calSelectColor(${i})" title="${c.label}"></div>`).join('');
     if(patientId){
-        const p=calGetPatient(patientId); if(!p)return;
-        document.getElementById('calPatientModalTitle').textContent='Editar Paciente';
-        document.getElementById('calPtName').value=p.name;
-        document.getElementById('calPtPhone').value=p.phone||'';
-        document.getElementById('calPtBirth').value=p.birth||'';
-        document.getElementById('calPtStart').value=p.start||'';
-        document.getElementById('calPtNotes').value=p.notes||'';
-        calState.selectedColor=p.color||0;
-        document.getElementById('calPtDeleteBtn').style.display='inline-flex';
+        const p = calGetPatient(patientId); if(!p) return;
+        document.getElementById('calPatientModalTitle').textContent = '✏️ Editar Paciente';
+        document.getElementById('calPtName').value = p.name;
+        document.getElementById('calPtPhone').value = p.phone||'';
+        document.getElementById('calPtBirth').value = p.birth||'';
+        document.getElementById('calPtStart').value = p.start||'';
+        document.getElementById('calPtNotes').value = p.notes||'';
+        calState.selectedColor = p.color||0;
+        document.getElementById('calPtDeleteBtn').style.display = 'inline-flex';
     } else {
-        document.getElementById('calPatientModalTitle').textContent='Novo Paciente';
-        document.getElementById('calPtName').value='';
-        document.getElementById('calPtPhone').value='';
-        document.getElementById('calPtBirth').value='';
-        document.getElementById('calPtStart').value='';
-        document.getElementById('calPtNotes').value='';
-        calState.selectedColor=0;
-        document.getElementById('calPtDeleteBtn').style.display='none';
+        document.getElementById('calPatientModalTitle').textContent = '+ Novo Paciente';
+        document.getElementById('calPtName').value = '';
+        document.getElementById('calPtPhone').value = '';
+        document.getElementById('calPtBirth').value = '';
+        document.getElementById('calPtStart').value = '';
+        document.getElementById('calPtNotes').value = '';
+        calState.selectedColor = 0;
+        document.getElementById('calPtDeleteBtn').style.display = 'none';
     }
     calOpenModal('calPatientModal');
 }
 function calSelectColor(idx){
-    calState.selectedColor=idx;
+    calState.selectedColor = idx;
     document.querySelectorAll('.cal-color-dot').forEach((d,i)=>d.classList.toggle('selected',i===idx));
 }
 function calSavePatient(){
-    const name=document.getElementById('calPtName').value.trim();
-    if(!name){calShowToast('Informe o nome do paciente.');return;}
-    const data={name,phone:document.getElementById('calPtPhone').value,birth:document.getElementById('calPtBirth').value,
-        start:document.getElementById('calPtStart').value,notes:document.getElementById('calPtNotes').value,color:calState.selectedColor};
+    const name = document.getElementById('calPtName').value.trim();
+    if(!name){ calShowToast('⚠️ Informe o nome do paciente.'); return; }
+    const data = {
+        name, phone:document.getElementById('calPtPhone').value,
+        birth:document.getElementById('calPtBirth').value,
+        start:document.getElementById('calPtStart').value,
+        notes:document.getElementById('calPtNotes').value,
+        color:calState.selectedColor
+    };
     if(calState.editingPatientId){
-        const idx=calState.patients.findIndex(p=>p.id===calState.editingPatientId);
+        const idx = calState.patients.findIndex(p=>p.id===calState.editingPatientId);
         if(idx>=0) calState.patients[idx]={...calState.patients[idx],...data};
     } else {
         calState.patients.push({id:calGenId(),...data});
     }
     calSave(); calCloseModal('calPatientModal'); calRender();
-    calShowToast(calState.editingPatientId?'Paciente atualizado!':'Paciente cadastrado!');
+    calShowToast(calState.editingPatientId ? '✅ Paciente atualizado!' : '✅ Paciente cadastrado!');
 }
 function calDeletePatient(){
-    if(!calState.editingPatientId)return;
-    if(!confirm('Excluir este paciente e todas as suas consultas?'))return;
-    calState.events=calState.events.filter(e=>e.patientId!==calState.editingPatientId);
-    calState.patients=calState.patients.filter(p=>p.id!==calState.editingPatientId);
+    if(!calState.editingPatientId) return;
+    if(!confirm('Excluir este paciente e todas as suas consultas?')) return;
+    calState.events = calState.events.filter(e=>e.patientId!==calState.editingPatientId);
+    calState.patients = calState.patients.filter(p=>p.id!==calState.editingPatientId);
     calSave(); calCloseModal('calPatientModal'); calRender();
-    calShowToast('Paciente excluído.');
+    calShowToast('🗑 Paciente excluído.');
 }
 
-/* ════ CONFIRMAÇÃO ════ */
-const CAL_CONFIRM_TEMPLATES = [
-    {label:'Padrão',    texto:(n,d,h,t)=>`Olá, ${n}! 😊 Passando para confirmar sua consulta (${t}) no dia ${d} às ${h}. Por favor, confirme sua presença respondendo esta mensagem. Até lá!`},
-    {label:'Lembrete',  texto:(n,d,h,t)=>`Oi, ${n}! 🗓️ Lembrete: você tem uma sessão (${t}) agendada para ${d} às ${h}. Qualquer dúvida, é só falar. Te espero!`},
-    {label:'Formal',    texto:(n,d,h,t)=>`Prezado(a) ${n}, confirmamos o agendamento de sua consulta (${t}) para o dia ${d} às ${h}. Aguardamos sua presença.`},
-    {label:'Online',    texto:(n,d,h,t)=>`Olá, ${n}! 💻 Sua sessão online (${t}) está confirmada para ${d} às ${h}. Vou enviar o link de acesso em breve. Qualquer dúvida, me chame!`},
-];
+/* ── MODAL CONFIRMAÇÃO WHATSAPP ── */
 function calOpenConfirmModal(){
-    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
-    const p=calGetPatient(ev.patientId); if(!p)return;
-    const c=calPatientColor(p);
-    const initials=p.name.split(' ').slice(0,2).map(n=>n[0]).join('');
-    const avatar=document.getElementById('calConfirmPatientAvatar');
-    avatar.textContent=initials; avatar.style.background=c.bg+'33'; avatar.style.color=c.bg;
-    document.getElementById('calConfirmPatientName').textContent=p.name;
-    document.getElementById('calConfirmEventInfo').textContent=`${calFormatDateBR(ev.date)} às ${ev.start} — ${ev.type}`;
-    const btns=document.getElementById('calConfirmTemplateBtns');
-    btns.innerHTML=CAL_CONFIRM_TEMPLATES.map((t,i)=>`<button class="cal-template-btn" onclick="calApplyConfirmTemplate(${i})">${t.label}</button>`).join('');
+    const ev = calState.events.find(e=>e.id===calState.editingEventId); if(!ev) return;
+    const p = calGetPatient(ev.patientId); if(!p) return;
+    const c = calPatientColor(p);
+    const initials = p.name.split(' ').slice(0,2).map(n=>n[0]).join('');
+    const avatar = document.getElementById('calConfirmPatientAvatar');
+    avatar.textContent = initials;
+    avatar.style.cssText = `width:40px;height:40px;font-size:0.9rem;flex-shrink:0;border-radius:50%;background:${c.bg}33;color:${c.bg};display:flex;align-items:center;justify-content:center;font-weight:600`;
+    document.getElementById('calConfirmPatientName').textContent = p.name;
+    const phone = calGetCleanPhone(p.phone);
+    document.getElementById('calConfirmEventInfo').textContent = `${calFormatDateBR(ev.date)} às ${ev.start} — ${ev.type}${phone ? ' · '+p.phone : ' · ⚠️ sem telefone'}`;
+    const btns = document.getElementById('calConfirmTemplateBtns');
+    btns.innerHTML = CAL_CONFIRM_TEMPLATES.map((t,i)=>`<button class="cal-template-btn" onclick="calApplyConfirmTemplate(${i})">${t.label}</button>`).join('');
     calApplyConfirmTemplate(0);
     calCloseModal('calEventModal');
     calOpenModal('calConfirmModal');
 }
 function calApplyConfirmTemplate(idx){
-    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
-    const p=calGetPatient(ev.patientId); if(!p)return;
-    document.getElementById('calConfirmMsgText').value=CAL_CONFIRM_TEMPLATES[idx].texto(
+    const ev = calState.events.find(e=>e.id===calState.editingEventId); if(!ev) return;
+    const p = calGetPatient(ev.patientId); if(!p) return;
+    document.getElementById('calConfirmMsgText').value = CAL_CONFIRM_TEMPLATES[idx].texto(
         p.name.split(' ')[0], calFormatDateBR(ev.date), ev.start, ev.type
     );
 }
 function calSendConfirmWhatsApp(){
-    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
-    const p=calGetPatient(ev.patientId); if(!p)return;
-    const phone=calGetCleanPhone(p.phone);
-    const msg=encodeURIComponent(document.getElementById('calConfirmMsgText').value);
-    window.open(phone?`https://wa.me/55${phone}?text=${msg}`:`https://wa.me/?text=${msg}`,'_blank');
-    calShowToast('Abrindo WhatsApp...');
+    const ev = calState.events.find(e=>e.id===calState.editingEventId); if(!ev) return;
+    const p = calGetPatient(ev.patientId); if(!p) return;
+    const phone = calGetCleanPhone(p.phone);
+    const msg = encodeURIComponent(document.getElementById('calConfirmMsgText').value);
+    window.open(phone ? `https://wa.me/55${phone}?text=${msg}` : `https://wa.me/?text=${msg}`, '_blank');
+    calShowToast('📲 Abrindo WhatsApp...');
+    calCloseModal('calConfirmModal');
 }
 
-/* ════ CANCELAMENTO ════ */
+/* ── MODAL CANCELAMENTO ── */
 function calOpenCancelModal(){
-    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
-    const p=calGetPatient(ev.patientId); if(!p)return;
-    const c=calPatientColor(p);
-    const initials=p.name.split(' ').slice(0,2).map(n=>n[0]).join('');
-    const avatar=document.getElementById('calCancelPatientAvatar');
-    avatar.textContent=initials; avatar.style.background=c.bg+'33'; avatar.style.color=c.bg;
-    document.getElementById('calCancelPatientName').textContent=p.name;
-    document.getElementById('calCancelEventInfo').textContent=`${calFormatDateBR(ev.date)} às ${ev.start} — ${ev.type}`;
-    const btns=document.getElementById('calTemplateBtns');
-    btns.innerHTML=CAL_TEMPLATES.map((t,i)=>`<button class="cal-template-btn" onclick="calApplyTemplate(${i})">${t.label}</button>`).join('');
-    calApplyTemplate(0);
+    const ev = calState.events.find(e=>e.id===calState.editingEventId); if(!ev) return;
+    const p = calGetPatient(ev.patientId); if(!p) return;
+    const c = calPatientColor(p);
+    const initials = p.name.split(' ').slice(0,2).map(n=>n[0]).join('');
+    const avatar = document.getElementById('calCancelPatientAvatar');
+    avatar.textContent = initials;
+    avatar.style.cssText = `width:40px;height:40px;font-size:0.9rem;flex-shrink:0;border-radius:50%;background:${c.bg}33;color:${c.bg};display:flex;align-items:center;justify-content:center;font-weight:600`;
+    document.getElementById('calCancelPatientName').textContent = p.name;
+    document.getElementById('calCancelEventInfo').textContent = `${calFormatDateBR(ev.date)} às ${ev.start} — ${ev.type}`;
+    const btns = document.getElementById('calTemplateBtns');
+    btns.innerHTML = CAL_CANCEL_TEMPLATES.map((t,i)=>`<button class="cal-template-btn" onclick="calApplyCancelTemplate(${i})">${t.label}</button>`).join('');
+    calApplyCancelTemplate(0);
     calCloseModal('calEventModal');
     calOpenModal('calCancelModal');
 }
-function calApplyTemplate(idx){
-    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
-    const p=calGetPatient(ev.patientId); if(!p)return;
-    document.getElementById('calCancelMsgText').value=CAL_TEMPLATES[idx].texto(p.name.split(' ')[0],calFormatDateBR(ev.date),ev.start);
+function calApplyCancelTemplate(idx){
+    const ev = calState.events.find(e=>e.id===calState.editingEventId); if(!ev) return;
+    const p = calGetPatient(ev.patientId); if(!p) return;
+    document.getElementById('calCancelMsgText').value = CAL_CANCEL_TEMPLATES[idx].texto(p.name.split(' ')[0], calFormatDateBR(ev.date), ev.start);
 }
 function calSendWhatsApp(){
-    const ev=calState.events.find(e=>e.id===calState.editingEventId); if(!ev)return;
-    const p=calGetPatient(ev.patientId); if(!p)return;
-    const phone=calGetCleanPhone(p.phone);
-    const msg=encodeURIComponent(document.getElementById('calCancelMsgText').value);
-    window.open(phone?`https://wa.me/55${phone}?text=${msg}`:`https://wa.me/?text=${msg}`,'_blank');
+    const ev = calState.events.find(e=>e.id===calState.editingEventId); if(!ev) return;
+    const p = calGetPatient(ev.patientId); if(!p) return;
+    const phone = calGetCleanPhone(p.phone);
+    const msg = encodeURIComponent(document.getElementById('calCancelMsgText').value);
+    window.open(phone ? `https://wa.me/55${phone}?text=${msg}` : `https://wa.me/?text=${msg}`, '_blank');
+    calShowToast('📲 Abrindo WhatsApp...');
 }
 function calSendSMS(){
-    const msg=encodeURIComponent(document.getElementById('calCancelMsgText').value);
-    const ev=calState.events.find(e=>e.id===calState.editingEventId);
-    const p=ev?calGetPatient(ev.patientId):null;
-    const phone=p?calGetCleanPhone(p.phone):'';
-    window.open(`sms:${phone}?body=${msg}`,'_blank');
+    const msg = encodeURIComponent(document.getElementById('calCancelMsgText').value);
+    const ev = calState.events.find(e=>e.id===calState.editingEventId);
+    const p = ev ? calGetPatient(ev.patientId) : null;
+    const phone = p ? calGetCleanPhone(p.phone) : '';
+    window.open(`sms:${phone ? '+55'+phone : ''}?body=${msg}`, '_blank');
+    calShowToast('📩 Abrindo SMS...');
 }
 
-/* ════ TOAST ════ */
+/* ═══ TOAST ═══ */
 function calShowToast(msg){
-    const t=document.getElementById('calToast');
-    t.textContent=msg; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2500);
+    const t = document.getElementById('calToast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2800);
 }
 
-/* ════ INIT ════ */
+/* ═══ INIT ═══ */
 calLoad();
-
 </script>
 </body>
 </html>
