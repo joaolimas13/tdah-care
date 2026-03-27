@@ -1323,34 +1323,20 @@ function calRenderWeekView(){
 
 function calRenderDayView(){
     const d=calState.currentDate;
-    const dateStr=hojeISO(d); // ex: "2025-03-26"
+    const dateStr=hojeISO(d);
     const startHour=7,endHour=21;
     const timeColHtml=Array.from({length:endHour-startHour},(_,i)=>`<div class="time-label">${(startHour+i).toString().padStart(2,'0')}:00</div>`).join('');
     let hoursHtml='';
     for(let h=startHour;h<endHour;h++) hoursHtml+=`<div class="hour-line" style="top:${(h-startHour)*60}px"><div class="half-line"></div></div>`;
-
-    // filtra apenas pelo campo date (string YYYY-MM-DD)
-    const dayEvents=calState.events.filter(e=>{
-        const sameDay = (e.date === dateStr);
-        const patientOk = (!calState.selectedPatient || e.patientId===calState.selectedPatient);
-        return sameDay && patientOk;
-    });
-
-    // DEBUG: mostra o que está sendo comparado
-    const debugHtml = `<div style="background:#1e2d1e;border:1px solid #10B981;border-radius:6px;padding:8px 12px;margin:8px;font-size:0.72rem;color:#6EE7B7;font-family:monospace;z-index:99;position:relative">
-        <strong>DEBUG</strong> — dia exibido: <strong>${dateStr}</strong><br>
-        Eventos salvos (${calState.events.length} total): ${calState.events.map(e=>`<span style="color:${e.date===dateStr?'#34d399':'#64748B'}">${e.date}[${e.patientId.slice(0,4)}]</span>`).join(', ')||'nenhum'}<br>
-        Encontrados hoje: <strong>${dayEvents.length}</strong>
-    </div>`;
-
+    const dayEvents=calState.events.filter(e=>e.date===dateStr&&(!calState.selectedPatient||e.patientId===calState.selectedPatient));
     let eventsHtml='';
     dayEvents.forEach(ev=>{
         const p=calGetPatient(ev.patientId); if(!p)return;
         const c=calPatientColor(p);
         const startMins=calTimeToMins(ev.start)-(startHour*60);
         const top=Math.max(0,startMins);
-        const height=Math.max(40, Math.min(Number(ev.duration)||50,(endHour-startHour)*60-startMins));
-        const clampedTop = Math.max(0, Math.min(top, (endHour-startHour)*60 - 30));
+        const height=Math.max(40,Math.min(Number(ev.duration)||50,(endHour-startHour)*60-startMins));
+        const clampedTop=Math.max(0,Math.min(top,(endHour-startHour)*60-30));
         eventsHtml+=`<div class="event-block" style="top:${clampedTop}px;height:${height}px;background:${c.bg};color:${c.text};left:6px;right:6px"
             onclick="event.stopPropagation();calOpenEventModal('${ev.id}',null,null)">
             <div class="event-title">${p.name} — ${ev.type}</div>
@@ -1358,7 +1344,7 @@ function calRenderDayView(){
         </div>`;
     });
     const now=new Date(); const isToday=hojeISO(d)===hojeISO(now);
-    return `${debugHtml}<div class="day-view"><div class="day-grid"><div class="time-col">${timeColHtml}</div>
+    return `<div class="day-view"><div class="day-grid"><div class="time-col">${timeColHtml}</div>
         <div class="day-col-main" onclick="calOpenEventModal(null,'${dateStr}',null)">${hoursHtml}${eventsHtml}${isToday?'<div class="current-time-line"></div>':''}</div>
     </div></div>`;
 }
@@ -1406,19 +1392,30 @@ function calRenderMonthView(){
 
 /* ═══ NAVEGAÇÃO ═══ */
 function calNavigate(dir){
-    const d=calState.currentDate;
-    if(calState.view==='week') d.setDate(d.getDate()+dir*7);
-    else if(calState.view==='day') d.setDate(d.getDate()+dir);
-    else d.setMonth(d.getMonth()+dir);
-    calState.miniDate=new Date(d);
+    const d = calState.currentDate;
+    const nd = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0);
+    if(calState.view==='week') nd.setDate(nd.getDate()+dir*7);
+    else if(calState.view==='day') nd.setDate(nd.getDate()+dir);
+    else nd.setMonth(nd.getMonth()+dir);
+    calState.currentDate = nd;
+    calState.miniDate = new Date(nd);
     calRender();
 }
-function calGoToday(){ calState.currentDate=new Date(); calState.miniDate=new Date(); calRender(); }
+function calGoToday(){
+    const now = new Date();
+    calState.currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+    calState.miniDate = new Date(calState.currentDate);
+    calRender();
+}
 function calSetView(v){ calState.view=v; calRender(); }
-function calMiniNav(dir){ calState.miniDate.setMonth(calState.miniDate.getMonth()+dir); calRenderMiniCal(); }
+function calMiniNav(dir){
+    const m = calState.miniDate;
+    calState.miniDate = new Date(m.getFullYear(), m.getMonth()+dir, 1, 12, 0, 0);
+    calRenderMiniCal();
+}
 function calSelectDay(dateStr){
-    calState.currentDate=new Date(dateStr+'T12:00:00');
-    calState.miniDate=new Date(dateStr+'T12:00:00');
+    calState.currentDate = new Date(dateStr+'T12:00:00');
+    calState.miniDate = new Date(dateStr+'T12:00:00');
     if(calState.view==='month') calState.view='day';
     calRender();
 }
