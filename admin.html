@@ -1230,10 +1230,10 @@ function calRenderMiniCal() {
     for(let i=startDay-1;i>=0;i--) html+=`<div class="mini-day other-month">${prevDays-i}</div>`;
     for(let day=1;day<=days;day++){
         const date=new Date(d.getFullYear(),d.getMonth(),day);
-        const dateStr=date.toISOString().split('T')[0];
+        const dateStr=hojeISO(date); // CORRIGIDO: data local
         const isToday=date.getTime()===today.getTime();
         const hasEvent=calState.events.some(e=>e.date===dateStr);
-        const isSelected=calState.currentDate.toISOString().split('T')[0]===dateStr;
+        const isSelected=hojeISO(calState.currentDate)===dateStr; // CORRIGIDO
         let cls='mini-day';
         if(isToday) cls+=' today'; else if(isSelected) cls+=' selected';
         if(hasEvent) cls+=' has-event';
@@ -1250,7 +1250,9 @@ function calRenderMain() {
         const ws=calGetWeekStart(d); const we=new Date(ws); we.setDate(we.getDate()+6);
         titleText=`${ws.getDate()} – ${we.getDate()} de ${MONTHS_PT[we.getMonth()]} ${we.getFullYear()}`;
     } else if(calState.view==='day'){
-        titleText=d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+        // usa data local para exibir título correto
+        const localD = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        titleText=localD.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
         titleText=titleText.charAt(0).toUpperCase()+titleText.slice(1);
     } else { titleText=`${MONTHS_PT[d.getMonth()]} ${d.getFullYear()}`; }
     const viewTabs=['week','day','month'].map(v=>
@@ -1284,6 +1286,8 @@ function calRenderWeekView(){
     for(let i=0;i<7;i++){
         const d=new Date(ws); d.setDate(d.getDate()+i);
         const isToday=d.getTime()===today.getTime();
+        // usa data local, não UTC
+        const dateStr=hojeISO(d);
         const num=isToday?`<div class="week-day-num today-num">${d.getDate()}</div>`:`<div class="week-day-num">${d.getDate()}</div>`;
         headerHtml+=`<div class="week-day-header"><div class="week-day-name">${DAYS_PT[d.getDay()]}</div>${num}</div>`;
     }
@@ -1292,7 +1296,7 @@ function calRenderWeekView(){
     gridHtml+=`<div class="time-col">${timeColHtml}</div>`;
     for(let i=0;i<7;i++){
         const d=new Date(ws); d.setDate(d.getDate()+i);
-        const dateStr=d.toISOString().split('T')[0];
+        const dateStr=hojeISO(d); // CORRIGIDO: data local
         const isToday=d.getTime()===today.getTime();
         let hoursHtml='';
         for(let h=startHour;h<endHour;h++) hoursHtml+=`<div class="hour-line" style="top:${(h-startHour)*60}px"><div class="half-line"></div></div>`;
@@ -1319,7 +1323,7 @@ function calRenderWeekView(){
 
 function calRenderDayView(){
     const d=calState.currentDate;
-    const dateStr=d.toISOString().split('T')[0];
+    const dateStr=hojeISO(d); // CORRIGIDO: data local
     const startHour=7,endHour=21;
     const timeColHtml=Array.from({length:endHour-startHour},(_,i)=>`<div class="time-label">${(startHour+i).toString().padStart(2,'0')}:00</div>`).join('');
     let hoursHtml='';
@@ -1356,28 +1360,30 @@ function calRenderMonthView(){
     DAYS_PT.forEach(day=>html+=`<div class="month-day-label">${day}</div>`);
     for(let i=startDay-1;i>=0;i--){
         const dd=new Date(d.getFullYear(),d.getMonth()-1,prevDays-i);
-        const dateStr=dd.toISOString().split('T')[0];
+        const dateStr=hojeISO(dd);
         html+=`<div class="month-day other-month" onclick="calSelectDay('${dateStr}')"><span class="month-day-num">${prevDays-i}</span></div>`;
     }
     for(let day=1;day<=daysInMonth;day++){
         const dd=new Date(d.getFullYear(),d.getMonth(),day);
-        const dateStr=dd.toISOString().split('T')[0];
+        const dateStr=hojeISO(dd); // CORRIGIDO: data local
         const isToday=dd.getTime()===today.getTime();
         const dayEvents=calState.events.filter(e=>e.date===dateStr&&(!calState.selectedPatient||e.patientId===calState.selectedPatient));
         let evHtml=dayEvents.slice(0,3).map(ev=>{
             const p=calGetPatient(ev.patientId); if(!p)return'';
             const c=calPatientColor(p);
+            // stopPropagation para não acionar o clique do dia
             return `<div class="month-event" style="background:${c.bg};color:${c.text}" onclick="event.stopPropagation();calOpenEventModal('${ev.id}',null,null)">${p.name.split(' ')[0]}</div>`;
         }).join('');
-        if(dayEvents.length>3) evHtml+=`<div style="font-size:0.62rem;color:#64748B">+${dayEvents.length-3} mais</div>`;
-        html+=`<div class="month-day ${isToday?'today-cell':''}" onclick="calOpenEventModal(null,'${dateStr}',null)">
-            <span class="month-day-num">${day}</span>${evHtml}</div>`;
+        if(dayEvents.length>3) evHtml+=`<div style="font-size:0.62rem;color:#64748B;pointer-events:none">+${dayEvents.length-3} mais</div>`;
+        // Clique no dia vai para visão de dia; clique no evento abre o evento
+        html+=`<div class="month-day ${isToday?'today-cell':''}" onclick="calSelectDay('${dateStr}')">
+            <span class="month-day-num" style="pointer-events:none">${day}</span>${evHtml}</div>`;
     }
     const totalCells=startDay+daysInMonth;
     const remaining=(7-totalCells%7)%7;
     for(let i=1;i<=remaining;i++){
         const dd=new Date(d.getFullYear(),d.getMonth()+1,i);
-        const dateStr=dd.toISOString().split('T')[0];
+        const dateStr=hojeISO(dd);
         html+=`<div class="month-day other-month" onclick="calSelectDay('${dateStr}')"><span class="month-day-num">${i}</span></div>`;
     }
     html+='</div></div>';
