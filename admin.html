@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin â€” CleanTdah</title>
+    <title>Painel Admin — CleanTdah</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -38,7 +38,7 @@
             overflow-x: hidden;
         }
 
-        /* â”€â”€ BACKGROUND â”€â”€ */
+        /* ── BACKGROUND ── */
         body::before {
             content: '';
             position: fixed;
@@ -52,9 +52,9 @@
         }
         body > * { position: relative; z-index: 1; }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ══════════════════════════════════
            TELA DE SENHA
-        â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        ══════════════════════════════════ */
         #tela-senha {
             min-height: 100vh;
             display: flex;
@@ -196,9 +196,9 @@
         }
         .shake { animation: shake 0.4s ease; }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ══════════════════════════════════
            PAINEL PRINCIPAL
-        â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        ══════════════════════════════════ */
         #conteudo-principal { display: none; padding: 0 0 60px; }
 
         /* TOPBAR */
@@ -532,52 +532,52 @@
 </head>
 <body>
 
-<!-- â•â• TELA DE SENHA â•â• -->
+<!-- ══ TELA DE SENHA ══ -->
 <div id="tela-senha">
     <div class="login-card">
         <div class="login-logo">
-            <div class="login-logo-icon">ðŸ§ </div>
+            <div class="login-logo-icon">🧠</div>
             <div class="login-logo-text">Clean<span>Tdah</span></div>
         </div>
         <div class="login-title">Acesso Restrito</div>
-        <div class="login-subtitle">Painel de acompanhamento clÃ­nico.<br>Informe a senha para continuar.</div>
+        <div class="login-subtitle">Painel de acompanhamento clínico.<br>Informe a senha para continuar.</div>
         <label class="field-label">Senha de acesso</label>
         <div class="input-wrap">
-            <input type="password" id="input-senha" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="current-password">
-            <button class="toggle-pass" onclick="toggleSenha()" title="Ver senha">ðŸ‘</button>
+            <input type="password" id="input-senha" placeholder="••••••••" autocomplete="current-password">
+            <button class="toggle-pass" onclick="toggleSenha()" title="Ver senha">👁</button>
         </div>
         <button class="btn-login" onclick="verificarSenha()">
-            <span>ðŸ”</span> Entrar no Painel
+            <span>🔐</span> Entrar no Painel
         </button>
-        <div class="login-error" id="msg-erro">âŒ Senha incorreta. Tente novamente.</div>
-        <div class="login-footer">CleanTdah Â· Ãrea administrativa Â· Acesso protegido</div>
+        <div class="login-error" id="msg-erro">❌ Senha incorreta. Tente novamente.</div>
+        <div class="login-footer">CleanTdah · Área administrativa · Acesso protegido</div>
     </div>
 </div>
 
-<!-- â•â• PAINEL PRINCIPAL â•â• -->
+<!-- ══ PAINEL PRINCIPAL ══ -->
 <div id="conteudo-principal">
 
     <!-- TOPBAR -->
     <div class="topbar">
         <div class="topbar-logo">
-            <div class="topbar-logo-icon">ðŸ§ </div>
+            <div class="topbar-logo-icon">🧠</div>
             <div class="topbar-logo-text">Clean<span>Tdah</span></div>
         </div>
         <div class="topbar-right">
             <span class="topbar-badge" id="topbar-psico">Admin</span>
-            <button class="btn-sair" onclick="sair()">â†© Sair</button>
+            <button class="btn-sair" onclick="sair()">↩ Sair</button>
         </div>
     </div>
 
     <div class="content-wrap">
         <div class="page-title">Painel de Acompanhamento</div>
-        <div class="page-sub" id="page-sub-txt">Monitoramento clÃ­nico de pacientes Â· CleanTdah</div>
+        <div class="page-sub" id="page-sub-txt">Monitoramento clínico de pacientes · CleanTdah</div>
 
         <!-- STATS -->
         <div class="stats-row">
             <div class="stat-card">
-                <div class="stat-icon">ðŸ‘¥</div>
-                <div class="stat-val" id="total-pacientes">â€”</div>
+                <div class="stat-icon">👥</div>
+                <div class="stat-val" id="total-pacientes">—</div>
                 <div class="stat-lbl">Pacientes registrados</div>
             </div>
 
@@ -585,9 +585,9 @@
 
         <!-- ACTION BAR -->
         <div class="action-bar">
-            <button class="btn-action btn-refresh" id="btn-atualizar">ðŸ”„ Atualizar</button>
-            <button class="btn-action btn-csv2" id="btn-csv">ðŸ“Š Exportar CSV</button>
-            <button class="btn-action btn-pdf2" onclick="imprimirRelatorioAdmin()">ðŸ“„ Salvar PDF</button>
+            <button class="btn-action btn-refresh" id="btn-atualizar">🔄 Atualizar</button>
+            <button class="btn-action btn-csv2" id="btn-csv">📊 Exportar CSV</button>
+            <button class="btn-action btn-pdf2" onclick="imprimirRelatorioAdmin()">📄 Salvar PDF</button>
         </div>
 
         <!-- LISTA -->
@@ -605,9 +605,9 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    /* ════════════════════════════════════
        LOGIN
-    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+    ════════════════════════════════════ */
     const senhaCorreta = "psico2024";
 
     function toggleSenha() {
@@ -639,9 +639,9 @@
         document.getElementById('input-senha').value = '';
     }
 
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    /* ════════════════════════════════════
        FIREBASE
-    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+    ════════════════════════════════════ */
     const firebaseConfig = {
         apiKey: "AIzaSyDh-S0VXw3oIabAkyoJHLVvvLfVjN29enw",
         authDomain: "cleantdah.firebaseapp.com",
@@ -654,7 +654,7 @@
     const db = firebase.firestore();
     let dadosGlobais = [];
 
-    /* â”€â”€ FILTRO POR PSICÃ“LOGA â”€â”€ */
+    /* ── FILTRO POR PSICÓLOGA ── */
     const _URL_KEY = new URLSearchParams(window.location.search).get('key') || '';
     const _PSICO_NOMES = {
         dra_raiza:    'Dra. Raiza Oliveira',
@@ -666,9 +666,9 @@
         document.getElementById('page-sub-txt').textContent = 'Painel de ' + _PSICO_NOMES[_URL_KEY];
     }
 
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    /* ════════════════════════════════════
        HELPERS
-    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+    ════════════════════════════════════ */
     function pad(n) { return String(n).padStart(2,'0'); }
     function hojeISO(date) {
         date = date || new Date();
@@ -677,24 +677,24 @@
 
     function gerarAnalise(dados) {
         let analise = '';
-        if ((dados.score||0) >= 70) analise += 'âœ… Excelente desempenho geral. ';
-        else if ((dados.score||0) >= 40) analise += 'âš ï¸ Desempenho moderado. ';
-        else analise += 'âŒ Score baixo â€” requer atenÃ§Ã£o. ';
-        if (dados.sonoMedia && dados.sonoMedia < 6) analise += 'ðŸ’¤ PrivaÃ§Ã£o de sono detectada. ';
-        if (dados.metasPct && dados.metasPct >= 80) analise += 'ðŸŽ¯ Ã“tima adesÃ£o Ã s metas. ';
-        return analise || 'Poucos dados para anÃ¡lise completa.';
+        if ((dados.score||0) >= 70) analise += '✅ Excelente desempenho geral. ';
+        else if ((dados.score||0) >= 40) analise += '⚠️ Desempenho moderado. ';
+        else analise += '❌ Score baixo — requer atenção. ';
+        if (dados.sonoMedia && dados.sonoMedia < 6) analise += '💤 Privação de sono detectada. ';
+        if (dados.metasPct && dados.metasPct >= 80) analise += '🎯 Ótima adesão às metas. ';
+        return analise || 'Poucos dados para análise completa.';
     }
 
     function scoreCor(s) {
         return s >= 75 ? '#10B981' : s >= 50 ? '#F59E0B' : '#EF4444';
     }
 
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-       RELATÃ“RIO CLÃNICO (adaptado para tema escuro)
-    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+    /* ════════════════════════════════════
+       RELATÓRIO CLÍNICO (adaptado para tema escuro)
+    ════════════════════════════════════ */
     function gerarRelatorioClinico(dailyData, periodoIni, periodoFim) {
         if (!dailyData || typeof dailyData !== 'object')
-            return '<div class="clinico-aviso">Nenhum dado diÃ¡rio sincronizado para este paciente ainda.</div>';
+            return '<div class="clinico-aviso">Nenhum dado diário sincronizado para este paciente ainda.</div>';
 
         const dataIniObj = periodoIni ? new Date(periodoIni+'T00:00:00') : new Date(new Date().setDate(new Date().getDate()-29));
         const dataFimObj = periodoFim ? new Date(periodoFim+'T00:00:00') : new Date();
@@ -719,7 +719,7 @@
             if(dd.atividade)atividadeN++;
             if(dd.leitura){leituraTotal+=dd.leitura.paginas;leituraN++;}
         }
-        if(diasDados===0) return '<div class="clinico-aviso">ðŸ“‹ Nenhum dado registrado neste perÃ­odo.</div>';
+        if(diasDados===0) return '<div class="clinico-aviso">📋 Nenhum dado registrado neste período.</div>';
 
         const avgSono=sonoN>0?(sonoTotal/sonoN):null;
         const pctMetas=metasTotal>0?Math.round((metasConcl/metasTotal)*100):null;
@@ -734,19 +734,19 @@
         if(avgCelular!==null){scoreMax+=15;scoreTotal+=avgCelular<=120?15:avgCelular<=240?10:avgCelular<=360?5:0;}
         const scoreGeral=scoreMax>0?Math.round((scoreTotal/scoreMax)*100):0;
         const sc=scoreCor(scoreGeral);
-        const scoreLabel=scoreGeral>=75?'Boa adesÃ£o ao tratamento':scoreGeral>=50?'AdesÃ£o moderada':'AdesÃ£o baixa â€” requer atenÃ§Ã£o';
+        const scoreLabel=scoreGeral>=75?'Boa adesão ao tratamento':scoreGeral>=50?'Adesão moderada':'Adesão baixa — requer atenção';
 
         const sonoMax=Math.max(...sonoSeries.filter(v=>v!==null),9);
         const focoMax=Math.max(...focoSeries,60);
         const grafSono=sonoSeries.slice(-14).map(v=>{
             const h=Math.round((v||0)/sonoMax*100);
             const cor=!v?'rgba(255,255,255,0.06)':v>=7?'#10B981':v>=6?'#F59E0B':'#EF4444';
-            return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};" title="${v?v+'h':'â€”'}"></div>`;
+            return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};" title="${v?v+'h':'—'}"></div>`;
         }).join('');
         const grafFoco=focoSeries.slice(-14).map(v=>{
             const h=Math.round((v/focoMax)*100);
             const cor=v>=60?'#8B5CF6':v>=30?'#A78BFA':'rgba(255,255,255,0.06)';
-            return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};" title="${v?v+'min':'â€”'}"></div>`;
+            return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};" title="${v?v+'min':'—'}"></div>`;
         }).join('');
 
         function row(lbl,val,badge,badgeTxt){
@@ -754,39 +754,39 @@
         }
         function parecerSono(){
             if(!avgSono)return 'Dados de sono insuficientes.';
-            let t=`MÃ©dia de ${avgSono.toFixed(1)}h/noite. `;
-            if(avgSono>=8)t+='PadrÃ£o <strong>dentro dos parÃ¢metros ideais</strong> (7â€“9h).';
-            else if(avgSono>=7)t+='Sono <strong>limÃ­trofe ao adequado</strong>.';
-            else if(avgSono>=6)t+='Sono <strong>abaixo do recomendado</strong>. PrivaÃ§Ã£o crÃ´nica leve agrava desatenÃ§Ã£o.';
-            else t+='Sono <strong>significativamente abaixo do limiar terapÃªutico</strong>.';
-            if(sonoAbaixo7>0)t+=` <strong>${sonoAbaixo7} noites abaixo de 7h</strong> no perÃ­odo.`;
+            let t=`Média de ${avgSono.toFixed(1)}h/noite. `;
+            if(avgSono>=8)t+='Padrão <strong>dentro dos parâmetros ideais</strong> (7–9h).';
+            else if(avgSono>=7)t+='Sono <strong>limítrofe ao adequado</strong>.';
+            else if(avgSono>=6)t+='Sono <strong>abaixo do recomendado</strong>. Privação crônica leve agrava desatenção.';
+            else t+='Sono <strong>significativamente abaixo do limiar terapêutico</strong>.';
+            if(sonoAbaixo7>0)t+=` <strong>${sonoAbaixo7} noites abaixo de 7h</strong> no período.`;
             return t;
         }
         function parecerMetas(){
             if(pctMetas===null)return 'Dados insuficientes.';
             let t=`Taxa: <strong>${pctMetas}%</strong> (${metasConcl}/${metasTotal}). `;
-            if(pctMetas>=80)t+='<strong>Desempenho satisfatÃ³rio</strong>.';
+            if(pctMetas>=80)t+='<strong>Desempenho satisfatório</strong>.';
             else if(pctMetas>=60)t+='Desempenho <strong>moderado</strong>.';
             else if(pctMetas>=40)t+='Desempenho <strong>abaixo do esperado</strong>.';
-            else t+='<strong>Dificuldade persistente</strong> na execuÃ§Ã£o.';
+            else t+='<strong>Dificuldade persistente</strong> na execução.';
             return t;
         }
         function parecerFoco(){
-            if(!avgFoco)return 'Nenhuma sessÃ£o de foco registrada.';
+            if(!avgFoco)return 'Nenhuma sessão de foco registrada.';
             const totalH=Math.floor(focoTotal/60),totalM=focoTotal%60;
-            let t=`Total de <strong>${totalH>0?totalH+'h ':''}${totalM>0?totalM+'min':''}de foco</strong> em ${focoN} dias. MÃ©dia ${avgFoco}min/dia. `;
+            let t=`Total de <strong>${totalH>0?totalH+'h ':''}${totalM>0?totalM+'min':''}de foco</strong> em ${focoN} dias. Média ${avgFoco}min/dia. `;
             if(avgFoco>=25)t+='Volume <strong>adequado</strong>.';
             else if(avgFoco>=12)t+='Volume <strong>moderado</strong>.';
             else t+='Volume <strong>baixo</strong>.';
             return t;
         }
         function parecerTela(){
-            if(!avgCelular)return 'Tempo de tela nÃ£o monitorado.';
+            if(!avgCelular)return 'Tempo de tela não monitorado.';
             const h=Math.floor(avgCelular/60),m=avgCelular%60;
-            let t=`MÃ©dia de <strong>${h}h${m>0?m+'min':''}/dia</strong>. `;
+            let t=`Média de <strong>${h}h${m>0?m+'min':''}/dia</strong>. `;
             if(avgCelular<=120)t+='<strong>Controle adequado</strong>.';
             else if(avgCelular<=240)t+='Uso <strong>moderado a elevado</strong>.';
-            else t+='<strong>Uso elevado</strong>. Correlaciona negativamente com atenÃ§Ã£o.';
+            else t+='<strong>Uso elevado</strong>. Correlaciona negativamente com atenção.';
             return t;
         }
 
@@ -794,52 +794,52 @@
         const fmtM=d=>d.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
 
         return `
-        <div style="font-size:0.72em;color:#64748B;text-align:right;margin-bottom:8px;">ðŸ“… ${fmtD(dataIniObj)} a ${fmtD(dataFimObj)}</div>
+        <div style="font-size:0.72em;color:#64748B;text-align:right;margin-bottom:8px;">📅 ${fmtD(dataIniObj)} a ${fmtD(dataFimObj)}</div>
         <div class="clinico-wrap">
             <div class="clinico-topo">
-                <div class="ct-titulo">ðŸ“‹ RelatÃ³rio ClÃ­nico de Acompanhamento</div>
-                <div class="ct-sub">TDAH Care Â· ${fmtM(dataFimObj)} Â· ${diasDados} dias com registro</div>
+                <div class="ct-titulo">📋 Relatório Clínico de Acompanhamento</div>
+                <div class="ct-sub">TDAH Care · ${fmtM(dataFimObj)} · ${diasDados} dias com registro</div>
                 <div class="ct-meta">
                     <div class="ct-meta-item"><div class="ctm-val" style="color:${sc};">${scoreGeral}</div><div class="ctm-lbl">Score /100</div></div>
                     <div class="ct-meta-item"><div class="ctm-val">${diasDados}</div><div class="ctm-lbl">Dias registrados</div></div>
-                    <div class="ct-meta-item"><div class="ctm-val">${pctRemedio}%</div><div class="ctm-lbl">Uso do remÃ©dio</div></div>
+                    <div class="ct-meta-item"><div class="ctm-val">${pctRemedio}%</div><div class="ctm-lbl">Uso do remédio</div></div>
                 </div>
             </div>
             <div class="clinico-secao">
-                <div class="clinico-secao-titulo">ðŸ“Š Indicadores do PerÃ­odo</div>
-                ${avgSono!==null?row('MÃ©dia de sono/noite',avgSono.toFixed(1)+'h',avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit',avgSono>=7?'Adequado':avgSono>=6?'AtenÃ§Ã£o':'CrÃ­tico'):''}
-                ${pctMetas!==null?row('Taxa de conclusÃ£o de metas',pctMetas+'% ('+metasConcl+'/'+metasTotal+')',pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit',pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
-                ${avgFoco!==null?row('MÃ©dia de foco diÃ¡rio',avgFoco+'min/dia',avgFoco>=25?'cl-norm':avgFoco>=12?'cl-atenc':'cl-crit',avgFoco>=25?'Adequado':avgFoco>=12?'Moderado':'Baixo'):''}
-                ${avgCelular!==null?row('MÃ©dia de tempo de tela',Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia',avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit',avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
-                ${remedioN>0?row('Registro de medicaÃ§Ã£o',remedioN+' vezes em '+diasDados+' dias','',''): ''}
-                ${atividadeN>0?row('Atividade fÃ­sica',atividadeN+' vezes em '+diasDados+' dias','',''):''}
-                ${leituraN>0?row('Leitura acumulada',leituraTotal+' pÃ¡ginas em '+leituraN+' dias','cl-norm','Registrada'):''}
+                <div class="clinico-secao-titulo">📊 Indicadores do Período</div>
+                ${avgSono!==null?row('Média de sono/noite',avgSono.toFixed(1)+'h',avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit',avgSono>=7?'Adequado':avgSono>=6?'Atenção':'Crítico'):''}
+                ${pctMetas!==null?row('Taxa de conclusão de metas',pctMetas+'% ('+metasConcl+'/'+metasTotal+')',pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit',pctMetas>=70?'Adequada':pctMetas>=50?'Moderada':'Baixa'):''}
+                ${avgFoco!==null?row('Média de foco diário',avgFoco+'min/dia',avgFoco>=25?'cl-norm':avgFoco>=12?'cl-atenc':'cl-crit',avgFoco>=25?'Adequado':avgFoco>=12?'Moderado':'Baixo'):''}
+                ${avgCelular!==null?row('Média de tempo de tela',Math.floor(avgCelular/60)+'h'+(avgCelular%60>0?avgCelular%60+'min':'')+'/dia',avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit',avgCelular<=180?'Controlado':avgCelular<=300?'Moderado':'Elevado'):''}
+                ${remedioN>0?row('Registro de medicação',remedioN+' vezes em '+diasDados+' dias','',''): ''}
+                ${atividadeN>0?row('Atividade física',atividadeN+' vezes em '+diasDados+' dias','',''):''}
+                ${leituraN>0?row('Leitura acumulada',leituraTotal+' páginas em '+leituraN+' dias','cl-norm','Registrada'):''}
             </div>
         </div>
         ${sonoN>0?`
         <div class="clinico-wrap">
             <div class="clinico-secao">
-                <div class="clinico-secao-titulo">ðŸ˜´ EvoluÃ§Ã£o do Sono â€” Ãºltimas 2 semanas</div>
+                <div class="clinico-secao-titulo">😴 Evolução do Sono — últimas 2 semanas</div>
                 <div class="clinico-grafico">${grafSono}</div>
-                <div style="display:flex;gap:12px;font-size:0.65em;color:#64748B;margin-top:4px;"><span>ðŸŸ¢ â‰¥7h</span><span>ðŸŸ  6-7h</span><span>ðŸ”´ &lt;6h</span></div>
+                <div style="display:flex;gap:12px;font-size:0.65em;color:#64748B;margin-top:4px;"><span>🟢 ≥7h</span><span>🟠 6-7h</span><span>🔴 &lt;6h</span></div>
                 <div style="height:1px;background:rgba(255,255,255,0.06);margin:12px 0;"></div>
-                <div class="clinico-secao-titulo">ðŸ”ï¸ Foco diÃ¡rio â€” Ãºltimas 2 semanas</div>
+                <div class="clinico-secao-titulo">🏔️ Foco diário — últimas 2 semanas</div>
                 <div class="clinico-grafico">${grafFoco}</div>
-                <div style="font-size:0.65em;color:#64748B;margin-top:4px;">ðŸŸ£ â‰¥60min Â· ðŸ”µ 30-60min</div>
+                <div style="font-size:0.65em;color:#64748B;margin-top:4px;">🟣 ≥60min · 🔵 30-60min</div>
             </div>
         </div>`:''}
         <div class="clinico-wrap">
             <div class="clinico-secao">
-                <div class="clinico-secao-titulo">ðŸ“ AnÃ¡lise ClÃ­nica Detalhada</div>
-                ${avgSono!==null?`<div style="margin-bottom:12px;"><div style="font-size:0.78em;font-weight:700;color:#34D399;margin-bottom:4px;">ðŸ˜´ Sono e RecuperaÃ§Ã£o</div><div style="font-size:0.83em;color:#94A3B8;line-height:1.7;">${parecerSono()}</div></div>`:''}
-                ${pctMetas!==null?`<div style="margin-bottom:12px;"><div style="font-size:0.78em;font-weight:700;color:#60A5FA;margin-bottom:4px;">ðŸŽ¯ FunÃ§Ã£o Executiva</div><div style="font-size:0.83em;color:#94A3B8;line-height:1.7;">${parecerMetas()}</div></div>`:''}
-                ${avgFoco!==null?`<div style="margin-bottom:12px;"><div style="font-size:0.78em;font-weight:700;color:#A78BFA;margin-bottom:4px;">ðŸ”ï¸ AtenÃ§Ã£o Sustentada</div><div style="font-size:0.83em;color:#94A3B8;line-height:1.7;">${parecerFoco()}</div></div>`:''}
-                ${avgCelular!==null?`<div><div style="font-size:0.78em;font-weight:700;color:#FCD34D;margin-bottom:4px;">ðŸ“± Uso de Tecnologia</div><div style="font-size:0.83em;color:#94A3B8;line-height:1.7;">${parecerTela()}</div></div>`:''}
+                <div class="clinico-secao-titulo">📝 Análise Clínica Detalhada</div>
+                ${avgSono!==null?`<div style="margin-bottom:12px;"><div style="font-size:0.78em;font-weight:700;color:#34D399;margin-bottom:4px;">😴 Sono e Recuperação</div><div style="font-size:0.83em;color:#94A3B8;line-height:1.7;">${parecerSono()}</div></div>`:''}
+                ${pctMetas!==null?`<div style="margin-bottom:12px;"><div style="font-size:0.78em;font-weight:700;color:#60A5FA;margin-bottom:4px;">🎯 Função Executiva</div><div style="font-size:0.83em;color:#94A3B8;line-height:1.7;">${parecerMetas()}</div></div>`:''}
+                ${avgFoco!==null?`<div style="margin-bottom:12px;"><div style="font-size:0.78em;font-weight:700;color:#A78BFA;margin-bottom:4px;">🏔️ Atenção Sustentada</div><div style="font-size:0.83em;color:#94A3B8;line-height:1.7;">${parecerFoco()}</div></div>`:''}
+                ${avgCelular!==null?`<div><div style="font-size:0.78em;font-weight:700;color:#FCD34D;margin-bottom:4px;">📱 Uso de Tecnologia</div><div style="font-size:0.83em;color:#94A3B8;line-height:1.7;">${parecerTela()}</div></div>`:''}
             </div>
         </div>
         <div class="clinico-wrap">
             <div class="clinico-secao">
-                <div class="clinico-secao-titulo">â­ AvaliaÃ§Ã£o Geral</div>
+                <div class="clinico-secao-titulo">⭐ Avaliação Geral</div>
                 <div style="display:flex;align-items:center;gap:14px;padding:6px 0;">
                     <div style="width:52px;height:52px;border-radius:50%;background:${sc};display:flex;align-items:center;justify-content:center;color:white;font-size:1.1em;font-weight:900;flex-shrink:0;box-shadow:0 4px 14px ${sc}55;">${scoreGeral}</div>
                     <div>
@@ -849,36 +849,36 @@
                 </div>
             </div>
         </div>
-        <div class="clinico-aviso">âš ï¸ <strong>Importante:</strong> RelatÃ³rio gerado automaticamente a partir de dados autodeclarados. NÃ£o substitui avaliaÃ§Ã£o clÃ­nica profissional.</div>`;
+        <div class="clinico-aviso">⚠️ <strong>Importante:</strong> Relatório gerado automaticamente a partir de dados autodeclarados. Não substitui avaliação clínica profissional.</div>`;
     }
 
     function gerarHistoricoHTML(dailyData) {
-        if (!dailyData || typeof dailyData !== 'object') return '<p style="color:#64748B;font-size:0.85em;">Nenhum histÃ³rico disponÃ­vel.</p>';
+        if (!dailyData || typeof dailyData !== 'object') return '<p style="color:#64748B;font-size:0.85em;">Nenhum histórico disponível.</p>';
         const dias = Object.keys(dailyData).sort().reverse();
-        if (dias.length === 0) return '<p style="color:#64748B;font-size:0.85em;">Nenhum histÃ³rico disponÃ­vel.</p>';
+        if (dias.length === 0) return '<p style="color:#64748B;font-size:0.85em;">Nenhum histórico disponível.</p>';
         return dias.slice(0, 30).map(data => {
             const info = dailyData[data];
-            const sonoTxt = (info.sono&&info.sono[0]) ? info.sono[0].horas+'h' : 'â€”';
+            const sonoTxt = (info.sono&&info.sono[0]) ? info.sono[0].horas+'h' : '—';
             const focoTxt = (info.pom&&info.pom.minFoco>0) ? info.pom.minFoco+'min' : '0min';
-            const celTxt = info.celular ? (info.celular.horas+'h '+info.celular.minutos+'min') : 'â€”';
+            const celTxt = info.celular ? (info.celular.horas+'h '+info.celular.minutos+'min') : '—';
             const aguaTxt = info.copos ? (info.copos*250)+'ml' : '0ml';
-            const remedioTxt = (info.remedio&&info.remedio.horaRegistro) ? 'âœ…' : 'âŒ';
+            const remedioTxt = (info.remedio&&info.remedio.horaRegistro) ? '✅' : '❌';
             let metasConc=0,metasTot=0;
             if(info.metas){metasTot+=info.metas.length;metasConc+=info.metas.filter(m=>m.done).length;}
             if(info.metasFixas){metasTot+=info.metasFixas.length;metasConc+=info.metasFixas.filter(m=>m.done).length;}
             const mp = metasTot>0?Math.round((metasConc/metasTot)*100):null;
             const cor = mp===null?'#64748B':mp>=70?'#34D399':mp>=40?'#FCD34D':'#FCA5A5';
             return `<div class="hist-item">
-                <div class="hist-data">ðŸ“… ${data}</div>
-                <div class="hist-linha">ðŸ˜´ Sono: <span>${sonoTxt}</span> &nbsp;|&nbsp; ðŸ”ï¸ Foco: <span>${focoTxt}</span> &nbsp;|&nbsp; ðŸ’§ Ãgua: <span>${aguaTxt}</span></div>
-                <div class="hist-linha">ðŸ“± Tela: <span>${celTxt}</span> &nbsp;|&nbsp; ðŸ’Š RemÃ©dio: <span>${remedioTxt}</span> &nbsp;|&nbsp; ðŸŽ¯ Metas: <span style="color:${cor};">${metasConc}/${metasTot}${mp!==null?' ('+mp+'%)':''}</span></div>
+                <div class="hist-data">📅 ${data}</div>
+                <div class="hist-linha">😴 Sono: <span>${sonoTxt}</span> &nbsp;|&nbsp; 🏔️ Foco: <span>${focoTxt}</span> &nbsp;|&nbsp; 💧 Água: <span>${aguaTxt}</span></div>
+                <div class="hist-linha">📱 Tela: <span>${celTxt}</span> &nbsp;|&nbsp; 💊 Remédio: <span>${remedioTxt}</span> &nbsp;|&nbsp; 🎯 Metas: <span style="color:${cor};">${metasConc}/${metasTot}${mp!==null?' ('+mp+'%)':''}</span></div>
             </div>`;
         }).join('');
     }
 
-    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    /* ════════════════════════════════════
        BUSCAR DADOS
-    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+    ════════════════════════════════════ */
     async function buscarRelatorios() {
         const divLista = document.getElementById('lista-relatorios');
         divLista.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Carregando dados do Firebase...</div></div>`;
@@ -905,7 +905,7 @@
 
                 const sc = scoreCor(dados.score||0);
                 const uid = id.replace(/[^a-z0-9]/g,'_');
-                const dtEnvio = dados.ultimoEnvio ? new Date(dados.ultimoEnvio).toLocaleString('pt-BR') : 'â€”';
+                const dtEnvio = dados.ultimoEnvio ? new Date(dados.ultimoEnvio).toLocaleString('pt-BR') : '—';
                 const hoje = new Date();
                 const iniDefault = new Date(); iniDefault.setDate(hoje.getDate()-29);
 
@@ -913,37 +913,37 @@
                 <details class="patient-card" id="details-${uid}">
                     <summary class="patient-summary">
                         <div class="patient-left">
-                            <div class="patient-avatar">ðŸ‘¤</div>
+                            <div class="patient-avatar">👤</div>
                             <div>
                                 <div class="patient-name">${dados.apelido || id}</div>
-                                <div class="patient-meta">Ãšltimo envio: ${dtEnvio}</div>
+                                <div class="patient-meta">Último envio: ${dtEnvio}</div>
                             </div>
                         </div>
                         <div class="patient-right">
                             <span class="score-pill" style="background:${sc};">Score: ${dados.score||0}</span>
-                            <span class="chevron">â–¼</span>
+                            <span class="chevron">▼</span>
                         </div>
                     </summary>
                     <div class="patient-body">
                         <div class="analise-banner">${gerarAnalise(dados)}</div>
                         <div class="mini-grid">
                             <div class="mini-item"><div class="mini-lbl">Dias registrados</div><div class="mini-val">${dados.diasDados||0}</div></div>
-                            <div class="mini-item"><div class="mini-lbl">Sono mÃ©dio</div><div class="mini-val">${dados.sonoMedia ? dados.sonoMedia+'h' : 'â€”'}</div></div>
-                            <div class="mini-item"><div class="mini-lbl">Metas</div><div class="mini-val">${dados.metasPct!=null ? dados.metasPct+'%' : 'â€”'}</div></div>
-                            <div class="mini-item"><div class="mini-lbl">Foco/dia</div><div class="mini-val">${(dados.focoTotal && dados.diasDados) ? Math.round(dados.focoTotal/dados.diasDados)+'min' : 'â€”'}</div></div>
+                            <div class="mini-item"><div class="mini-lbl">Sono médio</div><div class="mini-val">${dados.sonoMedia ? dados.sonoMedia+'h' : '—'}</div></div>
+                            <div class="mini-item"><div class="mini-lbl">Metas</div><div class="mini-val">${dados.metasPct!=null ? dados.metasPct+'%' : '—'}</div></div>
+                            <div class="mini-item"><div class="mini-lbl">Foco/dia</div><div class="mini-val">${(dados.focoTotal && dados.diasDados) ? Math.round(dados.focoTotal/dados.diasDados)+'min' : '—'}</div></div>
                         </div>
 
                         <div class="tab-nav">
-                            <button class="tab-btn active" onclick="switchTab('${uid}','relatorio')">ðŸ“Š RelatÃ³rio ClÃ­nico</button>
-                            <button class="tab-btn" onclick="switchTab('${uid}','historico')">ðŸ“… HistÃ³rico</button>
+                            <button class="tab-btn active" onclick="switchTab('${uid}','relatorio')">📊 Relatório Clínico</button>
+                            <button class="tab-btn" onclick="switchTab('${uid}','historico')">📅 Histórico</button>
                         </div>
 
                         <div class="periodo-filtro" id="filtro-${uid}">
-                            <label>PerÃ­odo:</label>
+                            <label>Período:</label>
                             <input type="date" id="ini-${uid}" value="${hojeISO(iniDefault)}">
-                            <span>atÃ©</span>
+                            <span>até</span>
                             <input type="date" id="fim-${uid}" value="${hojeISO(hoje)}">
-                            <button class="btn-gerar" onclick="atualizarRelatorio('${uid}')">ðŸ”„ Gerar</button>
+                            <button class="btn-gerar" onclick="atualizarRelatorio('${uid}')">🔄 Gerar</button>
                             <button class="btn-quick" onclick="setP('${uid}',7)">7d</button>
                             <button class="btn-quick" onclick="setP('${uid}',15)">15d</button>
                             <button class="btn-quick" onclick="setP('${uid}',30)">30d</button>
@@ -958,7 +958,7 @@
                             </div>
                         </div>
 
-                        <button class="btn-remove-patient" onclick="deletarPaciente('${id}')">ðŸ—‘ï¸ Remover Paciente</button>
+                        <button class="btn-remove-patient" onclick="deletarPaciente('${id}')">🗑️ Remover Paciente</button>
                     </div>
                 </details>`;
                 divLista.innerHTML += cardHTML;
@@ -1003,7 +1003,7 @@
     }
 
     window.deletarPaciente = async function(id) {
-        if (!confirm("Tem certeza que deseja APAGAR os dados deste paciente? Essa aÃ§Ã£o nÃ£o pode ser desfeita.")) return;
+        if (!confirm("Tem certeza que deseja APAGAR os dados deste paciente? Essa ação não pode ser desfeita.")) return;
         try {
             await db.collection("usuarios").doc(id).delete();
             alert("Paciente removido com sucesso!");
@@ -1014,12 +1014,12 @@
     }
 
     window.imprimirRelatorioAdmin = function() {
-        if (!dadosGlobais || dadosGlobais.length === 0) { alert("NÃ£o hÃ¡ dados para gerar o PDF."); return; }
+        if (!dadosGlobais || dadosGlobais.length === 0) { alert("Não há dados para gerar o PDF."); return; }
         const hoje = new Date();
         const iniDefault = new Date(); iniDefault.setDate(hoje.getDate()-29);
         const strIni = hojeISO(iniDefault), strFim = hojeISO(hoje);
 
-        let htmlPrint = `<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'><title>RelatÃ³rio ClÃ­nico - CleanTdah</title><style>
+        let htmlPrint = `<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'><title>Relatório Clínico - CleanTdah</title><style>
             body{font-family:'Segoe UI',Tahoma,sans-serif;padding:20px;color:#333;background:#fff;}
             h1{text-align:center;color:#1A237E;margin-bottom:30px;}
             .paciente-container{page-break-after:always;margin-bottom:40px;}
@@ -1041,11 +1041,11 @@
             .ct-meta-item .ctm-val{font-size:18px;font-weight:800;} .ct-meta-item .ctm-lbl{font-size:10px;opacity:0.9;margin-top:2px;}
             .cl-norm{background:#E8F5E9;color:#2E7D32;} .cl-atenc{background:#FFF8E1;color:#F57F17;} .cl-crit{background:#FFEBEE;color:#C62828;}
             @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;} .paciente-container{page-break-after:always;}}
-        </style></head><body><h1>RelatÃ³rio ClÃ­nico Consolidado â€” CleanTdah</h1>`;
+        </style></head><body><h1>Relatório Clínico Consolidado — CleanTdah</h1>`;
 
         dadosGlobais.forEach(p => {
             // For PDF, use light-mode version of the report
-            htmlPrint += `<div class='paciente-container'><div class='paciente-header'>ðŸ‘¤ Paciente: ${p.apelido||p.id}</div>`;
+            htmlPrint += `<div class='paciente-container'><div class='paciente-header'>👤 Paciente: ${p.apelido||p.id}</div>`;
             htmlPrint += gerarRelatorioClinicoPDF(p.dailyData, strIni, strFim);
             htmlPrint += `</div>`;
         });
@@ -1058,7 +1058,7 @@
 
     // PDF version (light mode colors)
     function gerarRelatorioClinicoPDF(dailyData, periodoIni, periodoFim) {
-        if (!dailyData || typeof dailyData !== 'object') return '<div class="clinico-aviso">Nenhum dado diÃ¡rio sincronizado.</div>';
+        if (!dailyData || typeof dailyData !== 'object') return '<div class="clinico-aviso">Nenhum dado diário sincronizado.</div>';
         const dataIniObj = periodoIni ? new Date(periodoIni+'T00:00:00') : new Date(new Date().setDate(new Date().getDate()-29));
         const dataFimObj = periodoFim ? new Date(periodoFim+'T00:00:00') : new Date();
         const daysN = Math.round((dataFimObj-dataIniObj)/(1000*60*60*24))+1;
@@ -1078,7 +1078,7 @@
             if(dd.atividade)atividadeN++;
             if(dd.leitura){leituraTotal+=dd.leitura.paginas;leituraN++;}
         }
-        if(diasDados===0) return '<div class="clinico-aviso">Nenhum dado registrado neste perÃ­odo.</div>';
+        if(diasDados===0) return '<div class="clinico-aviso">Nenhum dado registrado neste período.</div>';
         const avgSono=sonoN>0?(sonoTotal/sonoN):null;
         const pctMetas=metasTotal>0?Math.round((metasConcl/metasTotal)*100):null;
         const avgFoco=diasDados>0?Math.round(focoTotal/diasDados):null;
@@ -1098,22 +1098,22 @@
         const grafFoco=focoSeries.slice(-14).map(v=>{const h=Math.round((v/focoMax)*100);const cor=v>=60?'#7C3AED':v>=30?'#A78BFA':'#E3E3E3';return `<div class="clinico-grafico-bar" style="height:${Math.max(4,h)}%;background:${cor};"></div>`;}).join('');
         const fmtD=d=>d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
         const fmtM=d=>d.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
-        return `<div style="font-size:12px;color:#90A4AE;text-align:right;margin-bottom:8px;">ðŸ“… ${fmtD(dataIniObj)} a ${fmtD(dataFimObj)}</div>
-        <div class="clinico-wrap"><div class="clinico-topo"><div class="ct-titulo">ðŸ“‹ RelatÃ³rio ClÃ­nico</div><div class="ct-sub">TDAH Care Â· ${fmtM(dataFimObj)} Â· ${diasDados} dias com registro</div>
-        <div class="ct-meta"><div class="ct-meta-item"><div class="ctm-val" style="color:${sc};">${sg}</div><div class="ctm-lbl">Score /100</div></div><div class="ct-meta-item"><div class="ctm-val">${diasDados}</div><div class="ctm-lbl">Dias</div></div><div class="ct-meta-item"><div class="ctm-val">${pctRemedio}%</div><div class="ctm-lbl">RemÃ©dio</div></div></div></div>
-        <div class="clinico-secao"><div class="clinico-secao-titulo">ðŸ“Š Indicadores</div>
-        ${avgSono!==null?row('Sono mÃ©dio',avgSono.toFixed(1)+'h',avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit',avgSono>=7?'Adequado':'AtenÃ§Ã£o'):''}
+        return `<div style="font-size:12px;color:#90A4AE;text-align:right;margin-bottom:8px;">📅 ${fmtD(dataIniObj)} a ${fmtD(dataFimObj)}</div>
+        <div class="clinico-wrap"><div class="clinico-topo"><div class="ct-titulo">📋 Relatório Clínico</div><div class="ct-sub">TDAH Care · ${fmtM(dataFimObj)} · ${diasDados} dias com registro</div>
+        <div class="ct-meta"><div class="ct-meta-item"><div class="ctm-val" style="color:${sc};">${sg}</div><div class="ctm-lbl">Score /100</div></div><div class="ct-meta-item"><div class="ctm-val">${diasDados}</div><div class="ctm-lbl">Dias</div></div><div class="ct-meta-item"><div class="ctm-val">${pctRemedio}%</div><div class="ctm-lbl">Remédio</div></div></div></div>
+        <div class="clinico-secao"><div class="clinico-secao-titulo">📊 Indicadores</div>
+        ${avgSono!==null?row('Sono médio',avgSono.toFixed(1)+'h',avgSono>=7?'cl-norm':avgSono>=6?'cl-atenc':'cl-crit',avgSono>=7?'Adequado':'Atenção'):''}
         ${pctMetas!==null?row('Taxa de metas',pctMetas+'%',pctMetas>=70?'cl-norm':pctMetas>=50?'cl-atenc':'cl-crit',pctMetas>=70?'Boa':'Baixa'):''}
-        ${avgFoco!==null?row('Foco mÃ©dio',avgFoco+'min/dia',avgFoco>=25?'cl-norm':avgFoco>=12?'cl-atenc':'cl-crit',avgFoco>=25?'Adequado':avgFoco>=12?'Moderado':'Baixo'):''}
+        ${avgFoco!==null?row('Foco médio',avgFoco+'min/dia',avgFoco>=25?'cl-norm':avgFoco>=12?'cl-atenc':'cl-crit',avgFoco>=25?'Adequado':avgFoco>=12?'Moderado':'Baixo'):''}
         ${avgCelular!==null?row('Tempo de tela',Math.floor(avgCelular/60)+'h/dia',avgCelular<=180?'cl-norm':avgCelular<=300?'cl-atenc':'cl-crit',avgCelular<=180?'OK':'Elevado'):''}
-        ${remedioN>0?row('MedicaÃ§Ã£o',remedioN+'/'+diasDados+' dias',pctRemedio>=80?'cl-norm':'cl-atenc',pctRemedio+'%'):''}
+        ${remedioN>0?row('Medicação',remedioN+'/'+diasDados+' dias',pctRemedio>=80?'cl-norm':'cl-atenc',pctRemedio+'%'):''}
         </div></div>
-        ${sonoN>0?`<div class="clinico-wrap"><div class="clinico-secao"><div class="clinico-secao-titulo">ðŸ˜´ Sono (Ãºltimas 2 semanas)</div><div class="clinico-grafico">${grafSono}</div><div class="clinico-secao-titulo" style="margin-top:10px;">ðŸ”ï¸ Foco (Ãºltimas 2 semanas)</div><div class="clinico-grafico">${grafFoco}</div></div></div>`:''}
-        <div class="clinico-aviso">âš ï¸ RelatÃ³rio gerado automaticamente. NÃ£o substitui avaliaÃ§Ã£o clÃ­nica.</div>`;
+        ${sonoN>0?`<div class="clinico-wrap"><div class="clinico-secao"><div class="clinico-secao-titulo">😴 Sono (últimas 2 semanas)</div><div class="clinico-grafico">${grafSono}</div><div class="clinico-secao-titulo" style="margin-top:10px;">🏔️ Foco (últimas 2 semanas)</div><div class="clinico-grafico">${grafFoco}</div></div></div>`:''}
+        <div class="clinico-aviso">⚠️ Relatório gerado automaticamente. Não substitui avaliação clínica.</div>`;
     }
 
     document.getElementById('btn-csv').addEventListener('click', () => {
-        if (!dadosGlobais.length) { alert("NÃ£o hÃ¡ dados para exportar."); return; }
+        if (!dadosGlobais.length) { alert("Não há dados para exportar."); return; }
         let csv = "ID,Apelido,Periodo,Score,FocoTotal,MediaSono,MetasPct,DiasRegistrados\n";
         dadosGlobais.forEach(p => {
             csv += `${p.id},${p.apelido||''},${p.periodo||''},${p.score||0},${p.focoTotal||0},${p.sonoMedia||''},${p.metasPct||''},${p.diasDados||0}\n`;
