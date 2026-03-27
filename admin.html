@@ -1336,6 +1336,13 @@ function calRenderDayView(){
         return sameDay && patientOk;
     });
 
+    // DEBUG: mostra o que está sendo comparado
+    const debugHtml = `<div style="background:#1e2d1e;border:1px solid #10B981;border-radius:6px;padding:8px 12px;margin:8px;font-size:0.72rem;color:#6EE7B7;font-family:monospace;z-index:99;position:relative">
+        <strong>DEBUG</strong> — dia exibido: <strong>${dateStr}</strong><br>
+        Eventos salvos (${calState.events.length} total): ${calState.events.map(e=>`<span style="color:${e.date===dateStr?'#34d399':'#64748B'}">${e.date}[${e.patientId.slice(0,4)}]</span>`).join(', ')||'nenhum'}<br>
+        Encontrados hoje: <strong>${dayEvents.length}</strong>
+    </div>`;
+
     let eventsHtml='';
     dayEvents.forEach(ev=>{
         const p=calGetPatient(ev.patientId); if(!p)return;
@@ -1343,7 +1350,6 @@ function calRenderDayView(){
         const startMins=calTimeToMins(ev.start)-(startHour*60);
         const top=Math.max(0,startMins);
         const height=Math.max(40, Math.min(Number(ev.duration)||50,(endHour-startHour)*60-startMins));
-        // não esconder se ligeiramente fora do range — mostrar no início ou fim
         const clampedTop = Math.max(0, Math.min(top, (endHour-startHour)*60 - 30));
         eventsHtml+=`<div class="event-block" style="top:${clampedTop}px;height:${height}px;background:${c.bg};color:${c.text};left:6px;right:6px"
             onclick="event.stopPropagation();calOpenEventModal('${ev.id}',null,null)">
@@ -1352,7 +1358,7 @@ function calRenderDayView(){
         </div>`;
     });
     const now=new Date(); const isToday=hojeISO(d)===hojeISO(now);
-    return `<div class="day-view"><div class="day-grid"><div class="time-col">${timeColHtml}</div>
+    return `${debugHtml}<div class="day-view"><div class="day-grid"><div class="time-col">${timeColHtml}</div>
         <div class="day-col-main" onclick="calOpenEventModal(null,'${dateStr}',null)">${hoursHtml}${eventsHtml}${isToday?'<div class="current-time-line"></div>':''}</div>
     </div></div>`;
 }
