@@ -1079,7 +1079,6 @@ function gerarRelatorioMensal(dailyData, periodoIni, periodoFim) {
             ${remedioN>0?row('Registro de medicação', remedioN+' vezes em '+diasDados+' dias', '', ''):''}
             ${atividadeN>0?row('Atividade física', atividadeN+' vezes em '+diasDados+' dias', atividadeN/diasDados>=0.5?'cl-norm':'cl-atenc', atividadeN/diasDados>=0.5?'Regular':'Ocasional'):''}
             ${avgAgua!==null?row('Média de hidratação/dia', avgAgua>=1000?(avgAgua/1000).toFixed(1)+'L':avgAgua+'ml', avgAgua>=2000?'cl-norm':avgAgua>=1000?'cl-atenc':'cl-crit', avgAgua>=2000?'Adequada':avgAgua>=1000?'Atenção':'Baixa'):''}
-            ${leituraN>0?row('Leitura acumulada', leituraTotal+' páginas em '+leituraN+' dias', 'cl-norm', 'Registrada'):''}
         </div>
     </div>
 
