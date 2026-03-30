@@ -5730,23 +5730,18 @@ function fecharModalIncentivo() {
     if (typeof updateStats    === 'function') updateStats();
     if (typeof updateWidget   === 'function') updateWidget();
 
-    // ── NOVIDADE: atualiza campos da tela Sono sem precisar recarregar ──
     try {
-      // Atualiza o display circular da tela Sono
       const sonoDisplay = document.getElementById('sono-display');
       if (sonoDisplay) sonoDisplay.textContent = parseFloat(horasDec.toFixed(1)) + 'h';
 
-      // Atualiza os botões de horas na grade
       document.querySelectorAll('.hour-btn').forEach(btn => {
         btn.classList.remove('selected');
         if (parseFloat(btn.dataset.val) === h) btn.classList.add('selected');
       });
 
-      // Atualiza o select de qualidade na tela Sono
       const sonoQual = document.getElementById('sono-qualidade');
       if (sonoQual) sonoQual.value = _srQual;
 
-      // Atualiza o último sono na home
       const ultimoSonoHome = document.getElementById('ultimo-sono-home');
       if (ultimoSonoHome && state.sono[0]) {
         const qM = {otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};
@@ -5764,21 +5759,18 @@ function fecharModalIncentivo() {
         </div>`;
       }
 
-      // Atualiza widget de resumo (ícone sono)
       const wrSono = document.getElementById('wr-sono');
       if (wrSono) {
         const hh = Math.floor(horasDec);
-        const mm = Math.round((horasDec % 1) * 60);
-        wrSono.textContent = hh + 'h' + (mm > 0 ? mm + 'm' : '');
+        const mm2 = Math.round((horasDec % 1) * 60);
+        wrSono.textContent = hh + 'h' + (mm2 > 0 ? mm2 + 'm' : '');
       }
 
     } catch(e) { console.warn('Atualização visual do sono:', e); }
 
     if (typeof showToast === 'function') showToast('✅ Sono salvo!');
-
     _mostrarConfirmacao(h, m, horasDec, _srQual);
-};
-
+  };
   window.editarSonoRapido = function() {
     document.getElementById('sono-rapido-form').style.display = 'block';
     document.getElementById('sono-rapido-ok').style.display   = 'none';
