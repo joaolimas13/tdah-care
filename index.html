@@ -5696,11 +5696,10 @@ function fecharModalIncentivo() {
     const m = parseInt(document.getElementById('sr-minutos').value)  || 0;
 
     if (h === 0 && m === 0) {
-      // Shake de feedback
       const card = document.getElementById('sono-rapido-card');
       card.style.transform = 'translateX(-6px)';
       setTimeout(() => { card.style.transform = 'translateX(6px)'; }, 80);
-      setTimeout(() => { card.style.transform = 'translateX(0)'; },   160);
+      setTimeout(() => { card.style.transform = 'translateX(0)'; }, 160);
       if (typeof showToast === 'function') showToast('⚠️ Informe quanto você dormiu!');
       return;
     }
@@ -5709,35 +5708,76 @@ function fecharModalIncentivo() {
       return;
     }
 
-    // Garante que o estado do app existe
     if (typeof state === 'undefined') {
       if (typeof showToast === 'function') showToast('⚠️ App ainda carregando, tente novamente.');
       return;
     }
 
-    // Calcula horas decimais
     const horasDec = h + (m / 60);
 
-    // Insere no estado do app (mesmo formato da tela Sono)
     state.sono.unshift({
-      data:       typeof hoje === 'function' ? hoje() : new Date().toLocaleDateString('pt-BR'),
-      horas:      parseFloat(horasDec.toFixed(2)),
-      qualidade:  _srQual,
-      obs:        ''
+      data:      typeof hoje === 'function' ? hoje() : new Date().toLocaleDateString('pt-BR'),
+      horas:     parseFloat(horasDec.toFixed(2)),
+      qualidade: _srQual,
+      obs:       ''
     });
     if (state.sono.length > 7) state.sono = state.sono.slice(0, 7);
 
-    // Sincroniza com a tela Sono (se aberta)
     state.horasSono = horasDec;
 
-    if (typeof salvar       === 'function') salvar();
+    if (typeof salvar         === 'function') salvar();
     if (typeof renderHistSono === 'function') renderHistSono();
-    if (typeof updateStats  === 'function') updateStats();
-    if (typeof updateWidget === 'function') updateWidget();
-    if (typeof showToast    === 'function') showToast('✅ Sono salvo!');
+    if (typeof updateStats    === 'function') updateStats();
+    if (typeof updateWidget   === 'function') updateWidget();
+
+    // ── NOVIDADE: atualiza campos da tela Sono sem precisar recarregar ──
+    try {
+      // Atualiza o display circular da tela Sono
+      const sonoDisplay = document.getElementById('sono-display');
+      if (sonoDisplay) sonoDisplay.textContent = parseFloat(horasDec.toFixed(1)) + 'h';
+
+      // Atualiza os botões de horas na grade
+      document.querySelectorAll('.hour-btn').forEach(btn => {
+        btn.classList.remove('selected');
+        if (parseFloat(btn.dataset.val) === h) btn.classList.add('selected');
+      });
+
+      // Atualiza o select de qualidade na tela Sono
+      const sonoQual = document.getElementById('sono-qualidade');
+      if (sonoQual) sonoQual.value = _srQual;
+
+      // Atualiza o último sono na home
+      const ultimoSonoHome = document.getElementById('ultimo-sono-home');
+      if (ultimoSonoHome && state.sono[0]) {
+        const qM = {otima:'😊 Ótima',boa:'🙂 Boa',regular:'😐 Regular',ruim:'😔 Ruim',pessima:'😫 Péssima'};
+        const bM = {otima:'badge-good',boa:'badge-good',regular:'badge-warn',ruim:'badge-bad',pessima:'badge-bad'};
+        const r = state.sono[0];
+        ultimoSonoHome.innerHTML = `<div class="historico-item">
+          <div>
+            <div style="font-weight:600;font-size:0.88rem;">${r.data}</div>
+            <div class="historico-data">${qM[r.qualidade]}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-weight:700;color:var(--primary);">${r.horas}h</span>
+            <span class="badge ${bM[r.qualidade]}">${r.horas>=7?'OK':'Baixo'}</span>
+          </div>
+        </div>`;
+      }
+
+      // Atualiza widget de resumo (ícone sono)
+      const wrSono = document.getElementById('wr-sono');
+      if (wrSono) {
+        const hh = Math.floor(horasDec);
+        const mm = Math.round((horasDec % 1) * 60);
+        wrSono.textContent = hh + 'h' + (mm > 0 ? mm + 'm' : '');
+      }
+
+    } catch(e) { console.warn('Atualização visual do sono:', e); }
+
+    if (typeof showToast === 'function') showToast('✅ Sono salvo!');
 
     _mostrarConfirmacao(h, m, horasDec, _srQual);
-  };
+};
 
   window.editarSonoRapido = function() {
     document.getElementById('sono-rapido-form').style.display = 'block';
